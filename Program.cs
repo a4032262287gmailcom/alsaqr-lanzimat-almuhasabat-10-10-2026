@@ -21,7 +21,7 @@ internal static class Program
         catch (Exception ex)
         {
             MessageBox.Show("تعذر بدء نظام المحاسبة. لم يتم تجاوز الخطأ أو إنشاء معاملات تلقائيًا.\r\n\r\n" + ex.Message,
-                "خطأ بدء التشغيل", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                "الصقر لأنظمة المحاسبة | خطأ بدء التشغيل", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }
