@@ -6,11 +6,8 @@ on:
       - main
       - feature/real-accounting-core-20261013
       - desktop-accounting-core-20261013
- feature/erp-pos-cashier-20261013
       - feature/erp-pos-cashier-20261013
-=======
-      - feature/licensing-settings-cashier-20261013
-main
+      - fix/clean-desktop-build-20261013-2
   pull_request:
     branches:
       - main
