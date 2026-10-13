@@ -24,7 +24,7 @@ internal sealed class LoginForm : Form
         Font = new Font("Segoe UI", 10F);
         BackColor = Color.FromArgb(243,245,248);
 
-        var root = new TableLayoutPanel { Dock = DockStyle.Fill, Padding = new Padding(24), ColumnCount = 1, RowCount = _setupMode ? 7 : 5 };
+        var root = new TableLayoutPanel { Dock = DockStyle.Fill, Padding = new Padding(24), ColumnCount = 1, RowCount = _setupMode ? 8 : 6 };
         root.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,100));
         var title = new Label { Text = _setupMode ? "إنشاء حساب المدير الأول" : "الصقر | نظام المحاسبة", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter, Font = new Font("Segoe UI",16,FontStyle.Bold), ForeColor = Color.FromArgb(20,34,56) };
         root.Controls.Add(title);
