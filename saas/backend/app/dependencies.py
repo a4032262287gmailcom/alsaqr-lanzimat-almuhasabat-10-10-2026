@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 from typing import Callable
+
+from fastapi import Request
 from uuid import UUID
 
 from fastapi import Depends, Header, HTTPException, status
@@ -40,6 +42,7 @@ async def get_current_user(
 
 
 async def get_tenant_context(
+    request: Request,
     x_company_id: UUID = Header(..., alias="X-Company-ID"),
     user: User = Depends(get_current_user),
     session: AsyncSession = Depends(get_db),
@@ -57,6 +60,11 @@ async def get_tenant_context(
     if tenant is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Company is inactive or does not exist")
     await set_tenant_context(session, str(tenant.id))
+    session.info["request_audit_context"] = {
+        "remote_address": request.client.host if request.client else None,
+        "user_agent": request.headers.get("user-agent", "")[:500] or None,
+        "correlation_id": getattr(request.state, "correlation_id", None),
+    }
     return TenantContext(tenant_id=tenant.id, user_id=user.id, role=membership.role, user=user)
 
 
