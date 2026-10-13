@@ -1,0 +1,1744 @@
+﻿===== تقرير داخلي لهيكلة المشروع =====
+المسار: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App
+
+=== إحصائيات عامة ===
+عدد الملفات: 4007
+حجم المشروع: 1271.29 MB
+عدد ملفات C#: 942
+عدد ملفات DLL: 448
+عدد ملفات CONFIG: 8
+
+=== المجلدات الرئيسية في المشروع ===
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\aa
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\af
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ar
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ar-EG
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ar-ER
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ar-IL
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ar-IQ
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ar-MA
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\az
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\bg
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\bn-BD
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Config
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Contrac
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\cs
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\da
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\da-DK
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\de
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\de-DE
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\el
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\en-GB
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\en-UM
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\en-US
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\en-VI
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\en-VU
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\es
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\es-ES
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\fa
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\fi-FI
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\fr
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\fr-BE
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\fr-FR
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\fr-MA
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\he
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\hr
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\hu
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\id
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Invoices
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\is
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\it
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\it-IT
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ja
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ko
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ko-KR
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ku
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Layout
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\lv
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ms-MY
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\mt
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\nb
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\nb-NO
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\nl
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\nl-NL
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\pl
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\pl-PL
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\pt
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\pt-BR
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\pt-PT
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Reports
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ReportsEN
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ro
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ru
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ru-RU
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\RunForRelatToZakat
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\sk
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\sl
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\sr
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\sr-Latn
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\sv
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\sv-SE
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\th-TH
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\tr
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\uk
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\uk-UA
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\uz-Cyrl-UZ
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\uz-Latn-UZ
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\vi
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\wwwroot
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\x64
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\x86
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\zh-CN
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\zh-Hans
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\zh-Hant
+
+=== ملفات C# حسب المجلد ===
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode
+عدد ملفات C#: 1
+    - WhatsAppSender.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem
+عدد ملفات C#: 414
+    - AccountStartBalance.cs
+    - AccountYear.cs
+    - Account_Accounts.cs
+    - Account_AccountType.cs
+    - Account_Branch.cs
+    - Account_CostCenters.cs
+    - Account_CustSup.cs
+    - Account_CustTailor.cs
+    - Account_DefualtAccount.cs
+    - Account_DefualtAccount2.cs
+    - Account_DefualtCustomer.cs
+    - Account_Final.cs
+    - Account_Nature.cs
+    - Account_Place.cs
+    - Account_Projects.cs
+    - Account_ProjectsDetails.cs
+    - Account_Receipts.cs
+    - Account_ReceiptsDetails.cs
+    - Account_SalesMan.cs
+    - Account_Stores.cs
+    - Account_Suspended.cs
+    - Account_Type.cs
+    - Account_YearEnd_Result.cs
+    - AddTempTranMaterDetails_Result.cs
+    - AddTempTrialBalanceByTotal_Result.cs
+    - AddTemp_BudgetAllBranch_Result.cs
+    - AddTemp_Budget_Result.cs
+    - AgeingAnalysi.cs
+    - api_CategoriesGetAllGategories_Result.cs
+    - api_GetAllBranches_Result.cs
+    - api_GetAllItemsByGategories_Result.cs
+    - api_GetAllRestaurant_RoomByPause_Result.cs
+    - api_GetAllRestaurant_Room_Result.cs
+    - api_GetAllRestaurant_TableByPause_Result.cs
+    - api_GetAllRestaurant_Table_Result.cs
+    - Car_Receive.cs
+    - CashReceiptsType.cs
+    - Cloud_Result.cs
+    - Contract_Bounce.cs
+    - Contract_Contract.cs
+    - Contract_ContractDetails.cs
+    - Contract_EJAR.cs
+    - Contract_Files.cs
+    - Contract_Guarantee.cs
+    - Contract_GuaranteeDetails.cs
+    - Contract_Store.cs
+    - C__EFMigrationsHistory.cs
+    - DebtReconstruction_Result.cs
+    - EmployeeAllowance.cs
+    - Emp_Allowances.cs
+    - Emp_Employee.cs
+    - Emp_Entrusted.cs
+    - Emp_EntrustedEmployeeDetails.cs
+    - Emp_Payroll.cs
+    - Emp_PayrollDetails.cs
+    - Emp_PayrollTemp.cs
+    - Emp_PayrollTempDetails.cs
+    - FrmActivtion.cs
+    - FrmActivtion3.cs
+    - FrmCheckActivationCloseYear.cs
+    - FrmLogin.cs
+    - FrmLogin26.cs
+    - FrmLogin3.cs
+    - FrmSqlConnection.cs
+    - GetAccountTree_Result.cs
+    - GetAllBranches_Result.cs
+    - GetAllitems_Alternatives_Result.cs
+    - GetCostCenterDetails_Result.cs
+    - GetCsrZakat_Result.cs
+    - GetDataForZakatToCrm_Result.cs
+    - GetItemDetails_Result.cs
+    - GetItemQuantityByBranch_Result.cs
+    - GetLastOrderDetailsByItemID_Result.cs
+    - GetOrderReservations_Result.cs
+    - GetOrdersWithDetailsDraft_Result.cs
+    - GetOrdersWithDetails_Result.cs
+    - GetPriceOffersWithDetails_Result.cs
+    - GetRecpitInvoiceDetails_Result.cs
+    - GetRentalInvoiceDetails_Result.cs
+    - GetRented_Result.cs
+    - GetRepairWithDetails_Result.cs
+    - GetReportItemLimit_Result.cs
+    - GetReport_BounceContract_Result.cs
+    - GetReport_Car_Result.cs
+    - GetReport_Contract_Result.cs
+    - GetReport_Guarantee_Result.cs
+    - GetReport_ItemsMenu_Result.cs
+    - GetReport_MovementAllItemActive_Summary_Result.cs
+    - GetReport_OrderDalala_Dalala_Result.cs
+    - GetReport_OrderDalala_Sending_Result.cs
+    - GetReport_OrderDetailsByBounce_Result.cs
+    - GetReport_OrderDetailsByCatogry_Result.cs
+    - GetReport_OrderDetailsByGroups_Result.cs
+    - GetReport_OrderDetailsBySalesMan_Result.cs
+    - GetReport_OrderDetailsSmall_Result.cs
+    - GetReport_OrderDetails_Result.cs
+    - GetReport_OrderProfitByGroupBySalesMan_Result.cs
+    - GetReport_OrderProfitByGroup_Result.cs
+    - GetReport_OrderProfitByItemCashierSafryMahly_Result.cs
+    - GetReport_OrderProfitByItem_ItemOnlyBySalesMan_Result.cs
+    - GetReport_OrderProfitByItem_ItemOnly_Result.cs
+    - GetReport_OrderProfitByItem_Result.cs
+    - GetReport_OrderProfitBySalesMan_Result.cs
+    - GetReport_OrderProfit_Result.cs
+    - GetReport_OrderRent_Result.cs
+    - GetReport_OrderReturnDetailsBySalesMan_Result.cs
+    - GetReport_OrderReturnDetails_Result.cs
+    - GetReport_OrdersBounce_Result.cs
+    - GetReport_OrdersBySalesMan_Result.cs
+    - GetReport_OrdersDateHold_Result.cs
+    - GetReport_OrdersReturnBySalesMan_Result.cs
+    - GetReport_OrdersReturn_ByProperties_Result.cs
+    - GetReport_OrdersReturn_Result.cs
+    - GetReport_Orders_ByProperties_Result.cs
+    - GetReport_Orders_CashierSafryMahly_Result.cs
+    - GetReport_Orders_Result.cs
+    - GetReport_Order_Reservation_Result.cs
+    - GetReport_Order_TransferfromBranch_Result.cs
+    - GetReport_Order_TransferToBranch_Result.cs
+    - GetReport_PurchaesReturnDetails_Result.cs
+    - GetReport_PurchesDetails_Result.cs
+    - GetReport_PurchesReturn_ByProperties_Result.cs
+    - GetReport_PurchesReturn_Result.cs
+    - GetReport_Purches_ByProperties_Result.cs
+    - GetReport_Purches_Result.cs
+    - GetReport_RentalExpensesDetails_Result.cs
+    - GetReport_RevenuesAndExpensesByItemCode_Result.cs
+    - GetReport_TransActionItems_Result.cs
+    - GetRes_Result.cs
+    - GetTotalAvergForSoreScaffolds_ByItem_Result.cs
+    - GetTotalAvergForSore_ByGroup_Result.cs
+    - GetTotalAvergForSore_ByItem_Result.cs
+    - GetTranTeacher_Result.cs
+    - Get_Account_Tree_Result.cs
+    - Get_All_Items_Result.cs
+    - Get_ContractActive_DisActive_Result.cs
+    - Get_ContractCustomer_Result.cs
+    - Get_Cust_Guarantee_Result.cs
+    - Get_EmployeeAllowances_Result.cs
+    - Get_ExitItems_ByContractID_Result.cs
+    - Get_ItemGroupToPrintCashier_Result.cs
+    - Get_Items_ByCode_Result.cs
+    - Get_Items_Stock_Report_Result.cs
+    - Get_Item_ByCodeALL_Result.cs
+    - Get_Item_ByID_Result.cs
+    - Get_Item_ByItemCode_Result.cs
+    - Get_Item_BySearchOpenQauntity_Result.cs
+    - Get_Item_BySearchPurchases_Result.cs
+    - Get_MizanBarcode_Result.cs
+    - Get_Restaurant_Delivery_Result.cs
+    - Get_Scaffolds_Contracts_Filter_Result.cs
+    - Get_Serial_Result.cs
+    - Get_SupplierAccount_Result.cs
+    - Get_Supplier_Items_Scaffold_Result.cs
+    - Get_virginByStatuse_Result.cs
+    - GTSdbEntities.cs
+    - Hall.cs
+    - InvoiceTax_Result.cs
+    - ItemQuantity.cs
+    - Items_ContentAlignment_ForCashier.cs
+    - Item_Add.cs
+    - Item_Class.cs
+    - Item_Company.cs
+    - Item_Country.cs
+    - Item_Doctor.cs
+    - Item_Groups.cs
+    - Item_Guarantee.cs
+    - Item_ItemComponent.cs
+    - Item_Items.cs
+    - Item_Type.cs
+    - Item_Unit.cs
+    - LoginDetails.cs
+    - LoginLog.cs
+    - OrderDalala_Dalala.cs
+    - OrderDalala_DalalaDetails.cs
+    - OrderDalala_Sending.cs
+    - OrderDalala_SendingDetails.cs
+    - OrderRent_Recipt.cs
+    - OrderRent_Recipt3.cs
+    - OrderRent_RecpitDetails.cs
+    - OrderRent_RecpitDetails3.cs
+    - OrderRent_Rent.cs
+    - OrderRent_RentDetails.cs
+    - OrdersReturn_RentalInvoice.cs
+    - Orders_PriceShowRental.cs
+    - Orders_RentalInvoice.cs
+    - OrdertReturn_RentalInvoiceDetails.cs
+    - Ordert_PriceShowRentalDetails.cs
+    - Ordert_RentalInvoiceDetails.cs
+    - Order_CheckoutOrders.cs
+    - Order_CheckoutOrdersDetails.cs
+    - Order_Extension.cs
+    - Order_Gard.cs
+    - Order_GardDetails.cs
+    - Order_InventorySettlementMinus.cs
+    - Order_InventorySettlementMinusDetails.cs
+    - Order_Manufacturing.cs
+    - Order_ManufacturingDetailsItems.cs
+    - Order_ManufacturingDetailsNew.cs
+    - Order_ManufacturingOrder.cs
+    - Order_ManufacturingOrderDetails.cs
+    - Order_MoveHall.cs
+    - Order_OpenQuantity.cs
+    - Order_OpenQuantityDetails.cs
+    - Order_OrderReturn.cs
+    - Order_OrderReturnDetails.cs
+    - Order_Orders.cs
+    - Order_OrdersDetails.cs
+    - Order_OrdersDetailsDraft.cs
+    - Order_OrdersDraft.cs
+    - Order_PaymentItem.cs
+    - Order_PaymentItemDetails.cs
+    - Order_PriceOffer.cs
+    - Order_PriceOfferDetails.cs
+    - Order_Purchases.cs
+    - Order_PurchasesDetails.cs
+    - Order_PurchasesOrder.cs
+    - Order_PurchasesOrderDetails.cs
+    - Order_PurchasesReturn.cs
+    - Order_PurchasesReturnDetails.cs
+    - Order_RecItem.cs
+    - Order_RecItemDetails.cs
+    - Order_Reservation.cs
+    - Order_Reservations.cs
+    - Order_StoreTransfer.cs
+    - Order_StoreTransferDetails.cs
+    - Order_TransferFromBranch.cs
+    - Order_TransferFromBranchDetails.cs
+    - Order_TransferToBranch.cs
+    - Order_TransferToBranchDetails.cs
+    - Order_Transfer_Master.cs
+    - Order_Transfer_MasterDetails.cs
+    - Order_Transfer_StatusType.cs
+    - Order_Transfer_TrackingType.cs
+    - Order_TypeElectronicInvoice.cs
+    - PriceOffer_Reservations.cs
+    - Printer.cs
+    - PrintersCook.cs
+    - Print_Account_CussByTotal_Result.cs
+    - Print_Account_Cuss_Result.cs
+    - Print_Account_DailyRestrictions_ALL_Result.cs
+    - Print_Account_Receipts2_Result.cs
+    - Print_Account_Receipts_Result.cs
+    - Print_Account_Supp_Result.cs
+    - Print_Car_Result.cs
+    - Print_Contract_Contract_Result.cs
+    - Print_Emp_PayrollTemp_Result.cs
+    - Print_Emp_Payroll_All_Result.cs
+    - Print_EntrustedEmployee_Result.cs
+    - Print_OrderDalala_Dalala_Result.cs
+    - Print_Order_CashierByItemCook_Result.cs
+    - Print_Order_CashierByItem_Result.cs
+    - Print_Order_CashierNoPrint_Result.cs
+    - Print_Order_CashierRes_Result.cs
+    - Print_Order_Cashier_Result.cs
+    - Print_Order_CheckoutOrders_Result.cs
+    - Print_Order_InventorySettlementMinus_Result.cs
+    - Print_Order_ManufacturingOrder_Result.cs
+    - Print_Order_OpenQuantity_Result.cs
+    - Print_Order_OrderReturn_Result.cs
+    - Print_Order_OrdersDraft_Result.cs
+    - Print_Order_Orders_Result.cs
+    - Print_Order_Orders_Res_Result.cs
+    - Print_Order_PaymentItem_Result.cs
+    - Print_Order_PriceOffer_Result.cs
+    - Print_Order_PurchasesOrder_Result.cs
+    - Print_Order_PurchasesReturn_Result.cs
+    - Print_Order_Purchases_Result.cs
+    - Print_Order_RecItem_Result.cs
+    - Print_Order_Rent_Recipt_Result.cs
+    - Print_Order_Rent_Result.cs
+    - Print_Order_StoreTransfer_Result.cs
+    - Print_Order_TransferFromBranch_Result.cs
+    - Print_Order_TransferToBranch_Result.cs
+    - Print_PriceShowRentalInvoice_Result.cs
+    - Print_Recipt3_Result.cs
+    - Print_RentalExpenses_Result.cs
+    - Print_RentalInvoice_Result.cs
+    - Print_Scaffolds_Contract_Result.cs
+    - Print_Scaffolds_MinutesEnd_Result.cs
+    - Print_Scaffolds_MinutesStarted_Result.cs
+    - Print_Scaffold_EntryPermission_Result.cs
+    - Print_Scaffold_ExitPermission_Result.cs
+    - Print_Scaffold_PriceOffer_Result.cs
+    - Print_SearchAccountTranDetailsByCode_Result.cs
+    - Print_SearchAccountTranTempDetailsByCode_Result.cs
+    - Program.cs
+    - RebuildAllIndex.cs
+    - RentalExpens.cs
+    - RentalExpensesDetail.cs
+    - Repairs_Groups.cs
+    - Repairs_Malfunctions.cs
+    - Repairs_Repair.cs
+    - Repairs_RepairDetails.cs
+    - Report_CloseDayByUser_Result.cs
+    - Restaurant_Delivery.cs
+    - Restaurant_DeliveryMan.cs
+    - Restaurant_Room.cs
+    - Restaurant_Table.cs
+    - Restaurant_Type.cs
+    - ResultElectronicInvoiceXml.cs
+    - Scaffolds_Contract.cs
+    - Scaffolds_ContractDetails.cs
+    - Scaffolds_MinutesEnd.cs
+    - Scaffolds_MinutesEndDetails.cs
+    - Scaffolds_MinutesStarted.cs
+    - Scaffolds_MinutesStartedDetails.cs
+    - Scaffold_EntryPermission.cs
+    - Scaffold_EntryPermissionDetails.cs
+    - Scaffold_ExitPermission.cs
+    - Scaffold_ExitPermissionDetails.cs
+    - Scaffold_PriceOffer.cs
+    - Scaffold_PriceOfferDetails.cs
+    - Secure.cs
+    - Select_AccountCustomer_Result.cs
+    - Select_AccountDefualt_Result.cs
+    - Select_Account_CusTailor_Result.cs
+    - Select_BarCodeExpireOpenQuantity_Result.cs
+    - Select_BarCodePurchase_Result.cs
+    - Select_BarCode_Result.cs
+    - Select_Car_Receive_Result.cs
+    - Select_Contract_Contract_Result.cs
+    - SELECT_Contract_EJAR_Result.cs
+    - SELECT_Contract_EJAR_Search_Result.cs
+    - Select_Contract_Guarantee_Result.cs
+    - Select_ItemQuantity_ByProperties_Result.cs
+    - Select_ItemQuantity_Only_Result.cs
+    - Select_ItemQuantity_Result.cs
+    - Select_OrderDalala_Dalala_Result.cs
+    - Select_OrderDalala_Sending_Result.cs
+    - Select_OrderGard_Result.cs
+    - Select_OrderRent_Rent_Result.cs
+    - Select_Order_CheckoutOrders_Result.cs
+    - Select_Order_InventorySettlementMinus_Result.cs
+    - Select_Order_ManufacturingOrder_Result.cs
+    - Select_Order_Manufacturing_Result.cs
+    - Select_Order_OpenQuantity_Result.cs
+    - Select_Order_OrderReturn_Result.cs
+    - Select_Order_OrdersDraft_Result.cs
+    - Select_Order_Orders_Result.cs
+    - Select_Order_PaymentItem_Result.cs
+    - Select_Order_PriceOffer_Result.cs
+    - Select_Order_PurchasesOrder_Result.cs
+    - Select_Order_PurchasesReturn_Result.cs
+    - Select_Order_Purchases_Result.cs
+    - Select_Order_RecItem_Result.cs
+    - Select_Order_Reservation_Result.cs
+    - Select_Order_StoreTransfer_Result.cs
+    - Select_Order_TransferFromBranch_Result.cs
+    - Select_Order_TransferToBranch_Result.cs
+    - Select_Order_Transfer_Master_Result.cs
+    - Select_Remember_Result.cs
+    - Select_Scaffolds_ContractNotMinutesStarted_Result.cs
+    - Select_Scaffolds_Contract_Result.cs
+    - Select_Scaffolds_MinutesEnd_Result.cs
+    - Select_Scaffolds_MinutesStarted_Result.cs
+    - Select_Scaffold_EntryPermission_Result.cs
+    - Select_Scaffold_ExitPermission_Result.cs
+    - Select_scaffold_PriceOffer_Result.cs
+    - Select_SearchAccountCostCenterAll_Result.cs
+    - Select_SearchAccountCostCenterByProject_Result.cs
+    - Select_SearchAccountCostCenter_Result.cs
+    - Select_SearchAccountProjects_Result.cs
+    - Select_SearchAccountReceiptForAccountTree_Result.cs
+    - Select_SearchAccountReceipt_Result.cs
+    - Select_SearchAccountTranDetailsByCode_Result.cs
+    - Select_SearchAccountTranTempDetailsByCode_Result.cs
+    - Select_SearchAccountTranTemp_Result.cs
+    - Select_SearchAccountTran_Result.cs
+    - Select_SearchAccount_ByAccountNumber_Result.cs
+    - Select_SearchAccount_Result.cs
+    - Select_Search_Account_Receipts_Result.cs
+    - Select_Virgins_Result.cs
+    - Tafqit.cs
+    - TblRemember.cs
+    - TblSetting.cs
+    - TempAccount.cs
+    - TempBudget.cs
+    - TempTranMaterDetail.cs
+    - TempTrialBalanceByTotal.cs
+    - Temp_Accounts.cs
+    - Tran_Tran.cs
+    - Tran_TranDetails.cs
+    - Tran_TranTemp.cs
+    - Tran_TranTempDetails.cs
+    - Tran_Type.cs
+    - ufn_FindReports_Result.cs
+    - User_DayClose.cs
+    - User_Groups.cs
+    - User_Login.cs
+    - User_Permission.cs
+    - User_Screens.cs
+    - User_SellPrice.cs
+    - ViewAccountsLastLeve.cs
+    - ViewAccount_Data.cs
+    - ViewAccount_Data_Tree.cs
+    - ViewCostCenters_Data_Tree.cs
+    - ViewTranMaterDetail.cs
+    - ViewTran_TranDetails.cs
+    - View_AccountsLastLeve.cs
+    - View_Budget_Accounts.cs
+    - View_Budget_AccountsDataFunAll_Result.cs
+    - View_Budget_AccountsDataFun_Result.cs
+    - View_TempTranMaterDetails.cs
+    - View_TranDetails.cs
+    - Virg_AppType.cs
+    - Virg_Branch.cs
+    - Virg_Company.cs
+    - Virg_Franchise.cs
+    - Virg_Master.cs
+    - Virg_MasterDetails.cs
+    - Virg_Statuse.cs
+    - Virg_Type.cs
+    - Virg_Virgins.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.BLL.Account
+عدد ملفات C#: 10
+    - Calss_CostCenter.cs
+    - ClassProject.cs
+    - Class_AccountCard.cs
+    - Class_AccountTree.cs
+    - Class_DailyRestrictions.cs
+    - Class_DailyRestrictionsTest.cs
+    - Class_OpenAccount.cs
+    - Class_Print_DailyRestrictionsALL.cs
+    - Class_Receipts.cs
+    - CloseYear.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.BLL.Contract
+عدد ملفات C#: 10
+    - Class_Bounce.cs
+    - Class_Contract.cs
+    - Class_EJAR.cs
+    - Class_Guarantee.cs
+    - Class_ScaffEntryPermission.cs
+    - Class_ScaffExitPermission.cs
+    - Class_ScaffoldsContract.cs
+    - Class_ScaffoldsMinutesEnd.cs
+    - Class_ScaffoldsMinutesStarted.cs
+    - Class_ScaffPriceOffer.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.BLL.Cust_Sup
+عدد ملفات C#: 7
+    - Class_Branches.cs
+    - Class_Customer.cs
+    - Class_CustTailor.cs
+    - Class_Place.cs
+    - Class_SalesMan.cs
+    - Class_Stores.cs
+    - Class_Suppliers.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.BLL.Items
+عدد ملفات C#: 9
+    - Class_Class.cs
+    - Class_Company.cs
+    - Class_Country.cs
+    - Class_Doctor.cs
+    - Class_Group.cs
+    - Class_Guarantee.cs
+    - Class_Items.cs
+    - Class_Unit.cs
+    - DiscountCodesManager.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.BLL.Main
+عدد ملفات C#: 17
+    - AuthentationProgram.cs
+    - ChangeConnection.cs
+    - Class1.cs
+    - Class_Crypto.cs
+    - Class_EncryptInvoice.cs
+    - Class_Encryption.cs
+    - Class_GetDate.cs
+    - Class_Login.cs
+    - Class_Printers.cs
+    - Class_Setting.cs
+    - Class_WaitFormFunc.cs
+    - CurrencyInfo.cs
+    - SaveActiveForXml.cs
+    - SaveConnectionForXml.cs
+    - SaveForXml.cs
+    - SavePrintForXml.cs
+    - ToWord.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.BLL.Main.Setting
+عدد ملفات C#: 1
+    - Class_DefualtAccount.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.BLL.OrderDalala
+عدد ملفات C#: 2
+    - Class_Dalala.cs
+    - Class_Sending.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.BLL.OrderManufacturing
+عدد ملفات C#: 2
+    - Class_Manufacturing.cs
+    - Class_ManufacturingOrder.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.BLL.OrderRent
+عدد ملفات C#: 4
+    - Class_PriceShowRent.cs
+    - Class_Recipt.cs
+    - Class_Rent.cs
+    - RentalExpen.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.BLL.Orders
+عدد ملفات C#: 20
+    - Cars.cs
+    - Class_Cashir.cs
+    - Class_CheckoutOrders.cs
+    - Class_ElctroncInvoice.cs
+    - Class_Halls.cs
+    - Class_InventorySettlementMinus.cs
+    - Class_MoreHall.cs
+    - Class_OpenQuantity.cs
+    - Class_Orders.cs
+    - Class_OrdersReturn.cs
+    - Class_PaymentItem.cs
+    - Class_PriceOffer.cs
+    - Class_PurchaseOrder.cs
+    - Class_Purchases.cs
+    - Class_PurchasesReturn.cs
+    - Class_RecItem.cs
+    - Class_StoresTransfer.cs
+    - Class_TransferFromBranch.cs
+    - Class_TransferToBranch.cs
+    - Class_Transporation.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.BLL.OrdersTransfer
+عدد ملفات C#: 1
+    - Class_RequestTransfer.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.BLL.Payroll
+عدد ملفات C#: 6
+    - Class_Allowance.cs
+    - Class_Employee.cs
+    - Class_Entrusted.cs
+    - Class_EntrustedEmployee.cs
+    - Class_Payroll.cs
+    - Class_PayrollTemp.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.BLL.Repairs
+عدد ملفات C#: 3
+    - Class_Damages.cs
+    - Class_Reforms.cs
+    - Class_RepairsDepartment.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.BLL.Reports
+عدد ملفات C#: 4
+    - Class_Account_CustSupp.cs
+    - Class_MovementItem.cs
+    - Class_Profit.cs
+    - Class_ReportsALL.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.BLL.Restaurant
+عدد ملفات C#: 4
+    - Class_Add.cs
+    - Class_Delivery.cs
+    - Class_Room.cs
+    - Class_Table.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.BLL.Security
+عدد ملفات C#: 3
+    - CheckPrvlg.cs
+    - Class_Groups.cs
+    - Class_Users.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.DAL.Models
+عدد ملفات C#: 5
+    - ApplicationDbContext.cs
+    - BranchUserData.cs
+    - DiscountCodes.cs
+    - GetDataOfZakatByBranchIdStoredProcedureResponse.cs
+    - LoginCrm.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.DataSetRep
+عدد ملفات C#: 1
+    - DataSetALL.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Dto
+عدد ملفات C#: 8
+    - CertificateRequestDto.cs
+    - CRSFromCrmDatabaseResponse.cs
+    - CSIDInfoDto.cs
+    - CustomerPartyDto.cs
+    - InvoiceDto.cs
+    - InvoiceItems.cs
+    - OrderOrdersDto.cs
+    - SupplierPartyDto.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Account
+عدد ملفات C#: 15
+    - FrmAccountTree.cs
+    - FrmCardAccount.cs
+    - FrmCostCenter.cs
+    - FrmCostCenterTree.cs
+    - FrmDailyRestrictions.cs
+    - FrmDailyRestrictionsTest.cs
+    - FrmDefualtAccount.cs
+    - FrmDefualtCustomer.cs
+    - FrmOpenAccount.cs
+    - FrmPayment.cs
+    - FrmPaymentBig.cs
+    - FrmProjects.cs
+    - FrmReceipts.cs
+    - FrmReceiptsBig.cs
+    - FrmReceiptsScaffolds.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Account.Check
+عدد ملفات C#: 4
+    - FrmCheckCollection.cs
+    - FrmCheckCollectionIssued.cs
+    - FrmCheckIssued.cs
+    - FrmReceiptCheck.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Account.Check.Search
+عدد ملفات C#: 2
+    - FrmSearchCheckIssued.cs
+    - FrmSearchCheckRecipt.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Account.Search
+عدد ملفات C#: 9
+    - FrmSearchAccount.cs
+    - FrmSearchAccountPayment.cs
+    - FrmSearchAccountReceipts.cs
+    - FrmSearchPayment.cs
+    - FrmSearchPaymentBig.cs
+    - FrmSearchReceipts.cs
+    - FrmSearchReceiptsBig.cs
+    - FrmSearchTran.cs
+    - FrmSearchTranTemp.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.CloseYears
+عدد ملفات C#: 1
+    - FrmCloseYear.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Contract
+عدد ملفات C#: 12
+    - ContractTerms.cs
+    - FrmBounce.cs
+    - FrmContract.cs
+    - FrmContractScaffolds.cs
+    - FrmEJAR.cs
+    - FrmEntryPermission.cs
+    - FrmExitPermission.cs
+    - FrmGuarantee.cs
+    - FrmMinutesRemoval.cs
+    - FrmMinutesStarted.cs
+    - FrmPriceOfferScaffolds.cs
+    - FrmViewFiles.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Contract.Report
+عدد ملفات C#: 5
+    - FrmAllContract.cs
+    - FrmAllContractActiveDisActive.cs
+    - FrmAllContractByCostomer.cs
+    - FrmAllGuarantee.cs
+    - FrmBounce.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Contract.Search
+عدد ملفات C#: 10
+    - FrmSearchContract.cs
+    - FrmSearchEJAR.cs
+    - FrmSearchEntryPermission.cs
+    - FrmSearchExitPermission.cs
+    - FrmSearchGuarantee.cs
+    - FrmSearchMinutesEnd.cs
+    - FrmSearchMinutesStarted.cs
+    - FrmSearchPriceOfferScaffold.cs
+    - FrmSearchScaffoldsContract.cs
+    - FrmSearchScaffoldsContractNotStart.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Cust_Sup
+عدد ملفات C#: 8
+    - FrmBranches.cs
+    - FrmCustomer.cs
+    - FrmPlace.cs
+    - FrmReservation.cs
+    - FrmSalesMan.cs
+    - FrmStores.cs
+    - FrmSuppliers.cs
+    - FrmTailor.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Cust_Sup.Search
+عدد ملفات C#: 5
+    - FrmSearchBranch.cs
+    - FrmSearchCustomer.cs
+    - FrmSearchCustomerAll.cs
+    - FrmSearchReservation.cs
+    - FrmSearchSuppliers.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic
+عدد ملفات C#: 8
+    - FrmAtviaionCSID.cs
+    - FrmCheckActivationElctroncInv.cs
+    - FrmGenetareCSID.cs
+    - FrmGetDataFromCRM.cs
+    - FrmLoginCrm.cs
+    - FrmPassWordElctronc.cs
+    - FrmZatcaIntgration.cs
+    - SentInvoiceToZakat.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.FrmOthers
+عدد ملفات C#: 1
+    - FrmRepair.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.FrmRestaurant
+عدد ملفات C#: 9
+    - FrmCalculator.cs
+    - FrmCashirRestaurant.cs
+    - FrmDeliveryCollecting.cs
+    - FrmEditRoom.cs
+    - FrmMahlyCollecting.cs
+    - FrmMoneyDelivery.cs
+    - FrmMoneyMahly.cs
+    - FrmMoneySafry.cs
+    - FrmPrint.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.FrmRestaurant.LuckUp
+عدد ملفات C#: 6
+    - FrmAdd.cs
+    - FrmCalcRes.cs
+    - FrmDelivery.cs
+    - FrmRoom.cs
+    - FrmSearchAdds.cs
+    - FrmTable.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.FrmsHome
+عدد ملفات C#: 16
+    - FrmActivation.cs
+    - FrmBlue.cs
+    - FrmGold.cs
+    - FrmGoldPlus.cs
+    - FrmGoldPlusImportExport.cs
+    - FrmGoldPlusTransportation.cs
+    - FrmLight2.cs
+    - FrmPremium.cs
+    - FrmReportAll.cs
+    - FrmRestaurant.cs
+    - FrmRestaurantSilver.cs
+    - FrmSilver.cs
+    - FrmSilverPlus.cs
+    - FrmSilverPlusWashing.cs
+    - FrmTest.cs
+    - FrmWindow.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.FrmsMain
+عدد ملفات C#: 22
+    - FrmAbout.cs
+    - FrmAllPrinters.cs
+    - FrmBackUp.cs
+    - FrmChangeDataBase.cs
+    - FrmDateCashier.cs
+    - FrmDefualtAccount.cs
+    - FrmDesignerReport.cs
+    - FrmImportExcel.cs
+    - FrmItemProfit.cs
+    - FrmItemVat.cs
+    - FrmLock.cs
+    - FrmPassExcel.cs
+    - FrmPassWord.cs
+    - FrmPassWordOrderReturn.cs
+    - FrmPassWordVat.cs
+    - FrmPrinter.cs
+    - FrmPrinterCashier.cs
+    - FrmReportGetOrder.cs
+    - FrmSetting.cs
+    - FrmVAT.cs
+    - WaitForm.cs
+    - WhathAppInfo.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.FrmsMain.Search
+عدد ملفات C#: 5
+    - FrmSearchAccount.cs
+    - FrmSearchAccountForTree.cs
+    - FrmSearchCostCenter.cs
+    - FrmSearchDefualtAccount.cs
+    - FrmSearchProjects.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Items
+عدد ملفات C#: 13
+    - FrmBarCodeItem.cs
+    - FrmClass.cs
+    - FrmCompany.cs
+    - FrmCountry.cs
+    - FrmDisCode.cs
+    - FrmDoctor.cs
+    - FrmGroupsRes.cs
+    - FrmGuarantee.cs
+    - FrmImportExcel.cs
+    - FrmItemReader.cs
+    - FrmItems.cs
+    - FrmOilChange.cs
+    - FrmUnit.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Items.FrmSearch
+عدد ملفات C#: 3
+    - FrmPrintBarcode.cs
+    - FrmSearchByBarcode.cs
+    - FrmSearchItems1.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.OrderDalala
+عدد ملفات C#: 2
+    - FrmDalala.cs
+    - FrmSending.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.OrderDalala.FrmSearch
+عدد ملفات C#: 2
+    - FrmSearchDalala.cs
+    - FrmSearchSending.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.OrderDalala.Report
+عدد ملفات C#: 2
+    - FrmReportOrderDalala_Dalala.cs
+    - FrmReportOrderDalala_Sending.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.OrderManufacturing
+عدد ملفات C#: 2
+    - FrmManufacturing.cs
+    - FrmManufacturingOrder.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.OrderManufacturing.FrmSearch
+عدد ملفات C#: 2
+    - FrmSearchManufacturing.cs
+    - FrmSearchManufacturingOrder.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.OrderRent
+عدد ملفات C#: 9
+    - FrmItemRentDeatils.cs
+    - FrmOrderReturnRental.cs
+    - FrmRecipt.cs
+    - FrmRecipt2.cs
+    - FrmRecipt3.cs
+    - FrmRent.cs
+    - FrmRentalExpenses.cs
+    - FrmRentalInvoice.cs
+    - OrdersPriceShowRental.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.OrderRent.RentReports
+عدد ملفات C#: 5
+    - FrmExpAndRevenuesReports.cs
+    - FrmExpReports.cs
+    - FrmRecpitReports.cs
+    - FrmRentReports.cs
+    - FrmRentReports2.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.OrderRent.Search
+عدد ملفات C#: 5
+    - FrmSearchPriceShowRent.cs
+    - FrmSearchRecipt.cs
+    - FrmSearchRent.cs
+    - FrmSearchRentalExpenses.cs
+    - FrmSearchRentalInvoice.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Orders
+عدد ملفات C#: 25
+    - FrmCars.cs
+    - FrmCashir.cs
+    - FrmCashirPharm.cs
+    - FrmCashirWashing.cs
+    - FrmCashirWithOutGroup.cs
+    - FrmCheckOut.cs
+    - FrmInventorySettlementMinus.cs
+    - FrmInvoicType.cs
+    - FrmOpenQuantity.cs
+    - FrmOrderReturn.cs
+    - FrmOrders.cs
+    - FrmOrdersDraft.cs
+    - FrmOrdersReturnNoPurchCode.cs
+    - FrmOrdersWedding.cs
+    - FrmPaymentItem.cs
+    - FrmPriceOffer.cs
+    - FrmPurchaseOrder.cs
+    - FrmPurchases.cs
+    - FrmPurchasesReturn.cs
+    - FrmPurchasesReturnNoPurchCode.cs
+    - FrmRecpItem.cs
+    - FrmReplace.cs
+    - FrmStoresTransfer.cs
+    - FrmTransferFromBranch.cs
+    - FrmTransferToBranch.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Orders.FrmCachMoney
+عدد ملفات C#: 5
+    - FrmCashierQuantity.cs
+    - FrmCashierSetting.cs
+    - FrmMoney.cs
+    - FrmMoneyAjil.cs
+    - FrmMoneyCashier.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Orders.FrmLuckUpOrders
+عدد ملفات C#: 3
+    - FrmOrderInCashier.cs
+    - FrmPassWordSupervisor.cs
+    - FrmReturnOrderInCashier.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Orders.FrmOpenDay
+عدد ملفات C#: 2
+    - FrmCloseDay.cs
+    - FrmOpenDay.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Orders.FrmReservations
+عدد ملفات C#: 3
+    - FrmHalls.cs
+    - FrmReportReser.cs
+    - FrmReservations.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Orders.FrmSearchOrder
+عدد ملفات C#: 26
+    - FrmSearchCheckout.cs
+    - FrmSearchCheckoutOrders.cs
+    - FrmSearchCustomer.cs
+    - FrmSearchInventorySettlementMinus.cs
+    - FrmSearchOpenQuantity.cs
+    - FrmSearchOrderReturn.cs
+    - FrmSearchOrderReturnNoPurchCode.cs
+    - FrmSearchOrders.cs
+    - FrmSearchOrdersDraft.cs
+    - FrmSearchPaymentItems.cs
+    - FrmSearchPriceOffer.cs
+    - FrmSearchPurchases.cs
+    - FrmSearchPurchasesOrder.cs
+    - FrmSearchPurchReturn.cs
+    - FrmSearchPurchReturnNoPurchCode.cs
+    - FrmSearchRecItem.cs
+    - FrmSearchSuppliers.cs
+    - FrmSearchTransfer.cs
+    - FrmSearchTransfer2.cs
+    - FrmSearchTransferAllBranch.cs
+    - FrmSearchTransferFromBranch.cs
+    - FrmSearchTransferStore.cs
+    - FrmSearchTransferToBranch.cs
+    - FrmSearchUnit.cs
+    - FrmSearchWedding.cs
+    - FrmsOption.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.OrdersTransfer
+عدد ملفات C#: 2
+    - FrmTransferBranchMaster.cs
+    - FrmTransferMasterToBranch.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.OrdersTransfer.Search
+عدد ملفات C#: 1
+    - FrmSearchTransferBranchMaster.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Payroll
+عدد ملفات C#: 7
+    - FrmAllowances.cs
+    - FrmEmployee.cs
+    - FrmEntrusted.cs
+    - FrmEntrustedEmployee.cs
+    - FrmPayroll.cs
+    - FrmPayrollTemp.cs
+    - FrmSelectEmp.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Payroll.Search
+عدد ملفات C#: 4
+    - FrmAccountPayroll.cs
+    - FrmSearchPayroll.cs
+    - FrmSearchPayrollTemp.cs
+    - InfoAllowances.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Repairs
+عدد ملفات C#: 4
+    - FrmDamages.cs
+    - FrmReforms.cs
+    - FrmRepairs.cs
+    - FrmSearchRepairs.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Reports.Account
+عدد ملفات C#: 13
+    - FrmCostCenterByFather.cs
+    - FrmDebtReconstruction.cs
+    - FrmRPCostCenter.cs
+    - FrmRPLeadger.cs
+    - FrmRPLeadgerSupp.cs
+    - FrmRPMizan.cs
+    - FrmRPMizanCustSupp.cs
+    - FrmRPMizanGroups.cs
+    - FrmRPMizaniyah.cs
+    - FrmRPMizanTotal.cs
+    - FrmRPProfitAndLossAccount.cs
+    - FrmRPProject.cs
+    - FrmRPTranTeacher.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Reports.AllBranch
+عدد ملفات C#: 4
+    - FrmMovementsDailyReportAllBran.cs
+    - FrmMovementsDailyReportAllBran2.cs
+    - FrmRPMizaniyahAllBran.cs
+    - FrmRPProfitAndLossAccountAllBran.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Reports.Gold
+عدد ملفات C#: 8
+    - FrmNetOrders.cs
+    - FrmNetPurches.cs
+    - FrmNetPurchOrders.cs
+    - FrmOrders.cs
+    - FrmOrdersNetPurchOnly.cs
+    - FrmOrdersReturn.cs
+    - FrmPurches.cs
+    - FrmPurchesReturn.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Reports.Orders
+عدد ملفات C#: 17
+    - FrmAllOrders.cs
+    - FrmAllOrdersBounce.cs
+    - FrmAllOrdersBounceDetails.cs
+    - FrmAllOrdersCashierSafryMahly.cs
+    - FrmAllOrdersCheckOut.cs
+    - FrmAllOrdersDetails.cs
+    - FrmAllOrdersDetailsByGroup.cs
+    - FrmAllOrdersDetailsByProperties.cs
+    - FrmAllOrdersHold.cs
+    - FrmAllOrdersRestaurant.cs
+    - FrmAllOrdersReturnDetails.cs
+    - FrmAllOrederReturn.cs
+    - FrmAllQuntityUsedCust.cs
+    - FrmContractItem.cs
+    - FrmContractState.cs
+    - FrmSalesEmployee.cs
+    - FrmStockItem.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Reports.Profit
+عدد ملفات C#: 5
+    - FrmAllOrdersProfit.cs
+    - FrmAllOrdersProfitByGroup.cs
+    - FrmAllOrdersProfitByItems.cs
+    - FrmAllOrdersProfitByItems_ItemOnly.cs
+    - FrmAllOrdersProfitCashierSafryMahly.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Reports.Public
+عدد ملفات C#: 8
+    - FrmCloseDayByUser.cs
+    - FrmMovementsDailyReport.cs
+    - FrmOrderDetailsByDate.cs
+    - FrmRPMovementsDailyReport.cs
+    - FrmRPOrderDaily.cs
+    - FrmRpSalesPurchesForSupp.cs
+    - FrmTobaccoTaxReport.cs
+    - FrmVatReport.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Reports.Purches
+عدد ملفات C#: 4
+    - FrmAllPurches.cs
+    - FrmAllPurchesDetails.cs
+    - FrmAllPurchesReturn.cs
+    - FrmAllPurchesReturnDetails.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Reports.SalesMan
+عدد ملفات C#: 8
+    - FrmAllOrders.cs
+    - FrmAllOrdersDetails.cs
+    - FrmAllOrdersProfit.cs
+    - FrmAllOrdersProfitByGroupBy.cs
+    - FrmAllOrdersProfitByItems_ItemOnly.cs
+    - FrmAllOrdersReturnDetails.cs
+    - FrmAllOrederReturn.cs
+    - FrmNetProfitSalesMan.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Reports.Stores
+عدد ملفات C#: 10
+    - FrmRPItemLimit.cs
+    - FrmRPMovementAllItemActive.cs
+    - FrmRPMovementItem.cs
+    - FrmRPMovementItemActive.cs
+    - FrmRPStoresGard.cs
+    - FrmRPStoresGardbyProperties.cs
+    - FrmRPTasferByGroup.cs
+    - FrmRPTotalAvergForSore_ByGroupProperties.cs
+    - FrmStoreGardCat.cs
+    - FrmStoreGardCatSearch.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Reports.Stores.Branches
+عدد ملفات C#: 2
+    - FrmRTransferFromBranch.cs
+    - FrmRTransferToBranch.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Security
+عدد ملفات C#: 5
+    - FrmEditUser.cs
+    - FrmGroups.cs
+    - FrmPassword.cs
+    - FrmSecurityGroup.cs
+    - FrmUsers.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Transportation
+عدد ملفات C#: 5
+    - FrmDrivers.cs
+    - FrmReceive.cs
+    - FrmResend.cs
+    - FrmRPDeportation.cs
+    - FrmRPLeadgerCar.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Transportation.SearchTransportation
+عدد ملفات C#: 2
+    - FrmResend.cs
+    - FrmSearchReceive.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Frms.Virgins
+عدد ملفات C#: 4
+    - FrmLoginVirg.cs
+    - FrmSearch.cs
+    - FrmSearchStatuse.cs
+    - FrmVirgin.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Helper
+عدد ملفات C#: 27
+    - CountryCode.cs
+    - CurrencyCode.cs
+    - ElectronicInvoice.cs
+    - ElectronicInvoiceInfo.cs
+    - EncryptCrmIntegration.cs
+    - HashCode.cs
+    - Invoice.cs
+    - InvoiceType.cs
+    - InvoicType.cs
+    - ItemMatchResult.cs
+    - LineItem.cs
+    - MessageBoxBottonNew.cs
+    - MetaData.cs
+    - Profile.cs
+    - QRHelper.cs
+    - QuantityCodes.cs
+    - RawPrinterHelper.cs
+    - ResultElectronicInvoiceXmlService.cs
+    - ReturnSentInvoiceToZakat.cs
+    - SchemeItem.cs
+    - SecureCrmIntegration.cs
+    - TaxID.cs
+    - TaxScheme.cs
+    - TestXml.cs
+    - TradeParty.cs
+    - TwilioHelper.cs
+    - xmlClass.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Migrations
+عدد ملفات C#: 1
+    - Configuration.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.OrderRent
+عدد ملفات C#: 1
+    - FrmReportRent.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\GTSErpSystem.Properties
+عدد ملفات C#: 3
+    - Lang.cs
+    - Resources.cs
+    - Settings.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\Janus.Windows.GridEX
+عدد ملفات C#: 1
+    - GridEXHitTestInfo.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\Microsoft.Office.Interop.Excel
+عدد ملفات C#: 14
+    - AppEvents.cs
+    - AppEvents_Event.cs
+    - Application.cs
+    - DocEvents.cs
+    - DocEvents_Event.cs
+    - Sheets.cs
+    - Workbook.cs
+    - WorkbookEvents.cs
+    - WorkbookEvents_Event.cs
+    - Workbooks.cs
+    - Worksheet.cs
+    - _Application.cs
+    - _Workbook.cs
+    - _Worksheet.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\obj\Release\net48
+عدد ملفات C#: 1
+    - .NETFramework,Version=v4.8.AssemblyAttributes.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\Properties
+عدد ملفات C#: 1
+    - AssemblyInfo.cs
+
+مجلد: G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\Windows.Storage
+عدد ملفات C#: 1
+    - Pickers.cs
+
+=== ملفات CONFIG ===
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\GTSErpSystem.exe.Config
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\GTSErpSystem_Modified.exe.config
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ZatcaIntegrationSDK.dll.config
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\app.config
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\GTSErpSystem.exe.config
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ZatcaIntegrationSDK.dll.config
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\obj\Release\net48\GTSErpSystem.exe.config
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\obj\Release\net48\GTSErpSystem.exe.withSupportedRuntime.config
+
+=== ملفات DLL ===
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\AutoMapper.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\BouncyCastle.Crypto.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.BonusSkins.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.Data.Desktop.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.Data.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.Dialogs.v21.2.Core.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.Images.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.Office.v21.2.Core.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.Pdf.v21.2.Core.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.Pdf.v21.2.Drawing.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.Printing.v21.2.Core.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.RichEdit.v21.2.Core.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.RichEdit.v21.2.Export.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.Sparkline.v21.2.Core.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.Utils.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.Xpo.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.XtraBars.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.XtraDialogs.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.XtraEditors.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.XtraGrid.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.XtraLayout.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.XtraNavBar.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.XtraPrinting.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\DevExpress.XtraTreeList.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Elegant.Ui.Common.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\EntityFramework.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\EntityFramework.SqlServer.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ExcelDataReader.DataSet.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ExcelDataReader.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\FontAwesome.Sharp.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Humanizer.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\IKVM.OpenJDK.Core.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\IKVM.OpenJDK.Text.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\IKVM.OpenJDK.Util.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\IKVM.OpenJDK.XML.API.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\IKVM.Runtime.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Infragistics4.Shared.v19.1.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Infragistics4.Win.UltraWinTabbedMdi.v19.1.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Infragistics4.Win.v19.1.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\itextsharp.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\itextsharp.pdfa.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Janus.Data.v4.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Janus.Windows.ButtonBar.v4.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Janus.Windows.CalendarCombo.v4.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Janus.Windows.Common.v4.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Janus.Windows.ExplorerBar.v4.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Janus.Windows.FilterEditor.v4.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Janus.Windows.GridEX.v4.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Janus.Windows.UI.v4.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\MaterialSkin.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\MetroFramework.Design.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\MetroFramework.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\MetroFramework.Fonts.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.Bcl.AsyncInterfaces.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.Bcl.HashCode.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.Data.SqlClient.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.EntityFrameworkCore.Abstractions.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.EntityFrameworkCore.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.EntityFrameworkCore.Relational.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.EntityFrameworkCore.SqlServer.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.Extensions.Caching.Abstractions.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.Extensions.Caching.Memory.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.Extensions.Configuration.Abstractions.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.Extensions.Configuration.Binder.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.Extensions.Configuration.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.Extensions.DependencyInjection.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.Extensions.Logging.Abstractions.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.Extensions.Logging.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.Extensions.Options.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.Extensions.Primitives.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.Identity.Client.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.IdentityModel.JsonWebTokens.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.IdentityModel.Logging.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.IdentityModel.Protocols.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Microsoft.IdentityModel.Tokens.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Newtonsoft.Json.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\PdfiumViewer.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\QRCodeEncoderLibrary.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\QRCoder.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\QRCodeSharedLibrary.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\saxon-he-10.8.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\saxon-he-api-10.8.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Stef.Validation.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Stimulsoft.Base.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Stimulsoft.Controls.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Stimulsoft.Controls.Win.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Stimulsoft.Editor.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Stimulsoft.Report.Check.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Stimulsoft.Report.Design.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Stimulsoft.Report.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Stimulsoft.Report.Helper.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Stimulsoft.Report.Win.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\System.Buffers.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\System.Collections.Immutable.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\System.ComponentModel.Annotations.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\System.Diagnostics.DiagnosticSource.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\System.IdentityModel.Tokens.Jwt.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\System.Memory.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\System.Numerics.Vectors.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\System.Runtime.CompilerServices.Unsafe.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\System.Threading.Tasks.Extensions.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ToggleSwitch.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\Twilio.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\WhatsAppApi.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ZatcaIntegrationSDK.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\zxing.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\zxing.presentation.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\aa\GTSErpSystem.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\af\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ar\GTSErpSystem.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ar\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ar-EG\GTSErpSystem.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ar-ER\GTSErpSystem.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ar-IL\GTSErpSystem.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ar-IQ\GTSErpSystem.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ar-MA\GTSErpSystem.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\az\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\bg\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\bn-BD\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\cs\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\da\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\de\DevExpress.Data.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\de\DevExpress.Dialogs.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\de\DevExpress.Office.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\de\DevExpress.Pdf.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\de\DevExpress.Printing.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\de\DevExpress.RichEdit.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\de\DevExpress.Sparkline.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\de\DevExpress.Utils.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\de\DevExpress.Xpo.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\de\DevExpress.XtraBars.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\de\DevExpress.XtraEditors.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\de\DevExpress.XtraGrid.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\de\DevExpress.XtraLayout.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\de\DevExpress.XtraNavBar.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\de\DevExpress.XtraPrinting.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\de\DevExpress.XtraTreeList.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\de\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\de\Microsoft.Data.SqlClient.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\el\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\en-GB\GTSErpSystem.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\en-UM\GTSErpSystem.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\en-US\GTSErpSystem.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\en-VI\GTSErpSystem.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\en-VU\GTSErpSystem.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\es\DevExpress.Data.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\es\DevExpress.Dialogs.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\es\DevExpress.Office.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\es\DevExpress.Pdf.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\es\DevExpress.Printing.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\es\DevExpress.RichEdit.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\es\DevExpress.Sparkline.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\es\DevExpress.Utils.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\es\DevExpress.Xpo.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\es\DevExpress.XtraBars.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\es\DevExpress.XtraEditors.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\es\DevExpress.XtraGrid.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\es\DevExpress.XtraLayout.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\es\DevExpress.XtraNavBar.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\es\DevExpress.XtraPrinting.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\es\DevExpress.XtraTreeList.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\es\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\es\Microsoft.Data.SqlClient.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\fa\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\fi-FI\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\fr\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\fr\Microsoft.Data.SqlClient.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\fr-BE\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\fr-FR\GTSErpSystem.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\fr-MA\GTSErpSystem.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\he\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\hr\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\hu\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\id\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\is\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\it\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\it\Microsoft.Data.SqlClient.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ja\DevExpress.Data.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ja\DevExpress.Dialogs.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ja\DevExpress.Office.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ja\DevExpress.Pdf.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ja\DevExpress.Printing.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ja\DevExpress.RichEdit.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ja\DevExpress.Sparkline.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ja\DevExpress.Utils.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ja\DevExpress.Xpo.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ja\DevExpress.XtraBars.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ja\DevExpress.XtraEditors.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ja\DevExpress.XtraGrid.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ja\DevExpress.XtraLayout.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ja\DevExpress.XtraNavBar.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ja\DevExpress.XtraPrinting.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ja\DevExpress.XtraTreeList.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ja\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ja\Microsoft.Data.SqlClient.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ko\Microsoft.Data.SqlClient.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ko-KR\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ku\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\lv\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ms-MY\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\mt\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\nb\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\nb-NO\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\nl\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\nl\PdfiumViewer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\pl\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\pt\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\pt-BR\Microsoft.Data.SqlClient.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ro\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ru\DevExpress.Data.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ru\DevExpress.Dialogs.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ru\DevExpress.Office.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ru\DevExpress.Pdf.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ru\DevExpress.Printing.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ru\DevExpress.RichEdit.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ru\DevExpress.Sparkline.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ru\DevExpress.Utils.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ru\DevExpress.Xpo.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ru\DevExpress.XtraBars.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ru\DevExpress.XtraEditors.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ru\DevExpress.XtraGrid.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ru\DevExpress.XtraLayout.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ru\DevExpress.XtraNavBar.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ru\DevExpress.XtraPrinting.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ru\DevExpress.XtraTreeList.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ru\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\ru\Microsoft.Data.SqlClient.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\sk\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\sl\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\BouncyCastle.Crypto.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\DevExpress.BonusSkins.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\DevExpress.Data.Desktop.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\DevExpress.Data.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\DevExpress.Office.v21.2.Core.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\DevExpress.Pdf.v21.2.Core.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\DevExpress.Pdf.v21.2.Drawing.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\DevExpress.Printing.v21.2.Core.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\DevExpress.RichEdit.v21.2.Core.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\DevExpress.Sparkline.v21.2.Core.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\DevExpress.Utils.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\DevExpress.Xpo.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\DevExpress.XtraBars.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\DevExpress.XtraEditors.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\DevExpress.XtraGrid.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\DevExpress.XtraLayout.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\DevExpress.XtraNavBar.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\DevExpress.XtraPrinting.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\DevExpress.XtraTreeList.v21.2.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Elegant.Ui.Common.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\EntityFramework.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Humanizer.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\IKVM.OpenJDK.Core.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\IKVM.OpenJDK.Text.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\IKVM.OpenJDK.Util.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\IKVM.OpenJDK.XML.API.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\IKVM.Runtime.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\itextsharp.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\itextsharp.pdfa.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Janus.Data.v4.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Janus.Windows.Common.v4.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Janus.Windows.GridEX.v4.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Janus.Windows.UI.v4.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\MaterialSkin.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\MetroFramework.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.Bcl.AsyncInterfaces.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.Bcl.HashCode.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.Data.SqlClient.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.EntityFrameworkCore.Abstractions.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.EntityFrameworkCore.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.EntityFrameworkCore.Relational.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.EntityFrameworkCore.SqlServer.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.Extensions.Caching.Abstractions.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.Extensions.Caching.Memory.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.Extensions.Configuration.Abstractions.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.Extensions.DependencyInjection.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.Extensions.Logging.Abstractions.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.Extensions.Logging.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.Extensions.Options.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.Extensions.Primitives.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.Identity.Client.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.IdentityModel.JsonWebTokens.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.IdentityModel.Logging.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.IdentityModel.Protocols.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.IdentityModel.Tokens.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Microsoft.Office.Interop.Excel.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Newtonsoft.Json.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\QRCoder.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\saxon-he-10.8.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\saxon-he-api-10.8.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Stimulsoft.Base.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Stimulsoft.Controls.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Stimulsoft.Controls.Win.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Stimulsoft.Editor.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Stimulsoft.Report.Check.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Stimulsoft.Report.Design.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Stimulsoft.Report.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Stimulsoft.Report.Helper.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Stimulsoft.Report.Win.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\System.Buffers.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\System.Collections.Immutable.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\System.ComponentModel.Annotations.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\System.Diagnostics.DiagnosticSource.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\System.IdentityModel.Tokens.Jwt.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\System.Memory.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\System.Numerics.Vectors.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\System.Resources.Extensions.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\System.Runtime.CompilerServices.Unsafe.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\System.Threading.Tasks.Extensions.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\Twilio.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\WhatsAppApi.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ZatcaIntegrationSDK.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\zxing.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\af\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ar\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\az\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\bg\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\bn-BD\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\cs\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\da\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\de\DevExpress.Data.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\de\DevExpress.Office.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\de\DevExpress.Pdf.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\de\DevExpress.Printing.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\de\DevExpress.RichEdit.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\de\DevExpress.Sparkline.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\de\DevExpress.Utils.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\de\DevExpress.Xpo.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\de\DevExpress.XtraBars.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\de\DevExpress.XtraEditors.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\de\DevExpress.XtraGrid.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\de\DevExpress.XtraLayout.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\de\DevExpress.XtraNavBar.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\de\DevExpress.XtraPrinting.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\de\DevExpress.XtraTreeList.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\de\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\de\Microsoft.Data.SqlClient.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\el\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\es\DevExpress.Data.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\es\DevExpress.Office.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\es\DevExpress.Pdf.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\es\DevExpress.Printing.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\es\DevExpress.RichEdit.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\es\DevExpress.Sparkline.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\es\DevExpress.Utils.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\es\DevExpress.Xpo.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\es\DevExpress.XtraBars.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\es\DevExpress.XtraEditors.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\es\DevExpress.XtraGrid.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\es\DevExpress.XtraLayout.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\es\DevExpress.XtraNavBar.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\es\DevExpress.XtraPrinting.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\es\DevExpress.XtraTreeList.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\es\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\es\Microsoft.Data.SqlClient.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\fa\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\fi-FI\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\fr\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\fr\Microsoft.Data.SqlClient.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\fr-BE\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\he\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\hr\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\hu\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\id\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\is\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\it\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\it\Microsoft.Data.SqlClient.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ja\DevExpress.Data.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ja\DevExpress.Office.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ja\DevExpress.Pdf.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ja\DevExpress.Printing.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ja\DevExpress.RichEdit.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ja\DevExpress.Sparkline.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ja\DevExpress.Utils.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ja\DevExpress.Xpo.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ja\DevExpress.XtraBars.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ja\DevExpress.XtraEditors.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ja\DevExpress.XtraGrid.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ja\DevExpress.XtraLayout.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ja\DevExpress.XtraNavBar.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ja\DevExpress.XtraPrinting.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ja\DevExpress.XtraTreeList.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ja\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ja\Microsoft.Data.SqlClient.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ko\Microsoft.Data.SqlClient.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ko-KR\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\lv\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ms-MY\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\mt\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\nb\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\nb-NO\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\nl\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\pl\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\pt\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\pt-BR\Microsoft.Data.SqlClient.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ro\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ru\DevExpress.Data.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ru\DevExpress.Office.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ru\DevExpress.Pdf.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ru\DevExpress.Printing.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ru\DevExpress.RichEdit.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ru\DevExpress.Sparkline.v21.2.Core.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ru\DevExpress.Utils.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ru\DevExpress.Xpo.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ru\DevExpress.XtraBars.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ru\DevExpress.XtraEditors.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ru\DevExpress.XtraGrid.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ru\DevExpress.XtraLayout.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ru\DevExpress.XtraNavBar.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ru\DevExpress.XtraPrinting.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ru\DevExpress.XtraTreeList.v21.2.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ru\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\ru\Microsoft.Data.SqlClient.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\sk\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\sl\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\sr\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\sr-Latn\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\sv\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\th-TH\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\tr\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\uk\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\uz-Cyrl-UZ\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\uz-Latn-UZ\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\vi\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\zh-CN\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\zh-Hans\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\zh-Hans\Microsoft.Data.SqlClient.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\zh-Hant\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\SourceCode\bin\Release\net48\zh-Hant\Microsoft.Data.SqlClient.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\sr\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\sr-Latn\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\sv\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\th-TH\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\tr\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\uk\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\uz-Cyrl-UZ\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\uz-Latn-UZ\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\vi\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\x64\SNI.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\x86\SNI.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\zh-CN\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\zh-Hans\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\zh-Hans\Microsoft.Data.SqlClient.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\zh-Hant\Humanizer.resources.dll
+- G:\ماجد سوفت\البرنامج\MajedSoft 08-07-2026\App\zh-Hant\Microsoft.Data.SqlClient.resources.dll
+

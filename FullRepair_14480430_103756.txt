@@ -1,0 +1,13 @@
+﻿Project: E:\KhaledERP\App\SourceCode\GTSErpSystem.csproj
+Project identity: GTSErpSystem
+Changed files: 1
+Namespace replacements: 1
+Character array repaired: False
+Real screens discovered: 365
+Existing Click registrations found: 4588
+Build exit code: 1
+Compiler error lines: 20
+Backup: E:\KhaledERP\Backups\FullRepair_14480430_103756
+Screen inventory: C:\Users\hp\Desktop\تقارير\RealScreens_14480430_103756.csv
+Click binding inventory: C:\Users\hp\Desktop\تقارير\ExistingClickBindings_14480430_103756.csv
+Build report: C:\Users\hp\Desktop\تقارير\FullRepairBuild_14480430_103756.txt

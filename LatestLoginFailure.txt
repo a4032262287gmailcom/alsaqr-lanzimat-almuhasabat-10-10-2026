@@ -1,0 +1,83 @@
+﻿=== RUNNING PROCESSES ===
+PID: 13676
+Path: E:\KhaledERP\BuildVerify_20261011_131117\GTSErpSystem.exe
+Command line: "E:\KhaledERP\BuildVerify_20261011_131117\GTSErpSystem.exe" 
+
+=== RECENT .NET AND APPLICATION ERRORS ===
+Time: 10/11/2026 13:18:40
+Source: Windows Error Reporting
+Event ID: 1001
+المستودع الذي يحتوي على أخطاء 2136471026432757252، النوع 5
+اسم الحدث: CLR20r3
+الاستجابة: غير متوفر
+معرف ملف الخزانة: 0
+
+توقيع المشكلة:
+P1: GTSErpSystem.exe
+P2: 1.0.0.0
+P3: b8c7bca9
+P4: mscorlib
+P5: 4.8.9310.0
+P6: 67db4ec1
+P7: 2d05
+P8: c6
+P9: MXYABJ2RSFG4UKNKGMSPJ2KFPMZXHCC5
+P10: 
+
+الملفات المرفقة:
+\\?\C:\ProgramData\Microsoft\Windows\WER\Temp\WER20F4.tmp.mdmp
+\\?\C:\ProgramData\Microsoft\Windows\WER\Temp\WER23E3.tmp.WERInternalMetadata.xml
+\\?\C:\ProgramData\Microsoft\Windows\WER\Temp\WER2403.tmp.xml
+\\?\C:\ProgramData\Microsoft\Windows\WER\Temp\WER2401.tmp.csv
+\\?\C:\ProgramData\Microsoft\Windows\WER\Temp\WER2431.tmp.txt
+
+قد تكون هذه الملفات متوفرة هنا:
+\\?\C:\ProgramData\Microsoft\Windows\WER\ReportArchive\AppCrash_GTSErpSystem.exe_2c1cabe7656919fe7d29d357f95cf7a6e369d_7975591c_729d42d8-872e-4d69-bf80-64d27fcdbf11
+
+رمز التحليل: 
+إعادة البحث عن حل: 0
+معرف التقرير: a3f62f99-9e10-4925-9e8b-841435ac7511
+حالة التقرير: 268435456
+المستودع المجزأ: f7b22cbbf7bcd4877da645143b704e04
+دليل المستودع: 0
+
+Time: 10/11/2026 13:18:37
+Source: Application Error
+Event ID: 1000
+‏‏اسم ‏‏التطبيق الذي يحتوي على أخطاء: GTSErpSystem.exe، الإصدار: 1.0.0.0، الطابع الزمني: 0xb8c7bca9
+اسم الوحدة النمطية التي تحتوي على أخطاء: KERNELBASE.dll، الإصدار: 10.0.19041.6456، الطابع الزمني: 0xbf208242
+رمز الاستثناء: 0xe0434352
+إزاحة الخطأ: 0x0013b702
+معرّف العملية التي تحتوي على أخطاء: 0x8b4
+وقت بدء تشغيل التطبيق الذي يحتوي على أخطاء: 0x01dd5969dca02940
+مسار التطبيق الذي يحتوي على أخطاء: E:\KhaledERP\App\SourceCode\bin\Debug\net48\GTSErpSystem.exe
+ مسار الوحدة النمطية التي تحتوي على أخطاء: C:\Windows\System32\KERNELBASE.dll
+معرف التقرير: a3f62f99-9e10-4925-9e8b-841435ac7511
+الاسم الكامل للحزمة التي تحتوي على أخطاء: 
+معرف التطبيق المرتبط بالحزمة التي تحتوي على أخطاء: 
+
+Time: 10/11/2026 13:18:36
+Source: .NET Runtime
+Event ID: 1026
+Application: GTSErpSystem.exe
+Framework Version: v4.0.30319
+Description: The process was terminated due to an unhandled exception.
+Exception Info: System.Resources.MissingManifestResourceException
+   at System.Resources.ManifestBasedResourceGroveler.HandleResourceStreamMissing(System.String)
+   at System.Resources.ManifestBasedResourceGroveler.GrovelForResourceSet(System.Globalization.CultureInfo, System.Collections.Generic.Dictionary`2<System.String,System.Resources.ResourceSet>, Boolean, Boolean, System.Threading.StackCrawlMark ByRef)
+   at System.Resources.ResourceManager.InternalGetResourceSet(System.Globalization.CultureInfo, Boolean, Boolean, System.Threading.StackCrawlMark ByRef)
+   at System.Resources.ResourceManager.InternalGetResourceSet(System.Globalization.CultureInfo, Boolean, Boolean)
+   at System.Resources.ResourceManager.GetObject(System.String, System.Globalization.CultureInfo, Boolean)
+   at System.Resources.ResourceManager.GetObject(System.String, System.Globalization.CultureInfo)
+   at GTSErpSystem.Properties.Resources.get__126()
+   at GTSErpSystem.Frms.FrmsMain.WaitForm.InitializeComponent()
+   at GTSErpSystem.Frms.FrmsMain.WaitForm..ctor(System.Windows.Forms.Form)
+   at GTSErpSystem.BLL.Main.Class_WaitFormFunc.LoadingProcess(System.Object)
+   at System.Threading.ThreadHelper.ThreadStart_Context(System.Object)
+   at System.Threading.ExecutionContext.RunInternal(System.Threading.ExecutionContext, System.Threading.ContextCallback, System.Object, Boolean)
+   at System.Threading.ExecutionContext.Run(System.Threading.ExecutionContext, System.Threading.ContextCallback, System.Object, Boolean)
+   at System.Threading.ExecutionContext.Run(System.Threading.ExecutionContext, System.Threading.ContextCallback, System.Object)
+   at System.Threading.ThreadHelper.ThreadStart(System.Object)
+
+
+

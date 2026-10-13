@@ -1,0 +1,50 @@
+﻿=== EMBEDDED RESOURCES ===
+GTSErpSystem.Frms.Reports.Orders.FrmAllOrdersDetailsByProperties.resources
+GTSErpSystem.Frms.Reports.Stores.FrmRPStoresGardbyProperties.resources
+GTSErpSystem.Frms.Reports.Stores.FrmRPTotalAvergForSore_ByGroupProperties.resources
+GTSErpSystem.Properties.Resources.resources
+
+=== RELEVANT SOURCE FILES ===
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\WaitForm.cs
+LINE 6: namespace GTSErpSystem.Frms.FrmsMain;
+  
+  public class WaitForm : Form
+LINE 20: InitializeComponent();
+  base.StartPosition = FormStartPosition.CenterParent;
+  }
+LINE 26: InitializeComponent();
+  if (parent != null)
+  {
+LINE 57: private void InitializeComponent()
+  {
+  this.panel1 = new System.Windows.Forms.Panel();
+
+=== PROJECT RESOURCE SETTINGS ===
+LINE 3: <AssemblyName>GTSErpSystem</AssemblyName>
+  <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+  <OutputType>WinExe</OutputType>
+
+LINE 18: <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+
+LINE 25: <EmbeddedResource Include="Model1.csdl" LogicalName="Model1.csdl" />
+  <EmbeddedResource Include="Model1.msl" LogicalName="Model1.msl" />
+  <EmbeddedResource Include="Model1.ssdl" LogicalName="Model1.ssdl" />
+
+LINE 26: <EmbeddedResource Include="Model1.msl" LogicalName="Model1.msl" />
+  <EmbeddedResource Include="Model1.ssdl" LogicalName="Model1.ssdl" />
+  <EmbeddedResource Include="GTSErpSystem.exe.licenses" LogicalName="GTSErpSystem.exe.licenses" />
+
+LINE 27: <EmbeddedResource Include="Model1.ssdl" LogicalName="Model1.ssdl" />
+  <EmbeddedResource Include="GTSErpSystem.exe.licenses" LogicalName="GTSErpSystem.exe.licenses" />
+  </ItemGroup>
+
+LINE 28: <EmbeddedResource Include="GTSErpSystem.exe.licenses" LogicalName="GTSErpSystem.exe.licenses" />
+  </ItemGroup>
+  <ItemGroup>
+
+LINE 32: <EmbeddedResource Remove="Microsoft.Office.Interop.Excel\**" />
+  <None Remove="Microsoft.Office.Interop.Excel\**" />
+  </ItemGroup>
+

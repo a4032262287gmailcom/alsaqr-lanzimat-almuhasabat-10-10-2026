@@ -1,0 +1,181 @@
+﻿443: 			FrmNameLogin(LoginDetails.TypeVerg);
+444: 			string databaseVersion = tblSetting.DatabaseVersion;
+445: 			int num = Stting.AddLoginLog(LoginDetails.UserID, LoginDetails.macAddress, LoginDetails.VergDate, databaseVersion);
+446: 			class_WaitFormFunc.Close();
+447: 			Hide();
+448: 		}
+449: 		else
+450: 		{
+451: 			MessageBox.Show("لقد أدخلت اسم المستخدم أو كلمة المرور خاطئة برجاء ادخال البيانات صحيحة ثم حاول مرة أخري", "تسجيل الدخول", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+452: 			TxtPassword.Text = "";
+453: 			TxtPassword.Focus();
+454: 		}
+455: 	}
+456: 
+457: 	private void FrmNameLogin(string Type)
+458: 	{
+459: 		if (CBVirgin.Visible)
+460: 		{
+461: 			LoginDetails.Active_Virgin = Convert.ToInt32(CBVirgin.SelectedValue);
+462: 		}
+463: 		if (LoginDetails.Active_Company == 1)
+464: 		{
+465: 			if (LoginDetails.Active_Virgin == 1)
+466: 			{
+467: 				FrmSilver frmSilver = new FrmSilver();
+468: 				frmSilver.employeesNavigationPage.BackgroundImage = Resources.m3silver;
+469: 				frmSilver.Show();
+470: 			}
+471: 			else if (LoginDetails.Active_Virgin == 2)
+472: 			{
+473: 				FrmSilverPlus frmSilverPlus = new FrmSilverPlus();
+474: 				frmSilverPlus.employeesNavigationPage.BackgroundImage = Resources.m3silverplus;
+475: 				frmSilverPlus.Show();
+476: 			}
+477: 			else if (LoginDetails.Active_Virgin == 3)
+478: 			{
+479: 				FrmGold frmGold = new FrmGold();
+480: 				frmGold.employeesNavigationPage.BackgroundImage = Resources.M3gold;
+481: 				frmGold.Show();
+482: 			}
+483: 			else if (LoginDetails.Active_Virgin == 4)
+484: 			{
+485: 				FrmGoldPlus frmGoldPlus = new FrmGoldPlus();
+486: 				frmGoldPlus.employeesNavigationPage.BackgroundImage = Resources.M3goldplus;
+487: 				frmGoldPlus.Show();
+488: 			}
+489: 			else if (LoginDetails.Active_Virgin == 5)
+490: 			{
+491: 				FrmRestaurantSilver frmRestaurantSilver = new FrmRestaurantSilver();
+492: 				frmRestaurantSilver.employeesNavigationPage.BackgroundImage = Resources.M3restaurant;
+493: 				frmRestaurantSilver.Show();
+494: 			}
+495: 			else if (LoginDetails.Active_Virgin == 6)
+496: 			{
+497: 				FrmRestaurant frmRestaurant = new FrmRestaurant();
+498: 				frmRestaurant.employeesNavigationPage.BackgroundImage = Resources.M3restaurantGold;
+499: 				frmRestaurant.Show();
+500: 			}
+501: 			else if (LoginDetails.Active_Virgin == 8)
+502: 			{
+503: 				FrmGoldPlusTransportation frmGoldPlusTransportation = new FrmGoldPlusTransportation();
+504: 				frmGoldPlusTransportation.employeesNavigationPage.BackgroundImage = Resources.M2Transporation;
+505: 				frmGoldPlusTransportation.Show();
+506: 			}
+507: 			else if (LoginDetails.Active_Virgin == 9)
+508: 			{
+509: 				FrmGoldPlus frmGoldPlus2 = new FrmGoldPlus();
+510: 				frmGoldPlus2.employeesNavigationPage.BackgroundImage = Resources.M3goldplus;
+511: 				frmGoldPlus2.Show();
+512: 			}
+513: 			else if (LoginDetails.Active_Virgin == 10)
+514: 			{
+515: 				FrmSilverPlusWashing frmSilverPlusWashing = new FrmSilverPlusWashing();
+516: 				frmSilverPlusWashing.employeesNavigationPage.BackgroundImage = Resources.M1washing;
+517: 				frmSilverPlusWashing.Show();
+518: 			}
+519: 			else if (LoginDetails.Active_Virgin == 77)
+520: 			{
+521: 				FrmGoldPlus frmGoldPlus77 = new FrmGoldPlus();
+522: 				frmGoldPlus77.employeesNavigationPage.BackgroundImage = Resources.GoldplusNew;
+523: 				frmGoldPlus77.Show();
+524: 			}
+525: 		}
+526: 		else if (LoginDetails.Active_Company == 2)
+527: 		{
+528: 			if (LoginDetails.Active_Virgin == 1)
+529: 			{
+530: 				FrmSilver frmSilver2 = new FrmSilver();
+531: 				frmSilver2.employeesNavigationPage.BackgroundImage = Resources.m1silver;
+532: 				frmSilver2.Show();
+533: 			}
+534: 			else if (LoginDetails.Active_Virgin == 2)
+535: 			{
+536: 				FrmSilverPlus frmSilverPlus2 = new FrmSilverPlus();
+537: 				frmSilverPlus2.employeesNavigationPage.BackgroundImage = Resources.m1silverplus;
+538: 				frmSilverPlus2.Show();
+539: 			}
+540: 			else if (LoginDetails.Active_Virgin == 3)
+541: 			{
+542: 				FrmGold frmGold2 = new FrmGold();
+543: 				frmGold2.employeesNavigationPage.BackgroundImage = Resources.M1gold;
+544: 				frmGold2.Show();
+545: 			}
+546: 			else if (LoginDetails.Active_Virgin == 4)
+547: 			{
+548: 				FrmGoldPlus frmGoldPlus3 = new FrmGoldPlus();
+549: 				frmGoldPlus3.employeesNavigationPage.BackgroundImage = Resources.M1GoldPLUS;
+550: 				frmGoldPlus3.Show();
+551: 			}
+552: 			else if (LoginDetails.Active_Virgin == 5)
+553: 			{
+554: 				FrmRestaurantSilver frmRestaurantSilver2 = new FrmRestaurantSilver();
+555: 				frmRestaurantSilver2.employeesNavigationPage.BackgroundImage = Resources.M1Restaurant;
+556: 				frmRestaurantSilver2.Show();
+557: 			}
+558: 			else if (LoginDetails.Active_Virgin == 6)
+559: 			{
+560: 				FrmRestaurant frmRestaurant2 = new FrmRestaurant();
+561: 				frmRestaurant2.employeesNavigationPage.BackgroundImage = Resources.M1RestaurantGold;
+562: 				frmRestaurant2.Show();
+563: 			}
+564: 			else if (LoginDetails.Active_Virgin == 8)
+565: 			{
+566: 				FrmGoldPlusTransportation frmGoldPlusTransportation2 = new FrmGoldPlusTransportation();
+567: 				frmGoldPlusTransportation2.employeesNavigationPage.BackgroundImage = Resources.M2Transporation;
+568: 				frmGoldPlusTransportation2.Show();
+569: 			}
+570: 			else if (LoginDetails.Active_Virgin == 9)
+571: 			{
+572: 				FrmGoldPlus frmGoldPlus4 = new FrmGoldPlus();
+573: 				frmGoldPlus4.employeesNavigationPage.BackgroundImage = Resources.M3goldplus;
+574: 				frmGoldPlus4.Show();
+575: 			}
+576: 			else if (LoginDetails.Active_Virgin == 10)
+577: 			{
+578: 				FrmSilverPlusWashing frmSilverPlusWashing2 = new FrmSilverPlusWashing();
+579: 				frmSilverPlusWashing2.employeesNavigationPage.BackgroundImage = Resources.M1washing;
+580: 				frmSilverPlusWashing2.Show();
+581: 			}
+582: 			else if (LoginDetails.Active_Virgin == 77)
+583: 			{
+584: 				FrmGoldPlus frmGoldPlus77 = new FrmGoldPlus();
+585: 				frmGoldPlus77.employeesNavigationPage.BackgroundImage = Resources.GoldplusNew;
+586: 				frmGoldPlus77.Show();
+587: 			}
+588: 		}
+589: 		else if (LoginDetails.Active_Company == 3)
+590: 		{
+591: 			if (LoginDetails.Active_Virgin == 1)
+592: 			{
+593: 				FrmSilver frmSilver3 = new FrmSilver();
+594: 				frmSilver3.employeesNavigationPage.BackgroundImage = Resources.m2silver;
+595: 				frmSilver3.Show();
+596: 			}
+597: 			else if (LoginDetails.Active_Virgin == 2)
+598: 			{
+599: 				FrmSilverPlus frmSilverPlus3 = new FrmSilverPlus();
+600: 				frmSilverPlus3.employeesNavigationPage.BackgroundImage = Resources.m2silverplus;
+601: 				frmSilverPlus3.Show();
+602: 			}
+603: 			else if (LoginDetails.Active_Virgin == 3)
+604: 			{
+605: 				FrmGold frmGold3 = new FrmGold();
+606: 				frmGold3.employeesNavigationPage.BackgroundImage = Resources.M2gold;
+607: 				frmGold3.Show();
+608: 			}
+609: 			else if (LoginDetails.Active_Virgin == 4)
+610: 			{
+611: 				FrmGoldPlus frmGoldPlus5 = new FrmGoldPlus();
+612: 				frmGoldPlus5.employeesNavigationPage.BackgroundImage = Resources.M2goldplus;
+613: 				frmGoldPlus5.Show();
+614: 			}
+615: 			else if (LoginDetails.Active_Virgin == 5)
+616: 			{
+617: 				FrmRestaurantSilver frmRestaurantSilver3 = new FrmRestaurantSilver();
+618: 				frmRestaurantSilver3.employeesNavigationPage.BackgroundImage = Resources.M2restaurant;
+619: 				frmRestaurantSilver3.Show();
+620: 			}
+621: 			else if (LoginDetails.Active_Virgin == 6)
+622: 			{
+623: 				FrmRestaurant frmRestaurant3 = new FrmRestaurant();
