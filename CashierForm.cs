@@ -249,11 +249,13 @@ internal sealed class CashierForm : Form
         {
             using var font = new Font("Segoe UI", 9F);
             using var format = new StringFormat { Alignment = StringAlignment.Far, LineAlignment = StringAlignment.Near, FormatFlags = StringFormatFlags.DirectionRightToLeft };
-            var y = e.MarginBounds.Top;
-            var lineHeight = font.GetHeight(e.Graphics) + 5;
+            var graphics = e.Graphics;
+            if (graphics is null) { e.HasMorePages = false; return; }
+            float y = e.MarginBounds.Top;
+            var lineHeight = font.GetHeight(graphics) + 5;
             while (index < content.Count && y + lineHeight <= e.MarginBounds.Bottom)
             {
-                e.Graphics.DrawString(content[index++], font, Brushes.Black,
+                graphics.DrawString(content[index++], font, Brushes.Black,
                     new RectangleF(e.MarginBounds.Left, y, e.MarginBounds.Width, lineHeight + 2), format);
                 y += lineHeight;
             }
