@@ -70,6 +70,21 @@ CREATE TABLE IF NOT EXISTS JournalLines(
 );
 CREATE INDEX IF NOT EXISTS IX_Journals_EntryDate ON Journals(EntryDate);
 CREATE INDEX IF NOT EXISTS IX_JournalLines_AccountCode ON JournalLines(AccountCode);
+CREATE TABLE IF NOT EXISTS CashierSessions(
+  Id INTEGER PRIMARY KEY AUTOINCREMENT,
+  CashierName TEXT NOT NULL,
+  OpenedAt TEXT NOT NULL,
+  OpeningCashHalalas INTEGER NOT NULL CHECK(OpeningCashHalalas >= 0),
+  ClosedAt TEXT NULL,
+  ExpectedCashHalalas INTEGER NULL CHECK(ExpectedCashHalalas IS NULL OR ExpectedCashHalalas >= 0),
+  CountedCashHalalas INTEGER NULL CHECK(CountedCashHalalas IS NULL OR CountedCashHalalas >= 0),
+  DifferenceHalalas INTEGER NULL,
+  Status TEXT NOT NULL CHECK(Status IN ('OPEN','CLOSED')),
+  Memo TEXT NOT NULL DEFAULT ''
+);
+CREATE UNIQUE INDEX IF NOT EXISTS IX_CashierSessions_OneOpenPerCashier
+  ON CashierSessions(CashierName) WHERE Status='OPEN';
+CREATE INDEX IF NOT EXISTS IX_CashierSessions_OpenedAt ON CashierSessions(OpenedAt);
 CREATE TABLE IF NOT EXISTS Invoices(
   Id INTEGER PRIMARY KEY AUTOINCREMENT, Kind TEXT NOT NULL CHECK(Kind IN ('SALE','PURCHASE')),
   Number TEXT NOT NULL, InvoiceDate TEXT NOT NULL, PartyId INTEGER NOT NULL REFERENCES Parties(Id),
@@ -77,6 +92,7 @@ CREATE TABLE IF NOT EXISTS Invoices(
   SubtotalHalalas INTEGER NOT NULL, VatHalalas INTEGER NOT NULL, TotalHalalas INTEGER NOT NULL,
   DiscountHalalas INTEGER NOT NULL DEFAULT 0, DiscountPercent REAL NOT NULL DEFAULT 0,
   PaymentMethod TEXT NOT NULL DEFAULT 'UNSPECIFIED', AmountTenderedHalalas INTEGER NOT NULL DEFAULT 0, ChangeHalalas INTEGER NOT NULL DEFAULT 0,
+  CashierSessionId INTEGER NULL REFERENCES CashierSessions(Id) ON DELETE RESTRICT,
   JournalId INTEGER NOT NULL REFERENCES Journals(Id), CreatedAt TEXT NOT NULL,
   UNIQUE(Kind, Number)
 );
@@ -189,10 +205,16 @@ CREATE TABLE IF NOT EXISTS AuditLog(
         EnsureColumn(db, "Invoices", "PaymentMethod", "TEXT NOT NULL DEFAULT 'UNSPECIFIED'");
         EnsureColumn(db, "Invoices", "AmountTenderedHalalas", "INTEGER NOT NULL DEFAULT 0");
         EnsureColumn(db, "Invoices", "ChangeHalalas", "INTEGER NOT NULL DEFAULT 0");
+        EnsureColumn(db, "Invoices", "CashierSessionId", "INTEGER NULL REFERENCES CashierSessions(Id) ON DELETE RESTRICT");
         using (var barcodeIndex = db.CreateCommand())
         {
             barcodeIndex.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS IX_Products_Barcode ON Products(Barcode) WHERE Barcode IS NOT NULL AND LENGTH(TRIM(Barcode))>0";
             barcodeIndex.ExecuteNonQuery();
+        }
+        using (var sessionInvoiceIndex = db.CreateCommand())
+        {
+            sessionInvoiceIndex.CommandText = "CREATE INDEX IF NOT EXISTS IX_Invoices_CashierSessionId ON Invoices(CashierSessionId, PaymentMethod, Kind)";
+            sessionInvoiceIndex.ExecuteNonQuery();
         }
         EnsureColumn(db, "ReturnLines", "SourceInvoiceLineId", "INTEGER NULL REFERENCES InvoiceLines(Id) ON DELETE RESTRICT");
 
