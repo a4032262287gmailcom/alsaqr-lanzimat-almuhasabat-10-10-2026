@@ -13,6 +13,7 @@ from app.database import SessionFactory, set_tenant_context
 from app.models import (
     Account,
     AuditLog,
+    FiscalPeriod,
     JournalEntry,
     JournalLine,
     Membership,
@@ -22,6 +23,7 @@ from app.models import (
 from app.schemas import FiscalPeriodCreate
 from app.services.accounting import (
     create_journal,
+    next_child_code,
     next_number,
     reverse_journal,
     seed_chart_of_accounts,
@@ -66,6 +68,15 @@ def test_journal_rounds_to_currency_precision() -> None:
     ])
     assert debit == Decimal("10.00")
     assert credit == Decimal("10.00")
+
+
+def test_account_auto_coding_supports_nested_segments() -> None:
+    assert next_child_code("1", ["1", "11", "12"]) == "13"
+    assert next_child_code("11", ["11", "1101", "1102"]) == "1103"
+    assert next_child_code("1101", ["110101", "110102"]) == "110103"
+    with pytest.raises(HTTPException) as captured:
+        next_child_code("1", ["1", *[f"1{digit}" for digit in range(1, 10)]])
+    assert captured.value.status_code == 409
 
 
 async def create_test_tenant() -> tuple[UUID, str]:
