@@ -247,14 +247,14 @@ GROUP BY s.Id";
         var storedExpected = reader.IsDBNull(6) ? (long?)null : reader.GetInt64(6);
         var counted = reader.IsDBNull(7) ? (decimal?)null : AccountingService.FromHalalas(reader.GetInt64(7));
         var difference = reader.IsDBNull(8) ? (decimal?)null : AccountingService.FromHalalas(reader.GetInt64(8));
-        var opened = DateTimeOffset.Parse(reader.GetString(2), CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
-        DateTimeOffset? closed = reader.IsDBNull(3) ? null : DateTimeOffset.Parse(reader.GetString(3), CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
+        var opened = DateTimeOffset.Parse(reader.GetString(2), CultureInfo.InvariantCulture, DateTimeStyles.None);
+        DateTimeOffset? closed = reader.IsDBNull(3) ? null : DateTimeOffset.Parse(reader.GetString(3), CultureInfo.InvariantCulture, DateTimeStyles.None);
         var isOpen = reader.GetString(9) == "OPEN";
         var expectedHalalas = storedExpected ?? checked(openingHalalas + salesHalalas);
         return new CashierSessionSummary(
             reader.GetInt32(0), reader.GetString(1), opened, closed,
             AccountingService.FromHalalas(openingHalalas), AccountingService.FromHalalas(salesHalalas),
-            AccountingService.FromHalalas(expectedHalalas), counted, difference, reader.GetInt32(10), isOpen);
+            AccountingService.FromHalalas(expectedHalalas), counted, difference, Convert.ToInt32(reader.GetInt64(10), CultureInfo.InvariantCulture), isOpen);
     }
 
     public CashierSessionSummary CloseSession(int sessionId, string cashierName, decimal countedCash, string memo = "")
@@ -283,7 +283,7 @@ GROUP BY s.Id";
             if (!reader.Read()) throw new InvalidOperationException("الوردية ليست مفتوحة لهذا المستخدم أو سبق إغلاقها.");
             openingHalalas = reader.GetInt64(0);
             salesHalalas = reader.GetInt64(1);
-            invoiceCount = reader.GetInt32(2);
+            invoiceCount = Convert.ToInt32(reader.GetInt64(2), CultureInfo.InvariantCulture);
         }
         var expectedHalalas = checked(openingHalalas + salesHalalas);
         var differenceHalalas = countedHalalas - expectedHalalas;
