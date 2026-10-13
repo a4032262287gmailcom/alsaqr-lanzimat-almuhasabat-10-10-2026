@@ -62,7 +62,7 @@ internal sealed class SettingsForm : Form
 
         var body = new TableLayoutPanel
         {
-            Dock = DockStyle.Fill, ColumnCount = 2, AutoScroll = true,
+            Dock = DockStyle.Fill, ColumnCount = 2, RowCount = 0, AutoScroll = true,
             Padding = new Padding(14), BackColor = Color.White
         };
         body.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 180));
