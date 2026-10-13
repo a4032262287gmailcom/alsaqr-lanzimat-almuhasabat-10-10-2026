@@ -752,7 +752,17 @@ WHERE j.Status='POSTED' AND j.EntryDate >= $from AND j.EntryDate <= $to";
     {
         using var reader = command.ExecuteReader();
         var table = new DataTable();
-        table.Load(reader);
+        for (var i = 0; i < reader.FieldCount; i++)
+        {
+            var columnType = reader.GetFieldType(i);
+            table.Columns.Add(reader.GetName(i), columnType ?? typeof(object));
+        }
+        while (reader.Read())
+        {
+            var values = new object[reader.FieldCount];
+            reader.GetValues(values);
+            table.Rows.Add(values);
+        }
         return table;
     }
 }
