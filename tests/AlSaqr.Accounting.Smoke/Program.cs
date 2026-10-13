@@ -133,6 +133,10 @@ try
     Check(!closedShift.IsOpen && closedShift.ExpectedCash == 120.7m && closedShift.CountedCash == 120m &&
           closedShift.Difference == -0.7m, "cashier shift closure stores expected cash and shortage variance");
     Check(cashier.GetActiveSession("smoke-cashier") is null, "closed cashier shift no longer appears as active");
+    var shiftRegister = cashier.SessionRegister(DateTime.Today, DateTime.Today);
+    Check(shiftRegister.Rows.Count == 1 && Convert.ToString(shiftRegister.Rows[0]["الحالة"]) == "مغلقة" &&
+          Money(shiftRegister.Rows[0]["الفرق"]) == -0.7m,
+        "cashier shift register reports closure status and counted cash variance");
     Check(service.ActiveProducts().Single(p => p.Id == product.Id).Quantity == 13m,
         "cashier sale persists stock reduction");
     Check(service.StockMovementRegister(DateTime.Today, DateTime.Today).Rows.Count == 8,
