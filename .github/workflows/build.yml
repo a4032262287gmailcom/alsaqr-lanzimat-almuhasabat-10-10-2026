@@ -55,7 +55,7 @@ jobs:
             throw 'Could not create a temporary ECDSA provider for the negative test.'
           }
           try {
-            $wrongKey.GenerateKey([System.Security.Cryptography.ECCurve]::NamedCurves.nistP256)
+            $wrongKey.KeySize = 256
             [System.IO.File]::WriteAllText($privateKeyPath, $wrongKey.ExportECPrivateKeyPem())
           } finally {
             $wrongKey.Dispose()
