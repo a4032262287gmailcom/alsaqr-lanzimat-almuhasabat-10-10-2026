@@ -12,6 +12,15 @@ try
     Database.Initialize();
     var service = new AccountingService();
 
+    AppSettingsService.Save(new AccountingAppSettings(
+        "شركة اختبار الصقر", "310000000000003", "0110000000", "الرياض",
+        "شكرًا لتعاملكم", "Dark", 15m, Path.Combine(Path.GetTempPath(), "alsaqr-smoke-backups")));
+    var savedSettings = AppSettingsService.Load();
+    Check(savedSettings.LegalEntityName == "شركة اختبار الصقر" &&
+          savedSettings.VatRegistrationNumber == "310000000000003" &&
+          savedSettings.Theme == "Dark" && savedSettings.DefaultVatRate == 15m,
+          "company settings round-trip using the protected local settings store");
+
     var searchData = new DataTable();
     searchData.Columns.Add("رقم المستند", typeof(string));
     searchData.Columns.Add("الإجمالي", typeof(decimal));
