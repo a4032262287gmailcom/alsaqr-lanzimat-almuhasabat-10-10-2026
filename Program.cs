@@ -13,6 +13,21 @@ internal static class Program
         try
         {
             Database.Initialize();
+            var licensing = new LicenseService();
+            var licenseStatus = licensing.CheckAccess();
+            if (!licenseStatus.HasAccess)
+            {
+                using var licenseForm = new LicenseForm(licensing, startupGate: true);
+                if (licenseForm.ShowDialog() != DialogResult.OK) return;
+                licenseStatus = licensing.CheckAccess();
+                if (!licenseStatus.HasAccess)
+                {
+                    MessageBox.Show(licenseStatus.Message, "الصقر لأنظمة المحاسبة | الترخيص",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
             var auth = new AuthService();
             using var login = new LoginForm(auth);
             if (login.ShowDialog() != DialogResult.OK || login.User is null) return;
