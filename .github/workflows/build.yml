@@ -6,7 +6,11 @@ on:
       - main
       - feature/real-accounting-core-20261013
       - desktop-accounting-core-20261013
+ feature/erp-pos-cashier-20261013
+      - feature/erp-pos-cashier-20261013
+=======
       - feature/licensing-settings-cashier-20261013
+main
   pull_request:
     branches:
       - main
@@ -31,9 +35,13 @@ jobs:
         run: |
           dotnet restore AlSaqr.Accounting.csproj -r win-x64
           dotnet restore tests/AlSaqr.Accounting.Smoke/AlSaqr.Accounting.Smoke.csproj -r win-x64
+          dotnet restore tools/AlSaqr.LicenseIssuer/AlSaqr.LicenseIssuer.csproj
 
       - name: Compile Release
         run: dotnet build AlSaqr.Accounting.csproj -c Release -r win-x64 --no-restore
+
+      - name: Build offline license issuer
+        run: dotnet build tools/AlSaqr.LicenseIssuer/AlSaqr.LicenseIssuer.csproj -c Release --no-restore
 
       - name: Run accounting integration smoke tests
         run: dotnet run --project tests/AlSaqr.Accounting.Smoke/AlSaqr.Accounting.Smoke.csproj -c Release -r win-x64 --no-restore
