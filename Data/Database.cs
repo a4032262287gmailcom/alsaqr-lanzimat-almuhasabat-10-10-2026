@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS Parties(
   Phone TEXT, VatNumber TEXT, IsActive INTEGER NOT NULL DEFAULT 1, CreatedAt TEXT NOT NULL
 );
 CREATE TABLE IF NOT EXISTS Products(
-  Id INTEGER PRIMARY KEY AUTOINCREMENT, Code TEXT NOT NULL UNIQUE, Name TEXT NOT NULL, Unit TEXT NOT NULL DEFAULT 'حبة',
+  Id INTEGER PRIMARY KEY AUTOINCREMENT, Code TEXT NOT NULL UNIQUE, Name TEXT NOT NULL, Unit TEXT NOT NULL DEFAULT 'حبة', Barcode TEXT NULL,
   Quantity REAL NOT NULL DEFAULT 0 CHECK(Quantity >= 0), CostHalalas INTEGER NOT NULL DEFAULT 0 CHECK(CostHalalas >= 0),
   PriceHalalas INTEGER NOT NULL DEFAULT 0 CHECK(PriceHalalas >= 0), VatRate REAL NOT NULL DEFAULT 15 CHECK(VatRate >= 0 AND VatRate <= 100),
   IsActive INTEGER NOT NULL DEFAULT 1, CreatedAt TEXT NOT NULL
@@ -75,6 +75,8 @@ CREATE TABLE IF NOT EXISTS Invoices(
   Number TEXT NOT NULL, InvoiceDate TEXT NOT NULL, PartyId INTEGER NOT NULL REFERENCES Parties(Id),
   IsCredit INTEGER NOT NULL CHECK(IsCredit IN (0,1)), Status TEXT NOT NULL CHECK(Status='POSTED'),
   SubtotalHalalas INTEGER NOT NULL, VatHalalas INTEGER NOT NULL, TotalHalalas INTEGER NOT NULL,
+  DiscountHalalas INTEGER NOT NULL DEFAULT 0, DiscountPercent REAL NOT NULL DEFAULT 0,
+  PaymentMethod TEXT NOT NULL DEFAULT 'UNSPECIFIED', AmountTenderedHalalas INTEGER NOT NULL DEFAULT 0, ChangeHalalas INTEGER NOT NULL DEFAULT 0,
   JournalId INTEGER NOT NULL REFERENCES Journals(Id), CreatedAt TEXT NOT NULL,
   UNIQUE(Kind, Number)
 );
@@ -181,6 +183,17 @@ CREATE TABLE IF NOT EXISTS AuditLog(
 
         // Forward-compatible schema migrations for existing local databases.
         EnsureColumn(db, "Returns", "SourceInvoiceId", "INTEGER NULL REFERENCES Invoices(Id) ON DELETE RESTRICT");
+        EnsureColumn(db, "Products", "Barcode", "TEXT NULL");
+        EnsureColumn(db, "Invoices", "DiscountHalalas", "INTEGER NOT NULL DEFAULT 0");
+        EnsureColumn(db, "Invoices", "DiscountPercent", "REAL NOT NULL DEFAULT 0");
+        EnsureColumn(db, "Invoices", "PaymentMethod", "TEXT NOT NULL DEFAULT 'UNSPECIFIED'");
+        EnsureColumn(db, "Invoices", "AmountTenderedHalalas", "INTEGER NOT NULL DEFAULT 0");
+        EnsureColumn(db, "Invoices", "ChangeHalalas", "INTEGER NOT NULL DEFAULT 0");
+        using (var barcodeIndex = db.CreateCommand())
+        {
+            barcodeIndex.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS IX_Products_Barcode ON Products(Barcode) WHERE Barcode IS NOT NULL AND LENGTH(TRIM(Barcode))>0";
+            barcodeIndex.ExecuteNonQuery();
+        }
         EnsureColumn(db, "ReturnLines", "SourceInvoiceLineId", "INTEGER NULL REFERENCES InvoiceLines(Id) ON DELETE RESTRICT");
 
         using var transaction = db.BeginTransaction();
@@ -190,7 +203,7 @@ CREATE TABLE IF NOT EXISTS AuditLog(
             ("1200","المخزون","Asset"), ("1300","ضريبة القيمة المضافة - مدخلات","Asset"),
             ("2100","الموردون","Liability"), ("2200","ضريبة القيمة المضافة - مخرجات","Liability"),
             ("3000","رأس المال","Equity"), ("3100","الأرباح المبقاة","Equity"),
-            ("4000","إيرادات المبيعات","Revenue"), ("4010","مردودات المبيعات","Revenue"), ("4090","مكاسب تسوية المخزون","Revenue"),
+            ("4000","إيرادات المبيعات","Revenue"), ("4010","مردودات المبيعات","Revenue"), ("4020","خصومات المبيعات","Revenue"), ("4090","مكاسب تسوية المخزون","Revenue"),
             ("5000","تكلفة البضاعة المباعة","Expense"), ("5010","خسائر عجز المخزون","Expense"), ("5050","فروقات تكلفة المردودات","Expense"),
             ("6000","المصروفات التشغيلية","Expense")
         };
