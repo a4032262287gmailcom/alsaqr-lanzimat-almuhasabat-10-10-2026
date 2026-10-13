@@ -5,7 +5,6 @@ namespace AlSaqr.Accounting;
 
 internal sealed class SettlementEntryForm : Form
 {
-    private readonly LicenseService _licensing = new();
     private readonly AccountingService _service;
     private readonly string _kind;
     private readonly ComboBox _party = new() { Width = 400, DropDownStyle = ComboBoxStyle.DropDownList };
@@ -94,8 +93,6 @@ internal sealed class SettlementEntryForm : Form
     {
         try
         {
-            if (!_licensing.CheckAccess().HasAccess)
-                throw new InvalidOperationException("الترخيص غير صالح أو انتهت صلاحيته؛ لا يمكن ترحيل السند.");
             if (_party.SelectedValue is null) throw new InvalidOperationException("أضف العميل أو المورد واختره أولًا.");
             var cash = Convert.ToString(_cash.SelectedValue) ?? "";
             _service.CreateSettlement(_kind, _date.Value.Date, Convert.ToInt32(_party.SelectedValue), cash, _amount.Value, _memo.Text);
