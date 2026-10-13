@@ -61,7 +61,7 @@ internal sealed class AccountingService
 
     public void SetAccountActive(string code, bool active)
     {
-        if (!active && new[] { "1010","1020","1100","1200","1300","2100","2200","3000","3100","4000","4010","5000","6000" }.Contains(code))
+        if (!active && new[] { "1010","1020","1100","1200","1300","2100","2200","3000","3100","4000","4010","5000","5050","6000" }.Contains(code))
             throw new InvalidOperationException("لا يمكن إيقاف حساب نظام أساسي مستخدم في الترحيل. أنشئ حسابًا فرعيًا بدلًا منه.");
         using var db = Database.Open();
         using var cmd = db.CreateCommand();
