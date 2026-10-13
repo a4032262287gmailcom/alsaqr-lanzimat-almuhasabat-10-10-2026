@@ -118,9 +118,9 @@ async def issue_stock(
     document_type: str,
     document_id: UUID,
     reference: str,
-) -> Decimal:
+) -> tuple[Decimal, Decimal]:
     if product.item_type == "SERVICE":
-        return Decimal("0")
+        return Decimal("0.00"), Decimal("0.0000")
     balance = await get_or_create_balance(session, tenant_id, warehouse_id, product.id)
     if Decimal(balance.quantity) < Decimal(quantity):
         raise HTTPException(status_code=422, detail={
@@ -147,4 +147,4 @@ async def issue_stock(
         memo="صرف مبيعات",
     ))
     await session.flush()
-    return total_cost
+    return total_cost, unit_cost
