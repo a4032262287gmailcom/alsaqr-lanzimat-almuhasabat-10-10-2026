@@ -84,8 +84,9 @@ async def test_sequence_is_unique_under_concurrency_and_resets_each_year() -> No
     async def allocate(year: int) -> str:
         async with SessionFactory() as session:
             await set_tenant_context(session, str(tenant_id))
-            async with session.begin():
-                return await next_number(session, tenant_id, "JOURNAL", "JV", date(year, 1, 1))
+            number = await next_number(session, tenant_id, "JOURNAL", "JV", date(year, 1, 1))
+            await session.commit()
+            return number
 
     values = await asyncio.gather(*(allocate(2026) for _ in range(32)))
     assert len(values) == len(set(values)) == 32
