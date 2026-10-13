@@ -5,7 +5,8 @@ from uuid import UUID, uuid4
 
 import pytest
 from fastapi import HTTPException
-from sqlalchemy import select
+from sqlalchemy import select, update
+from sqlalchemy.exc import DBAPIError
 
 from app.core.security import hash_password
 from app.database import SessionFactory, set_tenant_context
@@ -256,4 +257,84 @@ async def test_postgres_rls_blocks_cross_tenant_reads_without_application_filter
         visible_account = await session.scalar(select(Account).where(Account.code == "1101").limit(1))
         assert visible_account is not None
         assert visible_account.tenant_id == tenant_b
+
+@pytest.mark.asyncio(loop_scope="session")
+async def test_database_blocks_mutation_of_posted_journal() -> None:
+    tenant_id, _ = await create_test_tenant()
+    async with SessionFactory() as session:
+        await set_tenant_context(session, str(tenant_id))
+        account_ids = await seed_chart_of_accounts(session, tenant_id)
+        journal = await create_journal(
+            session, tenant_id, None, date(2026, 7, 1), "قيد غير قابل للتعديل", "MANUAL",
+            [
+                {"account_id": account_ids["1101"], "debit": Decimal("75.00"), "credit": Decimal("0.00")},
+                {"account_id": account_ids["3101"], "debit": Decimal("0.00"), "credit": Decimal("75.00")},
+            ],
+        )
+        await session.commit()
+
+        await set_tenant_context(session, str(tenant_id))
+        with pytest.raises(DBAPIError):
+            await session.execute(
+                update(JournalEntry)
+                .where(JournalEntry.tenant_id == tenant_id, JournalEntry.id == journal.id)
+                .values(memo="تعديل غير مسموح")
+            )
+        await session.rollback()
+
+
+@pytest.mark.asyncio(loop_scope="session")
+async def test_database_rejects_unbalanced_posted_journal_at_commit() -> None:
+    tenant_id, _ = await create_test_tenant()
+    async with SessionFactory() as session:
+        await set_tenant_context(session, str(tenant_id))
+        account_ids = await seed_chart_of_accounts(session, tenant_id)
+        journal = JournalEntry(
+            tenant_id=tenant_id,
+            number="BAD-" + uuid4().hex[:12],
+            entry_date=date(2026, 8, 1),
+            memo="اختبار تجاوز محرك الترحيل",
+            status="POSTED",
+            source_type="MANUAL",
+        )
+        session.add(journal)
+        await session.flush()
+        session.add_all([
+            JournalLine(
+                tenant_id=tenant_id, entry_id=journal.id, account_id=account_ids["1101"],
+                debit=Decimal("100.00"), credit=Decimal("0.00"), currency_code="SAR",
+            ),
+            JournalLine(
+                tenant_id=tenant_id, entry_id=journal.id, account_id=account_ids["3101"],
+                debit=Decimal("0.00"), credit=Decimal("99.00"), currency_code="SAR",
+            ),
+        ])
+        with pytest.raises(DBAPIError):
+            await session.commit()
+        await session.rollback()
+
+
+@pytest.mark.asyncio(loop_scope="session")
+async def test_audit_logs_are_append_only_in_postgresql() -> None:
+    tenant_id, _ = await create_test_tenant()
+    async with SessionFactory() as session:
+        await set_tenant_context(session, str(tenant_id))
+        event = AuditLog(
+            tenant_id=tenant_id,
+            actor_user_id=None,
+            action="TEST_EVENT",
+            entity_type="Test",
+            details={"original": True},
+        )
+        session.add(event)
+        await session.commit()
+
+        await set_tenant_context(session, str(tenant_id))
+        with pytest.raises(DBAPIError):
+            await session.execute(
+                update(AuditLog)
+                .where(AuditLog.tenant_id == tenant_id, AuditLog.id == event.id)
+                .values(details={"tampered": True})
+            )
+        await session.rollback()
 
