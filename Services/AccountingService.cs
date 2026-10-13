@@ -8,7 +8,8 @@ namespace AlSaqr.Accounting.Services;
 internal sealed record JournalLineInput(string AccountCode, decimal Debit, decimal Credit, string Memo = "", int? PartyId = null);
 internal sealed record InvoiceLineInput(int ProductId, decimal Quantity, decimal UnitPrice);
 internal sealed record AccountInfo(string Code, string Name, string Type, bool IsActive);
-internal sealed record ProductInfo(int Id, string Code, string Name, string Unit, decimal Quantity, decimal Cost, decimal Price, decimal VatRate);
+internal sealed record ProductInfo(int Id, string Code, string Name, string Unit, decimal Quantity, decimal Cost, decimal Price, decimal VatRate, string Barcode);
+internal sealed record InvoiceReceiptInfo(string Number, string Date, string PartyName, decimal Subtotal, decimal Vat, decimal Total);
 internal sealed record DashboardInfo(decimal Cash, decimal Receivables, decimal Payables, decimal SalesMonth, decimal ExpensesMonth, int PostedEntries);
 
 internal sealed class AccountingService
@@ -207,7 +208,8 @@ WHERE Id=$id AND IsActive IN (0,1)";
         using var cmd = db.CreateCommand();
         cmd.CommandText = @"SELECT Id AS 'المعرف',Code AS 'رمز الصنف',Name AS 'اسم الصنف',Unit AS 'الوحدة',
 printf('%.3f',Quantity) AS 'الكمية المتاحة',CostHalalas/100.0 AS 'التكلفة',PriceHalalas/100.0 AS 'سعر البيع',
-VatRate AS 'الضريبة %',CASE IsActive WHEN 1 THEN 'نشط' ELSE 'موقوف' END AS 'الحالة'
+VatRate AS 'الضريبة %',CASE IsActive WHEN 1 THEN 'نشط' ELSE 'موقوف' END AS 'الحالة',
+COALESCE(NULLIF(Barcode,''),Code) AS 'الباركود'
 FROM Products ORDER BY Code";
         return ReadTable(cmd);
     }
@@ -216,16 +218,16 @@ FROM Products ORDER BY Code";
     {
         using var db = Database.Open();
         using var cmd = db.CreateCommand();
-        cmd.CommandText = "SELECT Id,Code,Name,Unit,Quantity,CostHalalas,PriceHalalas,VatRate FROM Products WHERE IsActive=1 ORDER BY Code";
+        cmd.CommandText = "SELECT Id,Code,Name,Unit,Quantity,CostHalalas,PriceHalalas,VatRate,COALESCE(NULLIF(Barcode,''),Code) FROM Products WHERE IsActive=1 ORDER BY Code";
         using var reader = cmd.ExecuteReader();
         var result = new List<ProductInfo>();
         while (reader.Read())
             result.Add(new ProductInfo(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3),
-                Convert.ToDecimal(reader.GetDouble(4)), FromHalalas(reader.GetInt64(5)), FromHalalas(reader.GetInt64(6)), Convert.ToDecimal(reader.GetDouble(7))));
+                Convert.ToDecimal(reader.GetDouble(4)), FromHalalas(reader.GetInt64(5)), FromHalalas(reader.GetInt64(6)), Convert.ToDecimal(reader.GetDouble(7)), reader.GetString(8)));
         return result;
     }
 
-    public void AddProduct(string code, string name, string unit, decimal openingQuantity, decimal cost, decimal price, decimal vatRate)
+    public void AddProduct(string code, string name, string unit, decimal openingQuantity, decimal cost, decimal price, decimal vatRate, string? barcode = null)
     {
         if (string.IsNullOrWhiteSpace(code) || string.IsNullOrWhiteSpace(name)) throw new ArgumentException("رمز الصنف والاسم مطلوبان.");
         if (openingQuantity < 0 || cost < 0 || price < 0) throw new ArgumentException("لا يُسمح بقيم سالبة.");
@@ -237,9 +239,10 @@ FROM Products ORDER BY Code";
         {
             using var cmd = db.CreateCommand();
             cmd.Transaction = tx;
-            cmd.CommandText = @"INSERT INTO Products(Code,Name,Unit,Quantity,CostHalalas,PriceHalalas,VatRate,IsActive,CreatedAt)
-VALUES($code,$name,$unit,$qty,$cost,$price,$vat,1,$at)";
+            cmd.CommandText = @"INSERT INTO Products(Code,Barcode,Name,Unit,Quantity,CostHalalas,PriceHalalas,VatRate,IsActive,CreatedAt)
+VALUES($code,$barcode,$name,$unit,$qty,$cost,$price,$vat,1,$at)";
             cmd.Parameters.AddWithValue("$code", code.Trim());
+            cmd.Parameters.AddWithValue("$barcode", string.IsNullOrWhiteSpace(barcode) ? DBNull.Value : barcode.Trim());
             cmd.Parameters.AddWithValue("$name", name.Trim());
             cmd.Parameters.AddWithValue("$unit", string.IsNullOrWhiteSpace(unit) ? "حبة" : unit.Trim());
             cmd.Parameters.AddWithValue("$qty", (double)openingQuantity);
@@ -293,9 +296,10 @@ VALUES($date,$product,'OPENING',$product,$qty,$zero,$cost,'رصيد افتتاح
         return id;
     }
 
-    public long CreateInvoice(string kind, DateTime invoiceDate, int partyId, bool onCredit, IReadOnlyList<InvoiceLineInput> lines)
+    public long CreateInvoice(string kind, DateTime invoiceDate, int partyId, bool onCredit, IReadOnlyList<InvoiceLineInput> lines, string cashAccountCode = "1010")
     {
         if (kind != "SALE" && kind != "PURCHASE") throw new ArgumentException("نوع الفاتورة غير صالح.");
+        if (!onCredit && cashAccountCode is not ("1010" or "1020")) throw new ArgumentException("حساب الدفع النقدي غير صالح.");
         if (partyId <= 0) throw new ArgumentException("اختر العميل أو المورد.");
         if (lines.Count == 0) throw new ArgumentException("أضف صنفًا واحدًا على الأقل.");
         using var db = Database.Open();
@@ -348,7 +352,7 @@ VALUES($date,$product,'OPENING',$product,$qty,$zero,$cost,'رصيد افتتاح
         var journalLines = new List<JournalLineInput>();
         if (kind == "SALE")
         {
-            journalLines.Add(new JournalLineInput(onCredit ? "1100" : "1010", FromHalalas(totalHalalas), 0, "إجمالي فاتورة البيع", onCredit ? partyId : null));
+            journalLines.Add(new JournalLineInput(onCredit ? "1100" : cashAccountCode, FromHalalas(totalHalalas), 0, "إجمالي فاتورة البيع", onCredit ? partyId : null));
             journalLines.Add(new JournalLineInput("4000", 0, FromHalalas(subtotalHalalas), "إيراد المبيعات"));
             if (vatHalalasTotal > 0) journalLines.Add(new JournalLineInput("2200", 0, FromHalalas(vatHalalasTotal), "ضريبة مخرجات"));
             if (cogsTotal > 0)
@@ -361,7 +365,7 @@ VALUES($date,$product,'OPENING',$product,$qty,$zero,$cost,'رصيد افتتاح
         {
             journalLines.Add(new JournalLineInput("1200", FromHalalas(subtotalHalalas), 0, "إضافة للمخزون"));
             if (vatHalalasTotal > 0) journalLines.Add(new JournalLineInput("1300", 0 + FromHalalas(vatHalalasTotal), 0, "ضريبة مدخلات"));
-            journalLines.Add(new JournalLineInput(onCredit ? "2100" : "1010", 0, FromHalalas(totalHalalas), onCredit ? "مستحق للمورد" : "شراء نقدي", onCredit ? partyId : null));
+            journalLines.Add(new JournalLineInput(onCredit ? "2100" : cashAccountCode, 0, FromHalalas(totalHalalas), onCredit ? "مستحق للمورد" : "شراء نقدي", onCredit ? partyId : null));
         }
         ValidateBalanced(journalLines);
         var journalId = InsertJournal(db, tx, invoiceDate, $"فاتورة {(kind == "SALE" ? "بيع" : "شراء")} {number}", kind, journalLines);
@@ -585,6 +589,20 @@ GROUP BY p.Id,p.Code,p.Name,p.Quantity
 HAVING ABS(p.Quantity-COALESCE(SUM(m.QuantityIn-m.QuantityOut),0)) > 0.0005
 ORDER BY p.Code";
         return ReadTable(cmd);
+    }
+
+    public InvoiceReceiptInfo GetInvoiceReceiptInfo(long invoiceId)
+    {
+        using var db = Database.Open();
+        using var cmd = db.CreateCommand();
+        cmd.CommandText = @"SELECT i.Number,i.InvoiceDate,p.Name,i.SubtotalHalalas,i.VatHalalas,i.TotalHalalas
+FROM Invoices i JOIN Parties p ON p.Id=i.PartyId
+WHERE i.Id=$id AND i.Kind='SALE' AND i.Status='POSTED'";
+        cmd.Parameters.AddWithValue("$id", invoiceId);
+        using var reader = cmd.ExecuteReader();
+        if (!reader.Read()) throw new InvalidOperationException("تعذر العثور على الفاتورة المرحلة لطباعة الإيصال.");
+        return new InvoiceReceiptInfo(reader.GetString(0), reader.GetString(1), reader.GetString(2),
+            FromHalalas(reader.GetInt64(3)), FromHalalas(reader.GetInt64(4)), FromHalalas(reader.GetInt64(5)));
     }
 
     public DataTable InvoiceRegister(string kind, DateTime from, DateTime to)
