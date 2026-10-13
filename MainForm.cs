@@ -10,6 +10,7 @@ internal sealed partial class MainForm : Form
     private readonly AuthUser _user;
     private readonly AccountingService _service = new();
     private readonly ReturnService _returns = new();
+    private readonly InventoryAdjustmentService _adjustmentService = new();
     private readonly AuthService _auth = new();
     private readonly Panel _content = new();
     private readonly Label _status = new();
@@ -291,6 +292,43 @@ internal sealed partial class MainForm : Form
         });
     }
 
+    private void AddStockAdjustment()
+    {
+        if (!CanPost) { Denied(); return; }
+        var products = _service.ActiveProducts();
+        if (products.Count == 0) { Notice("أضف أصنافًا نشطة إلى دليل الأصناف أولًا."); return; }
+        var options = products.Select(p => (p.Id.ToString(CultureInfo.InvariantCulture), $"{p.Code} - {p.Name} | الرصيد {p.Quantity:0.###} | التكلفة {p.Cost:N2}")).ToArray();
+        using var form = Dialog("تسوية مخزون فعلية", 5, out var body, out var save);
+        var product = Combo(options[0].Item1, options.Select(p => (Value: p.Item1, Text: p.Item2)).ToArray());
+        var direction = Combo("IN", ("IN", "زيادة رصيد حسب الجرد"), ("OUT", "عجز / تخفيض رصيد حسب الجرد"));
+        var qty = Numeric(0.001m, 100000000m, 3);
+        var date = new DateTimePicker { Width = 340, Format = DateTimePickerFormat.Custom, CustomFormat = "yyyy-MM-dd", Value = DateTime.Today };
+        var reason = TextBox();
+        AddField(body, "الصنف", product);
+        AddField(body, "نوع التسوية", direction);
+        AddField(body, "فرق الكمية", qty);
+        AddField(body, "تاريخ الجرد", date);
+        AddField(body, "سبب التسوية / رقم محضر الجرد", reason);
+        save.Text = "ترحيل التسوية";
+        save.Click += (_, _) => Guard(() => {
+            var productId = Convert.ToInt32(product.SelectedValue, CultureInfo.InvariantCulture);
+            var delta = Convert.ToString(direction.SelectedValue) == "OUT" ? -qty.Value : qty.Value;
+            var id = _adjustmentService.AdjustStock(productId, date.Value.Date, delta, reason.Text);
+            form.DialogResult = DialogResult.OK;
+            form.Close();
+            ShowProducts();
+            SetStatus($"تم ترحيل تسوية المخزون رقم داخلي {id} مع قيد محاسبي وحركة مخزنية وسجل تدقيق.");
+        });
+        form.ShowDialog(this);
+    }
+
+    private void ShowStockAdjustments()
+    {
+        ShowTablePage("سجل تسويات المخزون المرحلة",
+            _adjustmentService.Register(new DateTime(2000, 1, 1), DateTime.Today.AddDays(1)),
+            ("تصدير CSV", ExportReport), ("تحديث", ShowStockAdjustments));
+    }
+
     private void ShowInvoices(string kind)
     {
         var title = kind == "SALE" ? "فواتير البيع المرحلة" : "فواتير الشراء المرحلة";
@@ -380,7 +418,7 @@ internal sealed partial class MainForm : Form
             ("ميزان المراجعة","ميزان المراجعة"),("الأستاذ العام","الأستاذ العام"),("الأرباح والخسائر","الأرباح والخسائر"),
             ("الميزانية العمومية","الميزانية العمومية"),("تقييم المخزون","تقييم المخزون"),("سجل المبيعات","سجل المبيعات"),
             ("سجل المشتريات","سجل المشتريات"),("مردودات البيع","مردودات البيع"),("مردودات الشراء","مردودات الشراء"),("تقرير ضريبة القيمة المضافة","تقرير ضريبة القيمة المضافة"),
-            ("حركة المخزون","حركة المخزون"),("تسوية المخزون","تسوية المخزون"),("سندات القبض والصرف","سندات القبض والصرف"),
+            ("حركة المخزون","حركة المخزون"),("تسوية المخزون","تسوية المخزون"),("سجل تسويات المخزون","سجل تسويات المخزون"),("سندات القبض والصرف","سندات القبض والصرف"),
             ("ملخص العملاء والموردين","ملخص العملاء والموردين"),("سجل التدقيق","سجل التدقيق"));
         report.Width=230;
         var from = new DateTimePicker { Width=145, Format=DateTimePickerFormat.Custom, CustomFormat="yyyy-MM-dd", Value=new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1) };
@@ -404,6 +442,7 @@ internal sealed partial class MainForm : Form
                 "تقرير ضريبة القيمة المضافة" => _service.VatSummary(from.Value,to.Value),
                 "حركة المخزون" => _service.StockMovementRegister(from.Value,to.Value),
                 "تسوية المخزون" => _service.StockReconciliation(),
+                "سجل تسويات المخزون" => _adjustmentService.Register(from.Value,to.Value),
                 "سندات القبض والصرف" => _service.SettlementRegister("ALL",from.Value,to.Value),
                 "ملخص العملاء والموردين" => _service.PartyBalances(from.Value,to.Value),
                 "سجل التدقيق" => IsAdmin ? _service.AuditHistory() : throw new InvalidOperationException("عرض سجل التدقيق متاح لمدير النظام فقط."),
