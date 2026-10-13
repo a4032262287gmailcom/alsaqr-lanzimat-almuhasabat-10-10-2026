@@ -75,7 +75,7 @@ async def create_test_tenant() -> tuple[UUID, str]:
         return tenant.id, slug
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio(loop_scope="session")
 async def test_sequence_is_unique_under_concurrency_and_resets_each_year() -> None:
     tenant_id, _ = await create_test_tenant()
 
@@ -92,7 +92,7 @@ async def test_sequence_is_unique_under_concurrency_and_resets_each_year() -> No
     assert await allocate(2027) == "JV-2027-000001"
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio(loop_scope="session")
 async def test_period_dual_control_lock_audit_and_journal_reversal() -> None:
     tenant_id, _ = await create_test_tenant()
     async with SessionFactory() as session:
@@ -210,7 +210,7 @@ async def test_period_dual_control_lock_audit_and_journal_reversal() -> None:
         assert {"FISCAL_PERIOD_CREATED", "FISCAL_PERIOD_CLOSED", "FISCAL_PERIOD_REOPENED", "JOURNAL_REVERSED"} <= actions
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio(loop_scope="session")
 async def test_journal_rejects_inactive_account() -> None:
     tenant_id, _ = await create_test_tenant()
     async with SessionFactory() as session:
