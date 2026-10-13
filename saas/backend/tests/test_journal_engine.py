@@ -221,6 +221,9 @@ async def test_period_dual_control_lock_audit_and_journal_reversal() -> None:
         )).all()
         actions = {event.action for event in events}
         assert {"FISCAL_PERIOD_CREATED", "FISCAL_PERIOD_CLOSED", "FISCAL_PERIOD_REOPENED", "JOURNAL_REVERSED"} <= actions
+        close_event = next(event for event in events if event.action == "FISCAL_PERIOD_CLOSED")
+        assert close_event.before_data["status"] == "OPEN"
+        assert close_event.after_data["status"] == "CLOSED"
 
 
 @pytest.mark.asyncio(loop_scope="session")
