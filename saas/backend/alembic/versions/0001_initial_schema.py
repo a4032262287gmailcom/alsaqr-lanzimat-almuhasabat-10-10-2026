@@ -78,7 +78,7 @@ def upgrade() -> None:
         END IF;
         RETURN NEW;
     END;
-    $;
+    $saas_fn$;
     """)
 
     op.execute("""
@@ -91,7 +91,7 @@ def upgrade() -> None:
     CREATE OR REPLACE FUNCTION saas_assert_posted_journal_balanced()
     RETURNS trigger
     LANGUAGE plpgsql
-    AS $
+    AS $saas_fn$
     DECLARE
         target_tenant uuid;
         target_entry uuid;
@@ -143,7 +143,7 @@ def upgrade() -> None:
         END IF;
         RETURN NULL;
     END;
-    $;
+    $saas_fn$;
     """)
 
     op.execute("""
@@ -164,12 +164,12 @@ def upgrade() -> None:
     CREATE OR REPLACE FUNCTION saas_reject_audit_log_mutation()
     RETURNS trigger
     LANGUAGE plpgsql
-    AS $
+    AS $saas_fn$
     BEGIN
         RAISE EXCEPTION 'Audit log rows are append-only'
             USING ERRCODE = '55000';
     END;
-    $;
+    $saas_fn$;
     """)
 
     op.execute("""
