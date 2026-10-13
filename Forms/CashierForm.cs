@@ -41,6 +41,10 @@ internal sealed class CashierForm : Form
     private readonly Label _totalLabel = new() { Width = 210, Height = 36, Font = new Font("Segoe UI", 15F, FontStyle.Bold) };
     private readonly Label _changeLabel = new() { Width = 180, Height = 30 };
     private readonly Label _status = new() { Dock = DockStyle.Bottom, Height = 27, TextAlign = ContentAlignment.MiddleRight };
+    private readonly Label _sessionStatus = new() { Width = 390, Height = 30, TextAlign = ContentAlignment.MiddleRight };
+    private CashierSessionSummary? _activeSession;
+    private Button? _sessionButton;
+    private Button? _checkoutButton;
     private int _cashCustomerId;
     private CashReceipt? _lastReceipt;
     private PrintDocument? _printDocument;
@@ -78,6 +82,7 @@ internal sealed class CashierForm : Form
 
         BuildLayout();
         LoadReferenceData();
+        RefreshSessionUi();
         RefreshProducts();
         RefreshCart();
         UpdateTotals();
@@ -102,7 +107,7 @@ internal sealed class CashierForm : Form
 
         var scanPanel = new FlowLayoutPanel
         {
-            Dock = DockStyle.Top, Height = 76, FlowDirection = FlowDirection.RightToLeft,
+            Dock = DockStyle.Top, Height = 108, FlowDirection = FlowDirection.RightToLeft,
             WrapContents = true, Padding = new Padding(8), BackColor = Color.FromArgb(_palette.SurfaceR, _palette.SurfaceG, _palette.SurfaceB)
         };
         scanPanel.Controls.Add(FieldLabel("الباركود")); scanPanel.Controls.Add(_barcode);
@@ -111,6 +116,10 @@ internal sealed class CashierForm : Form
         scanPanel.Controls.Add(FieldLabel("سعر الوحدة")); scanPanel.Controls.Add(_unitPrice);
         scanPanel.Controls.Add(MakeButton("إضافة للسلة", AddSelectedProduct, true));
         scanPanel.Controls.Add(MakeButton("تحديث الأصناف", RefreshProducts, false));
+        _sessionButton = MakeButton("فتح الوردية", ToggleCashierSession, false);
+        scanPanel.Controls.Add(_sessionButton);
+        _sessionStatus.ForeColor = Color.FromArgb(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB);
+        scanPanel.Controls.Add(_sessionStatus);
 
         _barcode.KeyDown += (_, e) =>
         {
@@ -184,7 +193,9 @@ internal sealed class CashierForm : Form
         payment.Controls.Add(FieldLabel("السداد")); payment.Controls.Add(_payment);
         payment.Controls.Add(FieldLabel("المبلغ المستلم")); payment.Controls.Add(_tendered);
         payment.Controls.Add(_changeLabel);
-        payment.Controls.Add(MakeButton("إتمام البيع وطباعة الفاتورة", Checkout, true));
+        _checkoutButton = MakeButton("إتمام البيع وطباعة الفاتورة", Checkout, true);
+        _checkoutButton.Enabled = false;
+        payment.Controls.Add(_checkoutButton);
         payment.Controls.Add(MakeButton("إغلاق الكاشير", Close, false));
         checkout.Controls.Add(totals, 0, 0);
         checkout.Controls.Add(payment, 0, 1);
@@ -257,6 +268,7 @@ internal sealed class CashierForm : Form
     private void LoadReferenceData()
     {
         _cashCustomerId = _cashier.EnsureCashCustomer();
+        _activeSession = _cashier.GetActiveSession(_user.UserName);
         _customer.DisplayMember = nameof(CashierCustomer.Name);
         _customer.ValueMember = nameof(CashierCustomer.Id);
         _customer.DataSource = _cashier.Customers();
@@ -451,6 +463,76 @@ internal sealed class CashierForm : Form
         if (method == "BANK") _tendered.Value = Math.Min(_tendered.Maximum, t.Total);
         if (method == "CREDIT") _tendered.Value = 0;
         _changeLabel.Text = "الباقي: " + Money(method == "CASH" ? Math.Max(0m, _tendered.Value - t.Total) : 0m);
+        if (_checkoutButton is not null) _checkoutButton.Enabled = _activeSession is not null;
+    }
+
+    private void RefreshSessionUi()
+    {
+        if (_activeSession is not null)
+            _activeSession = _cashier.GetActiveSession(_user.UserName);
+        if (_activeSession is null)
+        {
+            _sessionStatus.Text = "لا توجد وردية مفتوحة — افتح الوردية قبل اعتماد البيع.";
+            if (_sessionButton is not null) _sessionButton.Text = "فتح الوردية";
+        }
+        else
+        {
+            _sessionStatus.Text = $"الوردية #{_activeSession.Id} | الافتتاح: {Money(_activeSession.OpeningCash)} | مبيعات نقدية: {Money(_activeSession.CashSales)} | فواتير: {_activeSession.InvoiceCount}";
+            if (_sessionButton is not null) _sessionButton.Text = "إغلاق الوردية";
+        }
+        if (_checkoutButton is not null) _checkoutButton.Enabled = _activeSession is not null;
+    }
+
+    private void ToggleCashierSession()
+    {
+        if (_activeSession is null)
+        {
+            var opening = PromptMoney("فتح وردية الكاشير", "أدخل رصيد النقدية الافتتاحي في الدرج:", 0m);
+            if (!opening.HasValue) return;
+            _activeSession = _cashier.OpenSession(_user.UserName, opening.Value);
+            RefreshSessionUi();
+            _status.Text = $"تم فتح الوردية #{_activeSession.Id}. يمكنك الآن البيع.";
+            return;
+        }
+
+        if (_cart.Count > 0)
+            throw new InvalidOperationException("أكمل الفاتورة أو أفرغ السلة قبل إغلاق الوردية.");
+        var summary = _cashier.GetSessionSummary(_activeSession.Id);
+        var counted = PromptMoney("إغلاق وردية الكاشير",
+            $"المتوقع من رصيد البداية والمبيعات النقدية: {Money(summary.ExpectedCash)}\nأدخل المبلغ المعدود فعليًا في الدرج:",
+            summary.ExpectedCash);
+        if (!counted.HasValue) return;
+        var closed = _cashier.CloseSession(summary.Id, _user.UserName, counted.Value);
+        _activeSession = null;
+        RefreshSessionUi();
+        var diffLabel = closed.Difference >= 0m ? "زيادة" : "عجز";
+        MessageBox.Show(this,
+            $"تم إغلاق الوردية #{closed.Id}\nرصيد البداية: {Money(closed.OpeningCash)}\nالمبيعات النقدية: {Money(closed.CashSales)}\nالمتوقع: {Money(closed.ExpectedCash)}\nالمعدود: {Money(closed.CountedCash ?? 0m)}\n{diffLabel}: {Money(Math.Abs(closed.Difference ?? 0m))}\nعدد الفواتير: {closed.InvoiceCount}",
+            "الصقر لأنظمة المحاسبة | إقفال الوردية", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        _status.Text = $"تم إغلاق الوردية #{closed.Id} وتسجيل فرق الصندوق.";
+    }
+
+    private decimal? PromptMoney(string title, string promptText, decimal initialValue)
+    {
+        using var form = new Form
+        {
+            Text = "الصقر لأنظمة المحاسبة | " + title, Width = 520, Height = 230,
+            StartPosition = FormStartPosition.CenterParent, FormBorderStyle = FormBorderStyle.FixedDialog,
+            MaximizeBox = false, MinimizeBox = false, RightToLeft = RightToLeft.Yes,
+            RightToLeftLayout = true, Font = Font, BackColor = _paper
+        };
+        var prompt = new Label { Text = promptText, Dock = DockStyle.Top, Height = 70, TextAlign = ContentAlignment.MiddleRight, Padding = new Padding(12), ForeColor = Color.FromArgb(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB) };
+        var amount = new NumericUpDown { Dock = DockStyle.Top, Minimum = 0m, Maximum = 1000000000m, DecimalPlaces = 2, ThousandsSeparator = true, Value = Math.Clamp(initialValue, 0m, 1000000000m), Margin = new Padding(12) };
+        var buttons = new FlowLayoutPanel { Dock = DockStyle.Bottom, Height = 52, FlowDirection = FlowDirection.RightToLeft, Padding = new Padding(6) };
+        var ok = MakeButton("تأكيد");
+        ok.DialogResult = DialogResult.OK;
+        var cancel = MakeButton("إلغاء");
+        cancel.DialogResult = DialogResult.Cancel;
+        buttons.Controls.Add(ok); buttons.Controls.Add(cancel);
+        form.Controls.Add(amount); form.Controls.Add(prompt); form.Controls.Add(buttons);
+        form.AcceptButton = ok;
+        form.CancelButton = cancel;
+        return form.ShowDialog(this) == DialogResult.OK ? amount.Value : null;
     }
 
     private void PaymentChanged()
@@ -469,6 +551,7 @@ internal sealed class CashierForm : Form
             throw new InvalidOperationException("الترخيص غير صالح أو انتهت صلاحيته؛ لا يمكن اعتماد البيع.");
         if (!_user.Role.Equals("Admin", StringComparison.Ordinal) && !_user.Role.Equals("Accountant", StringComparison.Ordinal))
             throw new InvalidOperationException("ليس لديك صلاحية اعتماد البيع.");
+        if (_activeSession is null) throw new InvalidOperationException("افتح وردية الكاشير قبل اعتماد البيع.");
         if (_cart.Count == 0) throw new InvalidOperationException("السلة فارغة.");
         if (_customer.SelectedValue is null) throw new InvalidOperationException("اختر العميل.");
         var method = Convert.ToString(_payment.SelectedValue) ?? "CASH";
@@ -477,8 +560,10 @@ internal sealed class CashierForm : Form
         var lines = _cart.Select(x => new InvoiceLineInput(x.Product.Id, x.Quantity, x.UnitPrice)).ToList();
         var invoiceId = _cashier.Checkout(DateTime.Today,
             Convert.ToInt32(_customer.SelectedValue, CultureInfo.InvariantCulture),
-            lines, _discount.Value, method, _tendered.Value, _user.UserName);
+            lines, _discount.Value, method, _tendered.Value, _user.UserName, _activeSession.Id);
         _lastReceipt = _cashier.GetReceipt(invoiceId);
+        _activeSession = _cashier.GetActiveSession(_user.UserName);
+        RefreshSessionUi();
         var answer = MessageBox.Show(this,
             $"تم اعتماد الفاتورة {_lastReceipt.Number}\nالإجمالي: {Money(_lastReceipt.Total)}\nالباقي: {Money(_lastReceipt.Change)}\n\nهل تريد معاينة وطباعة الإيصال؟",
             "الصقر لأنظمة المحاسبة", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
