@@ -46,7 +46,7 @@ def upgrade() -> None:
     CREATE OR REPLACE FUNCTION saas_block_posted_journal_mutation()
     RETURNS trigger
     LANGUAGE plpgsql
-    AS $
+    AS $saas_fn$
     BEGIN
         IF TG_OP = 'DELETE' THEN
             IF OLD.status IN ('POSTED', 'REVERSED') THEN
