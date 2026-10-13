@@ -63,8 +63,12 @@ internal sealed class AccountingService
 
     public void SetAccountActive(string code, bool active)
     {
+ feature/erp-pos-cashier-20261013
+        if (!active && new[] { "1010","1020","1100","1200","1300","2100","2200","3000","3100","4000","4010","4020","4090","5000","5010","5050","6000" }.Contains(code))
+=======
         if (!active && new[] { "1010","1020","1100","1200","1300","2100","2200","3000","3100","4000","4010","4090","5000","5010","5050","6000" }.Contains(code))
-            throw new InvalidOperationException("لا يمكن إيقاف حساب نظام أساسي مستخدم في الترحيل. أنشئ حسابًا فرعيًا بدلًا منه.");
+          main
+           throw new InvalidOperationException("لا يمكن إيقاف حساب نظام أساسي مستخدم في الترحيل. أنشئ حسابًا فرعيًا بدلًا منه.");
         using var db = Database.Open();
         using var cmd = db.CreateCommand();
         cmd.CommandText = "UPDATE Accounts SET IsActive=$active WHERE Code=$code";
@@ -296,14 +300,38 @@ VALUES($date,$product,'OPENING',$product,$qty,$zero,$cost,'رصيد افتتاح
         return id;
     }
 
+ feature/erp-pos-cashier-20261013
+    public long CreateInvoice(string kind, DateTime invoiceDate, int partyId, bool onCredit, IReadOnlyList<InvoiceLineInput> lines,
+        decimal discountPercent = 0m, string paymentMethod = "CASH", decimal? amountTendered = null, string cashAccountCode = "1010", int? cashierSessionId = null)
+=======
     public long CreateInvoice(string kind, DateTime invoiceDate, int partyId, bool onCredit, IReadOnlyList<InvoiceLineInput> lines, string cashAccountCode = "1010")
+ main
     {
         if (kind != "SALE" && kind != "PURCHASE") throw new ArgumentException("نوع الفاتورة غير صالح.");
         if (!onCredit && cashAccountCode is not ("1010" or "1020")) throw new ArgumentException("حساب الدفع النقدي غير صالح.");
         if (partyId <= 0) throw new ArgumentException("اختر العميل أو المورد.");
         if (lines.Count == 0) throw new ArgumentException("أضف صنفًا واحدًا على الأقل.");
+        if (discountPercent < 0m || discountPercent >= 100m) throw new ArgumentException("نسبة الخصم يجب أن تكون من صفر إلى أقل من 100%.");
+        if (cashAccountCode is not ("1010" or "1020")) throw new ArgumentException("حساب السداد يجب أن يكون الصندوق أو البنك.");
+        if (paymentMethod is not ("CASH" or "BANK" or "CREDIT")) throw new ArgumentException("طريقة السداد غير صحيحة.");
+        if (onCredit) paymentMethod = "CREDIT";
+        else if (paymentMethod == "CREDIT") throw new ArgumentException("اختر الآجل فقط عند تفعيل البيع على الحساب.");
+        if (paymentMethod == "BANK") cashAccountCode = "1020";
+        else if (paymentMethod == "CASH") cashAccountCode = "1010";
+        if (kind != "SALE" && discountPercent != 0m) throw new ArgumentException("خصم شاشة الكاشير متاح للمبيعات فقط.");
         using var db = Database.Open();
         using var tx = db.BeginTransaction();
+
+        if (cashierSessionId.HasValue)
+        {
+            if (kind != "SALE") throw new ArgumentException("وردية الكاشير لا تربط بفواتير الشراء.");
+            using var session = db.CreateCommand();
+            session.Transaction = tx;
+            session.CommandText = "SELECT COUNT(*) FROM CashierSessions WHERE Id=$id AND Status='OPEN'";
+            session.Parameters.AddWithValue("$id", cashierSessionId.Value);
+            if (Convert.ToInt32(session.ExecuteScalar(), CultureInfo.InvariantCulture) != 1)
+                throw new InvalidOperationException("وردية الكاشير مغلقة أو غير موجودة؛ لم يتم ترحيل الفاتورة.");
+        }
 
         using (var partyCmd = db.CreateCommand())
         {
@@ -315,7 +343,7 @@ VALUES($date,$product,'OPENING',$product,$qty,$zero,$cost,'رصيد افتتاح
                 throw new InvalidOperationException(kind == "SALE" ? "الطرف المحدد ليس عميلًا نشطًا." : "الطرف المحدد ليس موردًا نشطًا.");
         }
 
-        decimal subtotal = 0, vatTotal = 0, cogsTotal = 0;
+        decimal subtotal = 0, vatTotal = 0, cogsTotal = 0, discountTotal = 0;
         var computed = new List<(InvoiceLineInput Input, string ProductCode, string ProductName, decimal VatRate, long UnitCost, long Net, long Vat, long Total, long CostTotal)>();
         foreach (var line in lines)
         {
@@ -335,7 +363,11 @@ VALUES($date,$product,'OPENING',$product,$qty,$zero,$cost,'رصيد افتتاح
             if (kind == "SALE" && quantity < line.Quantity)
                 throw new InvalidOperationException($"الكمية المتاحة من الصنف {productName} هي {quantity:0.###} فقط.");
 
-            var netHalalas = ToHalalas(line.Quantity * line.UnitPrice);
+            var originalNetHalalas = ToHalalas(line.Quantity * line.UnitPrice);
+            var netHalalas = kind == "SALE"
+                ? ToHalalas(FromHalalas(originalNetHalalas) * (100m - discountPercent) / 100m)
+                : originalNetHalalas;
+            discountTotal += FromHalalas(originalNetHalalas - netHalalas);
             var vatHalalas = ToHalalas(FromHalalas(netHalalas) * vatRate / 100m);
             var lineTotalHalalas = checked(netHalalas + vatHalalas);
             var costTotal = ToHalalas(line.Quantity * FromHalalas(costHalalas));
@@ -347,14 +379,31 @@ VALUES($date,$product,'OPENING',$product,$qty,$zero,$cost,'رصيد افتتاح
 
         var subtotalHalalas = ToHalalas(subtotal);
         var vatHalalasTotal = ToHalalas(vatTotal);
+        var discountHalalas = ToHalalas(discountTotal);
+        var grossSubtotalHalalas = checked(subtotalHalalas + discountHalalas);
         var totalHalalas = checked(subtotalHalalas + vatHalalasTotal);
+        var tenderedHalalas = onCredit ? 0L : ToHalalas(amountTendered ?? FromHalalas(totalHalalas));
+        var changeHalalas = 0L;
+        if (!onCredit && paymentMethod == "CASH")
+        {
+            if (tenderedHalalas < totalHalalas) throw new InvalidOperationException("المبلغ المستلم أقل من إجمالي الفاتورة.");
+            changeHalalas = tenderedHalalas - totalHalalas;
+        }
+        else if (!onCredit && paymentMethod == "BANK" && tenderedHalalas != totalHalalas)
+            throw new InvalidOperationException("مبلغ الشبكة يجب أن يساوي إجمالي الفاتورة.");
+        if (kind == "SALE" && totalHalalas <= 0) throw new InvalidOperationException("لا يمكن ترحيل فاتورة بيع بقيمة صفر.");
         var number = (kind == "SALE" ? "S-" : "P-") + invoiceDate.ToString("yyyyMMdd") + "-" + Guid.NewGuid().ToString("N")[..6].ToUpperInvariant();
         var journalLines = new List<JournalLineInput>();
         if (kind == "SALE")
         {
             journalLines.Add(new JournalLineInput(onCredit ? "1100" : cashAccountCode, FromHalalas(totalHalalas), 0, "إجمالي فاتورة البيع", onCredit ? partyId : null));
+feature/erp-pos-cashier-20261013
+            journalLines.Add(new JournalLineInput("4000", 0, FromHalalas(grossSubtotalHalalas), "إيراد المبيعات قبل الخصم"));
+            if (discountHalalas > 0) journalLines.Add(new JournalLineInput("4020", FromHalalas(discountHalalas), 0, "خصم المبيعات"));
+=======
             journalLines.Add(new JournalLineInput("4000", 0, FromHalalas(subtotalHalalas), "إيراد المبيعات"));
-            if (vatHalalasTotal > 0) journalLines.Add(new JournalLineInput("2200", 0, FromHalalas(vatHalalasTotal), "ضريبة مخرجات"));
+ main
+           if (vatHalalasTotal > 0) journalLines.Add(new JournalLineInput("2200", 0, FromHalalas(vatHalalasTotal), "ضريبة مخرجات"));
             if (cogsTotal > 0)
             {
                 journalLines.Add(new JournalLineInput("5000", cogsTotal, 0, "تكلفة البضاعة المباعة"));
@@ -373,8 +422,8 @@ VALUES($date,$product,'OPENING',$product,$qty,$zero,$cost,'رصيد افتتاح
         using (var invoiceCmd = db.CreateCommand())
         {
             invoiceCmd.Transaction = tx;
-            invoiceCmd.CommandText = @"INSERT INTO Invoices(Kind,Number,InvoiceDate,PartyId,IsCredit,Status,SubtotalHalalas,VatHalalas,TotalHalalas,JournalId,CreatedAt)
-VALUES($kind,$number,$date,$party,$credit,'POSTED',$subtotal,$vat,$total,$journal,$at)";
+            invoiceCmd.CommandText = @"INSERT INTO Invoices(Kind,Number,InvoiceDate,PartyId,IsCredit,Status,SubtotalHalalas,VatHalalas,TotalHalalas,DiscountHalalas,DiscountPercent,PaymentMethod,AmountTenderedHalalas,ChangeHalalas,CashierSessionId,JournalId,CreatedAt)
+VALUES($kind,$number,$date,$party,$credit,'POSTED',$subtotal,$vat,$total,$discount,$discountPercent,$paymentMethod,$tendered,$change,$cashierSession,$journal,$at)";
             invoiceCmd.Parameters.AddWithValue("$kind", kind);
             invoiceCmd.Parameters.AddWithValue("$number", number);
             invoiceCmd.Parameters.AddWithValue("$date", Date(invoiceDate));
@@ -383,6 +432,12 @@ VALUES($kind,$number,$date,$party,$credit,'POSTED',$subtotal,$vat,$total,$journa
             invoiceCmd.Parameters.AddWithValue("$subtotal", subtotalHalalas);
             invoiceCmd.Parameters.AddWithValue("$vat", vatHalalasTotal);
             invoiceCmd.Parameters.AddWithValue("$total", totalHalalas);
+            invoiceCmd.Parameters.AddWithValue("$discount", discountHalalas);
+            invoiceCmd.Parameters.AddWithValue("$discountPercent", (double)(kind == "SALE" ? discountPercent : 0m));
+            invoiceCmd.Parameters.AddWithValue("$paymentMethod", paymentMethod);
+            invoiceCmd.Parameters.AddWithValue("$tendered", tenderedHalalas);
+            invoiceCmd.Parameters.AddWithValue("$change", changeHalalas);
+            invoiceCmd.Parameters.AddWithValue("$cashierSession", cashierSessionId.HasValue ? cashierSessionId.Value : DBNull.Value);
             invoiceCmd.Parameters.AddWithValue("$journal", journalId);
             invoiceCmd.Parameters.AddWithValue("$at", Now());
             invoiceCmd.ExecuteNonQuery();
