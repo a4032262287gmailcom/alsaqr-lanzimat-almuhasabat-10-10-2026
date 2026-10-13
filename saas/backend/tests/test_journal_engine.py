@@ -1,12 +1,11 @@
 import asyncio
 from datetime import date
 from decimal import Decimal
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 import pytest
 from fastapi import HTTPException
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.security import hash_password
 from app.database import SessionFactory, set_tenant_context
