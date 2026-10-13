@@ -4,7 +4,7 @@ using AlSaqr.Accounting.Data;
 
 namespace AlSaqr.Accounting.Services;
 
-internal sealed record JournalLineInput(string AccountCode, decimal Debit, decimal Credit, string Memo = "");
+internal sealed record JournalLineInput(string AccountCode, decimal Debit, decimal Credit, string Memo = "", int? PartyId = null);
 internal sealed record InvoiceLineInput(int ProductId, decimal Quantity, decimal UnitPrice);
 internal sealed record AccountInfo(string Code, string Name, string Type, bool IsActive);
 internal sealed record ProductInfo(int Id, string Code, string Name, string Unit, decimal Quantity, decimal Cost, decimal Price, decimal VatRate);
@@ -249,7 +249,7 @@ VALUES($date,$product,'OPENING',$product,$qty,$zero,$cost,'رصيد افتتاح
         var journalLines = new List<JournalLineInput>();
         if (kind == "SALE")
         {
-            journalLines.Add(new JournalLineInput(onCredit ? "1100" : "1010", FromHalalas(totalHalalas), 0, "إجمالي فاتورة البيع"));
+            journalLines.Add(new JournalLineInput(onCredit ? "1100" : "1010", FromHalalas(totalHalalas), 0, "إجمالي فاتورة البيع", onCredit ? partyId : null));
             journalLines.Add(new JournalLineInput("4000", 0, FromHalalas(subtotalHalalas), "إيراد المبيعات"));
             if (vatHalalasTotal > 0) journalLines.Add(new JournalLineInput("2200", 0, FromHalalas(vatHalalasTotal), "ضريبة مخرجات"));
             if (cogsTotal > 0)
@@ -262,7 +262,7 @@ VALUES($date,$product,'OPENING',$product,$qty,$zero,$cost,'رصيد افتتاح
         {
             journalLines.Add(new JournalLineInput("1200", FromHalalas(subtotalHalalas), 0, "إضافة للمخزون"));
             if (vatHalalasTotal > 0) journalLines.Add(new JournalLineInput("1300", 0 + FromHalalas(vatHalalasTotal), 0, "ضريبة مدخلات"));
-            journalLines.Add(new JournalLineInput(onCredit ? "2100" : "1010", 0, FromHalalas(totalHalalas), onCredit ? "مستحق للمورد" : "شراء نقدي"));
+            journalLines.Add(new JournalLineInput(onCredit ? "2100" : "1010", 0, FromHalalas(totalHalalas), onCredit ? "مستحق للمورد" : "شراء نقدي", onCredit ? partyId : null));
         }
         ValidateBalanced(journalLines);
         var journalId = InsertJournal(db, tx, invoiceDate, $"فاتورة {(kind == "SALE" ? "بيع" : "شراء")} {number}", kind, journalLines);
@@ -454,14 +454,18 @@ ORDER BY i.InvoiceDate,i.Id";
     {
         using var db = Database.Open();
         using var cmd = db.CreateCommand();
+        // Subledger balances are calculated from the posted journal lines that carry each party's ID.
         cmd.CommandText = @"
 SELECT p.Id AS 'المعرف',p.Name AS 'الطرف',
-ROUND(COALESCE(SUM(CASE WHEN i.Kind='SALE' AND i.IsCredit=1 THEN i.TotalHalalas ELSE 0 END),0)/100.0,2) AS 'فواتير البيع الآجلة',
-ROUND(COALESCE((SELECT SUM(s.AmountHalalas) FROM Settlements s WHERE s.PartyId=p.Id AND s.Kind='RECEIPT' AND s.SettlementDate >= $from AND s.SettlementDate <= $to),0)/100.0,2) AS 'المقبوضات',
-ROUND(COALESCE(SUM(CASE WHEN i.Kind='PURCHASE' AND i.IsCredit=1 THEN i.TotalHalalas ELSE 0 END),0)/100.0,2) AS 'فواتير الشراء الآجلة',
-ROUND(COALESCE((SELECT SUM(s.AmountHalalas) FROM Settlements s WHERE s.PartyId=p.Id AND s.Kind='PAYMENT' AND s.SettlementDate >= $from AND s.SettlementDate <= $to),0)/100.0,2) AS 'المدفوعات',
-COUNT(i.Id) AS 'عدد الفواتير'
-FROM Parties p LEFT JOIN Invoices i ON i.PartyId=p.Id AND i.InvoiceDate >= $from AND i.InvoiceDate <= $to AND i.Status='POSTED'
+ROUND(COALESCE(SUM(CASE WHEN l.AccountCode='1100' AND j.EntryDate < $from THEN l.DebitHalalas-l.CreditHalalas ELSE 0 END),0)/100.0,2) AS 'رصيد العملاء أول المدة',
+ROUND(COALESCE(SUM(CASE WHEN l.AccountCode='1100' AND j.EntryDate >= $from AND j.EntryDate <= $to THEN l.DebitHalalas-l.CreditHalalas ELSE 0 END),0)/100.0,2) AS 'صافي حركة العملاء',
+ROUND(COALESCE(SUM(CASE WHEN l.AccountCode='1100' THEN l.DebitHalalas-l.CreditHalalas ELSE 0 END),0)/100.0,2) AS 'رصيد العملاء آخر المدة',
+ROUND(COALESCE(SUM(CASE WHEN l.AccountCode='2100' AND j.EntryDate < $from THEN l.CreditHalalas-l.DebitHalalas ELSE 0 END),0)/100.0,2) AS 'رصيد الموردين أول المدة',
+ROUND(COALESCE(SUM(CASE WHEN l.AccountCode='2100' AND j.EntryDate >= $from AND j.EntryDate <= $to THEN l.CreditHalalas-l.DebitHalalas ELSE 0 END),0)/100.0,2) AS 'صافي حركة الموردين',
+ROUND(COALESCE(SUM(CASE WHEN l.AccountCode='2100' THEN l.CreditHalalas-l.DebitHalalas ELSE 0 END),0)/100.0,2) AS 'رصيد الموردين آخر المدة'
+FROM Parties p
+LEFT JOIN JournalLines l ON l.PartyId=p.Id
+LEFT JOIN Journals j ON j.Id=l.JournalId AND j.Status='POSTED' AND j.EntryDate <= $to
 GROUP BY p.Id,p.Name ORDER BY p.Name";
         cmd.Parameters.AddWithValue("$from", Date(from));
         cmd.Parameters.AddWithValue("$to", Date(to));
@@ -521,8 +525,8 @@ ORDER BY s.SettlementDate,s.Id";
                 throw new InvalidOperationException(kind == "RECEIPT" ? "سند القبض يتطلب عميلًا نشطًا." : "سند الصرف يتطلب موردًا نشطًا.");
         }
         var lines = kind == "RECEIPT"
-            ? new[] { new JournalLineInput(cashAccountCode, FromHalalas(amountHalalas), 0, "قبض من عميل"), new JournalLineInput("1100", 0, FromHalalas(amountHalalas), "تخفيض ذمم العملاء") }
-            : new[] { new JournalLineInput("2100", FromHalalas(amountHalalas), 0, "تخفيض ذمم الموردين"), new JournalLineInput(cashAccountCode, 0, FromHalalas(amountHalalas), "صرف لمورد") };
+            ? new[] { new JournalLineInput(cashAccountCode, FromHalalas(amountHalalas), 0, "قبض من عميل"), new JournalLineInput("1100", 0, FromHalalas(amountHalalas), "تخفيض ذمم العملاء", partyId) }
+            : new[] { new JournalLineInput("2100", FromHalalas(amountHalalas), 0, "تخفيض ذمم الموردين", partyId), new JournalLineInput(cashAccountCode, 0, FromHalalas(amountHalalas), "صرف لمورد") };
         var number = (kind == "RECEIPT" ? "RC-" : "PY-") + settlementDate.ToString("yyyyMMdd") + "-" + Guid.NewGuid().ToString("N")[..6].ToUpperInvariant();
         var journalId = InsertJournal(db, tx, settlementDate, $"{(kind == "RECEIPT" ? "سند قبض" : "سند صرف")} {number}", kind, lines);
         using (var cmd = db.CreateCommand())
@@ -604,9 +608,10 @@ WHERE j.Status='POSTED' AND j.EntryDate >= $from AND j.EntryDate <= $to";
                 throw new InvalidOperationException($"الحساب {line.AccountCode} غير موجود أو موقوف.");
             using var detail = db.CreateCommand();
             detail.Transaction = tx;
-            detail.CommandText = "INSERT INTO JournalLines(JournalId,AccountCode,Memo,DebitHalalas,CreditHalalas) VALUES($id,$account,$memo,$debit,$credit)";
+            detail.CommandText = "INSERT INTO JournalLines(JournalId,AccountCode,PartyId,Memo,DebitHalalas,CreditHalalas) VALUES($id,$account,$party,$memo,$debit,$credit)";
             detail.Parameters.AddWithValue("$id", id);
             detail.Parameters.AddWithValue("$account", line.AccountCode);
+            detail.Parameters.AddWithValue("$party", line.PartyId.HasValue ? (object)line.PartyId.Value : DBNull.Value);
             detail.Parameters.AddWithValue("$memo", line.Memo ?? "");
             detail.Parameters.AddWithValue("$debit", ToHalalas(line.Debit));
             detail.Parameters.AddWithValue("$credit", ToHalalas(line.Credit));
