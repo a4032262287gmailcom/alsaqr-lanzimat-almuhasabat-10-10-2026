@@ -5,10 +5,11 @@ using AlSaqr.Accounting.Services;
 
 namespace AlSaqr.Accounting;
 
-internal sealed class MainForm : Form
+internal sealed partial class MainForm : Form
 {
     private readonly AuthUser _user;
     private readonly AccountingService _service = new();
+    private readonly ReturnService _returns = new();
     private readonly AuthService _auth = new();
     private readonly Panel _content = new();
     private readonly Label _status = new();
@@ -47,6 +48,8 @@ internal sealed class MainForm : Form
         AddNavigation(nav, "الأصناف والمخزون", ShowProducts);
         AddNavigation(nav, "فواتير البيع", () => ShowInvoices("SALE"));
         AddNavigation(nav, "فواتير الشراء", () => ShowInvoices("PURCHASE"));
+        AddNavigation(nav, "مردودات البيع", () => ShowReturns("SALE_RETURN"));
+        AddNavigation(nav, "مردودات الشراء", () => ShowReturns("PURCHASE_RETURN"));
         if (CanPost) {
             AddNavigation(nav, "سند قبض", () => AddSettlement("RECEIPT"));
             AddNavigation(nav, "سند صرف", () => AddSettlement("PAYMENT"));
@@ -290,7 +293,7 @@ internal sealed class MainForm : Form
         var report=Combo("ميزان المراجعة",
             ("ميزان المراجعة","ميزان المراجعة"),("الأستاذ العام","الأستاذ العام"),("الأرباح والخسائر","الأرباح والخسائر"),
             ("الميزانية العمومية","الميزانية العمومية"),("تقييم المخزون","تقييم المخزون"),("سجل المبيعات","سجل المبيعات"),
-            ("سجل المشتريات","سجل المشتريات"),("تقرير ضريبة القيمة المضافة","تقرير ضريبة القيمة المضافة"),
+            ("سجل المشتريات","سجل المشتريات"),("مردودات البيع","مردودات البيع"),("مردودات الشراء","مردودات الشراء"),("تقرير ضريبة القيمة المضافة","تقرير ضريبة القيمة المضافة"),
             ("حركة المخزون","حركة المخزون"),("تسوية المخزون","تسوية المخزون"),("سندات القبض والصرف","سندات القبض والصرف"),
             ("ملخص العملاء والموردين","ملخص العملاء والموردين"),("سجل التدقيق","سجل التدقيق"));
         report.Width=230;
@@ -310,6 +313,8 @@ internal sealed class MainForm : Form
                 "تقييم المخزون" => _service.StockValuation(),
                 "سجل المبيعات" => _service.InvoiceRegister("SALE",from.Value,to.Value),
                 "سجل المشتريات" => _service.InvoiceRegister("PURCHASE",from.Value,to.Value),
+                "مردودات البيع" => _returns.Register("SALE_RETURN",from.Value,to.Value),
+                "مردودات الشراء" => _returns.Register("PURCHASE_RETURN",from.Value,to.Value),
                 "تقرير ضريبة القيمة المضافة" => _service.VatSummary(from.Value,to.Value),
                 "حركة المخزون" => _service.StockMovementRegister(from.Value,to.Value),
                 "تسوية المخزون" => _service.StockReconciliation(),
