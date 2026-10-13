@@ -124,6 +124,18 @@ CREATE TABLE IF NOT EXISTS StockMovements(
   CHECK((QuantityIn > 0 AND QuantityOut = 0) OR (QuantityOut > 0 AND QuantityIn = 0))
 );
 CREATE INDEX IF NOT EXISTS IX_StockMovements_DateProduct ON StockMovements(MovementDate,ProductId);
+CREATE TABLE IF NOT EXISTS InventoryAdjustments(
+  Id INTEGER PRIMARY KEY AUTOINCREMENT,
+  Number TEXT NOT NULL UNIQUE,
+  AdjustmentDate TEXT NOT NULL,
+  ProductId INTEGER NOT NULL REFERENCES Products(Id) ON DELETE RESTRICT,
+  QuantityDelta REAL NOT NULL CHECK(QuantityDelta <> 0),
+  UnitCostHalalas INTEGER NOT NULL CHECK(UnitCostHalalas > 0),
+  Reason TEXT NOT NULL,
+  JournalId INTEGER NOT NULL REFERENCES Journals(Id) ON DELETE RESTRICT,
+  CreatedAt TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS IX_InventoryAdjustments_Date ON InventoryAdjustments(AdjustmentDate);
 CREATE TABLE IF NOT EXISTS Settlements(
   Id INTEGER PRIMARY KEY AUTOINCREMENT, Kind TEXT NOT NULL CHECK(Kind IN ('RECEIPT','PAYMENT')),
   Number TEXT NOT NULL UNIQUE, SettlementDate TEXT NOT NULL,
@@ -178,8 +190,8 @@ CREATE TABLE IF NOT EXISTS AuditLog(
             ("1200","المخزون","Asset"), ("1300","ضريبة القيمة المضافة - مدخلات","Asset"),
             ("2100","الموردون","Liability"), ("2200","ضريبة القيمة المضافة - مخرجات","Liability"),
             ("3000","رأس المال","Equity"), ("3100","الأرباح المبقاة","Equity"),
-            ("4000","إيرادات المبيعات","Revenue"), ("4010","مردودات المبيعات","Revenue"),
-            ("5000","تكلفة البضاعة المباعة","Expense"), ("5050","فروقات تكلفة المردودات","Expense"),
+            ("4000","إيرادات المبيعات","Revenue"), ("4010","مردودات المبيعات","Revenue"), ("4090","مكاسب تسوية المخزون","Revenue"),
+            ("5000","تكلفة البضاعة المباعة","Expense"), ("5010","خسائر عجز المخزون","Expense"), ("5050","فروقات تكلفة المردودات","Expense"),
             ("6000","المصروفات التشغيلية","Expense")
         };
         foreach (var account in accounts)
