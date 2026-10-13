@@ -33,7 +33,7 @@ internal static class ReportPrintService
 
         document.PrintPage += (_, e) =>
         {
-            var graphics = e.Graphics;
+            var graphics = e.Graphics ?? throw new InvalidOperationException("تعذر الحصول على سطح الرسم الخاص بالطباعة.");
             var bounds = e.MarginBounds;
             var y = (float)bounds.Top;
             var pageColumnLimit = document.DefaultPageSettings.Landscape ? 8 : 5;
