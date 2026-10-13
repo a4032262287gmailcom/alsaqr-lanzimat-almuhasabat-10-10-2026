@@ -212,6 +212,74 @@ VALUES($invoice,$product,$qty,$price,$cost,$rate,$net,$vat,$total)";
         return invoiceId;
     }
 
+    public static long PostPartyPayment(string kind, string number, DateTime date, int partyId, decimal amount, string method, string memo)
+    {
+        if (kind is not ("RECEIPT" or "PAYMENT")) throw new ArgumentException("نوع السند غير صحيح.");
+        if (string.IsNullOrWhiteSpace(number)) throw new ArgumentException("رقم السند مطلوب.");
+        long amountHalalas = ToHalalas(amount);
+        if (amountHalalas <= 0) throw new ArgumentException("يجب أن يكون المبلغ أكبر من صفر.");
+
+        using var db = Database.Open();
+        using var tx = db.BeginTransaction();
+        using (var party = db.CreateCommand())
+        {
+            party.Transaction = tx;
+            party.CommandText = "SELECT Kind,IsActive FROM Parties WHERE Id=$id";
+            party.Parameters.AddWithValue("$id", partyId);
+            using var reader = party.ExecuteReader();
+            if (!reader.Read()) throw new InvalidOperationException("العميل أو المورد غير موجود.");
+            var partyKind = reader.GetString(0);
+            var active = reader.GetInt32(1) != 0;
+            if (!active) throw new InvalidOperationException("الطرف موقوف.");
+            if (kind == "RECEIPT" && partyKind is not ("Customer" or "Both"))
+                throw new InvalidOperationException("سند القبض يتطلب عميلًا.");
+            if (kind == "PAYMENT" && partyKind is not ("Supplier" or "Both"))
+                throw new InvalidOperationException("سند الصرف يتطلب موردًا.");
+        }
+
+        using (var journal = db.CreateCommand())
+        {
+            journal.Transaction = tx;
+            journal.CommandText = "INSERT INTO Journals(Number,EntryDate,Memo,Source,Status,CreatedAt) VALUES($number,$date,$memo,'PartyPayment','POSTED',$at)";
+            journal.Parameters.AddWithValue("$number", "PAY-" + number.Trim());
+            journal.Parameters.AddWithValue("$date", date.ToString("yyyy-MM-dd"));
+            journal.Parameters.AddWithValue("$memo", (kind == "RECEIPT" ? "سند قبض " : "سند صرف ") + number.Trim() + " " + memo);
+            journal.Parameters.AddWithValue("$at", Now);
+            journal.ExecuteNonQuery();
+        }
+        long journalId = GetLastInsertId(db, tx);
+        using (var payment = db.CreateCommand())
+        {
+            payment.Transaction = tx;
+            payment.CommandText = @"INSERT INTO PartyPayments(Kind,Number,PaymentDate,PartyId,AmountHalalas,Method,Memo,JournalId,CreatedAt)
+VALUES($kind,$number,$date,$party,$amount,$method,$memo,$journal,$at)";
+            payment.Parameters.AddWithValue("$kind", kind);
+            payment.Parameters.AddWithValue("$number", number.Trim());
+            payment.Parameters.AddWithValue("$date", date.ToString("yyyy-MM-dd"));
+            payment.Parameters.AddWithValue("$party", partyId);
+            payment.Parameters.AddWithValue("$amount", amountHalalas);
+            payment.Parameters.AddWithValue("$method", method);
+            payment.Parameters.AddWithValue("$memo", memo.Trim());
+            payment.Parameters.AddWithValue("$journal", journalId);
+            payment.Parameters.AddWithValue("$at", Now);
+            payment.ExecuteNonQuery();
+        }
+        long paymentId = GetLastInsertId(db, tx);
+        if (kind == "RECEIPT")
+        {
+            AddJournalLine(db, tx, journalId, "1010", "الصندوق - قبض", amountHalalas, 0);
+            AddJournalLine(db, tx, journalId, "1100", "تخفيض ذمم العملاء", 0, amountHalalas);
+        }
+        else
+        {
+            AddJournalLine(db, tx, journalId, "2100", "تخفيض ذمم الموردين", amountHalalas, 0);
+            AddJournalLine(db, tx, journalId, "1010", "الصندوق - صرف", 0, amountHalalas);
+        }
+        Audit(db, tx, "ترحيل", kind == "RECEIPT" ? "سند قبض" : "سند صرف", paymentId.ToString(), $"{number}; المبلغ={amount:0.00}");
+        tx.Commit();
+        return paymentId;
+    }
+
     private static void AddJournalLine(SqliteConnection db, SqliteTransaction tx, long journalId, string account, string memo, long debit, long credit)
     {
         using var cmd = db.CreateCommand();
