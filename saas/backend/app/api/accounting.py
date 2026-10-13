@@ -2,7 +2,7 @@ from datetime import date
 from decimal import Decimal
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from sqlalchemy import and_, case, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -10,8 +10,8 @@ from app.api.setup import create_account as create_setup_account
 from app.database import get_db
 from app.dependencies import TenantContext, admin_or_accountant, get_tenant_context
 from app.models import Account, JournalEntry, JournalLine
-from app.schemas import AccountCreate, AccountOut, JournalCreate, JournalLineOut, JournalOut
-from app.services.accounting import audit, create_journal, money
+from app.schemas import AccountCreate, AccountOut, JournalCreate, JournalLineOut, JournalOut, JournalReverseRequest
+from app.services.accounting import audit, create_journal, money, reverse_journal
 
 router = APIRouter(prefix="/accounting", tags=["General ledger"])
 
@@ -109,6 +109,28 @@ async def journal_lines(
     return [JournalLineOut.model_validate(line) for line in lines]
 
 
+@router.post("/journals/{journal_id}/reverse", response_model=JournalOut, status_code=status.HTTP_201_CREATED)
+async def reverse_posted_journal(
+    journal_id: UUID,
+    payload: JournalReverseRequest,
+    request: Request,
+    context: TenantContext = Depends(admin_or_accountant),
+    session: AsyncSession = Depends(get_db),
+) -> JournalOut:
+    reversal = await reverse_journal(
+        session=session,
+        tenant_id=context.tenant_id,
+        user_id=context.user_id,
+        journal_id=journal_id,
+        reversal_date=payload.reversal_date,
+        reason=payload.reason,
+        second_approver_email=str(payload.second_approver_email),
+        second_approver_password=payload.second_approver_password,
+        remote_address=request.client.host if request.client else None,
+    )
+    return JournalOut.model_validate(reversal)
+
+
 @router.get("/trial-balance")
 async def trial_balance(
     context: TenantContext = Depends(get_tenant_context),
@@ -141,7 +163,7 @@ async def trial_balance(
             and_(
                 JournalEntry.tenant_id == JournalLine.tenant_id,
                 JournalEntry.id == JournalLine.entry_id,
-                JournalEntry.status == "POSTED",
+                JournalEntry.status.in_(("POSTED", "REVERSED")),
                 JournalEntry.entry_date >= from_date,
                 JournalEntry.entry_date <= to_date,
             ),
