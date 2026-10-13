@@ -1,0 +1,57 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-alsaqr_saas}
+      POSTGRES_USER: alsaqr_admin
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD:-local_admin_change_this_password}
+      POSTGRES_APP_PASSWORD: ${POSTGRES_APP_PASSWORD:-local_app_change_this_password}
+      POSTGRES_MIGRATION_PASSWORD: ${POSTGRES_MIGRATION_PASSWORD:-local_migrator_change_this_password}
+    ports:
+      - "5433:5432"
+    volumes:
+      - saas_pgdata:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U alsaqr_admin -d ${POSTGRES_DB:-alsaqr_saas}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build:
+      context: ./backend
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql+asyncpg://alsaqr_app:local_app_change_this_password@db:5432/alsaqr_saas}
+      MIGRATION_DATABASE_URL: ${MIGRATION_DATABASE_URL:-postgresql+asyncpg://alsaqr_migrator:local_migrator_change_this_password@db:5432/alsaqr_saas}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-local-only-secret-key-change-this-to-a-random-value-at-least-32-chars}
+      JWT_ACCESS_TOKEN_MINUTES: ${JWT_ACCESS_TOKEN_MINUTES:-20}
+      APP_ENV: ${APP_ENV:-development}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173,http://127.0.0.1:5173}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_VISION_MODEL: ${OPENAI_VISION_MODEL:-gpt-4o}
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+
+  frontend:
+    image: node:22-alpine
+    working_dir: /app
+    environment:
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:8000/api/v1}
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - saas_node_modules:/app/node_modules
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    depends_on:
+      - api
+
+volumes:
+  saas_pgdata:
+  saas_node_modules:

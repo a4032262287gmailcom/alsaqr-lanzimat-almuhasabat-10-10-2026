@@ -6,7 +6,11 @@ on:
       - main
       - feature/real-accounting-core-20261013
       - desktop-accounting-core-20261013
+ feature/erp-pos-cashier-20261013
       - feature/erp-pos-cashier-20261013
+=======
+      - feature/licensing-settings-cashier-20261013
+main
   pull_request:
     branches:
       - main
@@ -20,10 +24,10 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install .NET SDK
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 8.0.x
 
@@ -46,7 +50,7 @@ jobs:
         run: dotnet publish AlSaqr.Accounting.csproj -c Release -r win-x64 --no-restore -p:SelfContained=true -o artifacts/publish
 
       - name: Upload publish artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: AlSaqr-Accounting-win-x64
           path: artifacts/publish/

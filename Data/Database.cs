@@ -200,6 +200,7 @@ CREATE TABLE IF NOT EXISTS AuditLog(
         // Forward-compatible schema migrations for existing local databases.
         EnsureColumn(db, "Returns", "SourceInvoiceId", "INTEGER NULL REFERENCES Invoices(Id) ON DELETE RESTRICT");
         EnsureColumn(db, "Products", "Barcode", "TEXT NULL");
+ feature/erp-pos-cashier-20261013
         EnsureColumn(db, "Invoices", "DiscountHalalas", "INTEGER NOT NULL DEFAULT 0");
         EnsureColumn(db, "Invoices", "DiscountPercent", "REAL NOT NULL DEFAULT 0");
         EnsureColumn(db, "Invoices", "PaymentMethod", "TEXT NOT NULL DEFAULT 'UNSPECIFIED'");
@@ -216,6 +217,13 @@ CREATE TABLE IF NOT EXISTS AuditLog(
             sessionInvoiceIndex.CommandText = "CREATE INDEX IF NOT EXISTS IX_Invoices_CashierSessionId ON Invoices(CashierSessionId, PaymentMethod, Kind)";
             sessionInvoiceIndex.ExecuteNonQuery();
         }
+=======
+        using (var barcodeIndex = db.CreateCommand())
+        {
+            barcodeIndex.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS IX_Products_Barcode ON Products(Barcode) WHERE Barcode IS NOT NULL AND Barcode <> ''";
+            barcodeIndex.ExecuteNonQuery();
+        }
+ main
         EnsureColumn(db, "ReturnLines", "SourceInvoiceLineId", "INTEGER NULL REFERENCES InvoiceLines(Id) ON DELETE RESTRICT");
 
         using var transaction = db.BeginTransaction();
@@ -225,7 +233,11 @@ CREATE TABLE IF NOT EXISTS AuditLog(
             ("1200","المخزون","Asset"), ("1300","ضريبة القيمة المضافة - مدخلات","Asset"),
             ("2100","الموردون","Liability"), ("2200","ضريبة القيمة المضافة - مخرجات","Liability"),
             ("3000","رأس المال","Equity"), ("3100","الأرباح المبقاة","Equity"),
+ feature/erp-pos-cashier-20261013
             ("4000","إيرادات المبيعات","Revenue"), ("4010","مردودات المبيعات","Revenue"), ("4020","خصومات المبيعات","Revenue"), ("4090","مكاسب تسوية المخزون","Revenue"),
+=======
+            ("4000","إيرادات المبيعات","Revenue"), ("4010","مردودات المبيعات","Revenue"), ("4090","مكاسب تسوية المخزون","Revenue"),
+ main
             ("5000","تكلفة البضاعة المباعة","Expense"), ("5010","خسائر عجز المخزون","Expense"), ("5050","فروقات تكلفة المردودات","Expense"),
             ("6000","المصروفات التشغيلية","Expense")
         };
