@@ -85,16 +85,6 @@ CREATE TABLE IF NOT EXISTS InvoiceLines(
   VatRate REAL NOT NULL, NetHalalas INTEGER NOT NULL, VatHalalas INTEGER NOT NULL, TotalHalalas INTEGER NOT NULL
 );
 CREATE INDEX IF NOT EXISTS IX_Invoices_DateKind ON Invoices(InvoiceDate,Kind);
- desktop-no-license-window
-CREATE TABLE IF NOT EXISTS PartyPayments(
-  Id INTEGER PRIMARY KEY AUTOINCREMENT, Kind TEXT NOT NULL CHECK(Kind IN ('RECEIPT','PAYMENT')),
-  Number TEXT NOT NULL UNIQUE, PaymentDate TEXT NOT NULL,
-  PartyId INTEGER NOT NULL REFERENCES Parties(Id), AmountHalalas INTEGER NOT NULL CHECK(AmountHalalas > 0),
-  Method TEXT NOT NULL DEFAULT 'CASH', Memo TEXT NOT NULL DEFAULT '',
-  JournalId INTEGER NOT NULL REFERENCES Journals(Id), CreatedAt TEXT NOT NULL
-);
-CREATE INDEX IF NOT EXISTS IX_PartyPayments_DateKind ON PartyPayments(PaymentDate,Kind);
-=======
 CREATE TABLE IF NOT EXISTS Returns(
   Id INTEGER PRIMARY KEY AUTOINCREMENT,
   Kind TEXT NOT NULL CHECK(Kind IN ('SALE_RETURN','PURCHASE_RETURN')),
@@ -134,6 +124,18 @@ CREATE TABLE IF NOT EXISTS StockMovements(
   CHECK((QuantityIn > 0 AND QuantityOut = 0) OR (QuantityOut > 0 AND QuantityIn = 0))
 );
 CREATE INDEX IF NOT EXISTS IX_StockMovements_DateProduct ON StockMovements(MovementDate,ProductId);
+CREATE TABLE IF NOT EXISTS InventoryAdjustments(
+  Id INTEGER PRIMARY KEY AUTOINCREMENT,
+  Number TEXT NOT NULL UNIQUE,
+  AdjustmentDate TEXT NOT NULL,
+  ProductId INTEGER NOT NULL REFERENCES Products(Id) ON DELETE RESTRICT,
+  QuantityDelta REAL NOT NULL CHECK(QuantityDelta <> 0),
+  UnitCostHalalas INTEGER NOT NULL CHECK(UnitCostHalalas > 0),
+  Reason TEXT NOT NULL,
+  JournalId INTEGER NOT NULL REFERENCES Journals(Id) ON DELETE RESTRICT,
+  CreatedAt TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS IX_InventoryAdjustments_Date ON InventoryAdjustments(AdjustmentDate);
 CREATE TABLE IF NOT EXISTS Settlements(
   Id INTEGER PRIMARY KEY AUTOINCREMENT, Kind TEXT NOT NULL CHECK(Kind IN ('RECEIPT','PAYMENT')),
   Number TEXT NOT NULL UNIQUE, SettlementDate TEXT NOT NULL,
@@ -148,7 +150,6 @@ CREATE TABLE IF NOT EXISTS Users(
   Role TEXT NOT NULL CHECK(Role IN ('Admin','Accountant','ReadOnly')),
   IsActive INTEGER NOT NULL DEFAULT 1 CHECK(IsActive IN (0,1)), CreatedAt TEXT NOT NULL
 );
- main
 CREATE TABLE IF NOT EXISTS AuditLog(
   Id INTEGER PRIMARY KEY AUTOINCREMENT, EventAt TEXT NOT NULL, Actor TEXT NOT NULL,
   Action TEXT NOT NULL, Entity TEXT NOT NULL, EntityId TEXT NOT NULL, Details TEXT NOT NULL
@@ -189,8 +190,8 @@ CREATE TABLE IF NOT EXISTS AuditLog(
             ("1200","المخزون","Asset"), ("1300","ضريبة القيمة المضافة - مدخلات","Asset"),
             ("2100","الموردون","Liability"), ("2200","ضريبة القيمة المضافة - مخرجات","Liability"),
             ("3000","رأس المال","Equity"), ("3100","الأرباح المبقاة","Equity"),
-            ("4000","إيرادات المبيعات","Revenue"), ("4010","مردودات المبيعات","Revenue"),
-            ("5000","تكلفة البضاعة المباعة","Expense"), ("5050","فروقات تكلفة المردودات","Expense"),
+            ("4000","إيرادات المبيعات","Revenue"), ("4010","مردودات المبيعات","Revenue"), ("4090","مكاسب تسوية المخزون","Revenue"),
+            ("5000","تكلفة البضاعة المباعة","Expense"), ("5010","خسائر عجز المخزون","Expense"), ("5050","فروقات تكلفة المردودات","Expense"),
             ("6000","المصروفات التشغيلية","Expense")
         };
         foreach (var account in accounts)
