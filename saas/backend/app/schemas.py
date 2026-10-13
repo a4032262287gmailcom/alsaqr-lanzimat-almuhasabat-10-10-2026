@@ -199,6 +199,7 @@ class InvoiceItemInput(APIModel):
     quantity: Quantity
     unit_price: Money
     discount_rate: Rate = Decimal("0")
+    vat_rate: Rate | None = None
 
 
 class InvoiceCreate(APIModel):
@@ -261,6 +262,27 @@ class StockBalanceOut(APIModel):
     product_id: UUID
     quantity: Decimal
     average_cost: Decimal
+
+
+class OCRDraftLineReview(APIModel):
+    product_id: UUID | None = None
+    account_id: UUID | None = None
+    cost_center_id: UUID | None = None
+    description: Annotated[str, Field(min_length=2, max_length=400)]
+    quantity: Quantity
+    unit_price: Money
+    discount_rate: Rate = Decimal("0")
+    vat_rate: Rate = Decimal("15")
+
+
+class OCRDraftReviewRequest(APIModel):
+    warehouse_id: UUID | None = None
+    lines: Annotated[list[OCRDraftLineReview], Field(min_length=1, max_length=500)]
+
+
+class OCRApprovalRequest(APIModel):
+    is_credit: bool = True
+    confirm_expense_only: bool = False
 
 
 class OCRDraftOut(APIModel):
