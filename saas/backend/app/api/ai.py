@@ -3,7 +3,6 @@ import json
 from datetime import date
 from decimal import Decimal
 from hashlib import sha256
-from uuid import uuid4
 
 import httpx
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
@@ -133,6 +132,15 @@ async def read_purchase_invoice(
     except (httpx.HTTPError, json.JSONDecodeError, ValueError) as exc:
         raise HTTPException(status_code=502, detail="AI invoice extraction failed; upload or review the document again") from exc
 
+    document_hash = sha256(raw).hexdigest()
+    client_reference = "OCR-" + document_hash[:40]
+    existing_document = await session.scalar(select(Invoice).where(
+        Invoice.tenant_id == context.tenant_id,
+        Invoice.client_reference == client_reference,
+    ))
+    if existing_document is not None:
+        raise HTTPException(status_code=409, detail="This invoice file has already been uploaded for this company")
+
     vendor_name = str(data.get("vendor_name") or "").strip()
     if len(vendor_name) < 2:
         raise HTTPException(status_code=422, detail="Could not identify a supplier name from the invoice")
@@ -224,7 +232,7 @@ async def read_purchase_invoice(
         subtotal=subtotal,
         vat_total=vat_amount,
         total=grand_total,
-        client_reference="OCR-" + sha256(raw).hexdigest()[:32] + "-" + str(uuid4())[:8],
+        client_reference=client_reference,
         source_document_name=(file.filename or "purchase-invoice")[:255],
         ocr_metadata={
             "provider": "openai-responses",
@@ -254,39 +262,42 @@ async def read_purchase_invoice(
     )
     session.add(line)
 
-    draft_number = await next_number(session, context.tenant_id, "JOURNAL", "DRAFT-JV", invoice_date)
-    draft_entry = JournalEntry(
-        tenant_id=context.tenant_id,
-        number=draft_number,
-        entry_date=invoice_date,
-        memo=f"مسودة قيد مشتريات OCR {invoice.number} — تحتاج مراجعة",
-        status="DRAFT",
-        source_type="OCR_PURCHASE",
-        source_id=invoice.id,
-        posted_by=None,
-        posted_at=None,
-    )
-    session.add(draft_entry)
-    await session.flush()
-    session.add_all([
-        JournalLine(
-            tenant_id=context.tenant_id, entry_id=draft_entry.id,
-            account_id=expense.id, debit=subtotal, credit=Decimal("0"),
-            description="قيمة فاتورة مشتريات مستخرجة آليًا — تصنيف مؤقت",
-        ),
-        JournalLine(
-            tenant_id=context.tenant_id, entry_id=draft_entry.id,
-            account_id=input_vat.id, debit=vat_amount, credit=Decimal("0"),
-            description="ضريبة مدخلات — تحتاج مراجعة",
-        ),
-        JournalLine(
-            tenant_id=context.tenant_id, entry_id=draft_entry.id,
-            account_id=payable.id, debit=Decimal("0"), credit=grand_total,
-            contact_id=contact.id,
-            description="ذمم المورد — مسودة غير مرحلة",
-        ),
-    ])
-    invoice.journal_entry_id = draft_entry.id
+    if money(subtotal + vat_amount) == grand_total:
+        draft_number = await next_number(session, context.tenant_id, "JOURNAL", "DRAFT-JV", invoice_date)
+        draft_entry = JournalEntry(
+            tenant_id=context.tenant_id,
+            number=draft_number,
+            entry_date=invoice_date,
+            memo=f"مسودة قيد مشتريات OCR {invoice.number} — تحتاج مراجعة",
+            status="DRAFT",
+            source_type="OCR_PURCHASE",
+            source_id=invoice.id,
+            posted_by=None,
+            posted_at=None,
+        )
+        session.add(draft_entry)
+        await session.flush()
+        session.add_all([
+            JournalLine(
+                tenant_id=context.tenant_id, entry_id=draft_entry.id,
+                account_id=expense.id, debit=subtotal, credit=Decimal("0"),
+                description="قيمة فاتورة مشتريات مستخرجة آليًا — تصنيف مؤقت",
+            ),
+            JournalLine(
+                tenant_id=context.tenant_id, entry_id=draft_entry.id,
+                account_id=input_vat.id, debit=vat_amount, credit=Decimal("0"),
+                description="ضريبة مدخلات — تحتاج مراجعة",
+            ),
+            JournalLine(
+                tenant_id=context.tenant_id, entry_id=draft_entry.id,
+                account_id=payable.id, debit=Decimal("0"), credit=grand_total,
+                contact_id=contact.id,
+                description="ذمم المورد — مسودة غير مرحلة",
+            ),
+        ])
+        invoice.journal_entry_id = draft_entry.id
+    else:
+        warnings.append("لم يُنشأ قيد مسودة لأن إجمالي الفاتورة لا يتوازن مع صافي القيمة والضريبة. صحّح البنود والمبالغ ثم أعد مراجعتها.")
     await audit(session, context.tenant_id, context.user_id, "OCR_PURCHASE_DRAFT_CREATED", "Invoice", invoice.id, {
         "draft_journal_id": str(draft_entry.id),
         "confidence": str(confidence),
