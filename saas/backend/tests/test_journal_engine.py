@@ -301,6 +301,15 @@ async def test_database_blocks_mutation_of_posted_journal() -> None:
     async with SessionFactory() as session:
         await set_tenant_context(session, str(tenant_id))
         account_ids = await seed_chart_of_accounts(session, tenant_id)
+        session.add(FiscalPeriod(
+            tenant_id=tenant_id,
+            code="FY2026",
+            name="السنة المالية 2026",
+            start_date=date(2026, 1, 1),
+            end_date=date(2026, 12, 31),
+            status="OPEN",
+        ))
+        await session.flush()
         journal = await create_journal(
             session, tenant_id, None, date(2026, 7, 1), "قيد غير قابل للتعديل", "MANUAL",
             [
