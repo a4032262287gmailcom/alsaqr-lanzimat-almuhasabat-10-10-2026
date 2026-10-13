@@ -42,7 +42,7 @@ def upgrade() -> None:
             f"USING ({expression}) WITH CHECK ({expression})"
         )
 
-    op.execute("""
+    bind.exec_driver_sql("""
     CREATE OR REPLACE FUNCTION saas_block_posted_journal_mutation()
     RETURNS trigger
     LANGUAGE plpgsql
@@ -87,7 +87,7 @@ def upgrade() -> None:
     FOR EACH ROW EXECUTE FUNCTION saas_block_posted_journal_mutation();
     """)
 
-    op.execute("""
+    bind.exec_driver_sql("""
     CREATE OR REPLACE FUNCTION saas_assert_posted_journal_balanced()
     RETURNS trigger
     LANGUAGE plpgsql
@@ -160,7 +160,7 @@ def upgrade() -> None:
     FOR EACH ROW EXECUTE FUNCTION saas_assert_posted_journal_balanced();
     """)
 
-    op.execute("""
+    bind.exec_driver_sql("""
     CREATE OR REPLACE FUNCTION saas_reject_audit_log_mutation()
     RETURNS trigger
     LANGUAGE plpgsql
