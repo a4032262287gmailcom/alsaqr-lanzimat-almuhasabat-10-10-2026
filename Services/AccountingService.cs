@@ -99,7 +99,7 @@ FROM Parties WHERE ($kind='All' OR Kind=$kind OR Kind='Both') ORDER BY Name";
         cmd.Parameters.AddWithValue("$vat", Db(vatNumber));
         cmd.Parameters.AddWithValue("$at", Now());
         cmd.ExecuteNonQuery();
-        Audit(db, "إضافة", "Party", db.LastInsertRowId.ToString(), $"إضافة الطرف {name.Trim()}");
+        Audit(db, "إضافة", "Party", LastInsertId(db).ToString(), $"إضافة الطرف {name.Trim()}");
     }
 
     public DataTable Products()
@@ -149,7 +149,7 @@ VALUES($code,$name,$unit,$qty,$cost,$price,$vat,1,$at)";
             cmd.Parameters.AddWithValue("$vat", (double)vatRate);
             cmd.Parameters.AddWithValue("$at", Now());
             cmd.ExecuteNonQuery();
-            var productId = db.LastInsertRowId;
+            var productId = LastInsertId(db, tx);
 
             if (openingQuantity > 0)
             {
@@ -234,9 +234,9 @@ VALUES($date,$product,'OPENING',$product,$qty,$zero,$cost,'رصيد افتتاح
 
             var netHalalas = ToHalalas(line.Quantity * line.UnitPrice);
             var vatHalalas = ToHalalas(FromHalalas(netHalalas) * vatRate / 100m);
-            var totalHalalas = checked(netHalalas + vatHalalas);
+            var lineTotalHalalas = checked(netHalalas + vatHalalas);
             var costTotal = ToHalalas(line.Quantity * FromHalalas(costHalalas));
-            computed.Add((line, productCode, productName, vatRate, costHalalas, netHalalas, vatHalalas, totalHalalas, costTotal));
+            computed.Add((line, productCode, productName, vatRate, costHalalas, netHalalas, vatHalalas, lineTotalHalalas, costTotal));
             subtotal += FromHalalas(netHalalas);
             vatTotal += FromHalalas(vatHalalas);
             cogsTotal += FromHalalas(costTotal);
@@ -284,7 +284,7 @@ VALUES($kind,$number,$date,$party,$credit,'POSTED',$subtotal,$vat,$total,$journa
             invoiceCmd.Parameters.AddWithValue("$at", Now());
             invoiceCmd.ExecuteNonQuery();
         }
-        var invoiceId = db.LastInsertRowId;
+        var invoiceId = LastInsertId(db, tx);
         foreach (var item in computed)
         {
             using (var lineCmd = db.CreateCommand())
@@ -578,10 +578,32 @@ VALUES($kind,$number,$date,$party,$amount,$cash,$journal,$memo,$at)";
             cmd.Parameters.AddWithValue("$at", Now());
             cmd.ExecuteNonQuery();
         }
-        var id = db.LastInsertRowId;
+        var id = LastInsertId(db, tx);
         Audit(db, tx, "ترحيل", "Settlement", id.ToString(), $"ترحيل {number} بقيمة {FromHalalas(amountHalalas):0.00} ر.س");
         tx.Commit();
         return id;
+    }
+
+    public DataTable RecentJournals()
+    {
+        using var db = Database.Open();
+        using var cmd = db.CreateCommand();
+        cmd.CommandText = @"SELECT j.Number AS 'رقم القيد',j.EntryDate AS 'التاريخ',j.Memo AS 'البيان',
+j.Source AS 'المصدر',ROUND(SUM(l.DebitHalalas)/100.0,2) AS 'إجمالي المدين',
+ROUND(SUM(l.CreditHalalas)/100.0,2) AS 'إجمالي الدائن',j.Status AS 'الحالة'
+FROM Journals j JOIN JournalLines l ON l.JournalId=j.Id
+GROUP BY j.Id,j.Number,j.EntryDate,j.Memo,j.Source,j.Status
+ORDER BY j.Id DESC LIMIT 500";
+        return ReadTable(cmd);
+    }
+
+    public DataTable AuditHistory()
+    {
+        using var db = Database.Open();
+        using var cmd = db.CreateCommand();
+        cmd.CommandText = @"SELECT EventAt AS 'الوقت',Actor AS 'المستخدم',Action AS 'العملية',Entity AS 'الكيان',
+EntityId AS 'المعرف',Details AS 'التفاصيل' FROM AuditLog ORDER BY Id DESC LIMIT 1000";
+        return ReadTable(cmd);
     }
 
     public DashboardInfo Dashboard(DateTime today)
@@ -693,6 +715,14 @@ WHERE j.Status='POSTED' AND j.EntryDate >= $from AND j.EntryDate <= $to";
         cmd.Parameters.AddWithValue("$id", entityId);
         cmd.Parameters.AddWithValue("$details", details);
         cmd.ExecuteNonQuery();
+    }
+
+    private static long LastInsertId(SqliteConnection db, SqliteTransaction? tx = null)
+    {
+        using var cmd = db.CreateCommand();
+        cmd.Transaction = tx;
+        cmd.CommandText = "SELECT last_insert_rowid()";
+        return Convert.ToInt64(cmd.ExecuteScalar());
     }
 
     private static object Db(string? value) => string.IsNullOrWhiteSpace(value) ? DBNull.Value : value.Trim();
