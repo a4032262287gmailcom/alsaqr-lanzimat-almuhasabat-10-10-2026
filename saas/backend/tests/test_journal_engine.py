@@ -374,9 +374,22 @@ async def test_audit_logs_are_append_only_in_postgresql() -> None:
             action="TEST_EVENT",
             entity_type="Test",
             details={"original": True},
+            before_data={"status": "DRAFT"},
+            after_data={"status": "POSTED", "amount": "125.00"},
+            user_agent="pytest-agent",
+            correlation_id="test-correlation-123",
         )
         session.add(event)
         await session.commit()
+
+        saved_event = await session.scalar(
+            select(AuditLog).where(AuditLog.tenant_id == tenant_id, AuditLog.id == event.id)
+        )
+        assert saved_event is not None
+        assert saved_event.before_data == {"status": "DRAFT"}
+        assert saved_event.after_data == {"status": "POSTED", "amount": "125.00"}
+        assert saved_event.user_agent == "pytest-agent"
+        assert saved_event.correlation_id == "test-correlation-123"
 
         await set_tenant_context(session, str(tenant_id))
         with pytest.raises(DBAPIError):
