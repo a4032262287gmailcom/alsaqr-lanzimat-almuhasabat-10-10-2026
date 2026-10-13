@@ -13,10 +13,10 @@ internal sealed partial class MainForm : Form
     private readonly AuthService _auth = new();
     private readonly Panel _content = new();
     private readonly Label _status = new();
-    private readonly Color _navy = Color.FromArgb(18, 32, 52);
-    private readonly Color _blue = Color.FromArgb(37, 66, 101);
-    private readonly Color _gold = Color.FromArgb(190, 151, 61);
-    private readonly Color _paper = Color.FromArgb(244, 246, 249);
+    private Color _navy = Color.FromArgb(18, 32, 52);
+    private Color _blue = Color.FromArgb(37, 66, 101);
+    private Color _gold = Color.FromArgb(190, 151, 61);
+    private Color _paper = Color.FromArgb(244, 246, 249);
     private DataGridView? _tableGrid;
     private DataTable? _lastReport;
     private DataView? _tableView;
@@ -29,6 +29,8 @@ internal sealed partial class MainForm : Form
     public MainForm(AuthUser user)
     {
         _user = user;
+        var initialPalette = SystemSettingsService.PaletteFor(_settingsService.Load().Theme);
+        _navy = initialPalette.Navy; _blue = initialPalette.Blue; _gold = initialPalette.Gold; _paper = initialPalette.Paper;
         Text = "الصقر | نظام المحاسبة";
         WindowState = FormWindowState.Maximized;
         MinimumSize = new Size(1120, 700);
@@ -50,6 +52,7 @@ internal sealed partial class MainForm : Form
         AddNavigation(nav, "العملاء والموردون", ShowParties);
         AddNavigation(nav, "الأصناف والمخزون", ShowProducts);
         AddNavigation(nav, "فواتير البيع", () => ShowInvoices("SALE"));
+        if (CanPost) AddNavigation(nav, "الكاشير", ShowCashier);
         AddNavigation(nav, "فواتير الشراء", () => ShowInvoices("PURCHASE"));
         AddNavigation(nav, "مردودات البيع", () => ShowReturns("SALE_RETURN"));
         AddNavigation(nav, "مردودات الشراء", () => ShowReturns("PURCHASE_RETURN"));
@@ -59,7 +62,12 @@ internal sealed partial class MainForm : Form
         }
         AddNavigation(nav, "سجل السندات", ShowSettlements);
         AddNavigation(nav, "التقارير", ShowReports);
-        if (IsAdmin) AddNavigation(nav, "المستخدمون والصلاحيات", ShowUsers);
+        if (IsAdmin)
+        {
+            AddNavigation(nav, "إعدادات النظام", ShowSystemSettings);
+            AddNavigation(nav, "ترخيص النظام", ShowLicenseManagement);
+            AddNavigation(nav, "المستخدمون والصلاحيات", ShowUsers);
+        }
         AddNavigation(nav, "نسخة احتياطية", BackupDatabase);
 
         _content.Dock = DockStyle.Fill;
@@ -236,13 +244,13 @@ internal sealed partial class MainForm : Form
     {
         if (!IsAdmin) { Denied(); return; }
         using var form = Dialog("إضافة صنف / رصيد افتتاحي", 6, out var body, out var save);
-        var code = TextBox(); var name = TextBox(); var unit = TextBox(); unit.Text = "حبة";
+        var code = TextBox(); var barcode = TextBox(); var name = TextBox(); var unit = TextBox(); unit.Text = "حبة";
         var qty = Numeric(0, 100000000, 3); var cost = Numeric(0, 1000000000, 2); var price = Numeric(0, 1000000000, 2); var vat = Numeric(0,100,2); vat.Value=15;
-        AddField(body, "رمز الصنف", code); AddField(body, "اسم الصنف", name); AddField(body, "الوحدة", unit);
+        AddField(body, "رمز الصنف", code); AddField(body, "الباركود (اختياري)", barcode); AddField(body, "اسم الصنف", name); AddField(body, "الوحدة", unit);
         AddField(body, "الكمية الافتتاحية", qty); AddField(body, "تكلفة الوحدة (ر.س)", cost); AddField(body, "سعر البيع (ر.س)", price); AddField(body, "ضريبة القيمة المضافة %", vat);
         save.Text = "حفظ الصنف";
-        save.Click += (_, _) => Guard(() => { _service.AddProduct(code.Text, name.Text, unit.Text, qty.Value, cost.Value, price.Value, vat.Value); form.DialogResult = DialogResult.OK; form.Close(); ShowProducts(); SetStatus("تم حفظ الصنف."); });
-        form.Height += 70;
+        save.Click += (_, _) => Guard(() => { _service.AddProduct(code.Text, name.Text, unit.Text, qty.Value, cost.Value, price.Value, vat.Value, barcode.Text); form.DialogResult = DialogResult.OK; form.Close(); ShowProducts(); SetStatus("تم حفظ الصنف والباركود."); });
+        form.Height += 130;
         form.ShowDialog(this);
     }
 

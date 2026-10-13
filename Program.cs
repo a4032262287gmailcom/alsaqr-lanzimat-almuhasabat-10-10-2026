@@ -12,6 +12,14 @@ internal static class Program
         ApplicationConfiguration.Initialize();
         try
         {
+            var licensing = new LicenseService();
+            var licenseStatus = licensing.GetStatus();
+            if (!licenseStatus.Allowed)
+            {
+                using var activation = new LicenseActivationForm(licensing, licenseStatus);
+                if (activation.ShowDialog() != DialogResult.OK) return;
+            }
+
             Database.Initialize();
             var auth = new AuthService();
             using var login = new LoginForm(auth);
