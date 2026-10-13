@@ -41,6 +41,7 @@ async def add_account(
 @router.post("/journals", response_model=JournalOut, status_code=status.HTTP_201_CREATED)
 async def post_manual_journal(
     payload: JournalCreate,
+    request: Request,
     context: TenantContext = Depends(admin_or_accountant),
     session: AsyncSession = Depends(get_db),
 ) -> JournalOut:
@@ -69,7 +70,7 @@ async def post_manual_journal(
     await audit(session, context.tenant_id, context.user_id, "MANUAL_JOURNAL_POSTED", "JournalEntry", journal.id, {
         "number": journal.number,
         "lines": len(lines),
-    })
+    }, remote_address=request.client.host if request.client else None)
     return JournalOut.model_validate(journal)
 
 
