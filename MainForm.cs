@@ -72,6 +72,7 @@ internal sealed partial class MainForm : Form
         }
         AddNavigation(nav, "سجل السندات", ShowSettlements);
         AddNavigation(nav, "التقارير", ShowReports);
+        AddNavigation(nav, "ورديات الكاشير", ShowCashierSessions);
         if (IsAdmin) AddNavigation(nav, "المستخدمون والصلاحيات", ShowUsers);
         AddNavigation(nav, "نسخة احتياطية", BackupDatabase);
 
@@ -525,6 +526,11 @@ internal sealed partial class MainForm : Form
         actions.Add(("تحديث", ShowSettlements));
         ShowTablePage("سجل سندات القبض والصرف المرحلة",
             _service.SettlementRegister("ALL", new DateTime(2000,1,1), DateTime.Today.AddDays(1)), actions.ToArray());
+    }
+
+    private void ShowCashierSessions()
+    {
+        ShowReportTable("سجل ورديات الكاشير ومطابقة النقدية", new CashierService().SessionRegister());
     }
 
     private void ShowReports()
