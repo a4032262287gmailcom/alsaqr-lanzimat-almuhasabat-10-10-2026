@@ -96,7 +96,7 @@ async def register(payload: RegisterRequest, session: AsyncSession = Depends(get
     except IntegrityError as exc:
         raise HTTPException(status_code=409, detail="Email or company slug is already in use") from exc
 
-    membership = Membership(tenant_id=tenant.id, user_id=user.id, role="Admin", is_active=True)
+    membership = Membership(tenant_id=tenant.id, user_id=user.id, role="Owner", is_active=True)
     session.add(membership)
     await session.flush()
     await set_tenant_context(session, str(tenant.id))
@@ -107,7 +107,7 @@ async def register(payload: RegisterRequest, session: AsyncSession = Depends(get
         session.add(NumberSequence(tenant_id=tenant.id, sequence_key=key, next_value=1))
     await session.flush()
     response = auth_response(user, [
-        MembershipOut(tenant_id=tenant.id, company_name=tenant.name, company_slug=tenant.slug, role="Admin")
+        MembershipOut(tenant_id=tenant.id, company_name=tenant.name, company_slug=tenant.slug, role="Owner")
     ])
     return response
 
