@@ -433,20 +433,28 @@ internal sealed class JournalEntryForm : Form
 {
     private readonly AccountingService _service;
     private readonly List<AccountInfo> _accounts;
+    private readonly List<PartyLookup> _parties;
     private readonly DateTimePicker _date=new() { Width=150,Format=DateTimePickerFormat.Custom,CustomFormat="yyyy-MM-dd",Value=DateTime.Today };
     private readonly TextBox _memo=new() { Width=490 };
     private readonly DataGridView _grid=new();
     public JournalEntryForm(AccountingService service)
     {
         _service=service; _accounts=service.ActiveAccounts();
+        var partyTable=service.Parties();
+        _parties=partyTable.Rows.Cast<DataRow>()
+            .Where(r=>Convert.ToString(r[5])=="نشط")
+            .Select(r=>new PartyLookup(Convert.ToInt32(r[0]),Convert.ToString(r[1])??""))
+            .ToList();
         Text="قيد يومية جديد"; Width=1040; Height=640; StartPosition=FormStartPosition.CenterParent; RightToLeft=RightToLeft.Yes; RightToLeftLayout=true; Font=new Font("Segoe UI",10F); BackColor=Color.FromArgb(244,246,249);
         var top=new FlowLayoutPanel { Dock=DockStyle.Top,Height=95,FlowDirection=FlowDirection.RightToLeft,Padding=new Padding(12),WrapContents=true };
         top.Controls.Add(new Label { Text="تاريخ القيد",AutoSize=true,Padding=new Padding(0,8,0,0) }); top.Controls.Add(_date);
         top.Controls.Add(new Label { Text="البيان",AutoSize=true,Padding=new Padding(0,8,0,0) }); top.Controls.Add(_memo);
         _grid.Dock=DockStyle.Fill; _grid.AllowUserToAddRows=true; _grid.AllowUserToDeleteRows=true; _grid.AutoSizeColumnsMode=DataGridViewAutoSizeColumnsMode.Fill; _grid.RowHeadersVisible=false; _grid.RightToLeft=RightToLeft.Yes; _grid.BackgroundColor=Color.White; _grid.EnableHeadersVisualStyles=false; _grid.ColumnHeadersDefaultCellStyle.BackColor=Color.FromArgb(18,32,52); _grid.ColumnHeadersDefaultCellStyle.ForeColor=Color.White;
-        var acct=new DataGridViewComboBoxColumn { Name="account",HeaderText="الحساب",DataSource=_accounts.ToList(),DisplayMember="Code",ValueMember="Code",Width=160 };
+        var acct=new DataGridViewComboBoxColumn { Name="account",HeaderText="الحساب",DataSource=_accounts.Select(a=>new AccountLookup(a.Code,a.Name)).ToList(),DisplayMember="DisplayText",ValueMember="Code",Width=230 };
+        var party=new DataGridViewComboBoxColumn { Name="party",HeaderText="العميل / المورد",DataSource=_parties.ToList(),DisplayMember="Text",ValueMember="Id",Width=185 };
         _grid.Columns.Add(acct);
-        _grid.Columns.Add(new DataGridViewTextBoxColumn { Name="lineMemo",HeaderText="بيان السطر",Width=280 });
+        _grid.Columns.Add(party);
+        _grid.Columns.Add(new DataGridViewTextBoxColumn { Name="lineMemo",HeaderText="بيان السطر",Width=220 });
         _grid.Columns.Add(new DataGridViewTextBoxColumn { Name="debit",HeaderText="مدين (ر.س)",ValueType=typeof(decimal) });
         _grid.Columns.Add(new DataGridViewTextBoxColumn { Name="credit",HeaderText="دائن (ر.س)",ValueType=typeof(decimal) });
         var footer=new FlowLayoutPanel { Dock=DockStyle.Bottom,Height=55,FlowDirection=FlowDirection.RightToLeft,Padding=new Padding(8) };
@@ -468,14 +476,23 @@ internal sealed class JournalEntryForm : Form
                 decimal.TryParse(Convert.ToString(row.Cells["debit"].Value,CultureInfo.InvariantCulture),NumberStyles.Any,CultureInfo.InvariantCulture,out var debit);
                 decimal.TryParse(Convert.ToString(row.Cells["credit"].Value,CultureInfo.InvariantCulture),NumberStyles.Any,CultureInfo.InvariantCulture,out var credit);
                 var memo=Convert.ToString(row.Cells["lineMemo"].Value)??"";
+                int? partyId=null;
+                var partyText=Convert.ToString(row.Cells["party"].Value);
+                if(int.TryParse(partyText,out var parsedParty)) partyId=parsedParty;
                 if(string.IsNullOrWhiteSpace(account)&&debit==0&&credit==0) continue;
-                lines.Add(new JournalLineInput(account,debit,credit,memo));
+                if(account is "1100" or "2100" && !partyId.HasValue)
+                    throw new InvalidOperationException("حدد العميل/المورد عند استخدام حساب الذمم 1100 أو 2100.");
+                if(account is not ("1100" or "2100") && partyId.HasValue)
+                    throw new InvalidOperationException("اترك خانة الطرف فارغة إلا في حساب العملاء أو الموردين.");
+                lines.Add(new JournalLineInput(account,debit,credit,memo,partyId));
             }
             _service.PostJournal(_date.Value.Date,_memo.Text,lines);
             DialogResult=DialogResult.OK; Close();
         }
         catch(Exception ex){ MessageBox.Show(this,ex.Message,"تعذر ترحيل القيد",MessageBoxButtons.OK,MessageBoxIcon.Warning); }
     }
+    private sealed record AccountLookup(string Code,string Name) { public string DisplayText => Code + " - " + Name; }
+    private sealed record PartyLookup(int Id,string Name) { public string Text => Name; }
 }
 
 internal sealed class InvoiceEntryForm : Form
