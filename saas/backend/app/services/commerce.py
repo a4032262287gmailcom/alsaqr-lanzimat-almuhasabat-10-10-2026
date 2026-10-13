@@ -6,7 +6,7 @@ from fastapi import HTTPException
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models import Account, Contact, CostCenter, Invoice, InvoiceLine, JournalEntry, JournalLine, Product, Tenant
+from app.models import Account, Contact, CostCenter, Invoice, InvoiceLine, JournalEntry, JournalLine, Tenant
 from app.schemas import InvoiceCreate, OCRDraftReviewRequest
 from app.services.accounting import audit, create_journal, get_account_by_code, money, next_number, validate_balanced_lines
 from app.services.inventory import get_or_create_balance, get_product, get_warehouse, issue_stock, receive_stock
@@ -99,7 +99,6 @@ async def post_invoice(
     line_values: list[dict] = []
     subtotal = Decimal("0.00")
     vat_total = Decimal("0.00")
-    receivable_or_payable: list[dict] = []
     revenue_entries: list[dict] = []
     purchase_entries: list[dict] = []
     cogs_entries: list[dict] = []
