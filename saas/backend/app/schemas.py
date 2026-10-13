@@ -27,7 +27,7 @@ class MembershipOut(APIModel):
     tenant_id: UUID
     company_name: str
     company_slug: str
-    role: Literal["Admin", "Accountant", "Cashier", "ReadOnly"]
+    role: Literal["Owner", "Admin", "CFO", "Accountant", "Cashier", "Sales", "Purchasing", "Storekeeper", "HR", "Auditor", "FieldAgent", "ReadOnly"]
 
 
 class RegisterRequest(APIModel):
@@ -107,6 +107,41 @@ class JournalCreate(APIModel):
     entry_date: date
     memo: Annotated[str, Field(min_length=2, max_length=500)]
     lines: Annotated[list[JournalLineInput], Field(min_length=2, max_length=500)]
+
+
+class FiscalPeriodCreate(APIModel):
+    code: Annotated[str, Field(min_length=2, max_length=40)]
+    name: Annotated[str, Field(min_length=2, max_length=180)]
+    start_date: date
+    end_date: date
+
+
+class FiscalPeriodOut(APIModel):
+    id: UUID
+    code: str
+    name: str
+    start_date: date
+    end_date: date
+    status: Literal["OPEN", "CLOSED"]
+    closed_by: UUID | None
+    closed_at: datetime | None
+    reopened_by: UUID | None
+    reopened_at: datetime | None
+    close_reason: str | None
+    reopen_reason: str | None
+
+
+class PeriodActionRequest(APIModel):
+    reason: Annotated[str, Field(min_length=5, max_length=500)]
+    second_approver_email: EmailStr
+    second_approver_password: Annotated[str, Field(min_length=1, max_length=128)]
+
+
+class JournalReverseRequest(APIModel):
+    reversal_date: date
+    reason: Annotated[str, Field(min_length=5, max_length=500)]
+    second_approver_email: EmailStr
+    second_approver_password: Annotated[str, Field(min_length=1, max_length=128)]
 
 
 class JournalLineOut(APIModel):
