@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db, set_tenant_context
 from app.models import Membership, Tenant, User
+from app.core.permissions import has_permission
 from app.core.security import decode_access_token
 
 bearer_scheme = HTTPBearer(auto_error=False)
@@ -57,6 +58,26 @@ async def get_tenant_context(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Company is inactive or does not exist")
     await set_tenant_context(session, str(tenant.id))
     return TenantContext(tenant_id=tenant.id, user_id=user.id, role=membership.role, user=user)
+
+
+def require_permission(permission_code: str) -> Callable:
+    async def dependency(
+        context: TenantContext = Depends(get_tenant_context),
+        session: AsyncSession = Depends(get_db),
+    ) -> TenantContext:
+        allowed = await has_permission(
+            session, context.tenant_id, context.role, permission_code
+        )
+        if not allowed:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail={
+                    "message": "Your company role does not grant this permission",
+                    "permission": permission_code,
+                },
+            )
+        return context
+    return dependency
 
 
 def require_roles(*allowed_roles: str) -> Callable:
