@@ -382,6 +382,8 @@ async def test_audit_logs_are_append_only_in_postgresql() -> None:
         session.add(event)
         await session.commit()
 
+        # PostgreSQL SET LOCAL tenant context is cleared automatically at commit.
+        await set_tenant_context(session, str(tenant_id))
         saved_event = await session.scalar(
             select(AuditLog).where(AuditLog.tenant_id == tenant_id, AuditLog.id == event.id)
         )
