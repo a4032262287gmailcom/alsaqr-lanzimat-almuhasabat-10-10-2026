@@ -97,7 +97,7 @@ internal sealed class CashierForm : Form
         var scanPanel = new FlowLayoutPanel
         {
             Dock = DockStyle.Top, Height = 76, FlowDirection = FlowDirection.RightToLeft,
-            WrapContents = true, Padding = new Padding(8), BackColor = Color.White
+            WrapContents = true, Padding = new Padding(8), BackColor = Color.FromArgb(_palette.SurfaceR, _palette.SurfaceG, _palette.SurfaceB)
         };
         scanPanel.Controls.Add(FieldLabel("الباركود")); scanPanel.Controls.Add(_barcode);
         scanPanel.Controls.Add(FieldLabel("بحث الصنف")); scanPanel.Controls.Add(_search);
@@ -140,14 +140,14 @@ internal sealed class CashierForm : Form
         split.Panel1.Controls.Add(_productsGrid);
         split.Panel2.Controls.Add(_cartGrid);
 
-        var leftPanel = new Panel { Dock = DockStyle.Fill, Padding = new Padding(6), BackColor = Color.White };
+        var leftPanel = new Panel { Dock = DockStyle.Fill, Padding = new Padding(6), BackColor = Color.FromArgb(_palette.SurfaceR, _palette.SurfaceG, _palette.SurfaceB) };
         var productTitle = SectionTitle("الأصناف المتاحة — انقر مرتين للإضافة");
         leftPanel.Controls.Add(_productsGrid);
         leftPanel.Controls.Add(productTitle);
         split.Panel1.Controls.Clear();
         split.Panel1.Controls.Add(leftPanel);
 
-        var cartPanel = new Panel { Dock = DockStyle.Fill, Padding = new Padding(6), BackColor = Color.White };
+        var cartPanel = new Panel { Dock = DockStyle.Fill, Padding = new Padding(6), BackColor = Color.FromArgb(_palette.SurfaceR, _palette.SurfaceG, _palette.SurfaceB) };
         var cartTools = new FlowLayoutPanel { Dock = DockStyle.Bottom, Height = 48, FlowDirection = FlowDirection.RightToLeft, WrapContents = false };
         cartTools.Controls.Add(MakeButton("+ زيادة", () => AdjustSelectedQuantity(1m), false));
         cartTools.Controls.Add(MakeButton("− تقليل", () => AdjustSelectedQuantity(-1m), false));
@@ -162,7 +162,7 @@ internal sealed class CashierForm : Form
         var checkout = new TableLayoutPanel
         {
             Dock = DockStyle.Bottom, Height = 154, ColumnCount = 1, RowCount = 2,
-            BackColor = Color.White, Padding = new Padding(8)
+            BackColor = Color.FromArgb(_palette.SurfaceR, _palette.SurfaceG, _palette.SurfaceB), Padding = new Padding(8)
         };
         checkout.RowStyles.Add(new RowStyle(SizeType.Percent, 48));
         checkout.RowStyles.Add(new RowStyle(SizeType.Percent, 52));
@@ -204,8 +204,8 @@ internal sealed class CashierForm : Form
 
     private Label SectionTitle(string text) => new()
     {
-        Text = text, Dock = DockStyle.Top, Height = 35, ForeColor = _navy,
-        BackColor = Color.White, Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+        Text = text, Dock = DockStyle.Top, Height = 35, ForeColor = Color.FromArgb(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB),
+        BackColor = Color.FromArgb(_palette.SurfaceR, _palette.SurfaceG, _palette.SurfaceB), Font = new Font("Segoe UI", 11F, FontStyle.Bold),
         TextAlign = ContentAlignment.MiddleRight
     };
 
@@ -222,8 +222,10 @@ internal sealed class CashierForm : Form
         return button;
     }
 
-    private static void ConfigureGrid(DataGridView grid)
+    private void ConfigureGrid(DataGridView grid)
     {
+        var surface = Color.FromArgb(_palette.SurfaceR, _palette.SurfaceG, _palette.SurfaceB);
+        var foreground = Color.FromArgb(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB);
         grid.Dock = DockStyle.Fill;
         grid.ReadOnly = true;
         grid.AllowUserToAddRows = false;
@@ -231,15 +233,19 @@ internal sealed class CashierForm : Form
         grid.MultiSelect = false;
         grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-        grid.BackgroundColor = Color.White;
+        grid.BackgroundColor = surface;
         grid.BorderStyle = BorderStyle.None;
         grid.RowHeadersVisible = false;
         grid.RightToLeft = RightToLeft.Yes;
         grid.EnableHeadersVisualStyles = false;
-        grid.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(18, 32, 52);
+        grid.ColumnHeadersDefaultCellStyle.BackColor = _navy;
         grid.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
         grid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        grid.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(246, 248, 251);
+        grid.DefaultCellStyle.BackColor = surface;
+        grid.DefaultCellStyle.ForeColor = foreground;
+        grid.DefaultCellStyle.SelectionBackColor = _gold;
+        grid.DefaultCellStyle.SelectionForeColor = Color.White;
+        grid.AlternatingRowsDefaultCellStyle.BackColor = _paper;
     }
 
     private void LoadReferenceData()
