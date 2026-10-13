@@ -70,6 +70,11 @@ internal sealed class CashierForm : Form
         RightToLeftLayout = true;
         Font = new Font("Segoe UI", 10F);
         BackColor = _paper;
+        _status.BackColor = Color.FromArgb(_palette.SurfaceR, _palette.SurfaceG, _palette.SurfaceB);
+        _status.ForeColor = Color.FromArgb(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB);
+        _subtotalLabel.ForeColor = _discountLabel.ForeColor = _vatLabel.ForeColor =
+            _totalLabel.ForeColor = _changeLabel.ForeColor =
+            Color.FromArgb(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB);
 
         BuildLayout();
         LoadReferenceData();
@@ -197,10 +202,10 @@ internal sealed class CashierForm : Form
         _status.Text = "جاهز — المبيعات المعتمدة تُرحّل محاسبيًا وتحدّث المخزون ضمن معاملة واحدة.";
     }
 
-    private static Label FieldLabel(string text) => new()
+    private Label FieldLabel(string text) => new()
     {
         Text = text, AutoSize = true, Padding = new Padding(0, 7, 0, 0),
-        ForeColor = Color.FromArgb(45, 55, 70)
+        ForeColor = Color.FromArgb(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB)
     };
 
     private Label SectionTitle(string text) => new()
