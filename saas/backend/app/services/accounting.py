@@ -4,10 +4,11 @@ from typing import Any
 from uuid import UUID
 
 from fastapi import HTTPException
-from sqlalchemy import select
+from sqlalchemy import func, select
+from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models import Account, AuditLog, JournalEntry, JournalLine, NumberSequence
+from app.models import Account, AuditLog, FiscalPeriod, JournalEntry, JournalLine, NumberSequence
 
 CENT = Decimal("0.01")
 DEFAULT_ACCOUNTS = {
@@ -60,19 +61,50 @@ async def get_account_by_code(session: AsyncSession, tenant_id: UUID, code: str)
 
 
 async def next_number(session: AsyncSession, tenant_id: UUID, sequence_key: str, prefix: str, on_date: date) -> str:
+    # The year is part of the sequence key, so numbering restarts each financial calendar year.
+    scoped_key = f"{sequence_key}:{on_date.year}"
+    insert_stmt = pg_insert(NumberSequence).values(
+        tenant_id=tenant_id,
+        sequence_key=scoped_key,
+        next_value=1,
+    ).on_conflict_do_nothing(
+        index_elements=[NumberSequence.tenant_id, NumberSequence.sequence_key]
+    )
+    await session.execute(insert_stmt)
     sequence = await session.scalar(
         select(NumberSequence)
-        .where(NumberSequence.tenant_id == tenant_id, NumberSequence.sequence_key == sequence_key)
+        .where(NumberSequence.tenant_id == tenant_id, NumberSequence.sequence_key == scoped_key)
         .with_for_update()
     )
     if sequence is None:
-        sequence = NumberSequence(tenant_id=tenant_id, sequence_key=sequence_key, next_value=1)
-        session.add(sequence)
-        await session.flush()
+        raise RuntimeError("Document sequence could not be locked after initialization")
     value = sequence.next_value
     sequence.next_value += 1
     await session.flush()
     return f"{prefix}-{on_date.year}-{value:06d}"
+
+
+async def assert_period_open(session: AsyncSession, tenant_id: UUID, posting_date: date) -> None:
+    period = await session.scalar(
+        select(FiscalPeriod)
+        .where(
+            FiscalPeriod.tenant_id == tenant_id,
+            FiscalPeriod.start_date <= posting_date,
+            FiscalPeriod.end_date >= posting_date,
+        )
+        .order_by(FiscalPeriod.start_date.desc())
+        .with_for_update()
+    )
+    if period is not None and period.status == "CLOSED":
+        raise HTTPException(
+            status_code=423,
+            detail={
+                "message": "Posting is prohibited because the fiscal period is closed",
+                "period_code": period.code,
+                "start_date": period.start_date.isoformat(),
+                "end_date": period.end_date.isoformat(),
+            },
+        )
 
 
 async def create_journal(
@@ -85,6 +117,9 @@ async def create_journal(
     lines: list[dict[str, Any]],
     source_id: UUID | None = None,
 ) -> JournalEntry:
+    if not memo.strip():
+        raise HTTPException(status_code=422, detail="Journal memo is required")
+    await assert_period_open(session, tenant_id, entry_date)
     validate_balanced_lines(lines)
     for index, line in enumerate(lines, start=1):
         account = await session.scalar(
@@ -135,6 +170,7 @@ async def audit(
     entity_type: str,
     entity_id: UUID | None,
     details: dict[str, Any] | None = None,
+    remote_address: str | None = None,
 ) -> None:
     session.add(AuditLog(
         tenant_id=tenant_id,
@@ -143,6 +179,7 @@ async def audit(
         entity_type=entity_type,
         entity_id=entity_id,
         details=details or {},
+        remote_address=remote_address,
     ))
     await session.flush()
 
