@@ -26,10 +26,15 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Restore Windows x64 dependencies
-        run: dotnet restore AlSaqr.Accounting.csproj -r win-x64
+        run: |
+          dotnet restore AlSaqr.Accounting.csproj -r win-x64
+          dotnet restore tests/AlSaqr.Accounting.Smoke/AlSaqr.Accounting.Smoke.csproj -r win-x64
 
       - name: Compile Release
         run: dotnet build AlSaqr.Accounting.csproj -c Release -r win-x64 --no-restore
+
+      - name: Run accounting integration smoke tests
+        run: dotnet run --project tests/AlSaqr.Accounting.Smoke/AlSaqr.Accounting.Smoke.csproj -c Release -r win-x64 --no-restore
 
       - name: Publish Windows x64 application
         run: dotnet publish AlSaqr.Accounting.csproj -c Release -r win-x64 --no-restore -p:SelfContained=true -o artifacts/publish
