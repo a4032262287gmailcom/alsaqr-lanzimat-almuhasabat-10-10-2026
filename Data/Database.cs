@@ -25,6 +25,17 @@ internal static class Database
         return connection;
     }
 
+    public static void BackupTo(string destinationPath)
+    {
+        if (string.IsNullOrWhiteSpace(destinationPath)) throw new ArgumentException("مسار النسخة الاحتياطية مطلوب.");
+        var fullPath = Path.GetFullPath(destinationPath);
+        Directory.CreateDirectory(Path.GetDirectoryName(fullPath)!);
+        using var source = Open();
+        using var destination = new SqliteConnection(new SqliteConnectionStringBuilder { DataSource = fullPath, ForeignKeys = true }.ToString());
+        destination.Open();
+        source.BackupDatabase(destination);
+    }
+
     public static void Initialize()
     {
         using var db = Open();
