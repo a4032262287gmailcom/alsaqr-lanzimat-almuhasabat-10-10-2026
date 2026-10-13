@@ -109,6 +109,50 @@ class JournalCreate(APIModel):
     lines: Annotated[list[JournalLineInput], Field(min_length=2, max_length=500)]
 
 
+class PermissionOut(APIModel):
+    code: str
+    module: str
+    action: str
+    description: str
+
+
+class RolePermissionOut(PermissionOut):
+    default_allowed: bool
+    effective_allowed: bool
+    overridden: bool
+
+
+class RolePermissionUpdateRequest(APIModel):
+    allowed: bool
+    reason: Annotated[str, Field(min_length=5, max_length=500)]
+    second_approver_email: EmailStr
+    second_approver_password: Annotated[str, Field(min_length=1, max_length=128)]
+
+
+class BranchCreate(APIModel):
+    code: Annotated[str, Field(min_length=1, max_length=32)]
+    name: Annotated[str, Field(min_length=2, max_length=180)]
+
+
+class BranchOut(APIModel):
+    id: UUID
+    code: str
+    name: str
+    is_active: bool
+
+
+class UserBranchAccessCreate(APIModel):
+    user_id: UUID
+    access_level: Literal["VIEW", "OPERATE", "ADMIN"] = "VIEW"
+
+
+class UserBranchAccessOut(APIModel):
+    id: UUID
+    user_id: UUID
+    branch_id: UUID
+    access_level: Literal["VIEW", "OPERATE", "ADMIN"]
+
+
 class FiscalPeriodCreate(APIModel):
     code: Annotated[str, Field(min_length=2, max_length=40)]
     name: Annotated[str, Field(min_length=2, max_length=180)]
