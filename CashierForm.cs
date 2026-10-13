@@ -17,7 +17,7 @@ internal sealed class CashierForm : Form
     private readonly NumericUpDown _discount = new() { Width = 90, Minimum = 0, Maximum = 100, DecimalPlaces = 2, Increment = 1 };
     private readonly NumericUpDown _tendered = new() { Width = 145, Minimum = 0, Maximum = 1000000000m, DecimalPlaces = 2 };
     private readonly DataGridView _grid = new();
-    private readonly Label _totals = new() { Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleRight, Font = new Font("Segoe UI", 11, FontStyle.Bold) };
+    private readonly Label _totals = new() { Width = 650, Height = 58, TextAlign = ContentAlignment.MiddleRight, Font = new Font("Segoe UI", 10, FontStyle.Bold), Margin = new Padding(8) };
 
     public CashierForm(AccountingService service, SystemSettings settings)
     {
@@ -108,7 +108,7 @@ internal sealed class CashierForm : Form
     {
         var code = _barcode.Text.Trim();
         if (code.Length == 0) { MessageBox.Show(this, "امسح الباركود أو أدخل رمز الصنف.", "الكاشير", MessageBoxButtons.OK, MessageBoxIcon.Information); _barcode.Focus(); return; }
-        var product = _products.FirstOrDefault(p => string.Equals(p.Code, code, StringComparison.OrdinalIgnoreCase));
+        var product = _products.FirstOrDefault(p => string.Equals(p.Barcode, code, StringComparison.OrdinalIgnoreCase) || string.Equals(p.Code, code, StringComparison.OrdinalIgnoreCase));
         if (product is null)
         {
             MessageBox.Show(this, "لم يُعثر على صنف بهذا الرمز. في هذه النسخة يستخدم رمز الصنف نفسه كقيمة للباركود.", "صنف غير موجود", MessageBoxButtons.OK, MessageBoxIcon.Warning);
