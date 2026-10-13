@@ -11,6 +11,24 @@ try
     Database.Initialize();
     var service = new AccountingService();
 
+    var searchData = new DataTable();
+    searchData.Columns.Add("رقم المستند", typeof(string));
+    searchData.Columns.Add("الإجمالي", typeof(decimal));
+    searchData.Rows.Add("INV-100", 100m);
+    searchData.Rows.Add("PO-200", 250m);
+    searchData.Rows.Add("100% Discount", 5m);
+    var searchView = new DataView(searchData);
+    TableSearchFilter.Apply(searchView, "INV");
+    Check(searchView.Count == 1, "register search matches text columns");
+    TableSearchFilter.Apply(searchView, "250");
+    Check(searchView.Count == 1 && Convert.ToString(searchView[0]["رقم المستند"]) == "PO-200",
+        "register search matches numeric values");
+    TableSearchFilter.Apply(searchView, "%");
+    Check(searchView.Count == 1 && Convert.ToString(searchView[0]["رقم المستند"]) == "100% Discount",
+        "register search treats percent as a literal character");
+    TableSearchFilter.Apply(searchView, "");
+    Check(searchView.Count == 3, "clearing register search restores all rows");
+
     Check(service.Accounts().Rows.Count >= 12, "chart of accounts is seeded");
     var auth = new AuthService();
     auth.CreateFirstAdmin("smoke-admin", "Smoke-Password-123!");
