@@ -52,7 +52,7 @@ class Membership(Base):
     __tablename__ = "memberships"
     __table_args__ = (
         UniqueConstraint("tenant_id", "user_id", name="uq_membership_tenant_user"),
-        CheckConstraint("role in ('Admin','Accountant','Cashier','ReadOnly')", name="ck_membership_role"),
+        CheckConstraint("role in ('Owner','Admin','CFO','Accountant','Cashier','Sales','Purchasing','Storekeeper','HR','Auditor','FieldAgent','ReadOnly')", name="ck_membership_role"),
         Index("ix_memberships_user_tenant", "user_id", "tenant_id"),
     )
 
@@ -240,10 +240,34 @@ class NumberSequence(Base, TenantOwned):
     __tablename__ = "number_sequences"
     __table_args__ = (
         UniqueConstraint("tenant_id", "sequence_key", name="uq_number_sequence_key"),
+        CheckConstraint("next_value >= 1", name="ck_number_sequence_positive"),
     )
 
     sequence_key: Mapped[str] = mapped_column(String(32), nullable=False)
     next_value: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
+
+
+class FiscalPeriod(Base, TenantOwned):
+    __tablename__ = "fiscal_periods"
+    __table_args__ = (
+        UniqueConstraint("tenant_id", "id", name="uq_fiscal_periods_tenant_id"),
+        UniqueConstraint("tenant_id", "code", name="uq_fiscal_periods_tenant_code"),
+        CheckConstraint("end_date >= start_date", name="ck_fiscal_period_date_range"),
+        CheckConstraint("status in ('OPEN','CLOSED')", name="ck_fiscal_period_status"),
+        Index("ix_fiscal_periods_tenant_dates", "tenant_id", "start_date", "end_date"),
+    )
+
+    code: Mapped[str] = mapped_column(String(40), nullable=False)
+    name: Mapped[str] = mapped_column(String(180), nullable=False)
+    start_date: Mapped[date] = mapped_column(Date, nullable=False)
+    end_date: Mapped[date] = mapped_column(Date, nullable=False)
+    status: Mapped[str] = mapped_column(String(8), default="OPEN", nullable=False)
+    closed_by: Mapped[UUID | None] = mapped_column(Uuid(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"))
+    closed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    reopened_by: Mapped[UUID | None] = mapped_column(Uuid(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"))
+    reopened_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    close_reason: Mapped[str | None] = mapped_column(String(500))
+    reopen_reason: Mapped[str | None] = mapped_column(String(500))
 
 
 class JournalEntry(Base, TenantOwned):
@@ -251,6 +275,7 @@ class JournalEntry(Base, TenantOwned):
     __table_args__ = (
         UniqueConstraint("tenant_id", "id", name="uq_journal_entries_tenant_id"),
         UniqueConstraint("tenant_id", "number", name="uq_journal_entries_tenant_number"),
+        UniqueConstraint("tenant_id", "reversal_of_id", name="uq_journal_single_reversal"),
         ForeignKeyConstraint(["tenant_id", "reversal_of_id"], ["journal_entries.tenant_id", "journal_entries.id"], name="fk_journal_reversal_same_tenant"),
         CheckConstraint("status in ('DRAFT','POSTED','REVERSED')", name="ck_journal_status"),
         Index("ix_journal_entries_tenant_date", "tenant_id", "entry_date"),
