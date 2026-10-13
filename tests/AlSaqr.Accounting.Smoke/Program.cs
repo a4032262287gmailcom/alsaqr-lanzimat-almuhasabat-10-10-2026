@@ -11,6 +11,20 @@ try
     Database.Initialize();
     var service = new AccountingService();
 
+    AppSettingsService.Save(new AccountingAppSettings(
+        "شركة اختبار الصقر", "310000000000003", "0110000000", "الرياض",
+        "شكرًا لتعاملكم", "Dark", 15m,
+        Path.Combine(Path.GetTempPath(), "AlSaqr-Smoke-Backups")));
+    var settingsRoundTrip = AppSettingsService.Load();
+    Check(settingsRoundTrip.LegalEntityName == "شركة اختبار الصقر" &&
+          settingsRoundTrip.VatRegistrationNumber == "310000000000003" &&
+          settingsRoundTrip.Theme == "Dark" && settingsRoundTrip.DefaultVatRate == 15m,
+          "company settings and theme persist through DPAPI-protected storage");
+
+    var licenseCheck = new LicenseService().CheckAccess();
+    Check(licenseCheck.HasAccess && licenseCheck.IsTrial && !licenseCheck.IsLicensed,
+          "first launch grants the signed-product's configured trial on this Windows user");
+
     Check(service.Accounts().Rows.Count >= 12, "chart of accounts is seeded");
     var auth = new AuthService();
     auth.CreateFirstAdmin("smoke-admin", "Smoke-Password-123!");
