@@ -13,7 +13,7 @@ internal static class LocalSqlServerConnection
     private static readonly string Folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AlSaqrAccounting");
     private static readonly string FilePath = Path.Combine(Folder, "sqlserver-settings.json");
 
-    public static LocalSqlServerSettings Defaults() => new(@" .\SQLEXPRESS".Trim(), "GtsDb2026");
+    public static LocalSqlServerSettings Defaults() => new(@".\SQLEXPRESS", "GtsDb2026");
 
     public static LocalSqlServerSettings Load()
     {
