@@ -165,7 +165,12 @@ internal sealed partial class MainForm : Form
     private void ShowParties()
     {
         var actions = new List<(string Text, Action Run)>();
-        if (IsAdmin) actions.Add(("إضافة عميل / مورد", AddParty));
+        if (IsAdmin)
+        {
+            actions.Add(("إضافة عميل / مورد", AddParty));
+            actions.Add(("تعديل الطرف المحدد", EditParty));
+            actions.Add(("تفعيل / إيقاف المحدد", ToggleParty));
+        }
         actions.Add(("تحديث", ShowParties));
         ShowTablePage("العملاء والموردون", _service.Parties(), actions.ToArray());
     }
@@ -182,10 +187,53 @@ internal sealed partial class MainForm : Form
         form.ShowDialog(this);
     }
 
+    private void EditParty()
+    {
+        if (!IsAdmin) { Denied(); return; }
+        if (_tableGrid?.CurrentRow is null) { Notice("حدد العميل أو المورد المراد تعديله."); return; }
+        var row = _tableGrid.CurrentRow;
+        var id = Convert.ToInt32(row.Cells[0].Value, CultureInfo.InvariantCulture);
+        var name = TextBox(); name.Text = Convert.ToString(row.Cells[1].Value) ?? "";
+        var kindText = Convert.ToString(row.Cells[2].Value) ?? "عميل";
+        var kindValue = kindText switch { "مورد" => "Supplier", "عميل ومورد" => "Both", _ => "Customer" };
+        var kind = Combo(kindValue, ("Customer", "عميل"), ("Supplier", "مورد"), ("Both", "عميل ومورد"));
+        var phone = TextBox(); phone.Text = Convert.ToString(row.Cells[3].Value) ?? "";
+        var vat = TextBox(); vat.Text = Convert.ToString(row.Cells[4].Value) ?? "";
+        using var form = Dialog("تعديل بيانات العميل / المورد", 4, out var body, out var save);
+        AddField(body, "الاسم التجاري / اسم الطرف", name); AddField(body, "النوع", kind);
+        AddField(body, "الهاتف", phone); AddField(body, "الرقم الضريبي", vat);
+        save.Text = "حفظ التعديلات";
+        save.Click += (_, _) => Guard(() => {
+            _service.UpdateParty(id, name.Text, Convert.ToString(kind.SelectedValue) ?? "Customer", phone.Text, vat.Text);
+            form.DialogResult = DialogResult.OK; form.Close(); ShowParties(); SetStatus("تم تحديث بيانات الطرف في قاعدة البيانات المحلية.");
+        });
+        form.ShowDialog(this);
+    }
+
+    private void ToggleParty()
+    {
+        if (!IsAdmin) { Denied(); return; }
+        if (_tableGrid?.CurrentRow is null) { Notice("حدد العميل أو المورد أولًا."); return; }
+        var row = _tableGrid.CurrentRow;
+        var id = Convert.ToInt32(row.Cells[0].Value, CultureInfo.InvariantCulture);
+        var active = Convert.ToString(row.Cells[5].Value) == "نشط";
+        Guard(() => {
+            _service.SetPartyActive(id, !active);
+            ShowParties();
+            SetStatus(active ? "تم إيقاف الطرف مع الاحتفاظ بسجلاته المحاسبية." : "تم تفعيل الطرف.");
+        });
+    }
+
     private void ShowProducts()
     {
         var actions = new List<(string Text, Action Run)>();
-        if (IsAdmin) actions.Add(("إضافة صنف", AddProduct));
+        if (IsAdmin)
+        {
+            actions.Add(("إضافة صنف", AddProduct));
+            actions.Add(("تعديل الصنف المحدد", EditProduct));
+            actions.Add(("تفعيل / إيقاف المحدد", ToggleProduct));
+        }
+        actions.Add(("تسوية مخزون", AddStockAdjustment));
         actions.Add(("عرض تقييم المخزون", () => ShowReportTable("تقييم المخزون", _service.StockValuation())));
         actions.Add(("تحديث", ShowProducts));
         ShowTablePage("الأصناف والمخزون", _service.Products(), actions.ToArray());
@@ -203,6 +251,44 @@ internal sealed partial class MainForm : Form
         save.Click += (_, _) => Guard(() => { _service.AddProduct(code.Text, name.Text, unit.Text, qty.Value, cost.Value, price.Value, vat.Value); form.DialogResult = DialogResult.OK; form.Close(); ShowProducts(); SetStatus("تم حفظ الصنف."); });
         form.Height += 70;
         form.ShowDialog(this);
+    }
+
+    private void EditProduct()
+    {
+        if (!IsAdmin) { Denied(); return; }
+        if (_tableGrid?.CurrentRow is null) { Notice("حدد الصنف المراد تعديله."); return; }
+        var row = _tableGrid.CurrentRow;
+        var id = Convert.ToInt32(row.Cells[0].Value, CultureInfo.InvariantCulture);
+        var code = TextBox(); code.Text = Convert.ToString(row.Cells[1].Value) ?? "";
+        var name = TextBox(); name.Text = Convert.ToString(row.Cells[2].Value) ?? "";
+        var unit = TextBox(); unit.Text = Convert.ToString(row.Cells[3].Value) ?? "حبة";
+        var price = Numeric(0, 1000000000, 2); price.Value = Math.Min(price.Maximum, Math.Max(price.Minimum, Convert.ToDecimal(row.Cells[6].Value, CultureInfo.InvariantCulture)));
+        var vat = Numeric(0, 100, 2); vat.Value = Math.Min(vat.Maximum, Math.Max(vat.Minimum, Convert.ToDecimal(row.Cells[7].Value, CultureInfo.InvariantCulture)));
+        using var form = Dialog("تعديل بيانات الصنف", 5, out var body, out var save);
+        AddField(body, "رمز الصنف", code); AddField(body, "اسم الصنف", name); AddField(body, "الوحدة", unit);
+        AddField(body, "سعر البيع", price); AddField(body, "ضريبة القيمة المضافة %", vat);
+        AddField(body, "ملاحظة", new Label { Text = "لا يتم تعديل الرصيد أو التكلفة من شاشة البيانات الأساسية؛ استخدم تسوية المخزون.", Width = 360, Height = 45 });
+        save.Text = "حفظ التعديلات";
+        save.Click += (_, _) => Guard(() => {
+            _service.UpdateProduct(id, code.Text, name.Text, unit.Text, price.Value, vat.Value);
+            form.DialogResult = DialogResult.OK; form.Close(); ShowProducts(); SetStatus("تم تحديث الصنف مع إبقاء تقييم المخزون محفوظًا.");
+        });
+        form.Height += 65;
+        form.ShowDialog(this);
+    }
+
+    private void ToggleProduct()
+    {
+        if (!IsAdmin) { Denied(); return; }
+        if (_tableGrid?.CurrentRow is null) { Notice("حدد الصنف أولًا."); return; }
+        var row = _tableGrid.CurrentRow;
+        var id = Convert.ToInt32(row.Cells[0].Value, CultureInfo.InvariantCulture);
+        var active = Convert.ToString(row.Cells[8].Value) == "نشط";
+        Guard(() => {
+            _service.SetProductActive(id, !active);
+            ShowProducts();
+            SetStatus(active ? "تم إيقاف الصنف." : "تم تفعيل الصنف.");
+        });
     }
 
     private void ShowInvoices(string kind)
