@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.config import get_settings
 from app.database import get_db
 from app.dependencies import TenantContext, get_tenant_context
 from app.models import Tenant
@@ -14,7 +13,6 @@ async def capabilities(
     context: TenantContext = Depends(get_tenant_context),
     session: AsyncSession = Depends(get_db),
 ) -> dict:
-    settings = get_settings()
     tenant = await session.get(Tenant, context.tenant_id)
     has_tin = bool(tenant and tenant.tax_number)
     return {
