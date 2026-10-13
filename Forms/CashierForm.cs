@@ -45,14 +45,22 @@ internal sealed class CashierForm : Form
     private PrintDocument? _printDocument;
     private int _printLineIndex;
 
-    private readonly Color _navy = Color.FromArgb(18, 32, 52);
-    private readonly Color _blue = Color.FromArgb(37, 66, 101);
-    private readonly Color _gold = Color.FromArgb(190, 151, 61);
-    private readonly Color _paper = Color.FromArgb(244, 246, 249);
+    private AccountingAppSettings _settings = AccountingAppSettings.Defaults();
+    private UiThemePalette _palette = UiThemePalette.All[0];
+    private Color _navy = Color.FromArgb(18, 32, 52);
+    private Color _blue = Color.FromArgb(37, 66, 101);
+    private Color _gold = Color.FromArgb(190, 151, 61);
+    private Color _paper = Color.FromArgb(244, 246, 249);
 
     public CashierForm(AuthUser user)
     {
         _user = user;
+        _settings = AppSettingsService.Load();
+        _palette = AppSettingsService.GetPalette(_settings.Theme);
+        _navy = Color.FromArgb(_palette.PrimaryR, _palette.PrimaryG, _palette.PrimaryB);
+        _blue = Color.FromArgb(_palette.SecondaryR, _palette.SecondaryG, _palette.SecondaryB);
+        _gold = Color.FromArgb(_palette.AccentR, _palette.AccentG, _palette.AccentB);
+        _paper = Color.FromArgb(_palette.BackgroundR, _palette.BackgroundG, _palette.BackgroundB);
         Text = "الصقر لأنظمة المحاسبة | شاشة الكاشير";
         WindowState = FormWindowState.Maximized;
         MinimumSize = new Size(1050, 700);
@@ -511,6 +519,10 @@ internal sealed class CashierForm : Form
         if (_printLineIndex == 0)
         {
             Draw("الصقر لأنظمة المحاسبة", titleFont, 28);
+            if (!string.IsNullOrWhiteSpace(_settings.LegalEntityName)) Draw(_settings.LegalEntityName, boldFont, lineHeight);
+            if (!string.IsNullOrWhiteSpace(_settings.Address)) Draw(_settings.Address, normalFont, lineHeight);
+            if (!string.IsNullOrWhiteSpace(_settings.Phone)) Draw("الهاتف: " + _settings.Phone, normalFont, lineHeight);
+            if (!string.IsNullOrWhiteSpace(_settings.VatRegistrationNumber)) Draw("الرقم الضريبي: " + _settings.VatRegistrationNumber, normalFont, lineHeight);
             Draw("فاتورة ضريبية مبسطة", boldFont, 19);
             Draw("رقم الفاتورة: " + _lastReceipt.Number, normalFont, lineHeight);
             Draw("التاريخ: " + _lastReceipt.InvoiceDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture), normalFont, lineHeight);
@@ -536,7 +548,7 @@ internal sealed class CashierForm : Form
         Draw("الإجمالي: " + Money(_lastReceipt.Total), titleFont, 26);
         Draw("المبلغ المستلم: " + Money(_lastReceipt.AmountTendered), normalFont, lineHeight);
         Draw("الباقي: " + Money(_lastReceipt.Change), normalFont, lineHeight);
-        Draw("شكرًا لتعاملكم مع الصقر لأنظمة المحاسبة", boldFont, lineHeight + 2);
+        Draw(string.IsNullOrWhiteSpace(_settings.ReceiptFooter) ? "شكرًا لتعاملكم مع الصقر لأنظمة المحاسبة" : _settings.ReceiptFooter, boldFont, lineHeight + 2);
         e.HasMorePages = false;
         _printLineIndex = 0;
     }
