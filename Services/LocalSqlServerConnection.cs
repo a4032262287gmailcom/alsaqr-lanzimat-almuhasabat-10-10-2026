@@ -68,9 +68,16 @@ internal static class LocalSqlServerConnection
         {
             command.CommandText = @"
 SELECT s.name AS [المخطط], t.name AS [الجدول],
-       (SELECT COUNT(*) FROM sys.columns c WHERE c.object_id=t.object_id) AS [عدد الأعمدة]
-FROM sys.tables t JOIN sys.schemas s ON s.schema_id=t.schema_id
-WHERE t.is_ms_shipped=0 ORDER BY s.name,t.name";
+       c.column_id AS [ترتيب العمود], c.name AS [العمود],
+       ty.name AS [النوع], c.max_length AS [الطول بالبايت],
+       CASE WHEN c.is_nullable=1 THEN N'نعم' ELSE N'لا' END AS [يقبل NULL],
+       CASE WHEN c.is_identity=1 THEN N'نعم' ELSE N'لا' END AS [Identity]
+FROM sys.tables t
+JOIN sys.schemas s ON s.schema_id=t.schema_id
+JOIN sys.columns c ON c.object_id=t.object_id
+JOIN sys.types ty ON ty.user_type_id=c.user_type_id
+WHERE t.is_ms_shipped=0
+ORDER BY s.name,t.name,c.column_id";
             using var reader = command.ExecuteReader();
             tables.Load(reader);
         }
