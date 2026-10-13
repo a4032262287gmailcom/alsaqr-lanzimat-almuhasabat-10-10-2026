@@ -243,7 +243,7 @@ internal sealed partial class MainForm : Form
     private void AddProduct()
     {
         if (!IsAdmin) { Denied(); return; }
-        using var form = Dialog("إضافة صنف / رصيد افتتاحي", 6, out var body, out var save);
+        using var form = Dialog("إضافة صنف / رصيد افتتاحي", 8, out var body, out var save);
         var code = TextBox(); var barcode = TextBox(); var name = TextBox(); var unit = TextBox(); unit.Text = "حبة";
         var qty = Numeric(0, 100000000, 3); var cost = Numeric(0, 1000000000, 2); var price = Numeric(0, 1000000000, 2); var vat = Numeric(0,100,2); vat.Value=15;
         AddField(body, "رمز الصنف", code); AddField(body, "الباركود (اختياري)", barcode); AddField(body, "اسم الصنف", name); AddField(body, "الوحدة", unit);
