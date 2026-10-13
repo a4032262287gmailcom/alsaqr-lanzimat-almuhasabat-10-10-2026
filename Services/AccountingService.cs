@@ -163,7 +163,7 @@ VALUES($invoice,$product,$qty,$price,$cost,$rate,$net,$vat,$total)";
             lineCmd.Parameters.AddWithValue("$product", item.Input.ProductId);
             lineCmd.Parameters.AddWithValue("$qty", item.Input.Quantity);
             lineCmd.Parameters.AddWithValue("$price", ToHalalas(item.Input.UnitPrice));
-            lineCmd.Parameters.AddWithValue("$cost", item.Cost);
+            lineCmd.Parameters.AddWithValue("$cost", kind == "PURCHASE" ? ToHalalas(item.Input.UnitPrice) : item.Cost);
             lineCmd.Parameters.AddWithValue("$rate", item.Input.VatRate);
             lineCmd.Parameters.AddWithValue("$net", item.Net);
             lineCmd.Parameters.AddWithValue("$vat", item.Vat);
@@ -172,10 +172,27 @@ VALUES($invoice,$product,$qty,$price,$cost,$rate,$net,$vat,$total)";
 
             using var stock = db.CreateCommand();
             stock.Transaction = tx;
-            stock.CommandText = "UPDATE Products SET Quantity=Quantity+$qty WHERE Id=$id";
-            stock.Parameters.AddWithValue("$qty", kind == "PURCHASE" ? item.Input.Quantity : -item.Input.Quantity);
+            if (kind == "PURCHASE")
+            {
+                stock.CommandText = @"UPDATE Products
+SET CostHalalas=CASE WHEN Quantity+$qty > 0
+  THEN CAST(ROUND((Quantity*CostHalalas + $qty*$unitCost)/(Quantity+$qty),0) AS INTEGER)
+  ELSE $unitCost END,
+    Quantity=Quantity+$qty
+WHERE Id=$id";
+                stock.Parameters.AddWithValue("$qty", item.Input.Quantity);
+                stock.Parameters.AddWithValue("$unitCost", ToHalalas(item.Input.UnitPrice));
+            }
+            else
+            {
+                stock.CommandText = "UPDATE Products SET Quantity=Quantity-$qty WHERE Id=$id AND Quantity >= $qty";
+                stock.Parameters.AddWithValue("$qty", item.Input.Quantity);
+            }
             stock.Parameters.AddWithValue("$id", item.Input.ProductId);
-            stock.ExecuteNonQuery();
+            if (stock.ExecuteNonQuery() != 1)
+                throw new InvalidOperationException(kind == "SALE"
+                    ? $"المخزون غير كافٍ للصنف: {item.Name}."
+                    : $"تعذر تحديث مخزون الصنف: {item.Name}.");
         }
 
         if (kind == "SALE")
