@@ -83,6 +83,22 @@ CREATE TABLE IF NOT EXISTS InvoiceLines(
   VatRate REAL NOT NULL, NetHalalas INTEGER NOT NULL, VatHalalas INTEGER NOT NULL, TotalHalalas INTEGER NOT NULL
 );
 CREATE INDEX IF NOT EXISTS IX_Invoices_DateKind ON Invoices(InvoiceDate,Kind);
+CREATE TABLE IF NOT EXISTS StockMovements(
+  Id INTEGER PRIMARY KEY AUTOINCREMENT, MovementDate TEXT NOT NULL,
+  ProductId INTEGER NOT NULL REFERENCES Products(Id), Source TEXT NOT NULL, SourceId TEXT NOT NULL,
+  QuantityIn REAL NOT NULL DEFAULT 0 CHECK(QuantityIn >= 0), QuantityOut REAL NOT NULL DEFAULT 0 CHECK(QuantityOut >= 0),
+  UnitCostHalalas INTEGER NOT NULL DEFAULT 0 CHECK(UnitCostHalalas >= 0), Memo TEXT NOT NULL DEFAULT '', CreatedAt TEXT NOT NULL,
+  CHECK((QuantityIn > 0 AND QuantityOut = 0) OR (QuantityOut > 0 AND QuantityIn = 0))
+);
+CREATE INDEX IF NOT EXISTS IX_StockMovements_DateProduct ON StockMovements(MovementDate,ProductId);
+CREATE TABLE IF NOT EXISTS Settlements(
+  Id INTEGER PRIMARY KEY AUTOINCREMENT, Kind TEXT NOT NULL CHECK(Kind IN ('RECEIPT','PAYMENT')),
+  Number TEXT NOT NULL UNIQUE, SettlementDate TEXT NOT NULL,
+  PartyId INTEGER NOT NULL REFERENCES Parties(Id), AmountHalalas INTEGER NOT NULL CHECK(AmountHalalas > 0),
+  CashAccountCode TEXT NOT NULL REFERENCES Accounts(Code), JournalId INTEGER NOT NULL REFERENCES Journals(Id),
+  Memo TEXT NOT NULL, CreatedAt TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS IX_Settlements_DateKind ON Settlements(SettlementDate,Kind);
 CREATE TABLE IF NOT EXISTS Users(
   Id INTEGER PRIMARY KEY AUTOINCREMENT, UserName TEXT NOT NULL UNIQUE COLLATE NOCASE,
   PasswordSalt TEXT NOT NULL, PasswordHash TEXT NOT NULL,
