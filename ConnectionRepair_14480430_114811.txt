@@ -1,0 +1,3 @@
+﻿Build exit code: 1
+Backup: E:\KhaledERP\Backups\ConnectionRepair_14480430_114811
+Build report: C:\Users\hp\Desktop\تقارير\ConnectionRepairBuild_14480430_114811.txt

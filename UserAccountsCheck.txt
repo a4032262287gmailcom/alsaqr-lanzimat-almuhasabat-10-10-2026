@@ -1,0 +1,7 @@
+﻿TotalUsers|ActiveUsers
+----------|-----------
+2|2
+ID|Name|IsActive|BranchID|GroupID
+--|----|--------|--------|-------
+1|ê§ï©|1|1|1
+2| ں‍م 1|1|1|2

@@ -1,0 +1,3252 @@
+﻿==============================================
+التصميم الداخلي الحقيقي لنظام GTS ERP
+==============================================
+
+Source:
+G:\ماجد سوفت\MajedSoft 08-07-2026\App\GTSErpSystem_Source\GTSErpSystem
+
+C# Files:
+923
+
+Screens containing InitializeComponent:
+369
+
+Controls:
+552
+
+Events:
+11
+
+Arabic Texts:
+0
+
+==============================================
+الشاشات
+==============================================
+
+SCREEN: ContractTerms
+NAMESPACE: GTSErpSystem.Frms.Contract
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\ContractTerms.cs
+CONTROLS: 0
+
+SCREEN: FrmAbout
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\FrmAbout.cs
+CONTROLS: 0
+
+SCREEN: FrmAccountPayroll
+NAMESPACE: GTSErpSystem.Frms.Payroll.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Payroll\Search\FrmAccountPayroll.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAccountTree
+NAMESPACE: GTSErpSystem.Frms.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\FrmAccountTree.cs
+CONTROLS: 0
+
+SCREEN: FrmActivation
+NAMESPACE: GTSErpSystem.Frms.FrmsHome
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsHome\FrmActivation.cs
+CONTROLS: 0
+
+SCREEN: FrmActivtion
+NAMESPACE: GTSErpSystem
+TEXT: 
+SIZE:  x 
+FILE: FrmActivtion.cs
+CONTROLS: 0
+
+SCREEN: FrmActivtion3
+NAMESPACE: GTSErpSystem
+TEXT: 
+SIZE:  x 
+FILE: FrmActivtion3.cs
+CONTROLS: 0
+
+SCREEN: FrmAdd
+NAMESPACE: GTSErpSystem.Frms.FrmRestaurant.LuckUp
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmRestaurant\LuckUp\FrmAdd.cs
+CONTROLS: 0
+
+SCREEN: FrmAllContract
+NAMESPACE: GTSErpSystem.Frms.Contract.Report
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\Report\FrmAllContract.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllContractActiveDisActive
+NAMESPACE: GTSErpSystem.Frms.Contract.Report
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\Report\FrmAllContractActiveDisActive.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllContractByCostomer
+NAMESPACE: GTSErpSystem.Frms.Contract.Report
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\Report\FrmAllContractByCostomer.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllGuarantee
+NAMESPACE: GTSErpSystem.Frms.Contract.Report
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\Report\FrmAllGuarantee.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrders
+NAMESPACE: GTSErpSystem.Frms.Reports.SalesMan
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\SalesMan\FrmAllOrders.cs
+CONTROLS: 12
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrders
+NAMESPACE: GTSErpSystem.Frms.Reports.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Orders\FrmAllOrders.cs
+CONTROLS: 12
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrdersBounce
+NAMESPACE: GTSErpSystem.Frms.Reports.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Orders\FrmAllOrdersBounce.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrdersBounceDetails
+NAMESPACE: GTSErpSystem.Frms.Reports.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Orders\FrmAllOrdersBounceDetails.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrdersCashierSafryMahly
+NAMESPACE: GTSErpSystem.Frms.Reports.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Orders\FrmAllOrdersCashierSafryMahly.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrdersCheckOut
+NAMESPACE: GTSErpSystem.Frms.Reports.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Orders\FrmAllOrdersCheckOut.cs
+CONTROLS: 5
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrdersDetails
+NAMESPACE: GTSErpSystem.Frms.Reports.SalesMan
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\SalesMan\FrmAllOrdersDetails.cs
+CONTROLS: 12
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrdersDetails
+NAMESPACE: GTSErpSystem.Frms.Reports.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Orders\FrmAllOrdersDetails.cs
+CONTROLS: 12
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrdersDetailsByGroup
+NAMESPACE: GTSErpSystem.Frms.Reports.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Orders\FrmAllOrdersDetailsByGroup.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrdersDetailsByProperties
+NAMESPACE: GTSErpSystem.Frms.Reports.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Orders\FrmAllOrdersDetailsByProperties.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrdersHold
+NAMESPACE: GTSErpSystem.Frms.Reports.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Orders\FrmAllOrdersHold.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrdersProfit
+NAMESPACE: GTSErpSystem.Frms.Reports.Profit
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Profit\FrmAllOrdersProfit.cs
+CONTROLS: 12
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrdersProfit
+NAMESPACE: GTSErpSystem.Frms.Reports.SalesMan
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\SalesMan\FrmAllOrdersProfit.cs
+CONTROLS: 12
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrdersProfitByGroup
+NAMESPACE: GTSErpSystem.Frms.Reports.Profit
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Profit\FrmAllOrdersProfitByGroup.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrdersProfitByGroupBy
+NAMESPACE: GTSErpSystem.Frms.Reports.SalesMan
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\SalesMan\FrmAllOrdersProfitByGroupBy.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrdersProfitByItems
+NAMESPACE: GTSErpSystem.Frms.Reports.Profit
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Profit\FrmAllOrdersProfitByItems.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrdersProfitByItems_ItemOnly
+NAMESPACE: GTSErpSystem.Frms.Reports.Profit
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Profit\FrmAllOrdersProfitByItems_ItemOnly.cs
+CONTROLS: 12
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrdersProfitByItems_ItemOnly
+NAMESPACE: GTSErpSystem.Frms.Reports.SalesMan
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\SalesMan\FrmAllOrdersProfitByItems_ItemOnly.cs
+CONTROLS: 12
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrdersProfitCashierSafryMahly
+NAMESPACE: GTSErpSystem.Frms.Reports.Profit
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Profit\FrmAllOrdersProfitCashierSafryMahly.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrdersRestaurant
+NAMESPACE: GTSErpSystem.Frms.Reports.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Orders\FrmAllOrdersRestaurant.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrdersReturnDetails
+NAMESPACE: GTSErpSystem.Frms.Reports.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Orders\FrmAllOrdersReturnDetails.cs
+CONTROLS: 12
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrdersReturnDetails
+NAMESPACE: GTSErpSystem.Frms.Reports.SalesMan
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\SalesMan\FrmAllOrdersReturnDetails.cs
+CONTROLS: 12
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrederReturn
+NAMESPACE: GTSErpSystem.Frms.Reports.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Orders\FrmAllOrederReturn.cs
+CONTROLS: 12
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllOrederReturn
+NAMESPACE: GTSErpSystem.Frms.Reports.SalesMan
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\SalesMan\FrmAllOrederReturn.cs
+CONTROLS: 12
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllowances
+NAMESPACE: GTSErpSystem.Frms.Payroll
+TEXT: 
+SIZE:  x 
+FILE: Frms\Payroll\FrmAllowances.cs
+CONTROLS: 0
+
+SCREEN: FrmAllPrinters
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\FrmAllPrinters.cs
+CONTROLS: 0
+
+SCREEN: FrmAllPurches
+NAMESPACE: GTSErpSystem.Frms.Reports.Purches
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Purches\FrmAllPurches.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllPurchesDetails
+NAMESPACE: GTSErpSystem.Frms.Reports.Purches
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Purches\FrmAllPurchesDetails.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllPurchesReturn
+NAMESPACE: GTSErpSystem.Frms.Reports.Purches
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Purches\FrmAllPurchesReturn.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllPurchesReturnDetails
+NAMESPACE: GTSErpSystem.Frms.Reports.Purches
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Purches\FrmAllPurchesReturnDetails.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAllQuntityUsedCust
+NAMESPACE: GTSErpSystem.Frms.Reports.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Orders\FrmAllQuntityUsedCust.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmAtviaionCSID
+NAMESPACE: GTSErpSystem.Frms.ElctorncInvoic
+TEXT: 
+SIZE:  x 
+FILE: Frms\ElctorncInvoic\FrmAtviaionCSID.cs
+CONTROLS: 0
+
+SCREEN: FrmBackUp
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\FrmBackUp.cs
+CONTROLS: 0
+
+SCREEN: FrmBarCodeItem
+NAMESPACE: GTSErpSystem.Frms.Items
+TEXT: 
+SIZE:  x 
+FILE: Frms\Items\FrmBarCodeItem.cs
+CONTROLS: 0
+
+SCREEN: FrmBlue
+NAMESPACE: GTSErpSystem.Frms.FrmsHome
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsHome\FrmBlue.cs
+CONTROLS: 0
+
+SCREEN: FrmBounce
+NAMESPACE: GTSErpSystem.Frms.Contract.Report
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\Report\FrmBounce.cs
+CONTROLS: 0
+
+SCREEN: FrmBounce
+NAMESPACE: GTSErpSystem.Frms.Contract
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\FrmBounce.cs
+CONTROLS: 0
+
+SCREEN: FrmBranches
+NAMESPACE: GTSErpSystem.Frms.Cust_Sup
+TEXT: 
+SIZE:  x 
+FILE: Frms\Cust_Sup\FrmBranches.cs
+CONTROLS: 0
+
+SCREEN: FrmCalcRes
+NAMESPACE: GTSErpSystem.Frms.FrmRestaurant.LuckUp
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmRestaurant\LuckUp\FrmCalcRes.cs
+CONTROLS: 0
+
+SCREEN: FrmCalculator
+NAMESPACE: GTSErpSystem.Frms.FrmRestaurant
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmRestaurant\FrmCalculator.cs
+CONTROLS: 0
+
+SCREEN: FrmCardAccount
+NAMESPACE: GTSErpSystem.Frms.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\FrmCardAccount.cs
+CONTROLS: 0
+
+SCREEN: FrmCars
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmCars.cs
+CONTROLS: 0
+
+SCREEN: FrmCashierQuantity
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmCachMoney
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmCachMoney\FrmCashierQuantity.cs
+CONTROLS: 0
+
+SCREEN: FrmCashierSetting
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmCachMoney
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmCachMoney\FrmCashierSetting.cs
+CONTROLS: 0
+
+SCREEN: FrmCashir
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmCashir.cs
+CONTROLS: 0
+
+SCREEN: FrmCashirPharm
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmCashirPharm.cs
+CONTROLS: 1
+  [GTSErpSystem.Frms.Orders.FrmOpenDay.FrmOpenDay] frmOpenDay | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmCashirRestaurant
+NAMESPACE: GTSErpSystem.Frms.FrmRestaurant
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmRestaurant\FrmCashirRestaurant.cs
+CONTROLS: 4
+  [Font] Font | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [TileItemElement] val2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [Point] Location | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [TileItem] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmCashirWashing
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmCashirWashing.cs
+CONTROLS: 0
+
+SCREEN: FrmCashirWithOutGroup
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmCashirWithOutGroup.cs
+CONTROLS: 0
+
+SCREEN: FrmChangeDataBase
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\FrmChangeDataBase.cs
+CONTROLS: 0
+
+SCREEN: FrmCheckActivationCloseYear
+NAMESPACE: GTSErpSystem
+TEXT: 
+SIZE:  x 
+FILE: FrmCheckActivationCloseYear.cs
+CONTROLS: 0
+
+SCREEN: FrmCheckActivationElctroncInv
+NAMESPACE: GTSErpSystem.Frms.ElctorncInvoic
+TEXT: 
+SIZE:  x 
+FILE: Frms\ElctorncInvoic\FrmCheckActivationElctroncInv.cs
+CONTROLS: 0
+
+SCREEN: FrmCheckCollection
+NAMESPACE: GTSErpSystem.Frms.Account.Check
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\Check\FrmCheckCollection.cs
+CONTROLS: 0
+
+SCREEN: FrmCheckCollectionIssued
+NAMESPACE: GTSErpSystem.Frms.Account.Check
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\Check\FrmCheckCollectionIssued.cs
+CONTROLS: 0
+
+SCREEN: FrmCheckIssued
+NAMESPACE: GTSErpSystem.Frms.Account.Check
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\Check\FrmCheckIssued.cs
+CONTROLS: 0
+
+SCREEN: FrmCheckOut
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmCheckOut.cs
+CONTROLS: 0
+
+SCREEN: FrmClass
+NAMESPACE: GTSErpSystem.Frms.Items
+TEXT: 
+SIZE:  x 
+FILE: Frms\Items\FrmClass.cs
+CONTROLS: 0
+
+SCREEN: FrmCloseDay
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmOpenDay
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmOpenDay\FrmCloseDay.cs
+CONTROLS: 0
+
+SCREEN: FrmCloseDayByUser
+NAMESPACE: GTSErpSystem.Frms.Reports.Public
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Public\FrmCloseDayByUser.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmCloseYear
+NAMESPACE: GTSErpSystem.Frms.CloseYears
+TEXT: 
+SIZE:  x 
+FILE: Frms\CloseYears\FrmCloseYear.cs
+CONTROLS: 2
+  [SqlConnection] Conn | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] Command | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmCompany
+NAMESPACE: GTSErpSystem.Frms.Items
+TEXT: 
+SIZE:  x 
+FILE: Frms\Items\FrmCompany.cs
+CONTROLS: 0
+
+SCREEN: FrmContract
+NAMESPACE: GTSErpSystem.Frms.Contract
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\FrmContract.cs
+CONTROLS: 0
+
+SCREEN: FrmContractItem
+NAMESPACE: GTSErpSystem.Frms.Reports.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Orders\FrmContractItem.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmContractScaffolds
+NAMESPACE: GTSErpSystem.Frms.Contract
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\FrmContractScaffolds.cs
+CONTROLS: 0
+
+SCREEN: FrmContractState
+NAMESPACE: GTSErpSystem.Frms.Reports.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Orders\FrmContractState.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmCostCenter
+NAMESPACE: GTSErpSystem.Frms.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\FrmCostCenter.cs
+CONTROLS: 0
+
+SCREEN: FrmCostCenterByFather
+NAMESPACE: GTSErpSystem.Frms.Reports.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Account\FrmCostCenterByFather.cs
+CONTROLS: 1
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmCostCenterTree
+NAMESPACE: GTSErpSystem.Frms.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\FrmCostCenterTree.cs
+CONTROLS: 0
+
+SCREEN: FrmCountry
+NAMESPACE: GTSErpSystem.Frms.Items
+TEXT: 
+SIZE:  x 
+FILE: Frms\Items\FrmCountry.cs
+CONTROLS: 0
+
+SCREEN: FrmCustomer
+NAMESPACE: GTSErpSystem.Frms.Cust_Sup
+TEXT: 
+SIZE:  x 
+FILE: Frms\Cust_Sup\FrmCustomer.cs
+CONTROLS: 0
+
+SCREEN: FrmDailyRestrictions
+NAMESPACE: GTSErpSystem.Frms.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\FrmDailyRestrictions.cs
+CONTROLS: 0
+
+SCREEN: FrmDailyRestrictionsTest
+NAMESPACE: GTSErpSystem.Frms.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\FrmDailyRestrictionsTest.cs
+CONTROLS: 0
+
+SCREEN: FrmDalala
+NAMESPACE: GTSErpSystem.Frms.OrderDalala
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderDalala\FrmDalala.cs
+CONTROLS: 0
+
+SCREEN: FrmDamages
+NAMESPACE: GTSErpSystem.Frms.Repairs
+TEXT: 
+SIZE:  x 
+FILE: Frms\Repairs\FrmDamages.cs
+CONTROLS: 0
+
+SCREEN: FrmDateCashier
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\FrmDateCashier.cs
+CONTROLS: 0
+
+SCREEN: FrmDebtReconstruction
+NAMESPACE: GTSErpSystem.Frms.Reports.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Account\FrmDebtReconstruction.cs
+CONTROLS: 0
+
+SCREEN: FrmDefualtAccount
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\FrmDefualtAccount.cs
+CONTROLS: 0
+
+SCREEN: FrmDefualtAccount
+NAMESPACE: GTSErpSystem.Frms.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\FrmDefualtAccount.cs
+CONTROLS: 0
+
+SCREEN: FrmDefualtCustomer
+NAMESPACE: GTSErpSystem.Frms.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\FrmDefualtCustomer.cs
+CONTROLS: 0
+
+SCREEN: FrmDelivery
+NAMESPACE: GTSErpSystem.Frms.FrmRestaurant.LuckUp
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmRestaurant\LuckUp\FrmDelivery.cs
+CONTROLS: 0
+
+SCREEN: FrmDeliveryCollecting
+NAMESPACE: GTSErpSystem.Frms.FrmRestaurant
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmRestaurant\FrmDeliveryCollecting.cs
+CONTROLS: 0
+
+SCREEN: FrmDesignerReport
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\FrmDesignerReport.cs
+CONTROLS: 0
+
+SCREEN: FrmDisCode
+NAMESPACE: GTSErpSystem.Frms.Items
+TEXT: 
+SIZE:  x 
+FILE: Frms\Items\FrmDisCode.cs
+CONTROLS: 1
+  [Random] random | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmDoctor
+NAMESPACE: GTSErpSystem.Frms.Items
+TEXT: 
+SIZE:  x 
+FILE: Frms\Items\FrmDoctor.cs
+CONTROLS: 0
+
+SCREEN: FrmDrivers
+NAMESPACE: GTSErpSystem.Frms.Transportation
+TEXT: 
+SIZE:  x 
+FILE: Frms\Transportation\FrmDrivers.cs
+CONTROLS: 0
+
+SCREEN: FrmEditRoom
+NAMESPACE: GTSErpSystem.Frms.FrmRestaurant
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmRestaurant\FrmEditRoom.cs
+CONTROLS: 3
+  [Font] Font | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [TileItemElement] val2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [TileItem] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmEditUser
+NAMESPACE: GTSErpSystem.Frms.Security
+TEXT: 
+SIZE:  x 
+FILE: Frms\Security\FrmEditUser.cs
+CONTROLS: 0
+
+SCREEN: FrmEJAR
+NAMESPACE: GTSErpSystem.Frms.Contract
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\FrmEJAR.cs
+CONTROLS: 0
+
+SCREEN: FrmEmployee
+NAMESPACE: GTSErpSystem.Frms.Payroll
+TEXT: 
+SIZE:  x 
+FILE: Frms\Payroll\FrmEmployee.cs
+CONTROLS: 0
+
+SCREEN: FrmEntrusted
+NAMESPACE: GTSErpSystem.Frms.Payroll
+TEXT: 
+SIZE:  x 
+FILE: Frms\Payroll\FrmEntrusted.cs
+CONTROLS: 0
+
+SCREEN: FrmEntrustedEmployee
+NAMESPACE: GTSErpSystem.Frms.Payroll
+TEXT: 
+SIZE:  x 
+FILE: Frms\Payroll\FrmEntrustedEmployee.cs
+CONTROLS: 0
+
+SCREEN: FrmEntryPermission
+NAMESPACE: GTSErpSystem.Frms.Contract
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\FrmEntryPermission.cs
+CONTROLS: 0
+
+SCREEN: FrmExitPermission
+NAMESPACE: GTSErpSystem.Frms.Contract
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\FrmExitPermission.cs
+CONTROLS: 0
+
+SCREEN: FrmExpAndRevenuesReports
+NAMESPACE: GTSErpSystem.Frms.OrderRent.RentReports
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderRent\RentReports\FrmExpAndRevenuesReports.cs
+CONTROLS: 0
+
+SCREEN: FrmExpReports
+NAMESPACE: GTSErpSystem.Frms.OrderRent.RentReports
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderRent\RentReports\FrmExpReports.cs
+CONTROLS: 0
+
+SCREEN: FrmGenetareCSID
+NAMESPACE: GTSErpSystem.Frms.ElctorncInvoic
+TEXT: Standard &Simplified Invoices ** فاتورة ضريبية & مبسطة 
+SIZE:  x 
+FILE: Frms\ElctorncInvoic\FrmGenetareCSID.cs
+CONTROLS: 0
+
+SCREEN: FrmGetDataFromCRM
+NAMESPACE: GTSErpSystem.Frms.ElctorncInvoic
+TEXT: 
+SIZE:  x 
+FILE: Frms\ElctorncInvoic\FrmGetDataFromCRM.cs
+CONTROLS: 0
+
+SCREEN: FrmGold
+NAMESPACE: GTSErpSystem.Frms.FrmsHome
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsHome\FrmGold.cs
+CONTROLS: 0
+
+SCREEN: FrmGoldPlus
+NAMESPACE: GTSErpSystem.Frms.FrmsHome
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsHome\FrmGoldPlus.cs
+CONTROLS: 0
+
+SCREEN: FrmGoldPlusImportExport
+NAMESPACE: GTSErpSystem.Frms.FrmsHome
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsHome\FrmGoldPlusImportExport.cs
+CONTROLS: 0
+
+SCREEN: FrmGoldPlusTransportation
+NAMESPACE: GTSErpSystem.Frms.FrmsHome
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsHome\FrmGoldPlusTransportation.cs
+CONTROLS: 0
+
+SCREEN: FrmGroups
+NAMESPACE: GTSErpSystem.Frms.Security
+TEXT: 
+SIZE:  x 
+FILE: Frms\Security\FrmGroups.cs
+CONTROLS: 0
+
+SCREEN: FrmGroupsRes
+NAMESPACE: GTSErpSystem.Frms.Items
+TEXT: 
+SIZE:  x 
+FILE: Frms\Items\FrmGroupsRes.cs
+CONTROLS: 0
+
+SCREEN: FrmGuarantee
+NAMESPACE: GTSErpSystem.Frms.Contract
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\FrmGuarantee.cs
+CONTROLS: 0
+
+SCREEN: FrmGuarantee
+NAMESPACE: GTSErpSystem.Frms.Items
+TEXT: 
+SIZE:  x 
+FILE: Frms\Items\FrmGuarantee.cs
+CONTROLS: 0
+
+SCREEN: FrmHalls
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmReservations
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmReservations\FrmHalls.cs
+CONTROLS: 0
+
+SCREEN: FrmImportExcel
+NAMESPACE: GTSErpSystem.Frms.Items
+TEXT: SELECT * FROM [
+SIZE:  x 
+FILE: Frms\Items\FrmImportExcel.cs
+CONTROLS: 3
+  [OleDbDataAdapter] oleDbDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [OleDbDataAdapter] oleDbDataAdapter2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSet] dataSet | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmImportExcel
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\FrmImportExcel.cs
+CONTROLS: 3
+  [OleDbDataAdapter] oleDbDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [OleDbDataAdapter] oleDbDataAdapter2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSet] dataSet | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmInventorySettlementMinus
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmInventorySettlementMinus.cs
+CONTROLS: 0
+
+SCREEN: FrmInvoicType
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmInvoicType.cs
+CONTROLS: 0
+
+SCREEN: FrmItemProfit
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\FrmItemProfit.cs
+CONTROLS: 0
+
+SCREEN: FrmItemReader
+NAMESPACE: GTSErpSystem.Frms.Items
+TEXT: 
+SIZE:  x 
+FILE: Frms\Items\FrmItemReader.cs
+CONTROLS: 0
+
+SCREEN: FrmItemRentDeatils
+NAMESPACE: GTSErpSystem.Frms.OrderRent
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderRent\FrmItemRentDeatils.cs
+CONTROLS: 1
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmItems
+NAMESPACE: GTSErpSystem.Frms.Items
+TEXT: 
+SIZE:  x 
+FILE: Frms\Items\FrmItems.cs
+CONTROLS: 0
+
+SCREEN: FrmItemVat
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\FrmItemVat.cs
+CONTROLS: 0
+
+SCREEN: FrmLight2
+NAMESPACE: GTSErpSystem.Frms.FrmsHome
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsHome\FrmLight2.cs
+CONTROLS: 0
+
+SCREEN: FrmLock
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\FrmLock.cs
+CONTROLS: 0
+
+SCREEN: FrmLogin
+NAMESPACE: GTSErpSystem
+TEXT: 
+SIZE:  x 
+FILE: FrmLogin.cs
+CONTROLS: 0
+
+SCREEN: FrmLogin26
+NAMESPACE: GTSErpSystem
+TEXT: 
+SIZE:  x 
+FILE: FrmLogin26.cs
+CONTROLS: 0
+
+SCREEN: FrmLogin3
+NAMESPACE: GTSErpSystem
+TEXT: AR
+SIZE:  x 
+FILE: FrmLogin3.cs
+CONTROLS: 0
+
+SCREEN: FrmLoginCrm
+NAMESPACE: GTSErpSystem.Frms.ElctorncInvoic
+TEXT: 
+SIZE:  x 
+FILE: Frms\ElctorncInvoic\FrmLoginCrm.cs
+CONTROLS: 0
+
+SCREEN: FrmLoginVirg
+NAMESPACE: GTSErpSystem.Frms.Virgins
+TEXT: 
+SIZE:  x 
+FILE: Frms\Virgins\FrmLoginVirg.cs
+CONTROLS: 0
+
+SCREEN: FrmMahlyCollecting
+NAMESPACE: GTSErpSystem.Frms.FrmRestaurant
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmRestaurant\FrmMahlyCollecting.cs
+CONTROLS: 4
+  [Font] Font | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [TileItemElement] val3 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [TileItemElement] val2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [TileItem] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmManufacturing
+NAMESPACE: GTSErpSystem.Frms.OrderManufacturing
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderManufacturing\FrmManufacturing.cs
+CONTROLS: 0
+
+SCREEN: FrmManufacturingOrder
+NAMESPACE: GTSErpSystem.Frms.OrderManufacturing
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderManufacturing\FrmManufacturingOrder.cs
+CONTROLS: 0
+
+SCREEN: FrmMinutesRemoval
+NAMESPACE: GTSErpSystem.Frms.Contract
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\FrmMinutesRemoval.cs
+CONTROLS: 0
+
+SCREEN: FrmMinutesStarted
+NAMESPACE: GTSErpSystem.Frms.Contract
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\FrmMinutesStarted.cs
+CONTROLS: 0
+
+SCREEN: FrmMoney
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmCachMoney
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmCachMoney\FrmMoney.cs
+CONTROLS: 0
+
+SCREEN: FrmMoneyAjil
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmCachMoney
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmCachMoney\FrmMoneyAjil.cs
+CONTROLS: 0
+
+SCREEN: FrmMoneyCashier
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmCachMoney
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmCachMoney\FrmMoneyCashier.cs
+CONTROLS: 0
+
+SCREEN: FrmMoneyDelivery
+NAMESPACE: GTSErpSystem.Frms.FrmRestaurant
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmRestaurant\FrmMoneyDelivery.cs
+CONTROLS: 3
+  [Font] Font | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [TileItemElement] val2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [TileItem] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmMoneyMahly
+NAMESPACE: GTSErpSystem.Frms.FrmRestaurant
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmRestaurant\FrmMoneyMahly.cs
+CONTROLS: 4
+  [Font] Font | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [TileItemElement] val3 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [TileItemElement] val2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [TileItem] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmMoneySafry
+NAMESPACE: GTSErpSystem.Frms.FrmRestaurant
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmRestaurant\FrmMoneySafry.cs
+CONTROLS: 0
+
+SCREEN: FrmMovementsDailyReport
+NAMESPACE: GTSErpSystem.Frms.Reports.Public
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Public\FrmMovementsDailyReport.cs
+CONTROLS: 0
+
+SCREEN: FrmMovementsDailyReportAllBran
+NAMESPACE: GTSErpSystem.Frms.Reports.AllBranch
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\AllBranch\FrmMovementsDailyReportAllBran.cs
+CONTROLS: 0
+
+SCREEN: FrmMovementsDailyReportAllBran2
+NAMESPACE: GTSErpSystem.Frms.Reports.AllBranch
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\AllBranch\FrmMovementsDailyReportAllBran2.cs
+CONTROLS: 0
+
+SCREEN: FrmNetOrders
+NAMESPACE: GTSErpSystem.Frms.Reports.Gold
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Gold\FrmNetOrders.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmNetProfitSalesMan
+NAMESPACE: GTSErpSystem.Frms.Reports.SalesMan
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\SalesMan\FrmNetProfitSalesMan.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmNetPurches
+NAMESPACE: GTSErpSystem.Frms.Reports.Gold
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Gold\FrmNetPurches.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmNetPurchOrders
+NAMESPACE: GTSErpSystem.Frms.Reports.Gold
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Gold\FrmNetPurchOrders.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmOilChange
+NAMESPACE: GTSErpSystem.Frms.Items
+TEXT: 
+SIZE:  x 
+FILE: Frms\Items\FrmOilChange.cs
+CONTROLS: 1
+  [FrmSearchItems1] frmSearchItems | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmOpenAccount
+NAMESPACE: GTSErpSystem.Frms.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\FrmOpenAccount.cs
+CONTROLS: 0
+
+SCREEN: FrmOpenDay
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmOpenDay
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmOpenDay\FrmOpenDay.cs
+CONTROLS: 1
+  [GTSdbEntities] gTSdbEntities | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmOpenQuantity
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmOpenQuantity.cs
+CONTROLS: 0
+
+SCREEN: FrmOrderDetailsByDate
+NAMESPACE: GTSErpSystem.Frms.Reports.Public
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Public\FrmOrderDetailsByDate.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmOrderInCashier
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmLuckUpOrders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmLuckUpOrders\FrmOrderInCashier.cs
+CONTROLS: 0
+
+SCREEN: FrmOrderReturn
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmOrderReturn.cs
+CONTROLS: 0
+
+SCREEN: FrmOrderReturnRental
+NAMESPACE: GTSErpSystem.Frms.OrderRent
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderRent\FrmOrderReturnRental.cs
+CONTROLS: 0
+
+SCREEN: FrmOrders
+NAMESPACE: GTSErpSystem.Frms.Reports.Gold
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Gold\FrmOrders.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmOrders
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmOrders.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmOrdersDraft
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmOrdersDraft.cs
+CONTROLS: 0
+
+SCREEN: FrmOrdersNetPurchOnly
+NAMESPACE: GTSErpSystem.Frms.Reports.Gold
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Gold\FrmOrdersNetPurchOnly.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmOrdersReturn
+NAMESPACE: GTSErpSystem.Frms.Reports.Gold
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Gold\FrmOrdersReturn.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmOrdersReturnNoPurchCode
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmOrdersReturnNoPurchCode.cs
+CONTROLS: 0
+
+SCREEN: FrmOrdersWedding
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmOrdersWedding.cs
+CONTROLS: 0
+
+SCREEN: FrmPassExcel
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\FrmPassExcel.cs
+CONTROLS: 0
+
+SCREEN: FrmPassword
+NAMESPACE: GTSErpSystem.Frms.Security
+TEXT: 
+SIZE:  x 
+FILE: Frms\Security\FrmPassword.cs
+CONTROLS: 0
+
+SCREEN: FrmPassWord
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\FrmPassWord.cs
+CONTROLS: 0
+
+SCREEN: FrmPassWordElctronc
+NAMESPACE: GTSErpSystem.Frms.ElctorncInvoic
+TEXT: 
+SIZE:  x 
+FILE: Frms\ElctorncInvoic\FrmPassWordElctronc.cs
+CONTROLS: 0
+
+SCREEN: FrmPassWordOrderReturn
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\FrmPassWordOrderReturn.cs
+CONTROLS: 0
+
+SCREEN: FrmPassWordSupervisor
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmLuckUpOrders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmLuckUpOrders\FrmPassWordSupervisor.cs
+CONTROLS: 0
+
+SCREEN: FrmPassWordVat
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\FrmPassWordVat.cs
+CONTROLS: 0
+
+SCREEN: FrmPayment
+NAMESPACE: GTSErpSystem.Frms.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\FrmPayment.cs
+CONTROLS: 0
+
+SCREEN: FrmPaymentBig
+NAMESPACE: GTSErpSystem.Frms.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\FrmPaymentBig.cs
+CONTROLS: 0
+
+SCREEN: FrmPaymentItem
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmPaymentItem.cs
+CONTROLS: 0
+
+SCREEN: FrmPayroll
+NAMESPACE: GTSErpSystem.Frms.Payroll
+TEXT: 
+SIZE:  x 
+FILE: Frms\Payroll\FrmPayroll.cs
+CONTROLS: 0
+
+SCREEN: FrmPayrollTemp
+NAMESPACE: GTSErpSystem.Frms.Payroll
+TEXT: 
+SIZE:  x 
+FILE: Frms\Payroll\FrmPayrollTemp.cs
+CONTROLS: 0
+
+SCREEN: FrmPlace
+NAMESPACE: GTSErpSystem.Frms.Cust_Sup
+TEXT: 
+SIZE:  x 
+FILE: Frms\Cust_Sup\FrmPlace.cs
+CONTROLS: 0
+
+SCREEN: FrmPremium
+NAMESPACE: GTSErpSystem.Frms.FrmsHome
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsHome\FrmPremium.cs
+CONTROLS: 0
+
+SCREEN: FrmPriceOffer
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmPriceOffer.cs
+CONTROLS: 0
+
+SCREEN: FrmPriceOfferScaffolds
+NAMESPACE: GTSErpSystem.Frms.Contract
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\FrmPriceOfferScaffolds.cs
+CONTROLS: 0
+
+SCREEN: FrmPrint
+NAMESPACE: GTSErpSystem.Frms.FrmRestaurant
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmRestaurant\FrmPrint.cs
+CONTROLS: 0
+
+SCREEN: FrmPrintBarcode
+NAMESPACE: GTSErpSystem.Frms.Items.FrmSearch
+TEXT: 
+SIZE:  x 
+FILE: Frms\Items\FrmSearch\FrmPrintBarcode.cs
+CONTROLS: 2
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmPrinter
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\FrmPrinter.cs
+CONTROLS: 0
+
+SCREEN: FrmPrinterCashier
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\FrmPrinterCashier.cs
+CONTROLS: 0
+
+SCREEN: FrmProjects
+NAMESPACE: GTSErpSystem.Frms.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\FrmProjects.cs
+CONTROLS: 0
+
+SCREEN: FrmPurchaseOrder
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmPurchaseOrder.cs
+CONTROLS: 0
+
+SCREEN: FrmPurchases
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmPurchases.cs
+CONTROLS: 0
+
+SCREEN: FrmPurchasesReturn
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmPurchasesReturn.cs
+CONTROLS: 0
+
+SCREEN: FrmPurchasesReturnNoPurchCode
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmPurchasesReturnNoPurchCode.cs
+CONTROLS: 0
+
+SCREEN: FrmPurches
+NAMESPACE: GTSErpSystem.Frms.Reports.Gold
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Gold\FrmPurches.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmPurchesReturn
+NAMESPACE: GTSErpSystem.Frms.Reports.Gold
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Gold\FrmPurchesReturn.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmReceiptCheck
+NAMESPACE: GTSErpSystem.Frms.Account.Check
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\Check\FrmReceiptCheck.cs
+CONTROLS: 0
+
+SCREEN: FrmReceipts
+NAMESPACE: GTSErpSystem.Frms.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\FrmReceipts.cs
+CONTROLS: 0
+
+SCREEN: FrmReceiptsBig
+NAMESPACE: GTSErpSystem.Frms.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\FrmReceiptsBig.cs
+CONTROLS: 0
+
+SCREEN: FrmReceiptsScaffolds
+NAMESPACE: GTSErpSystem.Frms.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\FrmReceiptsScaffolds.cs
+CONTROLS: 0
+
+SCREEN: FrmReceive
+NAMESPACE: GTSErpSystem.Frms.Transportation
+TEXT: 
+SIZE:  x 
+FILE: Frms\Transportation\FrmReceive.cs
+CONTROLS: 0
+
+SCREEN: FrmRecipt
+NAMESPACE: GTSErpSystem.Frms.OrderRent
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderRent\FrmRecipt.cs
+CONTROLS: 0
+
+SCREEN: FrmRecipt2
+NAMESPACE: GTSErpSystem.Frms.OrderRent
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderRent\FrmRecipt2.cs
+CONTROLS: 0
+
+SCREEN: FrmRecipt3
+NAMESPACE: GTSErpSystem.Frms.OrderRent
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderRent\FrmRecipt3.cs
+CONTROLS: 0
+
+SCREEN: FrmRecpItem
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmRecpItem.cs
+CONTROLS: 0
+
+SCREEN: FrmRecpitReports
+NAMESPACE: GTSErpSystem.Frms.OrderRent.RentReports
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderRent\RentReports\FrmRecpitReports.cs
+CONTROLS: 0
+
+SCREEN: FrmReforms
+NAMESPACE: GTSErpSystem.Frms.Repairs
+TEXT: 
+SIZE:  x 
+FILE: Frms\Repairs\FrmReforms.cs
+CONTROLS: 0
+
+SCREEN: FrmRent
+NAMESPACE: GTSErpSystem.Frms.OrderRent
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderRent\FrmRent.cs
+CONTROLS: 0
+
+SCREEN: FrmRentalExpenses
+NAMESPACE: GTSErpSystem.Frms.OrderRent
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderRent\FrmRentalExpenses.cs
+CONTROLS: 0
+
+SCREEN: FrmRentalInvoice
+NAMESPACE: GTSErpSystem.Frms.OrderRent
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderRent\FrmRentalInvoice.cs
+CONTROLS: 0
+
+SCREEN: FrmRentReports
+NAMESPACE: GTSErpSystem.Frms.OrderRent.RentReports
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderRent\RentReports\FrmRentReports.cs
+CONTROLS: 5
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmRentReports2
+NAMESPACE: GTSErpSystem.Frms.OrderRent.RentReports
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderRent\RentReports\FrmRentReports2.cs
+CONTROLS: 0
+
+SCREEN: FrmRepair
+NAMESPACE: GTSErpSystem.Frms.FrmOthers
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmOthers\FrmRepair.cs
+CONTROLS: 0
+
+SCREEN: FrmRepairs
+NAMESPACE: GTSErpSystem.Frms.Repairs
+TEXT: 
+SIZE:  x 
+FILE: Frms\Repairs\FrmRepairs.cs
+CONTROLS: 0
+
+SCREEN: FrmReplace
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmReplace.cs
+CONTROLS: 0
+
+SCREEN: FrmReportAll
+NAMESPACE: GTSErpSystem.Frms.FrmsHome
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsHome\FrmReportAll.cs
+CONTROLS: 0
+
+SCREEN: FrmReportGetOrder
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\FrmReportGetOrder.cs
+CONTROLS: 0
+
+SCREEN: FrmReportOrderDalala_Dalala
+NAMESPACE: GTSErpSystem.Frms.OrderDalala.Report
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderDalala\Report\FrmReportOrderDalala_Dalala.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmReportOrderDalala_Sending
+NAMESPACE: GTSErpSystem.Frms.OrderDalala.Report
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderDalala\Report\FrmReportOrderDalala_Sending.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmReportRent
+NAMESPACE: GTSErpSystem.OrderRent
+TEXT: 
+SIZE:  x 
+FILE: OrderRent\FrmReportRent.cs
+CONTROLS: 5
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmReportReser
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmReservations
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmReservations\FrmReportReser.cs
+CONTROLS: 0
+
+SCREEN: FrmResend
+NAMESPACE: GTSErpSystem.Frms.Transportation
+TEXT: 
+SIZE:  x 
+FILE: Frms\Transportation\FrmResend.cs
+CONTROLS: 1
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmResend
+NAMESPACE: GTSErpSystem.Frms.Transportation.SearchTransportation
+TEXT: 
+SIZE:  x 
+FILE: Frms\Transportation\SearchTransportation\FrmResend.cs
+CONTROLS: 1
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmReservation
+NAMESPACE: GTSErpSystem.Frms.Cust_Sup
+TEXT: 
+SIZE:  x 
+FILE: Frms\Cust_Sup\FrmReservation.cs
+CONTROLS: 0
+
+SCREEN: FrmReservations
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmReservations
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmReservations\FrmReservations.cs
+CONTROLS: 0
+
+SCREEN: FrmRestaurant
+NAMESPACE: GTSErpSystem.Frms.FrmsHome
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsHome\FrmRestaurant.cs
+CONTROLS: 0
+
+SCREEN: FrmRestaurantSilver
+NAMESPACE: GTSErpSystem.Frms.FrmsHome
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsHome\FrmRestaurantSilver.cs
+CONTROLS: 0
+
+SCREEN: FrmReturnOrderInCashier
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmLuckUpOrders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmLuckUpOrders\FrmReturnOrderInCashier.cs
+CONTROLS: 0
+
+SCREEN: FrmRoom
+NAMESPACE: GTSErpSystem.Frms.FrmRestaurant.LuckUp
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmRestaurant\LuckUp\FrmRoom.cs
+CONTROLS: 0
+
+SCREEN: FrmRPCostCenter
+NAMESPACE: GTSErpSystem.Frms.Reports.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Account\FrmRPCostCenter.cs
+CONTROLS: 0
+
+SCREEN: FrmRPDeportation
+NAMESPACE: GTSErpSystem.Frms.Transportation
+TEXT: 
+SIZE:  x 
+FILE: Frms\Transportation\FrmRPDeportation.cs
+CONTROLS: 0
+
+SCREEN: FrmRPItemLimit
+NAMESPACE: GTSErpSystem.Frms.Reports.Stores
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Stores\FrmRPItemLimit.cs
+CONTROLS: 1
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmRPLeadger
+NAMESPACE: GTSErpSystem.Frms.Reports.Account
+TEXT: 1
+SIZE:  x 
+FILE: Frms\Reports\Account\FrmRPLeadger.cs
+CONTROLS: 3
+  [FrmSearchAccountPayment] frmSearchAccountPayment | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmSearchAccountReceipts] frmSearchAccountReceipts | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [GTSErpSystem.Frms.FrmsMain.Search.FrmSearchAccount] frmSearchAccount | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmRPLeadgerCar
+NAMESPACE: GTSErpSystem.Frms.Transportation
+TEXT: 1
+SIZE:  x 
+FILE: Frms\Transportation\FrmRPLeadgerCar.cs
+CONTROLS: 3
+  [FrmSearchAccountPayment] frmSearchAccountPayment | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmSearchAccountReceipts] frmSearchAccountReceipts | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [GTSErpSystem.Frms.FrmsMain.Search.FrmSearchAccount] frmSearchAccount | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmRPLeadgerSupp
+NAMESPACE: GTSErpSystem.Frms.Reports.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Account\FrmRPLeadgerSupp.cs
+CONTROLS: 0
+
+SCREEN: FrmRPMizan
+NAMESPACE: GTSErpSystem.Frms.Reports.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Account\FrmRPMizan.cs
+CONTROLS: 0
+
+SCREEN: FrmRPMizanCustSupp
+NAMESPACE: GTSErpSystem.Frms.Reports.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Account\FrmRPMizanCustSupp.cs
+CONTROLS: 0
+
+SCREEN: FrmRPMizanGroups
+NAMESPACE: GTSErpSystem.Frms.Reports.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Account\FrmRPMizanGroups.cs
+CONTROLS: 0
+
+SCREEN: FrmRPMizaniyah
+NAMESPACE: GTSErpSystem.Frms.Reports.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Account\FrmRPMizaniyah.cs
+CONTROLS: 0
+
+SCREEN: FrmRPMizaniyahAllBran
+NAMESPACE: GTSErpSystem.Frms.Reports.AllBranch
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\AllBranch\FrmRPMizaniyahAllBran.cs
+CONTROLS: 0
+
+SCREEN: FrmRPMizanTotal
+NAMESPACE: GTSErpSystem.Frms.Reports.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Account\FrmRPMizanTotal.cs
+CONTROLS: 0
+
+SCREEN: FrmRPMovementAllItemActive
+NAMESPACE: GTSErpSystem.Frms.Reports.Stores
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Stores\FrmRPMovementAllItemActive.cs
+CONTROLS: 0
+
+SCREEN: FrmRPMovementItem
+NAMESPACE: GTSErpSystem.Frms.Reports.Stores
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Stores\FrmRPMovementItem.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmRPMovementItemActive
+NAMESPACE: GTSErpSystem.Frms.Reports.Stores
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Stores\FrmRPMovementItemActive.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmRPMovementsDailyReport
+NAMESPACE: GTSErpSystem.Frms.Reports.Public
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Public\FrmRPMovementsDailyReport.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmRPOrderDaily
+NAMESPACE: GTSErpSystem.Frms.Reports.Public
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Public\FrmRPOrderDaily.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmRPProfitAndLossAccount
+NAMESPACE: GTSErpSystem.Frms.Reports.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Account\FrmRPProfitAndLossAccount.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [Calss_CostCenter] calss_CostCenter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmRPProfitAndLossAccountAllBran
+NAMESPACE: GTSErpSystem.Frms.Reports.AllBranch
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\AllBranch\FrmRPProfitAndLossAccountAllBran.cs
+CONTROLS: 0
+
+SCREEN: FrmRPProject
+NAMESPACE: GTSErpSystem.Frms.Reports.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Account\FrmRPProject.cs
+CONTROLS: 1
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmRpSalesPurchesForSupp
+NAMESPACE: GTSErpSystem.Frms.Reports.Public
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Public\FrmRpSalesPurchesForSupp.cs
+CONTROLS: 1
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmRPStoresGard
+NAMESPACE: GTSErpSystem.Frms.Reports.Stores
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Stores\FrmRPStoresGard.cs
+CONTROLS: 0
+
+SCREEN: FrmRPStoresGardbyProperties
+NAMESPACE: GTSErpSystem.Frms.Reports.Stores
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Stores\FrmRPStoresGardbyProperties.cs
+CONTROLS: 3
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable3 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmRPTasferByGroup
+NAMESPACE: GTSErpSystem.Frms.Reports.Stores
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Stores\FrmRPTasferByGroup.cs
+CONTROLS: 0
+
+SCREEN: FrmRPTotalAvergForSore_ByGroupProperties
+NAMESPACE: GTSErpSystem.Frms.Reports.Stores
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Stores\FrmRPTotalAvergForSore_ByGroupProperties.cs
+CONTROLS: 3
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable3 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmRPTranTeacher
+NAMESPACE: GTSErpSystem.Frms.Reports.Account
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Account\FrmRPTranTeacher.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmRTransferFromBranch
+NAMESPACE: GTSErpSystem.Frms.Reports.Stores.Branches
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Stores\Branches\FrmRTransferFromBranch.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmRTransferToBranch
+NAMESPACE: GTSErpSystem.Frms.Reports.Stores.Branches
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Stores\Branches\FrmRTransferToBranch.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSalesEmployee
+NAMESPACE: GTSErpSystem.Frms.Reports.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Orders\FrmSalesEmployee.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSalesMan
+NAMESPACE: GTSErpSystem.Frms.Cust_Sup
+TEXT: 
+SIZE:  x 
+FILE: Frms\Cust_Sup\FrmSalesMan.cs
+CONTROLS: 0
+
+SCREEN: FrmSearch
+NAMESPACE: GTSErpSystem.Frms.Virgins
+TEXT: 
+SIZE:  x 
+FILE: Frms\Virgins\FrmSearch.cs
+CONTROLS: 4
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchAccount
+NAMESPACE: GTSErpSystem.Frms.Account.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\Search\FrmSearchAccount.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchAccount
+NAMESPACE: GTSErpSystem.Frms.FrmsMain.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\Search\FrmSearchAccount.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchAccountForTree
+NAMESPACE: GTSErpSystem.Frms.FrmsMain.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\Search\FrmSearchAccountForTree.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchAccountPayment
+NAMESPACE: GTSErpSystem.Frms.Account.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\Search\FrmSearchAccountPayment.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchAccountReceipts
+NAMESPACE: GTSErpSystem.Frms.Account.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\Search\FrmSearchAccountReceipts.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchAdds
+NAMESPACE: GTSErpSystem.Frms.FrmRestaurant.LuckUp
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmRestaurant\LuckUp\FrmSearchAdds.cs
+CONTROLS: 0
+
+SCREEN: FrmSearchBranch
+NAMESPACE: GTSErpSystem.Frms.Cust_Sup.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Cust_Sup\Search\FrmSearchBranch.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchByBarcode
+NAMESPACE: GTSErpSystem.Frms.Items.FrmSearch
+TEXT: 
+SIZE:  x 
+FILE: Frms\Items\FrmSearch\FrmSearchByBarcode.cs
+CONTROLS: 0
+
+SCREEN: FrmSearchCheckIssued
+NAMESPACE: GTSErpSystem.Frms.Account.Check.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\Check\Search\FrmSearchCheckIssued.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchCheckout
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchCheckout.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchCheckoutOrders
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchCheckoutOrders.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchCheckRecipt
+NAMESPACE: GTSErpSystem.Frms.Account.Check.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\Check\Search\FrmSearchCheckRecipt.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchContract
+NAMESPACE: GTSErpSystem.Frms.Contract.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\Search\FrmSearchContract.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchCostCenter
+NAMESPACE: GTSErpSystem.Frms.FrmsMain.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\Search\FrmSearchCostCenter.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchCustomer
+NAMESPACE: GTSErpSystem.Frms.Cust_Sup.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Cust_Sup\Search\FrmSearchCustomer.cs
+CONTROLS: 4
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchCustomer
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchCustomer.cs
+CONTROLS: 4
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchCustomerAll
+NAMESPACE: GTSErpSystem.Frms.Cust_Sup.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Cust_Sup\Search\FrmSearchCustomerAll.cs
+CONTROLS: 1
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchDalala
+NAMESPACE: GTSErpSystem.Frms.OrderDalala.FrmSearch
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderDalala\FrmSearch\FrmSearchDalala.cs
+CONTROLS: 1
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchDefualtAccount
+NAMESPACE: GTSErpSystem.Frms.FrmsMain.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\Search\FrmSearchDefualtAccount.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchEJAR
+NAMESPACE: GTSErpSystem.Frms.Contract.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\Search\FrmSearchEJAR.cs
+CONTROLS: 1
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchEntryPermission
+NAMESPACE: GTSErpSystem.Frms.Contract.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\Search\FrmSearchEntryPermission.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchExitPermission
+NAMESPACE: GTSErpSystem.Frms.Contract.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\Search\FrmSearchExitPermission.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchGuarantee
+NAMESPACE: GTSErpSystem.Frms.Contract.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\Search\FrmSearchGuarantee.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchInventorySettlementMinus
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchInventorySettlementMinus.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchItems1
+NAMESPACE: GTSErpSystem.Frms.Items.FrmSearch
+TEXT: 
+SIZE:  x 
+FILE: Frms\Items\FrmSearch\FrmSearchItems1.cs
+CONTROLS: 0
+
+SCREEN: FrmSearchManufacturing
+NAMESPACE: GTSErpSystem.Frms.OrderManufacturing.FrmSearch
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderManufacturing\FrmSearch\FrmSearchManufacturing.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchManufacturingOrder
+NAMESPACE: GTSErpSystem.Frms.OrderManufacturing.FrmSearch
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderManufacturing\FrmSearch\FrmSearchManufacturingOrder.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchMinutesEnd
+NAMESPACE: GTSErpSystem.Frms.Contract.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\Search\FrmSearchMinutesEnd.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchMinutesStarted
+NAMESPACE: GTSErpSystem.Frms.Contract.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\Search\FrmSearchMinutesStarted.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchOpenQuantity
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchOpenQuantity.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchOrderReturn
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchOrderReturn.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchOrderReturnNoPurchCode
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchOrderReturnNoPurchCode.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchOrders
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchOrders.cs
+CONTROLS: 0
+
+SCREEN: FrmSearchOrdersDraft
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchOrdersDraft.cs
+CONTROLS: 0
+
+SCREEN: FrmSearchPayment
+NAMESPACE: GTSErpSystem.Frms.Account.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\Search\FrmSearchPayment.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchPaymentBig
+NAMESPACE: GTSErpSystem.Frms.Account.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\Search\FrmSearchPaymentBig.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchPaymentItems
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchPaymentItems.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchPayroll
+NAMESPACE: GTSErpSystem.Frms.Payroll.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Payroll\Search\FrmSearchPayroll.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchPayrollTemp
+NAMESPACE: GTSErpSystem.Frms.Payroll.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Payroll\Search\FrmSearchPayrollTemp.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchPriceOffer
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchPriceOffer.cs
+CONTROLS: 0
+
+SCREEN: FrmSearchPriceOfferScaffold
+NAMESPACE: GTSErpSystem.Frms.Contract.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\Search\FrmSearchPriceOfferScaffold.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchPriceShowRent
+NAMESPACE: GTSErpSystem.Frms.OrderRent.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderRent\Search\FrmSearchPriceShowRent.cs
+CONTROLS: 1
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchProjects
+NAMESPACE: GTSErpSystem.Frms.FrmsMain.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\Search\FrmSearchProjects.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchPurchases
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchPurchases.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchPurchasesOrder
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchPurchasesOrder.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchPurchReturn
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchPurchReturn.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchPurchReturnNoPurchCode
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchPurchReturnNoPurchCode.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchReceipts
+NAMESPACE: GTSErpSystem.Frms.Account.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\Search\FrmSearchReceipts.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchReceiptsBig
+NAMESPACE: GTSErpSystem.Frms.Account.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\Search\FrmSearchReceiptsBig.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchReceive
+NAMESPACE: GTSErpSystem.Frms.Transportation.SearchTransportation
+TEXT: 
+SIZE:  x 
+FILE: Frms\Transportation\SearchTransportation\FrmSearchReceive.cs
+CONTROLS: 1
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchRecipt
+NAMESPACE: GTSErpSystem.Frms.OrderRent.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderRent\Search\FrmSearchRecipt.cs
+CONTROLS: 1
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchRecItem
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchRecItem.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchRent
+NAMESPACE: GTSErpSystem.Frms.OrderRent.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderRent\Search\FrmSearchRent.cs
+CONTROLS: 1
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchRentalExpenses
+NAMESPACE: GTSErpSystem.Frms.OrderRent.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderRent\Search\FrmSearchRentalExpenses.cs
+CONTROLS: 1
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchRentalInvoice
+NAMESPACE: GTSErpSystem.Frms.OrderRent.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderRent\Search\FrmSearchRentalInvoice.cs
+CONTROLS: 1
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchRepairs
+NAMESPACE: GTSErpSystem.Frms.Repairs
+TEXT: 
+SIZE:  x 
+FILE: Frms\Repairs\FrmSearchRepairs.cs
+CONTROLS: 0
+
+SCREEN: FrmSearchReservation
+NAMESPACE: GTSErpSystem.Frms.Cust_Sup.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Cust_Sup\Search\FrmSearchReservation.cs
+CONTROLS: 1
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchScaffoldsContract
+NAMESPACE: GTSErpSystem.Frms.Contract.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\Search\FrmSearchScaffoldsContract.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchScaffoldsContractNotStart
+NAMESPACE: GTSErpSystem.Frms.Contract.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\Search\FrmSearchScaffoldsContractNotStart.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchSending
+NAMESPACE: GTSErpSystem.Frms.OrderDalala.FrmSearch
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderDalala\FrmSearch\FrmSearchSending.cs
+CONTROLS: 1
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchStatuse
+NAMESPACE: GTSErpSystem.Frms.Virgins
+TEXT: ❌
+SIZE:  x 
+FILE: Frms\Virgins\FrmSearchStatuse.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [Font] Font | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [GridEXFormatStyle] val2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchSuppliers
+NAMESPACE: GTSErpSystem.Frms.Cust_Sup.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Cust_Sup\Search\FrmSearchSuppliers.cs
+CONTROLS: 4
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchSuppliers
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchSuppliers.cs
+CONTROLS: 4
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchTran
+NAMESPACE: GTSErpSystem.Frms.Account.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\Search\FrmSearchTran.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchTransfer
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchTransfer.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchTransfer2
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchTransfer2.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchTransferAllBranch
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchTransferAllBranch.cs
+CONTROLS: 0
+
+SCREEN: FrmSearchTransferBranchMaster
+NAMESPACE: GTSErpSystem.Frms.OrdersTransfer.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrdersTransfer\Search\FrmSearchTransferBranchMaster.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchTransferFromBranch
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchTransferFromBranch.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchTransferStore
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchTransferStore.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchTransferToBranch
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchTransferToBranch.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchTranTemp
+NAMESPACE: GTSErpSystem.Frms.Account.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Account\Search\FrmSearchTranTemp.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchUnit
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchUnit.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataTable] dataTable2 | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSearchWedding
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmSearchWedding.cs
+CONTROLS: 4
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmSecurityGroup
+NAMESPACE: GTSErpSystem.Frms.Security
+TEXT: 
+SIZE:  x 
+FILE: Frms\Security\FrmSecurityGroup.cs
+CONTROLS: 0
+
+SCREEN: FrmSelectEmp
+NAMESPACE: GTSErpSystem.Frms.Payroll
+TEXT: 
+SIZE:  x 
+FILE: Frms\Payroll\FrmSelectEmp.cs
+CONTROLS: 0
+
+SCREEN: FrmSending
+NAMESPACE: GTSErpSystem.Frms.OrderDalala
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderDalala\FrmSending.cs
+CONTROLS: 0
+
+SCREEN: FrmSetting
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: رقم السجل التجارى
+SIZE:  x 
+FILE: Frms\FrmsMain\FrmSetting.cs
+CONTROLS: 0
+
+SCREEN: FrmSilver
+NAMESPACE: GTSErpSystem.Frms.FrmsHome
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsHome\FrmSilver.cs
+CONTROLS: 0
+
+SCREEN: FrmSilverPlus
+NAMESPACE: GTSErpSystem.Frms.FrmsHome
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsHome\FrmSilverPlus.cs
+CONTROLS: 0
+
+SCREEN: FrmSilverPlusWashing
+NAMESPACE: GTSErpSystem.Frms.FrmsHome
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsHome\FrmSilverPlusWashing.cs
+CONTROLS: 0
+
+SCREEN: FrmsOption
+NAMESPACE: GTSErpSystem.Frms.Orders.FrmSearchOrder
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmSearchOrder\FrmsOption.cs
+CONTROLS: 0
+
+SCREEN: FrmSqlConnection
+NAMESPACE: GTSErpSystem
+TEXT: 
+SIZE:  x 
+FILE: FrmSqlConnection.cs
+CONTROLS: 2
+  [SqlConnection] Conn | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] Command | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmStockItem
+NAMESPACE: GTSErpSystem.Frms.Reports.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Orders\FrmStockItem.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmStoreGardCat
+NAMESPACE: GTSErpSystem.Frms.Reports.Stores
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Stores\FrmStoreGardCat.cs
+CONTROLS: 0
+
+SCREEN: FrmStoreGardCatSearch
+NAMESPACE: GTSErpSystem.Frms.Reports.Stores
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Stores\FrmStoreGardCatSearch.cs
+CONTROLS: 2
+  [DataTable] dataTable | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [GTSdbEntities] gTSdbEntities | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmStores
+NAMESPACE: GTSErpSystem.Frms.Cust_Sup
+TEXT: 
+SIZE:  x 
+FILE: Frms\Cust_Sup\FrmStores.cs
+CONTROLS: 0
+
+SCREEN: FrmStoresTransfer
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmStoresTransfer.cs
+CONTROLS: 0
+
+SCREEN: FrmSuppliers
+NAMESPACE: GTSErpSystem.Frms.Cust_Sup
+TEXT: 
+SIZE:  x 
+FILE: Frms\Cust_Sup\FrmSuppliers.cs
+CONTROLS: 0
+
+SCREEN: FrmTable
+NAMESPACE: GTSErpSystem.Frms.FrmRestaurant.LuckUp
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmRestaurant\LuckUp\FrmTable.cs
+CONTROLS: 0
+
+SCREEN: FrmTailor
+NAMESPACE: GTSErpSystem.Frms.Cust_Sup
+TEXT: 
+SIZE:  x 
+FILE: Frms\Cust_Sup\FrmTailor.cs
+CONTROLS: 0
+
+SCREEN: FrmTest
+NAMESPACE: GTSErpSystem.Frms.FrmsHome
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsHome\FrmTest.cs
+CONTROLS: 0
+
+SCREEN: FrmTobaccoTaxReport
+NAMESPACE: GTSErpSystem.Frms.Reports.Public
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Public\FrmTobaccoTaxReport.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmTransferBranchMaster
+NAMESPACE: GTSErpSystem.Frms.OrdersTransfer
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrdersTransfer\FrmTransferBranchMaster.cs
+CONTROLS: 0
+
+SCREEN: FrmTransferFromBranch
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmTransferFromBranch.cs
+CONTROLS: 0
+
+SCREEN: FrmTransferMasterToBranch
+NAMESPACE: GTSErpSystem.Frms.OrdersTransfer
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrdersTransfer\FrmTransferMasterToBranch.cs
+CONTROLS: 0
+
+SCREEN: FrmTransferToBranch
+NAMESPACE: GTSErpSystem.Frms.Orders
+TEXT: 
+SIZE:  x 
+FILE: Frms\Orders\FrmTransferToBranch.cs
+CONTROLS: 0
+
+SCREEN: FrmUnit
+NAMESPACE: GTSErpSystem.Frms.Items
+TEXT: 
+SIZE:  x 
+FILE: Frms\Items\FrmUnit.cs
+CONTROLS: 0
+
+SCREEN: FrmUsers
+NAMESPACE: GTSErpSystem.Frms.Security
+TEXT: 
+SIZE:  x 
+FILE: Frms\Security\FrmUsers.cs
+CONTROLS: 0
+
+SCREEN: FrmVAT
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\FrmVAT.cs
+CONTROLS: 0
+
+SCREEN: FrmVatReport
+NAMESPACE: GTSErpSystem.Frms.Reports.Public
+TEXT: 
+SIZE:  x 
+FILE: Frms\Reports\Public\FrmVatReport.cs
+CONTROLS: 6
+  [SqlDataAdapter] sqlDataAdapter | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlConnection] sqlConnection | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [SqlCommand] sqlCommand | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [DataSetALL] dataSetALL | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [FrmReportGetOrder] frmReportGetOrder | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [StiReport] val | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: FrmViewFiles
+NAMESPACE: GTSErpSystem.Frms.Contract
+TEXT: 
+SIZE:  x 
+FILE: Frms\Contract\FrmViewFiles.cs
+CONTROLS: 0
+
+SCREEN: FrmVirgin
+NAMESPACE: GTSErpSystem.Frms.Virgins
+TEXT: 
+SIZE:  x 
+FILE: Frms\Virgins\FrmVirgin.cs
+CONTROLS: 0
+
+SCREEN: FrmWindow
+NAMESPACE: GTSErpSystem.Frms.FrmsHome
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsHome\FrmWindow.cs
+CONTROLS: 0
+
+SCREEN: FrmZatcaIntgration
+NAMESPACE: GTSErpSystem.Frms.ElctorncInvoic
+TEXT: 
+SIZE:  x 
+FILE: Frms\ElctorncInvoic\FrmZatcaIntgration.cs
+CONTROLS: 3
+  [StringContent] content | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [AuthenticationHeaderValue] Authorization | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+  [HttpClient] client | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: InfoAllowances
+NAMESPACE: GTSErpSystem.Frms.Payroll.Search
+TEXT: 
+SIZE:  x 
+FILE: Frms\Payroll\Search\InfoAllowances.cs
+CONTROLS: 0
+
+SCREEN: OrdersPriceShowRental
+NAMESPACE: GTSErpSystem.Frms.OrderRent
+TEXT: 
+SIZE:  x 
+FILE: Frms\OrderRent\OrdersPriceShowRental.cs
+CONTROLS: 0
+
+SCREEN: SentInvoiceToZakat
+NAMESPACE: GTSErpSystem.Frms.ElctorncInvoic
+TEXT: 
+SIZE:  x 
+FILE: Frms\ElctorncInvoic\SentInvoiceToZakat.cs
+CONTROLS: 0
+
+SCREEN: TestXml
+NAMESPACE: GTSErpSystem.Helper
+TEXT: 
+SIZE:  x 
+FILE: Helper\TestXml.cs
+CONTROLS: 1
+  [Invoice] invoice | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: WaitForm
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\WaitForm.cs
+CONTROLS: 1
+  [Point] Location | Text=[] | Location=[] | Size=[] | Dock=[] | Anchor=[]
+
+SCREEN: WhathAppInfo
+NAMESPACE: GTSErpSystem.Frms.FrmsMain
+TEXT: 
+SIZE:  x 
+FILE: Frms\FrmsMain\WhathAppInfo.cs
+CONTROLS: 0

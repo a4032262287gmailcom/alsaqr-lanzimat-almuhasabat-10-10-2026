@@ -1,0 +1,12 @@
+﻿=== CHECKING ENTITY FRAMEWORK CONFIGURATION ===
+No matching malformed keyword found in: E:\KhaledERP\App\SourceCode\app.config
+No matching malformed keyword found in: E:\KhaledERP\App\SourceCode\bin\Debug\net48\GTSErpSystem.exe.config
+
+=== BUILDING PROJECT ===
+Build exit code: 0
+
+=== TESTING THE APPLICATION CONNECTION STRING ===
+ENTITY CONNECTION TEST FAILED: The 'ConnectionString' keyword is not supported.
+
+=== APPLICATION LAUNCH ===
+Application not launched because its configured database was not verified.

@@ -1,0 +1,16 @@
+﻿Unsafe binding redirect repair started: 14480430_110454
+Backup: E:\KhaledERP\Backups\UnsafeRedirectFix_14480430_110454
+Building project...
+Build exit code: 0
+Build report: C:\Users\hp\Desktop\تقارير\UnsafeRedirectBuild_14480430_110454.txt
+Actual Unsafe assembly version: 4.0.4.1
+Updated Unsafe redirect in: E:\KhaledERP\App\SourceCode\app.config
+Redirect target: 4.0.4.1
+Updated Unsafe redirect in: E:\KhaledERP\App\SourceCode\bin\Debug\net48\GTSErpSystem.exe.config
+Redirect target: 4.0.4.1
+
+Launching desktop application for verification...
+Application is running. PID: 19920
+Main window: ط§ظ„ط§طھطµط§ظ„ ط¨ظ‚ط§ط¹ط¯ط© ط§ظ„ط¨ظٹط§ظ†ط§طھ
+Responding: True
+Report: C:\Users\hp\Desktop\تقارير\UnsafeRedirectFix_14480430_110454.txt

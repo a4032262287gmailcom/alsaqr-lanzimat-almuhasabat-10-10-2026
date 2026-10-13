@@ -1,0 +1,6 @@
+﻿EntityFramework version: 6.0.0.0
+Provider source: E:\KhaledERP\App\EntityFramework.SqlServer.dll
+Provider identity: EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+Build exit code: 0
+Backup directory: E:\KhaledERP\Backups\EFProviderRepair_14480430_121610
+Build report: C:\Users\hp\Desktop\تقارير\EFProviderBuild_14480430_121610.txt

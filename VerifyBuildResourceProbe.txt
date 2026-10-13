@@ -1,0 +1,23 @@
+﻿ASSEMBLY: GTSErpSystem, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+RESOURCE COUNT: 361
+EXPECTED RESOURCE PRESENT: True
+RELEVANT RESOURCE NAMES:
+GTSErpSystem.Frms.Reports.Orders.FrmAllOrdersDetailsByProperties.resources
+GTSErpSystem.Frms.Reports.Stores.FrmRPStoresGardbyProperties.resources
+GTSErpSystem.Frms.Reports.Stores.FrmRPTotalAvergForSore_ByGroupProperties.resources
+GTSErpSystem.Properties.Resources.resources
+RESOURCE KEY ERROR: System.Management.Automation.MethodInvocationException: Exception calling "GetObject" with "1" argument(s): "Could not load file or assembly 'System.Resources.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51' or one of its dependencies. The system cannot find the file specified." ---> System.IO.FileNotFoundException: Could not load file or assembly 'System.Resources.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51' or one of its dependencies. The system cannot find the file specified.
+   at System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMarkHandle stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName, ObjectHandleOnStack type)
+   at System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName)
+   at System.Type.GetType(String typeName, Boolean throwOnError)
+   at System.Resources.ManifestBasedResourceGroveler.CreateResourceSet(Stream store, Assembly assembly)
+   at System.Resources.ManifestBasedResourceGroveler.GrovelForResourceSet(CultureInfo culture, Dictionary`2 localResourceSets, Boolean tryParents, Boolean createIfNotExists, StackCrawlMark& stackMark)
+   at System.Resources.ResourceManager.InternalGetResourceSet(CultureInfo requestedCulture, Boolean createIfNotExists, Boolean tryParents, StackCrawlMark& stackMark)
+   at System.Resources.ResourceManager.InternalGetResourceSet(CultureInfo culture, Boolean createIfNotExists, Boolean tryParents)
+   at System.Resources.ResourceManager.GetObject(String name, CultureInfo culture, Boolean wrapUnmanagedMemStream)
+   at CallSite.Target(Closure , CallSite , Object , String )
+   --- End of inner exception stack trace ---
+   at System.Management.Automation.ExceptionHandlingOps.CheckActionPreference(FunctionContext funcContext, Exception exception)
+   at System.Management.Automation.Interpreter.ActionCallInstruction`2.Run(InterpretedFrame frame)
+   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
+   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)

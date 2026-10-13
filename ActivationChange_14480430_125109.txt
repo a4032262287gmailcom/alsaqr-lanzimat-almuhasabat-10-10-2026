@@ -1,0 +1,4 @@
+﻿Modified file: E:\KhaledERP\App\SourceCode\GTSErpSystem\Program.cs
+Backup file: E:\KhaledERP\Backups\ActivationChange_14480430_125109\Program.cs
+Build exit code: 0
+Build log: C:\Users\hp\Desktop\تقارير\ActivationBuild_14480430_125109.txt

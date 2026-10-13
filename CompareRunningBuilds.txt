@@ -1,0 +1,29 @@
+﻿=== RUNNING APPLICATION PROCESSES ===
+PID: 23248
+Executable path: E:\KhaledERP\BuildVerify_20261011_131117\GTSErpSystem.exe
+Command line: "E:\KhaledERP\BuildVerify_20261011_131117\GTSErpSystem.exe" 
+
+PID: 14560
+Executable path: E:\KhaledERP\BuildVerify_20261011_131117\GTSErpSystem.exe
+Command line: "E:\KhaledERP\BuildVerify_20261011_131117\GTSErpSystem.exe" 
+
+PID: 27436
+Executable path: E:\KhaledERP\BuildVerify_20261011_131117\GTSErpSystem.exe
+Command line: "E:\KhaledERP\BuildVerify_20261011_131117\GTSErpSystem.exe" 
+
+PID: 22468
+Executable path: E:\KhaledERP\BuildVerify_20261011_131117\GTSErpSystem.exe
+Command line: "E:\KhaledERP\BuildVerify_20261011_131117\GTSErpSystem.exe" 
+
+=== RESOURCES: E:\KhaledERP\App\SourceCode\bin\Debug\net48\GTSErpSystem.exe ===
+Total embedded resources: 361
+GTSErpSystem.Frms.Reports.Orders.FrmAllOrdersDetailsByProperties.resources
+GTSErpSystem.Frms.Reports.Stores.FrmRPStoresGardbyProperties.resources
+GTSErpSystem.Frms.Reports.Stores.FrmRPTotalAvergForSore_ByGroupProperties.resources
+GTSErpSystem.Properties.Resources.resources
+
+=== RESOURCES: E:\KhaledERP\BuildVerify_20261011_131117\GTSErpSystem.exe ===
+Inspection error: Exception calling "ReflectionOnlyLoadFrom" with "1" argument(s): "API restriction: The assembly 'file:///E:\KhaledERP\BuildVerify_20261011_131117\GTSErpSystem.exe' has already loaded from a different location. It cannot be loaded from a new location within the same appdomain."
+
+=== CURRENT RESOURCE MANAGER DECLARATION ===
+Line 27: ResourceManager resourceManager = new ResourceManager("GTSErpSystem.Properties.Resources", typeof(Resources).Assembly);

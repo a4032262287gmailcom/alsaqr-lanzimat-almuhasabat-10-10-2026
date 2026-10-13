@@ -1,0 +1,13 @@
+﻿Test executable: E:\KhaledERP\BuildVerify_20261011_131117\GTSErpSystem.exe
+Test started: 10/11/2026 13:26:39
+Process state: STILL RUNNING
+
+=== PROCESSES FROM THE VERIFICATION FOLDER ===
+PID: 26460
+Path: E:\KhaledERP\BuildVerify_20261011_131117\GTSErpSystem.exe
+Command: "E:\KhaledERP\BuildVerify_20261011_131117\GTSErpSystem.exe" 
+Window title: 
+Responding: True
+
+=== ERRORS GENERATED SINCE THIS TEST STARTED ===
+No matching application errors recorded during this test.

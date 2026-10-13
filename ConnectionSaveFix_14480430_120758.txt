@@ -1,0 +1,3 @@
+﻿Build exit code: 0
+Backup directory: E:\KhaledERP\Backups\ConnectionSaveFix_14480430_120758
+Build report: C:\Users\hp\Desktop\تقارير\ConnectionSaveBuild_14480430_120758.txt

@@ -1,0 +1,88 @@
+﻿===== FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\Program.cs =====
+--- Match at line 25 ---
+21: 		SecureCrmIntegration.Load();
+22: 		LoginDetails.Crm = SecureCrmIntegration.Crm;
+23: 		BonusSkins.Register();
+24: 		SkinManager.EnableFormSkins();
+25: 		LoginDetails.VergDate = "اصدار:VER [1]26.07.08";
+26: 		GetPass();
+27: 		changeConnection.SaveConnectionString("GTSdbEntities", "Data Source=.\\SQLEXPRESS;Initial Catalog=GtsDb2026;Integrated Security=True;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=True;Connect Timeout=5");
+28: 		int num = changeConnection.TestCon();
+29: 		if (num > 0)
+30: 		{
+
+--- Match at line 33 ---
+29: 		if (num > 0)
+30: 		{
+31: 			LoginDetails.Status = "نسخة مرخصة";
+32: 			System.Windows.Forms.Application.Idle += AlSaqarTheme.OnApplicationIdle;
+33: 			Application.Run(new FrmLogin3());
+34: 		}
+35: 		else
+36: 		{
+37: 			Application.Run(new FrmSqlConnection());
+38: 		}
+
+--- Match at line 37 ---
+33: 			Application.Run(new FrmLogin3());
+34: 		}
+35: 		else
+36: 		{
+37: 			Application.Run(new FrmSqlConnection());
+38: 		}
+39: 	}
+40: 
+41: 	private static void GetPass()
+42: 	{
+
+===== FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\Secure.cs =====
+===== FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs =====
+--- Match at line 445 ---
+441: 			class_WaitFormFunc.Show(this);
+442: 			Thread.Sleep(50);
+443: 			FrmNameLogin(LoginDetails.TypeVerg);
+444: 			string databaseVersion = tblSetting.DatabaseVersion;
+445: 			int num = Stting.AddLoginLog(LoginDetails.UserID, LoginDetails.macAddress, LoginDetails.VergDate, databaseVersion);
+446: 			class_WaitFormFunc.Close();
+447: 			Hide();
+448: 		}
+449: 		else
+450: 		{
+
+--- Match at line 818 ---
+814: 	}
+815: 
+816: 	private void BtnExit_Click(object sender, EventArgs e)
+817: 	{
+818: 		Application.Exit();
+819: 	}
+820: 
+821: 	private void Control_KeyDown(object sender, KeyEventArgs e)
+822: 	{
+823: 		if (e.KeyCode == Keys.Return)
+
+===== FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\LoginDetails.cs =====
+--- Match at line 44 ---
+40: 	public static int TobaccoNum = 406;
+41: 
+42: 	public static string Status = "نسخة تجريبية";
+43: 
+44: 	public static string VergDate = " ";
+45: 
+46: 	public static string AppVerg;
+47: 
+48: 	public static int UserID;
+49: 
+
+--- Match at line 492 ---
+488: 	public static string EmployeeId { get; set; }
+489: 
+490: 	public static string Token { get; set; }
+491: 
+492: 	public static int ActivationId { get; set; }
+493: 
+494: 	public static bool ShowRoom { get; set; }
+495: 
+496: 	public static bool AlLItemInRow { get; set; }
+497: }
+
