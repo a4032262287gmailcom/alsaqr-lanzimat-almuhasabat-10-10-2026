@@ -52,7 +52,7 @@ ON CONFLICT(Code) DO UPDATE SET Name=excluded.Name,Type=excluded.Type,IsActive=e
         cmd.Parameters.AddWithValue("$vat", vatNumber.Trim());
         cmd.Parameters.AddWithValue("$active", active ? 1 : 0);
         cmd.ExecuteNonQuery();
-        Audit(db, id.HasValue ? "تعديل" : "إضافة", "الطرف", id?.ToString() ?? db.LastInsertRowId.ToString(), name);
+        Audit(db, id.HasValue ? "تعديل" : "إضافة", "الطرف", id?.ToString() ?? GetLastInsertId(db).ToString(), name);
     }
 
     public static void SaveProduct(long? id, string code, string name, string unit, decimal cost, decimal price, decimal vatRate, bool active)
@@ -80,7 +80,7 @@ VALUES($code,$name,$unit,0,$cost,$price,$vat,$active,$at)";
         cmd.Parameters.AddWithValue("$vat", vatRate);
         cmd.Parameters.AddWithValue("$active", active ? 1 : 0);
         cmd.ExecuteNonQuery();
-        Audit(db, id.HasValue ? "تعديل" : "إضافة", "الصنف", id?.ToString() ?? db.LastInsertRowId.ToString(), name);
+        Audit(db, id.HasValue ? "تعديل" : "إضافة", "الصنف", id?.ToString() ?? GetLastInsertId(db).ToString(), name);
     }
 
     public static long PostInvoice(string kind, string number, DateTime date, int partyId, bool credit, IReadOnlyList<InvoiceLineInput> lines)
@@ -132,7 +132,7 @@ VALUES($code,$name,$unit,0,$cost,$price,$vat,$active,$at)";
             journal.Parameters.AddWithValue("$at", Now);
             journal.ExecuteNonQuery();
         }
-        var journalId = db.LastInsertRowId;
+        var journalId = GetLastInsertId(db, tx);
 
         using (var inv = db.CreateCommand())
         {
@@ -151,7 +151,7 @@ VALUES($kind,$number,$date,$party,$credit,'POSTED',$subtotal,$vat,$total,$journa
             inv.Parameters.AddWithValue("$at", Now);
             inv.ExecuteNonQuery();
         }
-        var invoiceId = db.LastInsertRowId;
+        var invoiceId = GetLastInsertId(db, tx);
 
         foreach (var item in prepared)
         {
@@ -223,6 +223,14 @@ VALUES($invoice,$product,$qty,$price,$cost,$rate,$net,$vat,$total)";
         cmd.Parameters.AddWithValue("$debit", debit);
         cmd.Parameters.AddWithValue("$credit", credit);
         cmd.ExecuteNonQuery();
+    }
+
+    private static long GetLastInsertId(SqliteConnection db, SqliteTransaction? tx = null)
+    {
+        using var cmd = db.CreateCommand();
+        cmd.Transaction = tx;
+        cmd.CommandText = "SELECT last_insert_rowid()";
+        return Convert.ToInt64(cmd.ExecuteScalar());
     }
 
     private static long ToHalalas(decimal amount) => checked((long)Math.Round(amount * 100m, MidpointRounding.AwayFromZero));
