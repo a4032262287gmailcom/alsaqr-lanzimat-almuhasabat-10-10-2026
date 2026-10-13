@@ -28,8 +28,8 @@ internal sealed class LicenseService
     // Public key only. The matching private key is owned by the publisher and must never be committed.
     private const string PublicKeyPem = """
 -----BEGIN PUBLIC KEY-----
-MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEd0A2wQK33JKg3D7X9MThiZ46jG4s
-XmGNXOcvAkKudWOo31BQqheUpJubtrbYJ4hv/y7XbFv6yiKKri3YhMd7tA==
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEcsc4Xh4w9M62gHgEWznh9De8BtSt
+JuXWafqQw3cox0/7vo1hAbePS1f35UghKYXtZzXpjhsho6XV5TQ9LcTZgw==
 -----END PUBLIC KEY-----
 """;
 
