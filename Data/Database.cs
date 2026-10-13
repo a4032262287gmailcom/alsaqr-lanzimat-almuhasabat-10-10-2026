@@ -5,6 +5,7 @@ namespace AlSaqr.Accounting.Data;
 internal static class Database
 {
     private static readonly string DataDirectory =
+        Environment.GetEnvironmentVariable("ALSAQR_ACCOUNTING_DATA_DIR") ??
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AlSaqrAccounting");
     public static string DatabasePath => Path.Combine(DataDirectory, "accounting.db");
 
