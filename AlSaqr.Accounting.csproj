@@ -15,6 +15,7 @@
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="tests/**/*.cs;tools/**/*.cs" />
+    <!-- Exclude superseded root-level forms/services; the active UI is Forms/ with ECDSA licensing and AppSettingsService. -->
+    <Compile Remove="tests/**/*.cs;tools/**/*.cs;CashierForm.cs;CommercialFeatures.cs;LicenseActivationForm.cs;SystemSettingsForm.cs;Services/SystemSettingsService.cs" />
   </ItemGroup>
 </Project>
