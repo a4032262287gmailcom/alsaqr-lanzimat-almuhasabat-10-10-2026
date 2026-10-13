@@ -14,9 +14,8 @@
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="tests/**/*.cs" />
-    <!-- The active desktop UI is implemented by MainForm.cs and the root-level accounting entry forms.
-         Exclude unused legacy forms that target the pre-merge AccountingService API. -->
-    <Compile Remove="Forms/InvoiceForm.cs;Forms/JournalEntryForm.cs;Forms/MainForm.cs;Forms/PartyPaymentForm.cs;Forms/RecordEditorForm.cs;Forms/ReportsForm.cs" />
+    <!-- Root-level forms are the active desktop shell. Exclude test/tool entrypoints and legacy UI forms that use retired service APIs. -->
+    <Compile Remove="tests/**/*.cs;tools/**/*.cs" />
+    <Compile Remove="Forms/CashierForm.cs;Forms/InvoiceForm.cs;Forms/JournalEntryForm.cs;Forms/LicenseForm.cs;Forms/MainForm.cs;Forms/PartyPaymentForm.cs;Forms/RecordEditorForm.cs;Forms/ReportsForm.cs" />
   </ItemGroup>
 </Project>
