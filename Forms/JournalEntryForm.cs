@@ -105,7 +105,10 @@ internal sealed class JournalEntryForm : Form
                 cmd.Parameters.AddWithValue("$at", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.ExecuteNonQuery();
             }
-            long journalId = db.LastInsertRowId;
+            using var idCommand = db.CreateCommand();
+            idCommand.Transaction = tx;
+            idCommand.CommandText = "SELECT last_insert_rowid()";
+            long journalId = Convert.ToInt64(idCommand.ExecuteScalar());
             foreach (var line in lines)
             {
                 using var cmd = db.CreateCommand();
