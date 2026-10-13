@@ -14,5 +14,15 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
-      - run: dotnet restore AlSaqr.Accounting.csproj
-      - run: dotnet build AlSaqr.Accounting.csproj --configuration Release --no-restore
+      - name: Restore
+        run: dotnet restore AlSaqr.Accounting.csproj
+      - name: Build
+        run: dotnet build AlSaqr.Accounting.csproj --configuration Release --no-restore
+      - name: Publish Windows x64
+        run: dotnet publish AlSaqr.Accounting.csproj --configuration Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true --output publish
+      - name: Upload app artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AlSaqr-Accounting-Windows-x64
+          path: publish/
+          if-no-files-found: error
