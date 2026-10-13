@@ -116,6 +116,7 @@ async def create_journal(
     source_type: str,
     lines: list[dict[str, Any]],
     source_id: UUID | None = None,
+    reversal_of_id: UUID | None = None,
 ) -> JournalEntry:
     if not memo.strip():
         raise HTTPException(status_code=422, detail="Journal memo is required")
@@ -141,6 +142,7 @@ async def create_journal(
         status="POSTED",
         source_type=source_type,
         source_id=source_id,
+        reversal_of_id=reversal_of_id,
         posted_by=user_id,
         posted_at=datetime.now(timezone.utc),
     )
@@ -257,3 +259,82 @@ def next_child_code(parent_code: str, existing_codes: list[str]) -> str:
     if next_suffix >= limit:
         raise HTTPException(status_code=409, detail="No automatic child code remains under this account; choose a code explicitly")
     return parent_code + f"{next_suffix:0{width}d}"
+
+async def reverse_journal(
+    session: AsyncSession,
+    tenant_id: UUID,
+    user_id: UUID,
+    journal_id: UUID,
+    reversal_date: date,
+    reason: str,
+    second_approver_email: str,
+    second_approver_password: str,
+    remote_address: str | None = None,
+) -> JournalEntry:
+    from app.services.approvals import validate_second_approver
+
+    original = await session.scalar(
+        select(JournalEntry)
+        .where(JournalEntry.tenant_id == tenant_id, JournalEntry.id == journal_id)
+        .with_for_update()
+    )
+    if original is None:
+        raise HTTPException(status_code=404, detail="Journal entry not found")
+    if original.status != "POSTED":
+        raise HTTPException(status_code=409, detail="Only a posted journal can be reversed")
+    prior_reversal = await session.scalar(
+        select(JournalEntry.id).where(
+            JournalEntry.tenant_id == tenant_id,
+            JournalEntry.reversal_of_id == original.id,
+        ).limit(1)
+    )
+    if prior_reversal is not None:
+        raise HTTPException(status_code=409, detail="This journal already has a reversal entry")
+
+    second_approver = await validate_second_approver(
+        session, tenant_id, user_id, second_approver_email, second_approver_password
+    )
+    original_lines = (await session.scalars(
+        select(JournalLine).where(
+            JournalLine.tenant_id == tenant_id,
+            JournalLine.entry_id == original.id,
+        ).order_by(JournalLine.created_at, JournalLine.id)
+    )).all()
+    reversed_lines = [
+        {
+            "account_id": line.account_id,
+            "contact_id": line.contact_id,
+            "cost_center_id": line.cost_center_id,
+            "description": f"عكس: {line.description or original.memo}",
+            "debit": line.credit,
+            "credit": line.debit,
+            "currency_code": line.currency_code,
+        }
+        for line in original_lines
+    ]
+    reversal = await create_journal(
+        session=session,
+        tenant_id=tenant_id,
+        user_id=user_id,
+        entry_date=reversal_date,
+        memo=f"عكس القيد {original.number}: {reason.strip()}",
+        source_type="REVERSAL",
+        lines=reversed_lines,
+        source_id=original.id,
+        reversal_of_id=original.id,
+    )
+    original.status = "REVERSED"
+    await session.flush()
+    await audit(
+        session, tenant_id, user_id, "JOURNAL_REVERSED", "JournalEntry", original.id,
+        {
+            "original_number": original.number,
+            "reversal_number": reversal.number,
+            "reversal_date": reversal_date.isoformat(),
+            "reason": reason.strip(),
+            "second_approver_user_id": str(second_approver.id),
+        },
+        remote_address,
+    )
+    return reversal
+
