@@ -32,7 +32,7 @@ jobs:
         run: dotnet build AlSaqr.Accounting.csproj -c Release -r win-x64 --no-restore
 
       - name: Publish Windows x64 application
-        run: dotnet publish AlSaqr.Accounting.csproj -c Release -r win-x64 --no-restore -p:SelfContained=false -o artifacts/publish
+        run: dotnet publish AlSaqr.Accounting.csproj -c Release -r win-x64 --no-restore -p:SelfContained=true -o artifacts/publish
 
       - name: Upload publish artifact
         uses: actions/upload-artifact@v4
