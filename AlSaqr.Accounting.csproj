@@ -16,5 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="tests/**/*.cs;tools/**/*.cs" />
+    <!-- Keep the current integrated Forms UI; exclude superseded root-level copies and legacy forms targeting retired APIs. -->
+    <Compile Remove="CashierForm.cs;CommercialFeatures.cs;LicenseActivationForm.cs;SystemSettingsForm.cs;Services/SystemSettingsService.cs;Forms/InvoiceForm.cs;Forms/JournalEntryForm.cs;Forms/MainForm.cs;Forms/PartyPaymentForm.cs;Forms/RecordEditorForm.cs;Forms/ReportsForm.cs" />
   </ItemGroup>
 </Project>
