@@ -16,22 +16,16 @@ internal sealed partial class MainForm : Form
     private readonly LicenseService _licenseService = new();
     private readonly Panel _content = new();
     private readonly Label _status = new();
- feature/erp-pos-cashier-20261013
     private Panel? _headerPanel;
     private FlowLayoutPanel? _navPanel;
     private AccountingAppSettings _appSettings = AccountingAppSettings.Defaults();
     private UiThemePalette _palette = UiThemePalette.All[0];
-=======
-main
     private Color _navy = Color.FromArgb(18, 32, 52);
     private Color _blue = Color.FromArgb(37, 66, 101);
     private Color _gold = Color.FromArgb(190, 151, 61);
     private Color _paper = Color.FromArgb(244, 246, 249);
     private DataGridView? _tableGrid;
     private DataTable? _lastReport;
-    private DataView? _tableView;
-    private string _lastReportTitle = "تقرير محاسبي";
-    private Button? _activeNavigationButton;
 
     private bool LicenseAllowsUse => _licenseService.CheckAccess().HasAccess;
     private bool IsAdmin => _user.Role == "Admin" && LicenseAllowsUse;
@@ -40,15 +34,9 @@ main
     public MainForm(AuthUser user)
     {
         _user = user;
-feature/erp-pos-cashier-20261013
         _appSettings = AppSettingsService.Load();
         ApplyThemeColors(_appSettings.Theme);
         Text = "الصقر لأنظمة المحاسبة";
-=======
-        var initialPalette = SystemSettingsService.PaletteFor(_settingsService.Load().Theme);
-        _navy = initialPalette.Navy; _blue = initialPalette.Blue; _gold = initialPalette.Gold; _paper = initialPalette.Paper;
-        Text = "الصقر | نظام المحاسبة";
- main
         WindowState = FormWindowState.Maximized;
         MinimumSize = new Size(1120, 700);
         StartPosition = FormStartPosition.CenterScreen;
@@ -64,12 +52,8 @@ feature/erp-pos-cashier-20261013
         header.Controls.Add(title); header.Controls.Add(identity);
 
         var nav = new FlowLayoutPanel { Dock = DockStyle.Top, Height = 54, BackColor = _blue, FlowDirection = FlowDirection.RightToLeft, WrapContents = false, AutoScroll = true, Padding = new Padding(8, 5, 8, 5) };
- feature/erp-pos-cashier-20261013
         _navPanel = nav;
         AddNavigation(nav, "الرئيسية", ShowDashboard);
-=======
-        var homeButton = AddNavigation(nav, "الرئيسية", ShowDashboard);
- main
         AddNavigation(nav, "دليل الحسابات", ShowAccounts);
         AddNavigation(nav, "القيود اليومية", ShowJournals);
         AddNavigation(nav, "العملاء والموردون", ShowParties);
@@ -79,7 +63,6 @@ feature/erp-pos-cashier-20261013
         AddNavigation(nav, "الإعدادات والثيمات", OpenSettings);
         AddNavigation(nav, "الترخيص والتفعيل", OpenLicense);
         AddNavigation(nav, "فواتير البيع", () => ShowInvoices("SALE"));
-        if (CanPost) AddNavigation(nav, "الكاشير", ShowCashier);
         AddNavigation(nav, "فواتير الشراء", () => ShowInvoices("PURCHASE"));
         AddNavigation(nav, "مردودات البيع", () => ShowReturns("SALE_RETURN"));
         AddNavigation(nav, "مردودات الشراء", () => ShowReturns("PURCHASE_RETURN"));
@@ -89,17 +72,7 @@ feature/erp-pos-cashier-20261013
         }
         AddNavigation(nav, "سجل السندات", ShowSettlements);
         AddNavigation(nav, "التقارير", ShowReports);
-feature/erp-pos-cashier-20261013
-        AddNavigation(nav, "ورديات الكاشير", ShowCashierSessions);
         if (IsAdmin) AddNavigation(nav, "المستخدمون والصلاحيات", ShowUsers);
-=======
-        if (IsAdmin)
-        {
-            AddNavigation(nav, "إعدادات النظام", ShowSystemSettings);
-            AddNavigation(nav, "ترخيص النظام", ShowLicenseManagement);
-            AddNavigation(nav, "المستخدمون والصلاحيات", ShowUsers);
-        }
-main
         AddNavigation(nav, "نسخة احتياطية", BackupDatabase);
 
         _content.Dock = DockStyle.Fill;
@@ -110,17 +83,12 @@ main
         _status.BackColor = Color.FromArgb(_palette.SurfaceR, _palette.SurfaceG, _palette.SurfaceB);
         _status.ForeColor = ThemeColor(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB);
         Controls.Add(_content); Controls.Add(_status); Controls.Add(nav); Controls.Add(header);
- feature/erp-pos-cashier-20261013
         ApplyThemeToChrome();
-=======
-        ActivateNavigation(homeButton);
- main
         ShowDashboard();
     }
 
     private static string RoleArabic(string role) => role switch { "Admin" => "مدير النظام", "Accountant" => "محاسب", _ => "عرض فقط" };
 
- feature/erp-pos-cashier-20261013
     private static Color ThemeColor(int r, int g, int b) => Color.FromArgb(r, g, b);
 
     private void ApplyThemeColors(string themeName)
@@ -189,51 +157,11 @@ main
     }
 
     private void AddNavigation(FlowLayoutPanel nav, string caption, Action action)
-=======
-    private Button AddNavigation(FlowLayoutPanel nav, string caption, Action action)
- main
     {
-        var button = new Button
-        {
-            Text = caption,
-            Width = caption.Length > 12 ? 170 : 125,
-            Height = 40,
-            Margin = new Padding(4, 1, 4, 1),
-            BackColor = _blue,
-            ForeColor = Color.White,
-            FlatStyle = FlatStyle.Flat,
-            Cursor = Cursors.Hand,
-            UseVisualStyleBackColor = false,
-            Padding = new Padding(6, 1, 6, 1)
-        };
+        var button = new Button { Text = caption, Width = caption.Length > 12 ? 170 : 125, Height = 40, Margin = new Padding(4, 1, 4, 1), BackColor = _blue, ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Cursor = Cursors.Hand };
         button.FlatAppearance.BorderColor = _gold;
-        button.FlatAppearance.BorderSize = 1;
-        button.FlatAppearance.MouseOverBackColor = Color.FromArgb(48, 79, 116);
-        button.FlatAppearance.MouseDownBackColor = Color.FromArgb(159, 123, 43);
-        button.Click += (_, _) =>
-        {
-            ActivateNavigation(button);
-            action();
-        };
+        button.Click += (_, _) => action();
         nav.Controls.Add(button);
-        return button;
-    }
-
-    private void ActivateNavigation(Button button)
-    {
-        if (_activeNavigationButton is not null && !_activeNavigationButton.IsDisposed)
-        {
-            _activeNavigationButton.BackColor = _blue;
-            _activeNavigationButton.ForeColor = Color.White;
-            _activeNavigationButton.FlatAppearance.BorderColor = _gold;
-            _activeNavigationButton.FlatAppearance.BorderSize = 1;
-        }
-
-        _activeNavigationButton = button;
-        button.BackColor = _gold;
-        button.ForeColor = _navy;
-        button.FlatAppearance.BorderColor = Color.FromArgb(236, 216, 169);
-        button.FlatAppearance.BorderSize = 2;
     }
 
     private void ShowDashboard()
@@ -400,24 +328,14 @@ main
     private void AddProduct()
     {
         if (!IsAdmin) { Denied(); return; }
- fix/licensing-cashier-compile-20261013
-        using var form = Dialog("إضافة صنف / رصيد افتتاحي", 8, out var body, out var save);
-=======
         using var form = Dialog("إضافة صنف / رصيد افتتاحي", 6, out var body, out var save);
- feature/erp-pos-cashier-20261013
         var code = TextBox(); var name = TextBox(); var unit = TextBox(); unit.Text = "حبة";
         var qty = Numeric(0, 100000000, 3); var cost = Numeric(0, 1000000000, 2); var price = Numeric(0, 1000000000, 2); var vat = Numeric(0,100,2); vat.Value=Math.Min(vat.Maximum, Math.Max(vat.Minimum, _appSettings.DefaultVatRate));
         AddField(body, "رمز الصنف", code); AddField(body, "اسم الصنف", name); AddField(body, "الوحدة", unit);
-=======
- main
-        var code = TextBox(); var barcode = TextBox(); var name = TextBox(); var unit = TextBox(); unit.Text = "حبة";
-        var qty = Numeric(0, 100000000, 3); var cost = Numeric(0, 1000000000, 2); var price = Numeric(0, 1000000000, 2); var vat = Numeric(0,100,2); vat.Value=15;
-        AddField(body, "رمز الصنف", code); AddField(body, "الباركود (اختياري)", barcode); AddField(body, "اسم الصنف", name); AddField(body, "الوحدة", unit);
-main
         AddField(body, "الكمية الافتتاحية", qty); AddField(body, "تكلفة الوحدة (ر.س)", cost); AddField(body, "سعر البيع (ر.س)", price); AddField(body, "ضريبة القيمة المضافة %", vat);
         save.Text = "حفظ الصنف";
-        save.Click += (_, _) => Guard(() => { _service.AddProduct(code.Text, name.Text, unit.Text, qty.Value, cost.Value, price.Value, vat.Value, barcode.Text); form.DialogResult = DialogResult.OK; form.Close(); ShowProducts(); SetStatus("تم حفظ الصنف والباركود."); });
-        form.Height += 130;
+        save.Click += (_, _) => Guard(() => { _service.AddProduct(code.Text, name.Text, unit.Text, qty.Value, cost.Value, price.Value, vat.Value); form.DialogResult = DialogResult.OK; form.Close(); ShowProducts(); SetStatus("تم حفظ الصنف."); });
+        form.Height += 70;
         form.ShowDialog(this);
     }
 
@@ -609,11 +527,6 @@ main
             _service.SettlementRegister("ALL", new DateTime(2000,1,1), DateTime.Today.AddDays(1)), actions.ToArray());
     }
 
-    private void ShowCashierSessions()
-    {
-        ShowReportTable("سجل ورديات الكاشير ومطابقة النقدية", new CashierService().SessionRegister());
-    }
-
     private void ShowReports()
     {
         _content.Controls.Clear();
@@ -657,17 +570,14 @@ main
                 "سجل التدقيق" => IsAdmin ? _service.AuditHistory() : throw new InvalidOperationException("عرض سجل التدقيق متاح لمدير النظام فقط."),
                 _ => throw new InvalidOperationException("التقرير غير معروف.")
             };
-            _lastReport=table; _lastReportTitle=key; var grid=MakeGrid(table); var old=root.GetControlFromPosition(0,2); if(old is not null) root.Controls.Remove(old); root.Controls.Add(grid,0,2);
+            _lastReport=table; var grid=MakeGrid(table); var old=root.GetControlFromPosition(0,2); if(old is not null) root.Controls.Remove(old); root.Controls.Add(grid,0,2);
             SetStatus($"تم إعداد التقرير «{key}» — عدد الصفوف: {table.Rows.Count}. التصدير يطابق النتائج الحالية.");
         });
         var export=Button("تصدير CSV"); export.Click += (_,_) => ExportReport();
-        var print=Button("معاينة / طباعة"); print.Click += (_,_) => PrintCurrentReport();
-        filter.Controls.Add(btn); filter.Controls.Add(export); filter.Controls.Add(print);
+        filter.Controls.Add(btn); filter.Controls.Add(export);
         root.Controls.Add(filter,0,1);
-        var initialTrialBalance = _service.TrialBalance(from.Value,to.Value);
-        root.Controls.Add(MakeGrid(initialTrialBalance),0,2);
-        _lastReport=initialTrialBalance;
-        _lastReportTitle="ميزان المراجعة";
+        root.Controls.Add(MakeGrid(_service.TrialBalance(from.Value,to.Value)),0,2);
+        _lastReport=_service.TrialBalance(from.Value,to.Value);
         _content.Controls.Add(root);
     }
 
@@ -675,18 +585,6 @@ main
     {
         ShowTablePage(title, data, ("تصدير CSV", ExportReport), ("التقارير", ShowReports));
         _lastReport=data;
-        _lastReportTitle=title;
-    }
-
-    private void PrintCurrentReport()
-    {
-        if (_lastReport is null)
-        {
-            Notice("اعرض تقريرًا أو سجلًا أولًا.");
-            return;
-        }
-
-        Guard(() => ReportPrintService.Preview(this, _lastReport, _lastReportTitle, _navy));
     }
 
     private void ExportReport()
@@ -707,28 +605,9 @@ main
 
     private static string Csv(string value) => "\"" + value.Replace("\"", "\"\"").Replace("\r", " ").Replace("\n", " ") + "\"";
 
-    private void ApplyTableSearch(string query)
-    {
-        if (_tableView is null) return;
-
-        try
-        {
-            TableSearchFilter.Apply(_tableView, query);
-            _lastReport = _tableView.ToTable();
-            var totalRows = _tableView.Table?.Rows.Count ?? _tableView.Count;
-            SetStatus($"السجلات المطابقة: {_tableView.Count} من {totalRows}");
-        }
-        catch (Exception ex)
-        {
-            SetStatus("تعذر تطبيق البحث: " + ex.Message);
-        }
-    }
-
     private void ShowTablePage(string title, DataTable data, params (string Text, Action Run)[] actions)
     {
         _content.Controls.Clear();
-        _tableView = data.DefaultView;
-        _tableView.RowFilter = string.Empty;
         var root=new TableLayoutPanel { Dock=DockStyle.Fill, ColumnCount=1, RowCount=2, BackColor=_paper };
         root.RowStyles.Add(new RowStyle(SizeType.Absolute,58)); root.RowStyles.Add(new RowStyle(SizeType.Percent,100));
         var header=new Panel { Dock=DockStyle.Fill, BackColor=_paper };
@@ -738,25 +617,10 @@ main
         {
             var button=Button(action.Text); button.Width=Math.Max(110,Math.Min(230,TextRenderer.MeasureText(action.Text,Font).Width+38)); button.Click += (_,_) => action.Run(); toolbar.Controls.Add(button);
         }
-        var searchBox = new TextBox
-        {
-            Width = 190,
-            Height = 31,
-            BorderStyle = BorderStyle.FixedSingle,
-            PlaceholderText = "بحث في السجلات..."
-        };
-        searchBox.TextChanged += (_, _) => ApplyTableSearch(searchBox.Text);
-        toolbar.Controls.Add(searchBox);
-        var printButton=Button("معاينة / طباعة");
-        printButton.Width=160;
-        printButton.Click += (_,_) => PrintCurrentReport();
-        toolbar.Controls.Add(printButton);
         header.Controls.Add(toolbar);
         _tableGrid=MakeGrid(data);
-        _tableGrid.DataSource = _tableView;
         root.Controls.Add(header,0,0); root.Controls.Add(_tableGrid,0,1); _content.Controls.Add(root);
         _lastReport=data;
-        _lastReportTitle=title;
         SetStatus($"عدد السجلات المعروضة: {data.Rows.Count}");
     }
 
