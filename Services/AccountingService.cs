@@ -433,6 +433,39 @@ FROM Products ORDER BY Code";
         return ReadTable(cmd);
     }
 
+    public DataTable VatSummary(DateTime from, DateTime to)
+    {
+        using var db = Database.Open();
+        using var cmd = db.CreateCommand();
+        cmd.CommandText = @"
+SELECT
+ROUND(COALESCE(SUM(CASE WHEN Kind='SALE' THEN SubtotalHalalas ELSE 0 END),0)/100.0,2) AS 'مبيعات خاضعة للضريبة قبل الضريبة',
+ROUND(COALESCE(SUM(CASE WHEN Kind='SALE' THEN VatHalalas ELSE 0 END),0)/100.0,2) AS 'ضريبة المخرجات',
+ROUND(COALESCE(SUM(CASE WHEN Kind='PURCHASE' THEN SubtotalHalalas ELSE 0 END),0)/100.0,2) AS 'مشتريات قبل الضريبة',
+ROUND(COALESCE(SUM(CASE WHEN Kind='PURCHASE' THEN VatHalalas ELSE 0 END),0)/100.0,2) AS 'ضريبة المدخلات',
+ROUND((COALESCE(SUM(CASE WHEN Kind='SALE' THEN VatHalalas ELSE 0 END),0)-COALESCE(SUM(CASE WHEN Kind='PURCHASE' THEN VatHalalas ELSE 0 END),0))/100.0,2) AS 'صافي الضريبة المستحقة',
+COUNT(*) AS 'عدد الفواتير'
+FROM Invoices WHERE Status='POSTED' AND InvoiceDate >= $from AND InvoiceDate <= $to";
+        cmd.Parameters.AddWithValue("$from", Date(from));
+        cmd.Parameters.AddWithValue("$to", Date(to));
+        return ReadTable(cmd);
+    }
+
+    public DataTable StockReconciliation()
+    {
+        using var db = Database.Open();
+        using var cmd = db.CreateCommand();
+        cmd.CommandText = @"
+SELECT p.Code AS 'رمز الصنف',p.Name AS 'الصنف',ROUND(p.Quantity,3) AS 'الكمية الحالية',
+ROUND(COALESCE(SUM(m.QuantityIn-m.QuantityOut),0),3) AS 'صافي الحركات',
+ROUND(p.Quantity-COALESCE(SUM(m.QuantityIn-m.QuantityOut),0),3) AS 'فرق التسوية'
+FROM Products p LEFT JOIN StockMovements m ON m.ProductId=p.Id
+GROUP BY p.Id,p.Code,p.Name,p.Quantity
+HAVING ABS(p.Quantity-COALESCE(SUM(m.QuantityIn-m.QuantityOut),0)) > 0.0005
+ORDER BY p.Code";
+        return ReadTable(cmd);
+    }
+
     public DataTable InvoiceRegister(string kind, DateTime from, DateTime to)
     {
         using var db = Database.Open();
