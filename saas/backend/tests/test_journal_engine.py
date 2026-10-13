@@ -221,6 +221,7 @@ async def test_journal_rejects_inactive_account() -> None:
         cash = await session.scalar(select(Account).where(Account.tenant_id == tenant_id, Account.id == account_ids["1101"]))
         assert cash is not None
         cash.is_active = False
+        await session.flush()
         with pytest.raises(HTTPException) as captured:
             await create_journal(
                 session, tenant_id, None, date(2026, 5, 1), "قيد لحساب موقوف", "MANUAL",
