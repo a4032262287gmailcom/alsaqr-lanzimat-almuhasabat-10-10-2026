@@ -8,9 +8,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
 from app.dependencies import TenantContext, admin_or_accountant, can_sell, get_tenant_context
 from app.models import Invoice, InvoiceLine
-from app.schemas import InvoiceCreate, InvoiceLineOut, InvoiceOut
+from app.schemas import InvoiceCreate, InvoiceLineOut, InvoiceOut, OCRApprovalRequest, OCRDraftReviewRequest
 from app.services.accounting import audit
-from app.services.commerce import approve_ocr_purchase_draft, post_invoice
+from app.services.commerce import approve_ocr_purchase_draft, post_invoice, update_ocr_purchase_draft
 
 router = APIRouter(prefix="/commerce", tags=["Sales and procurement"])
 
@@ -85,12 +85,27 @@ async def invoice_lines(
     return [InvoiceLineOut.model_validate(line) for line in lines]
 
 
-@router.post("/purchases/{invoice_id}/approve-ocr-draft", response_model=InvoiceOut)
-async def approve_ocr_draft(
+@router.put("/purchases/{invoice_id}/review-ocr-draft", response_model=InvoiceOut)
+async def review_ocr_draft(
     invoice_id: UUID,
-    is_credit: bool = True,
+    payload: OCRDraftReviewRequest,
     context: TenantContext = Depends(admin_or_accountant),
     session: AsyncSession = Depends(get_db),
 ) -> InvoiceOut:
-    invoice = await approve_ocr_purchase_draft(session, context.tenant_id, context.user_id, invoice_id, is_credit)
+    invoice = await update_ocr_purchase_draft(session, context.tenant_id, context.user_id, invoice_id, payload)
+    return InvoiceOut.model_validate(invoice)
+
+
+@router.post("/purchases/{invoice_id}/approve-ocr-draft", response_model=InvoiceOut)
+async def approve_ocr_draft(
+    invoice_id: UUID,
+    payload: OCRApprovalRequest,
+    context: TenantContext = Depends(admin_or_accountant),
+    session: AsyncSession = Depends(get_db),
+) -> InvoiceOut:
+    invoice = await approve_ocr_purchase_draft(
+        session, context.tenant_id, context.user_id, invoice_id,
+        is_credit=payload.is_credit,
+        confirm_expense_only=payload.confirm_expense_only,
+    )
     return InvoiceOut.model_validate(invoice)
