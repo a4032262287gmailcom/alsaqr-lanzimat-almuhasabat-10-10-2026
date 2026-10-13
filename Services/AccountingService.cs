@@ -346,14 +346,24 @@ VALUES($date,$product,$source,$sourceId,$in,$out,$cost,$memo,$at)";
         using var db = Database.Open();
         using var cmd = db.CreateCommand();
         cmd.CommandText = @"
-SELECT a.Code AS 'رقم الحساب',a.Name AS 'الحساب',
-ROUND(COALESCE(SUM(CASE WHEN j.Id IS NOT NULL THEN l.DebitHalalas ELSE 0 END),0)/100.0,2) AS 'إجمالي مدين',
-ROUND(COALESCE(SUM(CASE WHEN j.Id IS NOT NULL THEN l.CreditHalalas ELSE 0 END),0)/100.0,2) AS 'إجمالي دائن',
-ROUND(MAX(COALESCE(SUM(CASE WHEN j.Id IS NOT NULL THEN l.DebitHalalas-l.CreditHalalas ELSE 0 END),0),0)/100.0,2) AS 'رصيد مدين',
-ROUND(MAX(-COALESCE(SUM(CASE WHEN j.Id IS NOT NULL THEN l.DebitHalalas-l.CreditHalalas ELSE 0 END),0),0)/100.0,2) AS 'رصيد دائن'
-FROM Accounts a LEFT JOIN JournalLines l ON l.AccountCode=a.Code
-LEFT JOIN Journals j ON j.Id=l.JournalId AND j.Status='POSTED' AND j.EntryDate >= $from AND j.EntryDate <= $to
-GROUP BY a.Code,a.Name ORDER BY a.Code";
+WITH Balances AS (
+ SELECT a.Code,a.Name,
+ COALESCE(SUM(CASE WHEN j.EntryDate < $from THEN l.DebitHalalas-l.CreditHalalas ELSE 0 END),0) AS OpeningBalance,
+ COALESCE(SUM(CASE WHEN j.EntryDate >= $from AND j.EntryDate <= $to THEN l.DebitHalalas ELSE 0 END),0) AS PeriodDebit,
+ COALESCE(SUM(CASE WHEN j.EntryDate >= $from AND j.EntryDate <= $to THEN l.CreditHalalas ELSE 0 END),0) AS PeriodCredit,
+ COALESCE(SUM(CASE WHEN j.EntryDate <= $to THEN l.DebitHalalas-l.CreditHalalas ELSE 0 END),0) AS ClosingBalance
+ FROM Accounts a LEFT JOIN JournalLines l ON l.AccountCode=a.Code
+ LEFT JOIN Journals j ON j.Id=l.JournalId AND j.Status='POSTED' AND j.EntryDate <= $to
+ GROUP BY a.Code,a.Name
+)
+SELECT Code AS 'رقم الحساب',Name AS 'الحساب',
+ROUND(MAX(OpeningBalance,0)/100.0,2) AS 'افتتاحي مدين',
+ROUND(MAX(-OpeningBalance,0)/100.0,2) AS 'افتتاحي دائن',
+ROUND(PeriodDebit/100.0,2) AS 'إجمالي مدين',
+ROUND(PeriodCredit/100.0,2) AS 'إجمالي دائن',
+ROUND(MAX(ClosingBalance,0)/100.0,2) AS 'رصيد ختامي مدين',
+ROUND(MAX(-ClosingBalance,0)/100.0,2) AS 'رصيد ختامي دائن'
+FROM Balances ORDER BY Code";
         cmd.Parameters.AddWithValue("$from", Date(from));
         cmd.Parameters.AddWithValue("$to", Date(to));
         return ReadTable(cmd);
