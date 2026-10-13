@@ -183,7 +183,7 @@ JuXWafqQw3cox0/7vo1hAbePS1f35UghKYXtZzXpjhsho6XV5TQ9LcTZgw==
         var raw = Environment.MachineName;
         try
         {
-            using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWAREMicrosoftCryptography", false);
+            using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Cryptography", false);
             raw = Convert.ToString(key?.GetValue("MachineGuid"), System.Globalization.CultureInfo.InvariantCulture) ?? raw;
         }
         catch (Exception ex) when (ex is UnauthorizedAccessException or System.Security.SecurityException or PlatformNotSupportedException) { }
