@@ -3,12 +3,12 @@ from decimal import Decimal, ROUND_HALF_UP
 from uuid import UUID
 
 from fastapi import HTTPException
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models import Contact, Invoice, InvoiceLine, Tenant
-from app.schemas import InvoiceCreate
-from app.services.accounting import audit, create_journal, get_account_by_code, money, next_number
+from app.models import Account, Contact, CostCenter, Invoice, InvoiceLine, JournalEntry, JournalLine, Product, Tenant
+from app.schemas import InvoiceCreate, OCRDraftReviewRequest
+from app.services.accounting import audit, create_journal, get_account_by_code, money, next_number, validate_balanced_lines
 from app.services.inventory import get_or_create_balance, get_product, get_warehouse, issue_stock, receive_stock
 from app.services.zatca import build_phase_one_qr
 
@@ -340,12 +340,178 @@ async def post_invoice(
     return invoice
 
 
+async def update_ocr_purchase_draft(
+    session: AsyncSession,
+    tenant_id: UUID,
+    user_id: UUID,
+    invoice_id: UUID,
+    payload: OCRDraftReviewRequest,
+) -> Invoice:
+    invoice = await session.scalar(select(Invoice).where(
+        Invoice.tenant_id == tenant_id,
+        Invoice.id == invoice_id,
+        Invoice.kind == "PURCHASE",
+    ).with_for_update())
+    if invoice is None:
+        raise HTTPException(status_code=404, detail="Purchase draft not found")
+    if invoice.status != "DRAFT" or not invoice.requires_review:
+        raise HTTPException(status_code=409, detail="Only an OCR purchase draft can be edited by this endpoint")
+
+    contact = await session.scalar(select(Contact).where(
+        Contact.tenant_id == tenant_id,
+        Contact.id == invoice.contact_id,
+        Contact.is_active.is_(True),
+    ))
+    if contact is None or contact.contact_type not in {"SUPPLIER", "BOTH"}:
+        raise HTTPException(status_code=422, detail="Select a valid supplier before reviewing the invoice")
+
+    warehouse = None
+    if payload.warehouse_id:
+        warehouse = await get_warehouse(session, tenant_id, payload.warehouse_id, lock=True)
+
+    prepared: list[dict] = []
+    needs_warehouse = False
+    for item in payload.lines:
+        product = await get_product(session, tenant_id, item.product_id, lock=True) if item.product_id else None
+        if product is None and item.account_id is None:
+            raise HTTPException(status_code=422, detail="Each reviewed line requires a product or a posting account")
+        if product and product.item_type != "SERVICE":
+            needs_warehouse = True
+            account = await get_account_by_code(session, tenant_id, "1201")
+            line_account_id = product.inventory_account_id or account.id
+        elif product:
+            account = await get_account_by_code(session, tenant_id, "5201")
+            line_account_id = item.account_id or product.expense_account_id or account.id
+        else:
+            account = await session.scalar(select(Account).where(
+                Account.tenant_id == tenant_id,
+                Account.id == item.account_id,
+                Account.is_active.is_(True),
+                Account.allow_posting.is_(True),
+            ))
+            if account is None:
+                raise HTTPException(status_code=422, detail="Reviewed line account is missing, inactive, or cannot receive postings")
+            line_account_id = account.id
+
+        center_id = item.cost_center_id
+        if center_id:
+            center = await session.scalar(select(CostCenter.id).where(
+                CostCenter.tenant_id == tenant_id,
+                CostCenter.id == center_id,
+                CostCenter.is_active.is_(True),
+            ))
+            if center is None:
+                raise HTTPException(status_code=422, detail="Cost center is missing or inactive")
+
+        rate = Decimal(item.vat_rate)
+        discount_factor = Decimal("1") - Decimal(item.discount_rate) / Decimal("100")
+        net = money(Decimal(item.quantity) * Decimal(item.unit_price) * discount_factor)
+        vat = money(net * rate / Decimal("100"))
+        total = money(net + vat)
+        prepared.append({
+            "product_id": product.id if product else None,
+            "account_id": line_account_id,
+            "cost_center_id": center_id,
+            "description": item.description.strip(),
+            "quantity": Decimal(item.quantity),
+            "unit_price": Decimal(item.unit_price),
+            "discount_rate": Decimal(item.discount_rate),
+            "vat_rate": rate,
+            "net_amount": net,
+            "vat_amount": vat,
+            "total_amount": total,
+            "unit_cost_at_posting": unit_amount(net / Decimal(item.quantity)) if product and product.item_type != "SERVICE" else Decimal("0"),
+            "product": product,
+        })
+    if needs_warehouse and warehouse is None:
+        raise HTTPException(status_code=422, detail="Choose a warehouse for stock or manufactured products")
+
+    subtotal = money(sum((row["net_amount"] for row in prepared), Decimal("0")))
+    vat_total = money(sum((row["vat_amount"] for row in prepared), Decimal("0")))
+    total = money(subtotal + vat_total)
+    invoice.warehouse_id = warehouse.id if warehouse else None
+    invoice.subtotal = subtotal
+    invoice.vat_total = vat_total
+    invoice.total = total
+
+    await session.execute(delete(InvoiceLine).where(
+        InvoiceLine.tenant_id == tenant_id,
+        InvoiceLine.invoice_id == invoice.id,
+    ))
+    for row in prepared:
+        line_values = {key: value for key, value in row.items() if key != "product"}
+        session.add(InvoiceLine(tenant_id=tenant_id, invoice_id=invoice.id, **line_values))
+    await session.flush()
+
+    expense_fallback = await get_account_by_code(session, tenant_id, "5201")
+    input_vat = await get_account_by_code(session, tenant_id, "1301")
+    payable = await get_account_by_code(session, tenant_id, "2101")
+    draft_journal_lines = [{
+        "account_id": row["account_id"] or expense_fallback.id,
+        "debit": row["net_amount"],
+        "credit": Decimal("0"),
+        "description": row["description"],
+        "cost_center_id": row["cost_center_id"],
+    } for row in prepared]
+    if vat_total > 0:
+        draft_journal_lines.append({
+            "account_id": input_vat.id, "debit": vat_total, "credit": Decimal("0"),
+            "description": "ضريبة مدخلات - مسودة",
+        })
+    draft_journal_lines.append({
+        "account_id": payable.id, "debit": Decimal("0"), "credit": total,
+        "description": f"ذمم المورد - مسودة {invoice.number}", "contact_id": contact.id,
+    })
+    validate_balanced_lines(draft_journal_lines)
+
+    draft_entry = None
+    if invoice.journal_entry_id:
+        draft_entry = await session.scalar(select(JournalEntry).where(
+            JournalEntry.tenant_id == tenant_id,
+            JournalEntry.id == invoice.journal_entry_id,
+            JournalEntry.status == "DRAFT",
+        ).with_for_update())
+    if draft_entry is None:
+        draft_number = await next_number(session, tenant_id, "JOURNAL", "DRAFT-JV", invoice.issue_date)
+        draft_entry = JournalEntry(
+            tenant_id=tenant_id, number=draft_number, entry_date=invoice.issue_date,
+            memo=f"مسودة قيد مشتريات OCR {invoice.number}", status="DRAFT",
+            source_type="OCR_PURCHASE", source_id=invoice.id,
+        )
+        session.add(draft_entry)
+        await session.flush()
+        invoice.journal_entry_id = draft_entry.id
+    else:
+        await session.execute(delete(JournalLine).where(
+            JournalLine.tenant_id == tenant_id, JournalLine.entry_id == draft_entry.id
+        ))
+        draft_entry.memo = f"مسودة قيد مشتريات OCR {invoice.number} — تمت مراجعة البنود"
+    for row in draft_journal_lines:
+        session.add(JournalLine(
+            tenant_id=tenant_id, entry_id=draft_entry.id,
+            account_id=row["account_id"], contact_id=row.get("contact_id"),
+            cost_center_id=row.get("cost_center_id"), description=row.get("description"),
+            debit=money(row["debit"]), credit=money(row["credit"]), currency_code=invoice.currency_code,
+        ))
+    await audit(session, tenant_id, user_id, "OCR_PURCHASE_DRAFT_REVIEWED", "Invoice", invoice.id, {
+        "number": invoice.number,
+        "line_count": len(prepared),
+        "subtotal": str(subtotal),
+        "vat_total": str(vat_total),
+        "total": str(total),
+        "warehouse_id": str(warehouse.id) if warehouse else None,
+    })
+    await session.flush()
+    return invoice
+
+
 async def approve_ocr_purchase_draft(
     session: AsyncSession,
     tenant_id: UUID,
     user_id: UUID,
     invoice_id: UUID,
     is_credit: bool = True,
+    confirm_expense_only: bool = False,
 ) -> Invoice:
     invoice = await session.scalar(select(Invoice).where(
         Invoice.tenant_id == tenant_id,
@@ -360,13 +526,19 @@ async def approve_ocr_purchase_draft(
     lines = (await session.scalars(select(InvoiceLine).where(
         InvoiceLine.tenant_id == tenant_id,
         InvoiceLine.invoice_id == invoice.id,
-    ))).all()
+    ).order_by(InvoiceLine.created_at, InvoiceLine.id))).all()
     if not lines:
         raise HTTPException(status_code=422, detail="Draft must contain at least one line")
     subtotal = money(sum((Decimal(line.net_amount) for line in lines), Decimal("0")))
     vat_total = money(sum((Decimal(line.vat_amount) for line in lines), Decimal("0")))
     if money(subtotal + vat_total) != money(invoice.total):
         raise HTTPException(status_code=422, detail="Draft totals do not reconcile; review the invoice before approval")
+    if all(line.product_id is None for line in lines) and not confirm_expense_only:
+        raise HTTPException(
+            status_code=422,
+            detail="This OCR draft has no mapped stock products. Review its lines, or explicitly confirm expense-only classification.",
+        )
+
     contact = await session.scalar(select(Contact).where(
         Contact.tenant_id == tenant_id,
         Contact.id == invoice.contact_id,
@@ -375,22 +547,31 @@ async def approve_ocr_purchase_draft(
     if contact is None or contact.contact_type not in {"SUPPLIER", "BOTH"}:
         raise HTTPException(status_code=422, detail="Select a valid supplier before approval")
 
-    from app.models import Account
-    expense_fallback = await get_account_by_code(session, tenant_id, "5201")
     input_vat = await get_account_by_code(session, tenant_id, "1301")
     payable = await get_account_by_code(session, tenant_id, "2101")
     cash = await get_account_by_code(session, tenant_id, "1101")
-    journal_lines = []
+    journal_lines: list[dict] = []
     for line in lines:
-        account_id = line.account_id or expense_fallback.id
         account = await session.scalar(select(Account).where(
             Account.tenant_id == tenant_id,
-            Account.id == account_id,
+            Account.id == line.account_id,
             Account.is_active.is_(True),
             Account.allow_posting.is_(True),
         ))
         if account is None:
-            raise HTTPException(status_code=422, detail="Draft expense account is missing or inactive")
+            raise HTTPException(status_code=422, detail="Draft line account is missing or inactive")
+
+        if line.product_id:
+            product = await get_product(session, tenant_id, line.product_id, lock=True)
+            if product.item_type != "SERVICE":
+                if invoice.warehouse_id is None:
+                    raise HTTPException(status_code=422, detail="A warehouse is required to receive stock")
+                unit_cost = unit_amount(Decimal(line.net_amount) / Decimal(line.quantity))
+                await receive_stock(
+                    session, tenant_id, product, invoice.warehouse_id, Decimal(line.quantity),
+                    unit_cost, "PURCHASE", invoice.id, invoice.number,
+                )
+
         journal_lines.append({
             "account_id": account.id,
             "debit": money(line.net_amount),
@@ -399,7 +580,12 @@ async def approve_ocr_purchase_draft(
             "cost_center_id": line.cost_center_id,
         })
     if vat_total > 0:
-        journal_lines.append({"account_id": input_vat.id, "debit": vat_total, "credit": Decimal("0"), "description": "ضريبة مدخلات"})
+        journal_lines.append({
+            "account_id": input_vat.id,
+            "debit": vat_total,
+            "credit": Decimal("0"),
+            "description": "ضريبة القيمة المضافة - مدخلات",
+        })
     journal_lines.append({
         "account_id": payable.id if is_credit else cash.id,
         "debit": Decimal("0"),
@@ -407,18 +593,66 @@ async def approve_ocr_purchase_draft(
         "description": f"اعتماد فاتورة مشتريات {invoice.number}",
         "contact_id": contact.id if is_credit else None,
     })
-    journal = await create_journal(
-        session, tenant_id, user_id, invoice.issue_date,
-        f"اعتماد فاتورة مشتريات OCR {invoice.number}", "PURCHASE", journal_lines, source_id=invoice.id,
-    )
-    invoice.journal_entry_id = journal.id
+    validate_balanced_lines(journal_lines)
+
+    draft_entry = None
+    if invoice.journal_entry_id:
+        draft_entry = await session.scalar(select(JournalEntry).where(
+            JournalEntry.tenant_id == tenant_id,
+            JournalEntry.id == invoice.journal_entry_id,
+        ).with_for_update())
+        if draft_entry is not None and draft_entry.status != "DRAFT":
+            raise HTTPException(status_code=409, detail="Draft accounting entry was already posted or changed")
+    if draft_entry is None:
+        journal = await create_journal(
+            session, tenant_id, user_id, invoice.issue_date,
+            f"اعتماد فاتورة مشتريات OCR {invoice.number}", "PURCHASE", journal_lines, source_id=invoice.id,
+        )
+        invoice.journal_entry_id = journal.id
+    else:
+        for line in journal_lines:
+            account = await session.scalar(select(Account).where(
+                Account.tenant_id == tenant_id,
+                Account.id == line["account_id"],
+                Account.is_active.is_(True),
+                Account.allow_posting.is_(True),
+            ))
+            if account is None:
+                raise HTTPException(status_code=422, detail="A journal account is missing or inactive")
+        await session.execute(delete(JournalLine).where(
+            JournalLine.tenant_id == tenant_id,
+            JournalLine.entry_id == draft_entry.id,
+        ))
+        draft_entry.number = await next_number(session, tenant_id, "JOURNAL", "JV", invoice.issue_date)
+        draft_entry.memo = f"فاتورة مشتريات {invoice.number}"
+        draft_entry.status = "POSTED"
+        draft_entry.source_type = "PURCHASE"
+        draft_entry.source_id = invoice.id
+        draft_entry.posted_by = user_id
+        draft_entry.posted_at = datetime.now(timezone.utc)
+        for line in journal_lines:
+            session.add(JournalLine(
+                tenant_id=tenant_id,
+                entry_id=draft_entry.id,
+                account_id=line["account_id"],
+                contact_id=line.get("contact_id"),
+                cost_center_id=line.get("cost_center_id"),
+                description=line.get("description"),
+                debit=money(line["debit"]),
+                credit=money(line["credit"]),
+                currency_code=invoice.currency_code,
+            ))
+        invoice.journal_entry_id = draft_entry.id
+
     invoice.is_credit = is_credit
     invoice.status = "POSTED"
     invoice.requires_review = False
     invoice.posted_at = datetime.now(timezone.utc)
     await audit(session, tenant_id, user_id, "OCR_PURCHASE_APPROVED", "Invoice", invoice.id, {
-        "journal_entry_id": str(journal.id),
-        "classification": "expense_only_reviewed",
+        "journal_entry_id": str(invoice.journal_entry_id),
+        "classification": "reviewed",
+        "stock_line_count": sum(1 for line in lines if line.product_id is not None),
+        "is_credit": is_credit,
     })
     await session.flush()
     return invoice
