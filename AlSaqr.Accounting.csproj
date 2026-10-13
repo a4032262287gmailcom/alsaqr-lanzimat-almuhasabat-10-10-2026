@@ -16,7 +16,8 @@
   </ItemGroup>
   <ItemGroup>
     <!-- Root-level forms are the active desktop shell. Exclude test/tool entrypoints and legacy UI forms that use retired service APIs. -->
-    <Compile Remove="tests/**/*.cs;tools/**/*.cs;Services/CashierService.cs" />
+    <!-- The older root-level RSA cashier/settings forms were superseded by the integrated POS UI in Forms/. -->
+    <Compile Remove="tests/**/*.cs;tools/**/*.cs;CashierForm.cs;CommercialFeatures.cs;LicenseActivationForm.cs;SystemSettingsForm.cs;Services/SystemSettingsService.cs" />
     <Compile Remove="Forms/CashierForm.cs;Forms/InvoiceForm.cs;Forms/JournalEntryForm.cs;Forms/LicenseForm.cs;Forms/MainForm.cs;Forms/PartyPaymentForm.cs;Forms/RecordEditorForm.cs;Forms/ReportsForm.cs" />
   </ItemGroup>
 </Project>
