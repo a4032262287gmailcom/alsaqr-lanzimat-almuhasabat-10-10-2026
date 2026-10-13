@@ -18,6 +18,7 @@ TENANT_TABLES = (
     "stock_balances",
     "stock_moves",
     "number_sequences",
+    "fiscal_periods",
     "journal_entries",
     "journal_lines",
     "invoices",
