@@ -1,0 +1,2620 @@
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Data.SqlClient;
+using System.Linq;
+using GTSErpSystem.Helper;
+
+namespace GTSErpSystem.BLL.Orders;
+
+internal class Class_Orders
+{
+	private int CachCode = 0;
+
+	private DataTable dtCurrentTable = new DataTable();
+
+	private GTSdbEntities db = new GTSdbEntities();
+
+	private int DecimalNum = LoginDetails.DecimalNum;
+
+	private SqlConnection con = new SqlConnection("Data Source=" + LoginDetails.nameServer + ";Initial Catalog=" + LoginDetails.databaseServer + ";Persist Security Info=True;User ID=" + LoginDetails.userNameServer + ";Password=" + LoginDetails.passServer);
+
+	public List<Account_AccountType> GetAccountType()
+	{
+		return ((IEnumerable<Account_AccountType>)db.Account_AccountType).ToList();
+	}
+
+	public string GetAccountNameById(int id)
+	{
+		return (from a in (IQueryable<Account_AccountType>)db.Account_AccountType
+			where a.ID == id
+			select a.Name).FirstOrDefault();
+	}
+
+	public string GetCostCenterByID(int id)
+	{
+		return (from x in (IQueryable<Account_CostCenters>)db.Account_CostCenters
+			where x.CostCentersID == (int?)id
+			select x.CostCentersName).FirstOrDefault();
+	}
+
+	public string GetBonuceByID(int id)
+	{
+		return (from x in (IQueryable<Contract_Bounce>)db.Contract_Bounce
+			where x.ID == (int?)id
+			select x.Name).FirstOrDefault();
+	}
+
+	public List<User_SellPrice> GetUser_SellPrice()
+	{
+		return ((IQueryable<User_SellPrice>)db.User_SellPrice).Where((User_SellPrice x) => x.ID <= 3).ToList();
+	}
+
+	public List<Select_SearchAccountCostCenter_Result> GetCostCenters()
+	{
+		return ((IEnumerable<Select_SearchAccountCostCenter_Result>)db.Select_SearchAccountCostCenter(Convert.ToInt32(LoginDetails.BranchID))).ToList();
+	}
+
+	public List<Order_Orders> GetPurchases()
+	{
+		GTSdbEntities gTSdbEntities = new GTSdbEntities();
+		return ((IQueryable<Order_Orders>)gTSdbEntities.Order_Orders).Where((Order_Orders x) => x.BranchID == (int?)LoginDetails.BranchID).ToList();
+	}
+
+	public List<Order_Orders> GetPurchases(int Code)
+	{
+		GTSdbEntities gTSdbEntities = new GTSdbEntities();
+		return ((IQueryable<Order_Orders>)gTSdbEntities.Order_Orders).Where((Order_Orders x) => x.PurBranchID == (int?)Code && x.BranchID == (int?)LoginDetails.BranchID).ToList();
+	}
+
+	public Item_Items GetItems(int itemid)
+	{
+		GTSdbEntities gTSdbEntities = new GTSdbEntities();
+		try
+		{
+			return ((IQueryable<Item_Items>)gTSdbEntities.Item_Items).FirstOrDefault((Item_Items x) => x.ItemId == itemid);
+		}
+		finally
+		{
+			((IDisposable)gTSdbEntities)?.Dispose();
+		}
+	}
+
+	public Printer GetPrinter(int itemid)
+	{
+		int PrintID = 0;
+		int CatID = Convert.ToInt32(((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.ItemId == itemid).FirstOrDefault().Category_ID);
+		bool flag = true;
+		PrintID = Convert.ToInt32(((IQueryable<Item_Groups>)db.Item_Groups).Where((Item_Groups x) => x.ID == CatID).FirstOrDefault().PrinterID);
+		return ((IQueryable<Printer>)db.Printers).Where((Printer x) => x.ID == PrintID).FirstOrDefault();
+	}
+
+	public Item_Items GetItemsMizan(string BarcodeMizan)
+	{
+		GTSdbEntities gTSdbEntities = new GTSdbEntities();
+		return ((IQueryable<Item_Items>)gTSdbEntities.Item_Items).Where((Item_Items x) => x.SmallBarCode1 == BarcodeMizan || x.SmallBarCode2 == BarcodeMizan || x.SmallBarCode3 == BarcodeMizan || x.MediumBarCode1 == BarcodeMizan || x.MediumBarCode2 == BarcodeMizan || x.MediumBarCode3 == BarcodeMizan || x.BigBarCode1 == BarcodeMizan || x.BigBarCode2 == BarcodeMizan || x.BigBarCode3 == BarcodeMizan).FirstOrDefault();
+	}
+
+	public ItemMatchResult GetItemsOnly(string Code)
+	{
+		GTSdbEntities gTSdbEntities = new GTSdbEntities();
+		try
+		{
+			Item_Items item_Items = ((IQueryable<Item_Items>)gTSdbEntities.Item_Items).FirstOrDefault((Item_Items x) => x.Item_code == Code);
+			if (item_Items != null)
+			{
+				return new ItemMatchResult
+				{
+					Item = item_Items,
+					MatchedField = "Item_code"
+				};
+			}
+			item_Items = ((IQueryable<Item_Items>)gTSdbEntities.Item_Items).FirstOrDefault((Item_Items x) => x.SmallBarCode1 == Code);
+			if (item_Items != null)
+			{
+				return new ItemMatchResult
+				{
+					Item = item_Items,
+					MatchedField = "SmallBarCode1"
+				};
+			}
+			item_Items = ((IQueryable<Item_Items>)gTSdbEntities.Item_Items).FirstOrDefault((Item_Items x) => x.SmallBarCode2 == Code);
+			if (item_Items != null)
+			{
+				return new ItemMatchResult
+				{
+					Item = item_Items,
+					MatchedField = "SmallBarCode2"
+				};
+			}
+			item_Items = ((IQueryable<Item_Items>)gTSdbEntities.Item_Items).FirstOrDefault((Item_Items x) => x.SmallBarCode3 == Code);
+			if (item_Items != null)
+			{
+				return new ItemMatchResult
+				{
+					Item = item_Items,
+					MatchedField = "SmallBarCode3"
+				};
+			}
+			item_Items = ((IQueryable<Item_Items>)gTSdbEntities.Item_Items).FirstOrDefault((Item_Items x) => x.MediumBarCode1 == Code);
+			if (item_Items != null)
+			{
+				return new ItemMatchResult
+				{
+					Item = item_Items,
+					MatchedField = "MediumBarCode1"
+				};
+			}
+			item_Items = ((IQueryable<Item_Items>)gTSdbEntities.Item_Items).FirstOrDefault((Item_Items x) => x.MediumBarCode2 == Code);
+			if (item_Items != null)
+			{
+				return new ItemMatchResult
+				{
+					Item = item_Items,
+					MatchedField = "MediumBarCode2"
+				};
+			}
+			item_Items = ((IQueryable<Item_Items>)gTSdbEntities.Item_Items).FirstOrDefault((Item_Items x) => x.MediumBarCode3 == Code);
+			if (item_Items != null)
+			{
+				return new ItemMatchResult
+				{
+					Item = item_Items,
+					MatchedField = "MediumBarCode3"
+				};
+			}
+			item_Items = ((IQueryable<Item_Items>)gTSdbEntities.Item_Items).FirstOrDefault((Item_Items x) => x.BigBarCode1 == Code);
+			if (item_Items != null)
+			{
+				return new ItemMatchResult
+				{
+					Item = item_Items,
+					MatchedField = "BigBarCode1"
+				};
+			}
+			item_Items = ((IQueryable<Item_Items>)gTSdbEntities.Item_Items).FirstOrDefault((Item_Items x) => x.BigBarCode2 == Code);
+			if (item_Items != null)
+			{
+				return new ItemMatchResult
+				{
+					Item = item_Items,
+					MatchedField = "BigBarCode2"
+				};
+			}
+			item_Items = ((IQueryable<Item_Items>)gTSdbEntities.Item_Items).FirstOrDefault((Item_Items x) => x.BigBarCode3 == Code);
+			if (item_Items != null)
+			{
+				return new ItemMatchResult
+				{
+					Item = item_Items,
+					MatchedField = "BigBarCode3"
+				};
+			}
+			return null;
+		}
+		finally
+		{
+			((IDisposable)gTSdbEntities)?.Dispose();
+		}
+	}
+
+	public int InsertItems_Complant(DataTable Items, string ItemCode)
+	{
+		int result = 0;
+		foreach (DataRow row in Items.Rows)
+		{
+			if (row["كود_الصنف"].ToString() != "")
+			{
+				Item_ItemComponent item_ItemComponent = new Item_ItemComponent();
+				string Itemcod = row["كود_الصنف"].ToString();
+				string value = Convert.ToString(((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.Item_code == ItemCode).FirstOrDefault().ItemId);
+				string value2 = Convert.ToString(((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.Item_code == Itemcod).FirstOrDefault().ItemId);
+				int ItemRowChek = Convert.ToInt32(value2);
+				Item_Items item_Items = ((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items z) => z.ItemId == ItemRowChek).FirstOrDefault();
+				if (item_Items != null)
+				{
+					item_ItemComponent.ItemID_Master = Convert.ToInt32(value);
+					item_ItemComponent.ItemID_Complant = Convert.ToInt32(item_Items.ItemId);
+					item_ItemComponent.Amount = Convert.ToDecimal(row["الكمية"].ToString());
+					string nmae = row["الوحدة"].ToString();
+					item_ItemComponent.ItemUnitID = GetUnitIdByName(nmae);
+					item_ItemComponent.SmallUnitPrice = Convert.ToDecimal(row["م.التكلفة"].ToString());
+					item_ItemComponent.TotalPrice = Math.Round(Convert.ToDecimal(row["الاجمالى"].ToString()), DecimalNum);
+					item_ItemComponent.ItemUnitType = row["أسم_الوحدة"].ToString();
+					item_ItemComponent.StoreID = Convert.ToInt32(row["رقم المخزن"]);
+					db.Item_ItemComponent.Add(item_ItemComponent);
+					result = ((DbContext)db).SaveChanges();
+				}
+			}
+		}
+		return result;
+	}
+
+	public int ItemQuantityIn(int ItemID, decimal Quantity, string unitType, int StoreID, int itemType)
+	{
+		GTSdbEntities gTSdbEntities = new GTSdbEntities();
+		int result = 0;
+		if (ItemID > 0)
+		{
+			if (itemType == 1)
+			{
+				ItemQuantity itemQuantity = ((IQueryable<ItemQuantity>)gTSdbEntities.ItemQuantities).Where((ItemQuantity x) => x.ItemID == (int?)ItemID && x.StoreID == (int?)StoreID).FirstOrDefault();
+				Item_Items item_Items = ((IQueryable<Item_Items>)gTSdbEntities.Item_Items).Where((Item_Items x) => x.ItemId == ItemID).FirstOrDefault();
+				if (itemQuantity != null)
+				{
+					ItemQuantity itemQuantity2 = ((IQueryable<ItemQuantity>)gTSdbEntities.ItemQuantities).Where((ItemQuantity x) => x.ItemID == (int?)ItemID && x.StoreID == (int?)StoreID).FirstOrDefault();
+					if (itemQuantity2 != null)
+					{
+						if (unitType == "الصغرى")
+						{
+							itemQuantity2.CurrentBalance -= (decimal?)Quantity;
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+						if (unitType == "المتوسطة")
+						{
+							decimal? currentBalance = itemQuantity2.CurrentBalance;
+							decimal value = Quantity;
+							decimal? convertMediumUnit = item_Items.ConvertMediumUnit;
+							itemQuantity2.CurrentBalance = currentBalance - (decimal?)value * convertMediumUnit;
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+						if (unitType == "الكبرى")
+						{
+							decimal? currentBalance2 = itemQuantity2.CurrentBalance;
+							decimal value = Quantity;
+							decimal? convertMediumUnit2 = item_Items.ConvertMediumUnit;
+							itemQuantity2.CurrentBalance = currentBalance2 - (decimal?)value * convertMediumUnit2 * item_Items.ConvertBigUnit;
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+					}
+					return result;
+				}
+				ItemQuantity itemQuantity3 = new ItemQuantity();
+				int itemQuantityID = Convert.ToInt32(((IQueryable<ItemQuantity>)gTSdbEntities.ItemQuantities).Select((ItemQuantity p) => p.ItemQuantityID).DefaultIfEmpty(0).Max()) + 1;
+				itemQuantity3.ItemQuantityID = itemQuantityID;
+				itemQuantity3.ItemID = ItemID;
+				if (unitType == "الصغرى")
+				{
+					itemQuantity3.CurrentBalance = -Quantity;
+				}
+				if (unitType == "المتوسطة")
+				{
+					decimal value = -Quantity;
+					decimal? currentBalance = item_Items.ConvertMediumUnit;
+					itemQuantity3.CurrentBalance = (decimal?)value * currentBalance;
+				}
+				if (unitType == "الكبرى")
+				{
+					decimal value = -Quantity;
+					decimal? convertMediumUnit3 = item_Items.ConvertMediumUnit;
+					itemQuantity3.CurrentBalance = (decimal?)value * convertMediumUnit3 * item_Items.ConvertBigUnit;
+				}
+				itemQuantity3.BeginningInventory = 0m;
+				itemQuantity3.BeginningInventoryPrice = 0m;
+				itemQuantity3.OpeningBalance = 0m;
+				itemQuantity3.StoreID = StoreID;
+				gTSdbEntities.ItemQuantities.Add(itemQuantity3);
+				result = ((DbContext)gTSdbEntities).SaveChanges();
+			}
+			if (itemType == 3)
+			{
+				List<Item_ItemComponent> list = ((IQueryable<Item_ItemComponent>)gTSdbEntities.Item_ItemComponent).Where((Item_ItemComponent x) => x.ItemID_Master == (int?)ItemID).ToList();
+				Item_Items item_Items2 = ((IQueryable<Item_Items>)gTSdbEntities.Item_Items).Where((Item_Items x) => x.ItemId == ItemID).FirstOrDefault();
+				foreach (Item_ItemComponent item in list)
+				{
+					Item_Items item_Items3 = ((IQueryable<Item_Items>)gTSdbEntities.Item_Items).Where((Item_Items x) => (int?)x.ItemId == item.ItemID_Complant).FirstOrDefault();
+					ItemQuantity itemQuantity4 = ((IQueryable<ItemQuantity>)gTSdbEntities.ItemQuantities).Where((ItemQuantity x) => x.ItemID == item.ItemID_Complant && x.StoreID == (int?)StoreID).FirstOrDefault();
+					if (itemQuantity4 != null)
+					{
+						ItemQuantity itemQuantity5 = ((IQueryable<ItemQuantity>)gTSdbEntities.ItemQuantities).Where((ItemQuantity x) => x.ItemID == item.ItemID_Complant && x.StoreID == (int?)StoreID).FirstOrDefault();
+						if (itemQuantity5 == null)
+						{
+							continue;
+						}
+						if (unitType == "الصغرى")
+						{
+							if (item.ItemUnitType == "الصغرى")
+							{
+								itemQuantity5.CurrentBalance -= item.Amount * (decimal?)Quantity;
+								result = ((DbContext)gTSdbEntities).SaveChanges();
+							}
+							if (item.ItemUnitType == "المتوسطة")
+							{
+								itemQuantity5.CurrentBalance -= item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit;
+								result = ((DbContext)gTSdbEntities).SaveChanges();
+							}
+							if (item.ItemUnitType == "الكبرى")
+							{
+								itemQuantity5.CurrentBalance -= item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit * item_Items3.ConvertBigUnit;
+								result = ((DbContext)gTSdbEntities).SaveChanges();
+							}
+						}
+						if (unitType == "المتوسطة")
+						{
+							if (item.ItemUnitType == "الصغرى")
+							{
+								itemQuantity5.CurrentBalance -= item.Amount * (decimal?)Quantity * item_Items2.ConvertMediumUnit;
+								result = ((DbContext)gTSdbEntities).SaveChanges();
+							}
+							if (item.ItemUnitType == "المتوسطة")
+							{
+								itemQuantity5.CurrentBalance -= item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit * item_Items2.ConvertMediumUnit;
+								result = ((DbContext)gTSdbEntities).SaveChanges();
+							}
+							if (item.ItemUnitType == "الكبرى")
+							{
+								itemQuantity5.CurrentBalance -= item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit * item_Items3.ConvertBigUnit * item_Items2.ConvertMediumUnit;
+								result = ((DbContext)gTSdbEntities).SaveChanges();
+							}
+						}
+						if (unitType == "الكبرى")
+						{
+							if (item.ItemUnitType == "الصغرى")
+							{
+								itemQuantity5.CurrentBalance -= item.Amount * (decimal?)Quantity * item_Items2.ConvertBigUnit;
+								result = ((DbContext)gTSdbEntities).SaveChanges();
+							}
+							if (item.ItemUnitType == "المتوسطة")
+							{
+								itemQuantity5.CurrentBalance -= item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit * item_Items2.ConvertBigUnit;
+								result = ((DbContext)gTSdbEntities).SaveChanges();
+							}
+							if (item.ItemUnitType == "الكبرى")
+							{
+								itemQuantity5.CurrentBalance -= item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit * item_Items3.ConvertBigUnit * item_Items2.ConvertBigUnit;
+								result = ((DbContext)gTSdbEntities).SaveChanges();
+							}
+						}
+						continue;
+					}
+					ItemQuantity itemQuantity6 = new ItemQuantity();
+					int itemQuantityID2 = Convert.ToInt32(((IQueryable<ItemQuantity>)gTSdbEntities.ItemQuantities).Select((ItemQuantity p) => p.ItemQuantityID).DefaultIfEmpty(0).Max()) + 1;
+					itemQuantity6.ItemQuantityID = itemQuantityID2;
+					itemQuantity6.ItemID = item.ItemID_Complant;
+					if (unitType == "الصغرى")
+					{
+						if (item.ItemUnitType == "الصغرى")
+						{
+							itemQuantity6.CurrentBalance = -item.Amount * (decimal?)Quantity;
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+						if (item.ItemUnitType == "المتوسطة")
+						{
+							itemQuantity6.CurrentBalance = -(item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit);
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+						if (item.ItemUnitType == "الكبرى")
+						{
+							itemQuantity6.CurrentBalance = -(item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit * item_Items3.ConvertBigUnit);
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+					}
+					if (unitType == "المتوسطة")
+					{
+						if (item.ItemUnitType == "الصغرى")
+						{
+							itemQuantity6.CurrentBalance = -(item.Amount * (decimal?)Quantity * item_Items2.ConvertMediumUnit);
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+						if (item.ItemUnitType == "المتوسطة")
+						{
+							itemQuantity6.CurrentBalance = -(item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit * item_Items2.ConvertMediumUnit);
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+						if (item.ItemUnitType == "الكبرى")
+						{
+							itemQuantity6.CurrentBalance = -(item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit * item_Items3.ConvertBigUnit * item_Items2.ConvertMediumUnit);
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+					}
+					if (unitType == "الكبرى")
+					{
+						if (item.ItemUnitType == "الصغرى")
+						{
+							itemQuantity6.CurrentBalance = -(item.Amount * (decimal?)Quantity * item_Items2.ConvertBigUnit);
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+						if (item.ItemUnitType == "المتوسطة")
+						{
+							itemQuantity6.CurrentBalance = -(item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit * item_Items2.ConvertBigUnit);
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+						if (item.ItemUnitType == "الكبرى")
+						{
+							itemQuantity6.CurrentBalance = -(item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit * item_Items3.ConvertBigUnit * item_Items2.ConvertBigUnit);
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+					}
+					itemQuantity6.BeginningInventory = 0m;
+					itemQuantity6.BeginningInventoryPrice = 0m;
+					itemQuantity6.OpeningBalance = 0m;
+					itemQuantity6.StoreID = item.StoreID;
+					gTSdbEntities.ItemQuantities.Add(itemQuantity6);
+					result = ((DbContext)gTSdbEntities).SaveChanges();
+				}
+			}
+		}
+		return result;
+	}
+
+	public int ItemQuantityOut(int ItemID, decimal Quantity, string unitType, int StoreID, int itemType)
+	{
+		GTSdbEntities gTSdbEntities = new GTSdbEntities();
+		int result = 0;
+		if (ItemID > 0)
+		{
+			if (itemType == 1)
+			{
+				ItemQuantity itemQuantity = ((IQueryable<ItemQuantity>)gTSdbEntities.ItemQuantities).Where((ItemQuantity x) => x.ItemID == (int?)ItemID && x.StoreID == (int?)StoreID).FirstOrDefault();
+				Item_Items item_Items = ((IQueryable<Item_Items>)gTSdbEntities.Item_Items).Where((Item_Items x) => x.ItemId == ItemID).FirstOrDefault();
+				if (itemQuantity != null)
+				{
+					ItemQuantity itemQuantity2 = ((IQueryable<ItemQuantity>)gTSdbEntities.ItemQuantities).Where((ItemQuantity x) => x.ItemID == (int?)ItemID && x.StoreID == (int?)StoreID).FirstOrDefault();
+					if (itemQuantity2 != null)
+					{
+						if (unitType == "الصغرى")
+						{
+							itemQuantity2.CurrentBalance += (decimal?)Quantity;
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+						if (unitType == "المتوسطة")
+						{
+							decimal? currentBalance = itemQuantity2.CurrentBalance;
+							decimal value = Quantity;
+							decimal? convertMediumUnit = item_Items.ConvertMediumUnit;
+							itemQuantity2.CurrentBalance = currentBalance + (decimal?)value * convertMediumUnit;
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+						if (unitType == "الكبرى")
+						{
+							decimal? currentBalance2 = itemQuantity2.CurrentBalance;
+							decimal value = Quantity;
+							decimal? convertMediumUnit2 = item_Items.ConvertMediumUnit;
+							itemQuantity2.CurrentBalance = currentBalance2 + (decimal?)value * convertMediumUnit2 * item_Items.ConvertBigUnit;
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+					}
+					return result;
+				}
+				ItemQuantity itemQuantity3 = new ItemQuantity();
+				int itemQuantityID = Convert.ToInt32(((IQueryable<ItemQuantity>)gTSdbEntities.ItemQuantities).Select((ItemQuantity p) => p.ItemQuantityID).DefaultIfEmpty(0).Max()) + 1;
+				itemQuantity3.ItemQuantityID = itemQuantityID;
+				itemQuantity3.ItemID = ItemID;
+				if (unitType == "الصغرى")
+				{
+					itemQuantity3.CurrentBalance = Quantity;
+				}
+				if (unitType == "المتوسطة")
+				{
+					decimal value = Quantity;
+					decimal? currentBalance = item_Items.ConvertMediumUnit;
+					itemQuantity3.CurrentBalance = (decimal?)value * currentBalance;
+				}
+				if (unitType == "الكبرى")
+				{
+					decimal value = Quantity;
+					decimal? convertMediumUnit3 = item_Items.ConvertMediumUnit;
+					itemQuantity3.CurrentBalance = (decimal?)value * convertMediumUnit3 * item_Items.ConvertBigUnit;
+				}
+				itemQuantity3.BeginningInventory = 0m;
+				itemQuantity3.BeginningInventoryPrice = 0m;
+				itemQuantity3.OpeningBalance = 0m;
+				itemQuantity3.StoreID = StoreID;
+				gTSdbEntities.ItemQuantities.Add(itemQuantity3);
+				result = ((DbContext)gTSdbEntities).SaveChanges();
+			}
+			if (itemType == 3)
+			{
+				List<Item_ItemComponent> list = ((IQueryable<Item_ItemComponent>)gTSdbEntities.Item_ItemComponent).Where((Item_ItemComponent x) => x.ItemID_Master == (int?)ItemID).ToList();
+				Item_Items item_Items2 = ((IQueryable<Item_Items>)gTSdbEntities.Item_Items).Where((Item_Items x) => x.ItemId == ItemID).FirstOrDefault();
+				foreach (Item_ItemComponent item in list)
+				{
+					Item_Items item_Items3 = ((IQueryable<Item_Items>)gTSdbEntities.Item_Items).Where((Item_Items x) => (int?)x.ItemId == item.ItemID_Complant).FirstOrDefault();
+					ItemQuantity itemQuantity4 = ((IQueryable<ItemQuantity>)gTSdbEntities.ItemQuantities).Where((ItemQuantity x) => x.ItemID == item.ItemID_Complant && x.StoreID == (int?)StoreID).FirstOrDefault();
+					if (itemQuantity4 != null)
+					{
+						ItemQuantity itemQuantity5 = ((IQueryable<ItemQuantity>)gTSdbEntities.ItemQuantities).Where((ItemQuantity x) => x.ItemID == item.ItemID_Complant && x.StoreID == (int?)StoreID).FirstOrDefault();
+						if (itemQuantity5 == null)
+						{
+							continue;
+						}
+						if (unitType == "الصغرى")
+						{
+							if (item.ItemUnitType == "الصغرى")
+							{
+								itemQuantity5.CurrentBalance += item.Amount * (decimal?)Quantity;
+								result = ((DbContext)gTSdbEntities).SaveChanges();
+							}
+							if (item.ItemUnitType == "المتوسطة")
+							{
+								itemQuantity5.CurrentBalance += item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit;
+								result = ((DbContext)gTSdbEntities).SaveChanges();
+							}
+							if (item.ItemUnitType == "الكبرى")
+							{
+								itemQuantity5.CurrentBalance += item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit * item_Items3.ConvertBigUnit;
+								result = ((DbContext)gTSdbEntities).SaveChanges();
+							}
+						}
+						if (unitType == "المتوسطة")
+						{
+							if (item.ItemUnitType == "الصغرى")
+							{
+								itemQuantity5.CurrentBalance += item.Amount * (decimal?)Quantity * item_Items2.ConvertMediumUnit;
+								result = ((DbContext)gTSdbEntities).SaveChanges();
+							}
+							if (item.ItemUnitType == "المتوسطة")
+							{
+								itemQuantity5.CurrentBalance += item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit * item_Items2.ConvertMediumUnit;
+								result = ((DbContext)gTSdbEntities).SaveChanges();
+							}
+							if (item.ItemUnitType == "الكبرى")
+							{
+								itemQuantity5.CurrentBalance += item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit * item_Items3.ConvertBigUnit * item_Items2.ConvertMediumUnit;
+								result = ((DbContext)gTSdbEntities).SaveChanges();
+							}
+						}
+						if (unitType == "الكبرى")
+						{
+							if (item.ItemUnitType == "الصغرى")
+							{
+								itemQuantity5.CurrentBalance += item.Amount * (decimal?)Quantity * item_Items2.ConvertBigUnit;
+								result = ((DbContext)gTSdbEntities).SaveChanges();
+							}
+							if (item.ItemUnitType == "المتوسطة")
+							{
+								itemQuantity5.CurrentBalance += item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit * item_Items2.ConvertBigUnit;
+								result = ((DbContext)gTSdbEntities).SaveChanges();
+							}
+							if (item.ItemUnitType == "الكبرى")
+							{
+								itemQuantity5.CurrentBalance += item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit * item_Items3.ConvertBigUnit * item_Items2.ConvertBigUnit;
+								result = ((DbContext)gTSdbEntities).SaveChanges();
+							}
+						}
+						continue;
+					}
+					ItemQuantity itemQuantity6 = new ItemQuantity();
+					int itemQuantityID2 = Convert.ToInt32(((IQueryable<ItemQuantity>)gTSdbEntities.ItemQuantities).Select((ItemQuantity p) => p.ItemQuantityID).DefaultIfEmpty(0).Max()) + 1;
+					itemQuantity6.ItemQuantityID = itemQuantityID2;
+					itemQuantity6.ItemID = item.ItemID_Complant;
+					if (unitType == "الصغرى")
+					{
+						if (item.ItemUnitType == "الصغرى")
+						{
+							itemQuantity6.CurrentBalance = item.Amount * (decimal?)Quantity;
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+						if (item.ItemUnitType == "المتوسطة")
+						{
+							itemQuantity6.CurrentBalance = item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit;
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+						if (item.ItemUnitType == "الكبرى")
+						{
+							itemQuantity6.CurrentBalance = item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit * item_Items3.ConvertBigUnit;
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+					}
+					if (unitType == "المتوسطة")
+					{
+						if (item.ItemUnitType == "الصغرى")
+						{
+							itemQuantity6.CurrentBalance = item.Amount * (decimal?)Quantity * item_Items2.ConvertMediumUnit;
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+						if (item.ItemUnitType == "المتوسطة")
+						{
+							itemQuantity6.CurrentBalance = item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit * item_Items2.ConvertMediumUnit;
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+						if (item.ItemUnitType == "الكبرى")
+						{
+							itemQuantity6.CurrentBalance = item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit * item_Items3.ConvertBigUnit * item_Items2.ConvertMediumUnit;
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+					}
+					if (unitType == "الكبرى")
+					{
+						if (item.ItemUnitType == "الصغرى")
+						{
+							itemQuantity6.CurrentBalance = item.Amount * (decimal?)Quantity * item_Items2.ConvertBigUnit;
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+						if (item.ItemUnitType == "المتوسطة")
+						{
+							itemQuantity6.CurrentBalance = item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit * item_Items2.ConvertBigUnit;
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+						if (item.ItemUnitType == "الكبرى")
+						{
+							itemQuantity6.CurrentBalance = item.Amount * (decimal?)Quantity * item_Items3.ConvertMediumUnit * item_Items3.ConvertBigUnit * item_Items2.ConvertBigUnit;
+							result = ((DbContext)gTSdbEntities).SaveChanges();
+						}
+					}
+					itemQuantity6.BeginningInventory = 0m;
+					itemQuantity6.BeginningInventoryPrice = 0m;
+					itemQuantity6.OpeningBalance = 0m;
+					itemQuantity6.StoreID = StoreID;
+					gTSdbEntities.ItemQuantities.Add(itemQuantity6);
+					result = ((DbContext)gTSdbEntities).SaveChanges();
+				}
+			}
+		}
+		return result;
+	}
+
+	public string GetStoreName()
+	{
+		int StoreID = Convert.ToInt32((from x in (IQueryable<TblSetting>)db.TblSettings
+			where x.ID == LoginDetails.BranchID
+			select x.StoreID).SingleOrDefault());
+		return (from x in (IQueryable<Account_Stores>)db.Account_Stores
+			where x.ID == StoreID
+			select x.Store_Name).FirstOrDefault();
+	}
+
+	public int GetStoreID()
+	{
+		return Convert.ToInt32((from x in (IQueryable<TblSetting>)db.TblSettings
+			where x.ID == LoginDetails.BranchID
+			select x.StoreID).SingleOrDefault());
+	}
+
+	public bool IsVatActive()
+	{
+		return Convert.ToBoolean((from x in (IQueryable<TblSetting>)db.TblSettings
+			where x.ID == LoginDetails.BranchID
+			select x.IsVat).FirstOrDefault());
+	}
+
+	public decimal GetAvargeCost(string Itemcode)
+	{
+		decimal result = 0m;
+		if (Itemcode != "")
+		{
+			return Convert.ToDecimal(((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.Item_code == Itemcode || x.item_Name == Itemcode || x.item_Name_English == Itemcode || x.SmallBarCode1 == Itemcode || x.SmallBarCode2 == Itemcode || x.SmallBarCode3 == Itemcode || x.MediumBarCode1 == Itemcode || x.MediumBarCode2 == Itemcode || x.MediumBarCode3 == Itemcode || x.BigBarCode1 == Itemcode || x.BigBarCode2 == Itemcode || x.BigBarCode3 == Itemcode).FirstOrDefault().Average_cost);
+		}
+		return result;
+	}
+
+	public decimal GetSellprice1(string Itemcode)
+	{
+		decimal result = 0m;
+		if (Itemcode != "")
+		{
+			return Convert.ToDecimal(((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.Item_code == Itemcode || x.item_Name == Itemcode || x.item_Name_English == Itemcode || x.SmallBarCode1 == Itemcode || x.SmallBarCode2 == Itemcode || x.SmallBarCode3 == Itemcode || x.MediumBarCode1 == Itemcode || x.MediumBarCode2 == Itemcode || x.MediumBarCode3 == Itemcode || x.BigBarCode1 == Itemcode || x.BigBarCode2 == Itemcode || x.BigBarCode3 == Itemcode).FirstOrDefault().SellPriceSmall);
+		}
+		return result;
+	}
+
+	public decimal GetSellprice2(string Itemcode)
+	{
+		decimal result = 0m;
+		if (Itemcode != "")
+		{
+			return Convert.ToDecimal(((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.Item_code == Itemcode || x.item_Name == Itemcode || x.item_Name_English == Itemcode || x.SmallBarCode1 == Itemcode || x.SmallBarCode2 == Itemcode || x.SmallBarCode3 == Itemcode || x.MediumBarCode1 == Itemcode || x.MediumBarCode2 == Itemcode || x.MediumBarCode3 == Itemcode || x.BigBarCode1 == Itemcode || x.BigBarCode2 == Itemcode || x.BigBarCode3 == Itemcode).FirstOrDefault().SellPriceSmall2);
+		}
+		return result;
+	}
+
+	public decimal GetSellprice3(string Itemcode)
+	{
+		decimal result = 0m;
+		if (Itemcode != "")
+		{
+			return Convert.ToDecimal(((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.Item_code == Itemcode || x.item_Name == Itemcode || x.item_Name_English == Itemcode || x.SmallBarCode1 == Itemcode || x.SmallBarCode2 == Itemcode || x.SmallBarCode3 == Itemcode || x.MediumBarCode1 == Itemcode || x.MediumBarCode2 == Itemcode || x.MediumBarCode3 == Itemcode || x.BigBarCode1 == Itemcode || x.BigBarCode2 == Itemcode || x.BigBarCode3 == Itemcode).FirstOrDefault().SellPriceSmall3);
+		}
+		return result;
+	}
+
+	public List<Item_Items> GetItems(string Code)
+	{
+		GTSdbEntities gTSdbEntities = new GTSdbEntities();
+		return ((IQueryable<Item_Items>)gTSdbEntities.Item_Items).Where((Item_Items x) => x.Item_code == Code || x.item_Name == Code || x.item_Name_English == Code || x.SmallBarCode1 == Code || x.SmallBarCode2 == Code || x.SmallBarCode3 == Code || x.MediumBarCode1 == Code || x.MediumBarCode2 == Code || x.MediumBarCode3 == Code || x.BigBarCode1 == Code || x.BigBarCode2 == Code || x.BigBarCode3 == Code).ToList();
+	}
+
+	public Item_Items GetItemsCode2(string Code)
+	{
+		return ((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.Item_code == Code || x.item_Name == Code || x.item_Name_English == Code || x.SmallBarCode1 == Code || x.SmallBarCode2 == Code || x.SmallBarCode3 == Code || x.MediumBarCode1 == Code || x.MediumBarCode2 == Code || x.MediumBarCode3 == Code || x.BigBarCode1 == Code || x.BigBarCode2 == Code || x.BigBarCode3 == Code).FirstOrDefault();
+	}
+
+	public decimal GetQantityForItems(string itemCode, string unit)
+	{
+		decimal num = 0m;
+		int Itemid = (from x in GetItems(itemCode)
+			select x.ItemId).FirstOrDefault();
+		decimal num2 = Convert.ToDecimal(((IQueryable<ItemQuantity>)db.ItemQuantities).Where((ItemQuantity x) => x.ItemID == (int?)Itemid).Sum((ItemQuantity x) => x.OpeningBalance));
+		decimal num3 = Convert.ToDecimal(((IQueryable<ItemQuantity>)db.ItemQuantities).Where((ItemQuantity x) => x.ItemID == (int?)Itemid).Sum((ItemQuantity x) => x.CurrentBalance));
+		num = num2 + num3;
+		if (unit == "المتوسطة")
+		{
+			num /= Convert.ToDecimal((from x in GetItems(itemCode)
+				select x.ConvertMediumUnit).FirstOrDefault());
+		}
+		if (unit == "الكبرى")
+		{
+			num /= Convert.ToDecimal((from x in GetItems(itemCode)
+				select x.ConvertMediumUnit).FirstOrDefault());
+			num /= Convert.ToDecimal((from x in GetItems(itemCode)
+				select x.ConvertBigUnit).FirstOrDefault());
+		}
+		return num;
+	}
+
+	public List<Item_Items> GetItemsByitemid(int ItemID)
+	{
+		return ((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.ItemId == ItemID).ToList();
+	}
+
+	public List<Item_Items> GetItems()
+	{
+		return ((IEnumerable<Item_Items>)db.Item_Items).ToList();
+	}
+
+	public decimal GetQantityForItems(string itemCode, string unit, int storeid)
+	{
+		decimal num = 0m;
+		int Itemid = (from x in GetItems(itemCode)
+			select x.ItemId).FirstOrDefault();
+		decimal num2 = Convert.ToDecimal(((IQueryable<ItemQuantity>)db.ItemQuantities).Where((ItemQuantity x) => x.ItemID == (int?)Itemid && x.StoreID == (int?)storeid).Sum((ItemQuantity x) => x.OpeningBalance));
+		decimal num3 = Convert.ToDecimal(((IQueryable<ItemQuantity>)db.ItemQuantities).Where((ItemQuantity x) => x.ItemID == (int?)Itemid && x.StoreID == (int?)storeid).Sum((ItemQuantity x) => x.CurrentBalance));
+		num = num2 + num3;
+		if (unit == "المتوسطة")
+		{
+			num /= Convert.ToDecimal((from x in GetItems(itemCode)
+				select x.ConvertMediumUnit).FirstOrDefault());
+		}
+		if (unit == "الكبرى")
+		{
+			num /= Convert.ToDecimal((from x in GetItems(itemCode)
+				select x.ConvertMediumUnit).FirstOrDefault());
+			num /= Convert.ToDecimal((from x in GetItems(itemCode)
+				select x.ConvertBigUnit).FirstOrDefault());
+		}
+		return num;
+	}
+
+	public List<Order_OrdersDetails> GetItemsPurchesByID(int PurchasesID)
+	{
+		return ((IQueryable<Order_OrdersDetails>)db.Order_OrdersDetails).Where((Order_OrdersDetails X) => X.Purchese_ID == (int?)PurchasesID && X.BranchID == (int?)LoginDetails.BranchID).ToList();
+	}
+
+	public List<Select_Order_Orders_Result> GetSelectAllPurchases()
+	{
+		return ((IEnumerable<Select_Order_Orders_Result>)db.Select_Order_Orders(LoginDetails.BranchID)).ToList();
+	}
+
+	public List<Select_Order_OrdersDraft_Result> GetSelectAllPurchasesDraft()
+	{
+		return ((IEnumerable<Select_Order_OrdersDraft_Result>)db.Select_Order_OrdersDraft(LoginDetails.BranchID)).ToList();
+	}
+
+	public int GetUnitIdByName(string Nmae)
+	{
+		int num = 0;
+		return (from x in (IQueryable<Item_Unit>)db.Item_Unit
+			where x.Name == Nmae
+			select x.ID).FirstOrDefault();
+	}
+
+	public int GetStoreIdByName(string Nmae)
+	{
+		int num = 0;
+		return (from x in (IQueryable<Account_Stores>)db.Account_Stores
+			where x.Store_Name == Nmae
+			select x.ID).FirstOrDefault();
+	}
+
+	public int InsertItems(DataTable Items, int Purchese_ID, bool IsWait)
+	{
+		int num = 0;
+		DataTable changes = Items.GetChanges(DataRowState.Added);
+		SqlCommand sqlCommand = new SqlCommand("Insert_Order_OrdersDetails", con);
+		sqlCommand.CommandType = CommandType.StoredProcedure;
+		sqlCommand.Parameters.AddWithValue("@ISWaitng", IsWait);
+		SqlParameter sqlParameter = sqlCommand.Parameters.AddWithValue("@Items", changes);
+		sqlParameter.SqlDbType = SqlDbType.Structured;
+		sqlCommand.CommandTimeout = 999999;
+		if (con.State == ConnectionState.Closed)
+		{
+			con.Open();
+		}
+		num = sqlCommand.ExecuteNonQuery();
+		con.Close();
+		return num;
+	}
+
+	public int InsertItemsNoPrint(DataTable Items, int Purchese_ID, bool IsWait)
+	{
+		int num = 0;
+		DataTable changes = Items.GetChanges(DataRowState.Added);
+		SqlCommand sqlCommand = new SqlCommand("Insert_Order_OrdersDetails", con);
+		sqlCommand.CommandType = CommandType.StoredProcedure;
+		sqlCommand.Parameters.AddWithValue("@ISWaitng", IsWait);
+		SqlParameter sqlParameter = sqlCommand.Parameters.AddWithValue("@Items", changes);
+		sqlParameter.SqlDbType = SqlDbType.Structured;
+		sqlCommand.CommandTimeout = 999999;
+		if (con.State == ConnectionState.Closed)
+		{
+			con.Open();
+		}
+		num = sqlCommand.ExecuteNonQuery();
+		con.Close();
+		return num;
+	}
+
+	public decimal SLCTQuantity(int ItmID, int StoreID)
+	{
+		GTSdbEntities gTSdbEntities = new GTSdbEntities();
+		int num = 0;
+		ItemQuantity itemQuantity = ((IQueryable<ItemQuantity>)gTSdbEntities.ItemQuantities).Where((ItemQuantity x) => x.ItemID == (int?)ItmID && x.StoreID == (int?)StoreID).FirstOrDefault();
+		num = ((itemQuantity != null) ? Convert.ToInt32(itemQuantity.CurrentBalance) : 0);
+		return num;
+	}
+
+	public int InsertPurch(out int Code, int SupplierID, string SupplierName, string SupplierPhone, string SupplierVatNum, DateTime Purchases_Date, int PurchType, int CostCenter, string Note, string NoteNum, bool IsWaiting, decimal CostOrder, decimal TotalPrices, decimal Tax, decimal Safy, decimal DiscountNum, decimal DiscountPerantage, decimal Tax_Discount, decimal TotalPrices_Discount, decimal Net, decimal CashMoney, decimal CashBank, bool cashierType, int Roomnum, int TableNum, decimal TobaccoTax, decimal AllTax, int Restaurant_TypeID, string Restaurant_PayType)
+	{
+		int num = 0;
+		Code = 0;
+		int iD = Convert.ToInt32(((IQueryable<Order_Orders>)db.Order_Orders).Select((Order_Orders p) => p.ID).DefaultIfEmpty(0).Max()) + 1;
+		int num2 = Convert.ToInt32((from p in (IQueryable<Order_Orders>)db.Order_Orders
+			where p.BranchID == (int?)LoginDetails.BranchID
+			select p.PurBranchID).DefaultIfEmpty(0).Max()) + 1;
+		Order_Orders order_Orders = new Order_Orders();
+		order_Orders.ID = iD;
+		CachCode = num2;
+		Code = num2;
+		order_Orders.BranchID = LoginDetails.BranchID;
+		order_Orders.PurBranchID = num2;
+		order_Orders.SupplierID = SupplierID;
+		order_Orders.SupplierName = SupplierName;
+		order_Orders.SupplierPhone = SupplierPhone;
+		order_Orders.SupplierVatNum = SupplierVatNum;
+		order_Orders.Purchases_Date = Purchases_Date;
+		order_Orders.Order_Paymant_Type = PurchType;
+		order_Orders.CostCentersID = CostCenter;
+		order_Orders.Note = Note;
+		order_Orders.NoteNum = NoteNum;
+		order_Orders.IsWaiting = IsWaiting;
+		order_Orders.CostOrder = CostOrder;
+		order_Orders.TotalPrices = TotalPrices;
+		order_Orders.Tax = Tax;
+		order_Orders.Safy = Safy;
+		order_Orders.DiscountNum = DiscountNum;
+		order_Orders.DiscountPerantage = DiscountPerantage;
+		order_Orders.Tax_Discount = Tax_Discount;
+		order_Orders.TotalPrices_Discount = TotalPrices_Discount;
+		order_Orders.Net = Net;
+		order_Orders.OrderCashierType = cashierType;
+		order_Orders.RoomNum = Roomnum;
+		order_Orders.TableNum = TableNum;
+		order_Orders.CashMoney = CashMoney;
+		order_Orders.CashBank = CashBank;
+		order_Orders.TobaccoTax = TobaccoTax;
+		order_Orders.AllTax = AllTax;
+		order_Orders.Restaurant_TypeID = Restaurant_TypeID;
+		order_Orders.Restaurant_PayType = Restaurant_PayType;
+		order_Orders.UserID_Add = LoginDetails.UserID;
+		order_Orders.UserBranch_Add = LoginDetails.BranchID;
+		order_Orders.UserMacAddress_Add = LoginDetails.macAddress;
+		order_Orders.UserDate_Add = DateTime.Now;
+		db.Order_Orders.Add(order_Orders);
+		num = ((DbContext)db).SaveChanges();
+		return num2;
+	}
+
+	public void deleteItemsByPurcahesId(int PurID)
+	{
+		List<Order_OrdersDetails> list = ((IQueryable<Order_OrdersDetails>)db.Order_OrdersDetails).Where((Order_OrdersDetails x) => x.Purchese_ID == (int?)PurID && x.BranchID == (int?)LoginDetails.BranchID).ToList();
+		if (list == null)
+		{
+			return;
+		}
+		foreach (Order_OrdersDetails item in list)
+		{
+			Item_Items item_Items = ((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => (int?)x.ItemId == item.ItemID).FirstOrDefault();
+			if (item_Items != null)
+			{
+				ItemQuantityOut(Convert.ToInt32(item.ItemID), Convert.ToDecimal(item.Quantity), item.ItemUnitType, Convert.ToInt32(item.StoreID), Convert.ToInt32(item_Items.item_Type));
+			}
+			Order_Orders order_Orders = ((IQueryable<Order_Orders>)db.Order_Orders).Where((Order_Orders z) => z.ID == PurID).FirstOrDefault();
+			if (order_Orders.IsWaiting == true)
+			{
+				ItemQuantityIn(Convert.ToInt32(item.ItemID), Convert.ToDecimal(item.Quantity), item.ItemUnitType, LoginDetails.StoreIDWaiting, 1);
+			}
+			db.Order_OrdersDetails.Attach(item);
+			db.Order_OrdersDetails.Remove(item);
+		}
+		((DbContext)db).SaveChanges();
+	}
+
+	public int UpdatePurch(int PurID, int SupplierID, string SupplierName, string SupplierPhone, string SupplierVatNum, DateTime Purchases_Date, int PurchType, int CostCenter, string Note, string NoteNum, bool IsWaiting, decimal CostOrder, decimal TotalPrices, decimal Tax, decimal Safy, decimal DiscountNum, decimal DiscountPerantage, decimal Tax_Discount, decimal TotalPrices_Discount, decimal Net, decimal CashMoney, decimal CashBank, bool cashierType, int Roomnum, int TableNum, decimal TobaccoTax, decimal AllTax)
+	{
+		int result = 0;
+		Order_Orders order_Orders = ((IQueryable<Order_Orders>)db.Order_Orders).Where((Order_Orders x) => x.PurBranchID == (int?)PurID && x.BranchID == (int?)LoginDetails.BranchID).FirstOrDefault();
+		int iD = ((IQueryable<Order_Orders>)db.Order_Orders).Where((Order_Orders x) => x.PurBranchID == (int?)PurID && x.BranchID == (int?)LoginDetails.BranchID).FirstOrDefault().ID;
+		if (order_Orders != null)
+		{
+			order_Orders.SupplierID = SupplierID;
+			order_Orders.SupplierName = SupplierName;
+			order_Orders.SupplierPhone = SupplierPhone;
+			order_Orders.SupplierVatNum = SupplierVatNum;
+			order_Orders.Purchases_Date = Purchases_Date;
+			order_Orders.Order_Paymant_Type = PurchType;
+			order_Orders.CostCentersID = CostCenter;
+			order_Orders.Note = Note;
+			order_Orders.NoteNum = NoteNum;
+			order_Orders.TotalPrices = TotalPrices;
+			order_Orders.Tax = Tax;
+			order_Orders.Safy = Safy;
+			order_Orders.IsWaiting = IsWaiting;
+			order_Orders.CostOrder = CostOrder;
+			order_Orders.DiscountNum = DiscountNum;
+			order_Orders.DiscountPerantage = DiscountPerantage;
+			order_Orders.Tax_Discount = Tax_Discount;
+			order_Orders.TotalPrices_Discount = TotalPrices_Discount;
+			order_Orders.Net = Net;
+			order_Orders.CashMoney = CashMoney;
+			order_Orders.CashBank = CashBank;
+			order_Orders.OrderCashierType = cashierType;
+			order_Orders.RoomNum = Roomnum;
+			order_Orders.TableNum = TableNum;
+			order_Orders.TobaccoTax = TobaccoTax;
+			order_Orders.AllTax = AllTax;
+			order_Orders.UserID_Update = LoginDetails.UserID;
+			order_Orders.UserBranch_Update = LoginDetails.GroupID;
+			order_Orders.UserMacAddress_Update = LoginDetails.macAddress;
+			order_Orders.UserDate_Update = DateTime.Now;
+			((DbContext)db).SaveChanges();
+			result = PurID;
+		}
+		return result;
+	}
+
+	public int Delete(int PurID)
+	{
+		int result = 0;
+		Order_Orders order_Orders = ((IQueryable<Order_Orders>)db.Order_Orders).Where((Order_Orders x) => x.PurBranchID == (int?)PurID && x.BranchID == (int?)LoginDetails.BranchID).FirstOrDefault();
+		if (order_Orders != null)
+		{
+			deleteItemsByPurcahesId(PurID);
+			db.Order_Orders.Attach(order_Orders);
+			db.Order_Orders.Remove(order_Orders);
+			result = ((DbContext)db).SaveChanges();
+		}
+		return result;
+	}
+
+	public int InsertTran(out int TRNIDDS, int PurID, int PurType, string Name, string NoteNum, DateTime PurDate)
+	{
+		int num = 0;
+		TRNIDDS = 0;
+		int num2 = Convert.ToInt32(((IQueryable<Tran_Tran>)db.Tran_Tran).Select((Tran_Tran p) => p.ID).DefaultIfEmpty(0).Max()) + 1;
+		Tran_Tran tran_Tran = new Tran_Tran();
+		tran_Tran.ID = num2;
+		tran_Tran.ReferenceCode = PurID;
+		tran_Tran.TranTypeID = 5;
+		tran_Tran.DocCode = NoteNum;
+		tran_Tran.TranDate = PurDate;
+		tran_Tran.BranchID = LoginDetails.BranchID;
+		if (PurType == 2)
+		{
+			tran_Tran.Note = " مبيعات أجلة  رقم  ( " + PurID + " ) ح /  " + Name;
+		}
+		else
+		{
+			tran_Tran.Note = " مبيعات نقدية  رقم ( " + PurID + " )";
+		}
+		tran_Tran.UserID_Add = LoginDetails.UserID;
+		tran_Tran.UserBranch_Add = LoginDetails.BranchID;
+		tran_Tran.UserMacAddress_Add = LoginDetails.macAddress;
+		tran_Tran.UserDate_Add = DateTime.Now;
+		db.Tran_Tran.Add(tran_Tran);
+		num = ((DbContext)db).SaveChanges();
+		TRNIDDS = num2;
+		return num;
+	}
+
+	public int InsertTranDetailsCash(int TranID, int PurID, decimal TotalCost, decimal TotalSell, decimal TotalTobacc, decimal Vat, decimal TotalCash, decimal TotalBank, decimal NetCash, int CostCenter)
+	{
+		int num = 0;
+		Tran_TranDetails tran_TranDetails = new Tran_TranDetails();
+		tran_TranDetails.TranSn = TranID;
+		tran_TranDetails.Account_Sn = LoginDetails.Acc_CashBox;
+		tran_TranDetails.AccounIindex = 1;
+		tran_TranDetails.TranDesc = "  مبيعات نقدية  رقم  ( " + PurID + " ) ";
+		tran_TranDetails.Debit = TotalCash;
+		tran_TranDetails.Credit = 0m;
+		tran_TranDetails.CostCentersID = CostCenter;
+		tran_TranDetails.BranchID = LoginDetails.BranchID;
+		db.Tran_TranDetails.Add(tran_TranDetails);
+		num = ((DbContext)db).SaveChanges();
+		if (TotalBank > 0m)
+		{
+			Tran_TranDetails tran_TranDetails2 = new Tran_TranDetails();
+			tran_TranDetails2.TranSn = TranID;
+			tran_TranDetails2.Account_Sn = LoginDetails.Acc_BankNumCachir;
+			tran_TranDetails2.AccounIindex = 1;
+			tran_TranDetails2.TranDesc = "  مبيعات نقدية  رقم  ( " + PurID + " ) ";
+			tran_TranDetails2.Debit = TotalBank;
+			tran_TranDetails2.Credit = 0m;
+			tran_TranDetails2.CostCentersID = CostCenter;
+			tran_TranDetails2.BranchID = LoginDetails.BranchID;
+			db.Tran_TranDetails.Add(tran_TranDetails2);
+			num = ((DbContext)db).SaveChanges();
+		}
+		Tran_TranDetails tran_TranDetails3 = new Tran_TranDetails();
+		tran_TranDetails3.TranSn = TranID;
+		tran_TranDetails3.Account_Sn = LoginDetails.Acc_OrderCash;
+		tran_TranDetails3.AccounIindex = 1;
+		tran_TranDetails3.TranDesc = "  مبيعات نقدية  رقم  ( " + PurID + " ) ";
+		tran_TranDetails3.Debit = 0m;
+		tran_TranDetails3.Credit = TotalSell;
+		tran_TranDetails3.CostCentersID = CostCenter;
+		tran_TranDetails3.BranchID = LoginDetails.BranchID;
+		db.Tran_TranDetails.Add(tran_TranDetails3);
+		num = ((DbContext)db).SaveChanges();
+		if (Vat > 0m)
+		{
+			Tran_TranDetails tran_TranDetails4 = new Tran_TranDetails();
+			tran_TranDetails4.TranSn = TranID;
+			tran_TranDetails4.Account_Sn = LoginDetails.Acc_VatNum;
+			tran_TranDetails4.AccounIindex = 0;
+			tran_TranDetails4.TranDesc = " ضريبة مبيعات نقدية  رقم  ( " + PurID + " )  ";
+			tran_TranDetails4.Debit = 0m;
+			tran_TranDetails4.Credit = Vat;
+			tran_TranDetails4.CostCentersID = CostCenter;
+			tran_TranDetails4.BranchID = LoginDetails.BranchID;
+			db.Tran_TranDetails.Add(tran_TranDetails4);
+			((DbContext)db).SaveChanges();
+		}
+		if (TotalTobacc > 0m)
+		{
+			Tran_TranDetails tran_TranDetails5 = new Tran_TranDetails();
+			tran_TranDetails5.TranSn = TranID;
+			tran_TranDetails5.Account_Sn = LoginDetails.TobaccoNum;
+			tran_TranDetails5.AccounIindex = 1;
+			tran_TranDetails5.TranDesc = "  حساب ضريبة التبغ   ( " + PurID + " ) ";
+			tran_TranDetails5.Debit = 0m;
+			tran_TranDetails5.Credit = TotalTobacc;
+			tran_TranDetails5.CostCentersID = CostCenter;
+			tran_TranDetails5.BranchID = LoginDetails.BranchID;
+			db.Tran_TranDetails.Add(tran_TranDetails5);
+			num = ((DbContext)db).SaveChanges();
+		}
+		Tran_TranDetails tran_TranDetails6 = new Tran_TranDetails();
+		tran_TranDetails6.TranSn = TranID;
+		tran_TranDetails6.Account_Sn = LoginDetails.Acc_CostItemOrder;
+		tran_TranDetails6.AccounIindex = 0;
+		tran_TranDetails6.TranDesc = " تكلفة فاتورة مبيعات نقدية رقم  ( " + PurID + " )  ";
+		tran_TranDetails6.Debit = TotalCost;
+		tran_TranDetails6.Credit = 0m;
+		tran_TranDetails6.CostCentersID = CostCenter;
+		tran_TranDetails6.BranchID = LoginDetails.BranchID;
+		db.Tran_TranDetails.Add(tran_TranDetails6);
+		((DbContext)db).SaveChanges();
+		Tran_TranDetails tran_TranDetails7 = new Tran_TranDetails();
+		tran_TranDetails7.TranSn = TranID;
+		tran_TranDetails7.Account_Sn = LoginDetails.Acc_StockNum;
+		tran_TranDetails7.AccounIindex = 0;
+		tran_TranDetails7.TranDesc = " تكلفة فاتورة مبيعات نقدية رقم  ( " + PurID + " )  ";
+		tran_TranDetails7.Debit = 0m;
+		tran_TranDetails7.Credit = TotalCost;
+		tran_TranDetails7.CostCentersID = CostCenter;
+		tran_TranDetails7.BranchID = LoginDetails.BranchID;
+		db.Tran_TranDetails.Add(tran_TranDetails7);
+		((DbContext)db).SaveChanges();
+		return num;
+	}
+
+	public int InsertTranDetailsAjila(int TranID, int PurID, int SuppNum, string Name, decimal TotalCost, decimal TotalSell, decimal TotalTobacc, decimal Vat, decimal NetCash, int CostCenter)
+	{
+		int num = 0;
+		Tran_TranDetails tran_TranDetails = new Tran_TranDetails();
+		tran_TranDetails.TranSn = TranID;
+		tran_TranDetails.Account_Sn = SuppNum;
+		tran_TranDetails.AccounIindex = 1;
+		tran_TranDetails.TranDesc = "  مبيعات آجلة  رقم  ( " + PurID + " ) ";
+		tran_TranDetails.Debit = NetCash;
+		tran_TranDetails.Credit = 0m;
+		tran_TranDetails.CostCentersID = CostCenter;
+		tran_TranDetails.BranchID = LoginDetails.BranchID;
+		db.Tran_TranDetails.Add(tran_TranDetails);
+		num = ((DbContext)db).SaveChanges();
+		if (Vat > 0m)
+		{
+			Tran_TranDetails tran_TranDetails2 = new Tran_TranDetails();
+			tran_TranDetails2.TranSn = TranID;
+			tran_TranDetails2.Account_Sn = LoginDetails.Acc_VatNum;
+			tran_TranDetails2.AccounIindex = 0;
+			tran_TranDetails2.TranDesc = "  مبيعات آجلة  رقم  ( " + PurID + " ) ح/ " + Name + " ";
+			tran_TranDetails2.Debit = 0m;
+			tran_TranDetails2.Credit = Vat;
+			tran_TranDetails2.CostCentersID = CostCenter;
+			tran_TranDetails2.BranchID = LoginDetails.BranchID;
+			db.Tran_TranDetails.Add(tran_TranDetails2);
+			((DbContext)db).SaveChanges();
+		}
+		Tran_TranDetails tran_TranDetails3 = new Tran_TranDetails();
+		tran_TranDetails3.TranSn = TranID;
+		tran_TranDetails3.Account_Sn = LoginDetails.Acc_OrderAjila;
+		tran_TranDetails3.AccounIindex = 1;
+		tran_TranDetails3.TranDesc = "  مبيعات آجلة  رقم  ( " + PurID + " ) ح/ " + Name;
+		tran_TranDetails3.Debit = 0m;
+		tran_TranDetails3.Credit = TotalSell;
+		tran_TranDetails3.CostCentersID = CostCenter;
+		tran_TranDetails3.BranchID = LoginDetails.BranchID;
+		db.Tran_TranDetails.Add(tran_TranDetails3);
+		num = ((DbContext)db).SaveChanges();
+		if (TotalTobacc > 0m)
+		{
+			Tran_TranDetails tran_TranDetails4 = new Tran_TranDetails();
+			tran_TranDetails4.TranSn = TranID;
+			tran_TranDetails4.Account_Sn = LoginDetails.TobaccoNum;
+			tran_TranDetails4.AccounIindex = 1;
+			tran_TranDetails4.TranDesc = "  حساب ضريبة التبغ   ( " + PurID + " ) ";
+			tran_TranDetails4.Debit = 0m;
+			tran_TranDetails4.Credit = TotalTobacc;
+			tran_TranDetails4.CostCentersID = CostCenter;
+			tran_TranDetails4.BranchID = LoginDetails.BranchID;
+			db.Tran_TranDetails.Add(tran_TranDetails4);
+			num = ((DbContext)db).SaveChanges();
+		}
+		Tran_TranDetails tran_TranDetails5 = new Tran_TranDetails();
+		tran_TranDetails5.TranSn = TranID;
+		tran_TranDetails5.Account_Sn = LoginDetails.Acc_CostItemOrder;
+		tran_TranDetails5.AccounIindex = 0;
+		tran_TranDetails5.TranDesc = " تكلفة فاتورة مبيعات آجلة رقم  ( " + PurID + " )  ";
+		tran_TranDetails5.Debit = TotalCost;
+		tran_TranDetails5.Credit = 0m;
+		tran_TranDetails5.CostCentersID = CostCenter;
+		tran_TranDetails5.BranchID = LoginDetails.BranchID;
+		db.Tran_TranDetails.Add(tran_TranDetails5);
+		((DbContext)db).SaveChanges();
+		Tran_TranDetails tran_TranDetails6 = new Tran_TranDetails();
+		tran_TranDetails6.TranSn = TranID;
+		tran_TranDetails6.Account_Sn = LoginDetails.Acc_StockNum;
+		tran_TranDetails6.AccounIindex = 0;
+		tran_TranDetails6.TranDesc = " تكلفة فاتورة مبيعات آجلة رقم  ( " + PurID + " )  ";
+		tran_TranDetails6.Debit = 0m;
+		tran_TranDetails6.Credit = TotalCost;
+		tran_TranDetails6.CostCentersID = CostCenter;
+		tran_TranDetails6.BranchID = LoginDetails.BranchID;
+		db.Tran_TranDetails.Add(tran_TranDetails6);
+		((DbContext)db).SaveChanges();
+		return num;
+	}
+
+	public int UpdateTran(out int TRNIDDS, int PurID, int PurType, string Name, string NoteNum, DateTime PurDate)
+	{
+		int result = 0;
+		TRNIDDS = 0;
+		Tran_Tran tran_Tran = ((IQueryable<Tran_Tran>)db.Tran_Tran).Where((Tran_Tran x) => x.ReferenceCode == (int?)PurID && x.TranTypeID == (int?)5 && x.BranchID == (int?)LoginDetails.BranchID).FirstOrDefault();
+		if (tran_Tran != null)
+		{
+			tran_Tran.DocCode = NoteNum;
+			tran_Tran.TranDate = PurDate;
+			tran_Tran.BranchID = LoginDetails.BranchID;
+			if (PurType == 2)
+			{
+				tran_Tran.Note = " مبيعات أجلة  رقم  ( " + PurID + " ) ح /  " + Name + " معدلة ";
+			}
+			else
+			{
+				tran_Tran.Note = " مبيعات نقدية  رقم ( " + PurID + " ) معدلة ";
+			}
+			tran_Tran.UserID_Update = LoginDetails.UserID;
+			tran_Tran.UserBranch_Update = LoginDetails.GroupID;
+			tran_Tran.UserMacAddress_Update = LoginDetails.macAddress;
+			tran_Tran.UserDate_Update = DateTime.Now;
+			TRNIDDS = Convert.ToInt32(tran_Tran.ID);
+			result = ((DbContext)db).SaveChanges();
+		}
+		return result;
+	}
+
+	public int UpdateTranDetailsCash(int TranID, int PurID, decimal TotalCost, decimal TotalSell, decimal TotalTobacc, decimal Vat, decimal TotalCash, decimal TotalBank, decimal NetCash, int CostCenter)
+	{
+		int num = 0;
+		Tran_TranDetails tran_TranDetails = new Tran_TranDetails();
+		tran_TranDetails.TranSn = TranID;
+		tran_TranDetails.Account_Sn = LoginDetails.Acc_StockNum;
+		tran_TranDetails.AccounIindex = 0;
+		tran_TranDetails.TranDesc = " تكلفة فاتورة مبيعات نقدية رقم  ( " + PurID + " ) معدلة";
+		tran_TranDetails.Debit = 0m;
+		tran_TranDetails.Credit = TotalCost;
+		tran_TranDetails.CostCentersID = CostCenter;
+		tran_TranDetails.BranchID = LoginDetails.BranchID;
+		db.Tran_TranDetails.Add(tran_TranDetails);
+		((DbContext)db).SaveChanges();
+		Tran_TranDetails tran_TranDetails2 = new Tran_TranDetails();
+		tran_TranDetails2.TranSn = TranID;
+		tran_TranDetails2.Account_Sn = LoginDetails.Acc_CostItemOrder;
+		tran_TranDetails2.AccounIindex = 0;
+		tran_TranDetails2.TranDesc = " تكلفة فاتورة مبيعات نقدية رقم  ( " + PurID + " ) معدلة";
+		tran_TranDetails2.Debit = TotalCost;
+		tran_TranDetails2.Credit = 0m;
+		tran_TranDetails2.CostCentersID = CostCenter;
+		tran_TranDetails2.BranchID = LoginDetails.BranchID;
+		db.Tran_TranDetails.Add(tran_TranDetails2);
+		((DbContext)db).SaveChanges();
+		Tran_TranDetails tran_TranDetails3 = new Tran_TranDetails();
+		tran_TranDetails3.TranSn = TranID;
+		tran_TranDetails3.Account_Sn = LoginDetails.Acc_VatNum;
+		tran_TranDetails3.AccounIindex = 0;
+		tran_TranDetails3.TranDesc = " ضريبة مبيعات نقدية  رقم  ( " + PurID + " ) معدلة";
+		tran_TranDetails3.Debit = 0m;
+		tran_TranDetails3.Credit = Vat;
+		tran_TranDetails3.CostCentersID = CostCenter;
+		tran_TranDetails3.BranchID = LoginDetails.BranchID;
+		db.Tran_TranDetails.Add(tran_TranDetails3);
+		((DbContext)db).SaveChanges();
+		Tran_TranDetails tran_TranDetails4 = new Tran_TranDetails();
+		tran_TranDetails4.TranSn = TranID;
+		tran_TranDetails4.Account_Sn = LoginDetails.Acc_CashBox;
+		tran_TranDetails4.AccounIindex = 1;
+		tran_TranDetails4.TranDesc = "  مبيعات نقدية  رقم  ( " + PurID + " ) معدلة";
+		tran_TranDetails4.Debit = TotalCash;
+		tran_TranDetails4.Credit = 0m;
+		tran_TranDetails4.CostCentersID = CostCenter;
+		tran_TranDetails4.BranchID = LoginDetails.BranchID;
+		db.Tran_TranDetails.Add(tran_TranDetails4);
+		num = ((DbContext)db).SaveChanges();
+		if (TotalBank > 0m)
+		{
+			Tran_TranDetails tran_TranDetails5 = new Tran_TranDetails();
+			tran_TranDetails5.TranSn = TranID;
+			tran_TranDetails5.Account_Sn = LoginDetails.Acc_BankNumCachir;
+			tran_TranDetails5.AccounIindex = 1;
+			tran_TranDetails5.TranDesc = "  مبيعات نقدية  رقم  ( " + PurID + " ) معدلة";
+			tran_TranDetails5.Debit = TotalBank;
+			tran_TranDetails5.Credit = 0m;
+			tran_TranDetails5.CostCentersID = CostCenter;
+			tran_TranDetails5.BranchID = LoginDetails.BranchID;
+			db.Tran_TranDetails.Add(tran_TranDetails5);
+			num = ((DbContext)db).SaveChanges();
+		}
+		Tran_TranDetails tran_TranDetails6 = new Tran_TranDetails();
+		tran_TranDetails6.TranSn = TranID;
+		tran_TranDetails6.Account_Sn = LoginDetails.Acc_OrderCash;
+		tran_TranDetails6.AccounIindex = 1;
+		tran_TranDetails6.TranDesc = "  مبيعات نقدية  رقم  ( " + PurID + " ) معدلة";
+		tran_TranDetails6.Debit = 0m;
+		tran_TranDetails6.Credit = TotalSell;
+		tran_TranDetails6.CostCentersID = CostCenter;
+		tran_TranDetails6.BranchID = LoginDetails.BranchID;
+		db.Tran_TranDetails.Add(tran_TranDetails6);
+		num = ((DbContext)db).SaveChanges();
+		if (TotalTobacc > 0m)
+		{
+			Tran_TranDetails tran_TranDetails7 = new Tran_TranDetails();
+			tran_TranDetails7.TranSn = TranID;
+			tran_TranDetails7.Account_Sn = LoginDetails.TobaccoNum;
+			tran_TranDetails7.AccounIindex = 1;
+			tran_TranDetails7.TranDesc = "  حساب ضريبة التبغ   ( " + PurID + " ) معدلة";
+			tran_TranDetails7.Debit = 0m;
+			tran_TranDetails7.Credit = TotalTobacc;
+			tran_TranDetails7.CostCentersID = CostCenter;
+			tran_TranDetails7.BranchID = LoginDetails.BranchID;
+			db.Tran_TranDetails.Add(tran_TranDetails7);
+			num = ((DbContext)db).SaveChanges();
+		}
+		return num;
+	}
+
+	public int UpdateTranDetailsAjila(int TranID, int PurID, int SuppNum, string Name, decimal TotalCost, decimal TotalSell, decimal TotalTobacc, decimal Vat, decimal NetCash, int CostCenter)
+	{
+		int num = 0;
+		Tran_TranDetails tran_TranDetails = new Tran_TranDetails();
+		tran_TranDetails.TranSn = TranID;
+		tran_TranDetails.Account_Sn = LoginDetails.Acc_StockNum;
+		tran_TranDetails.AccounIindex = 0;
+		tran_TranDetails.TranDesc = " تكلفة فاتورة مبيعات آجلة رقم  ( " + PurID + " ) معدلة";
+		tran_TranDetails.Debit = 0m;
+		tran_TranDetails.Credit = TotalCost;
+		tran_TranDetails.CostCentersID = CostCenter;
+		tran_TranDetails.BranchID = LoginDetails.BranchID;
+		db.Tran_TranDetails.Add(tran_TranDetails);
+		((DbContext)db).SaveChanges();
+		Tran_TranDetails tran_TranDetails2 = new Tran_TranDetails();
+		tran_TranDetails2.TranSn = TranID;
+		tran_TranDetails2.Account_Sn = LoginDetails.Acc_CostItemOrder;
+		tran_TranDetails2.AccounIindex = 0;
+		tran_TranDetails2.TranDesc = " تكلفة فاتورة مبيعات آجلة رقم  ( " + PurID + " ) معدلة";
+		tran_TranDetails2.Debit = TotalCost;
+		tran_TranDetails2.Credit = 0m;
+		tran_TranDetails2.CostCentersID = CostCenter;
+		tran_TranDetails2.BranchID = LoginDetails.BranchID;
+		db.Tran_TranDetails.Add(tran_TranDetails2);
+		((DbContext)db).SaveChanges();
+		Tran_TranDetails tran_TranDetails3 = new Tran_TranDetails();
+		tran_TranDetails3.TranSn = TranID;
+		tran_TranDetails3.Account_Sn = SuppNum;
+		tran_TranDetails3.AccounIindex = 1;
+		tran_TranDetails3.TranDesc = "  مبيعات آجلة  رقم  ( " + PurID + " ) معدلة";
+		tran_TranDetails3.Debit = NetCash;
+		tran_TranDetails3.Credit = 0m;
+		tran_TranDetails3.CostCentersID = CostCenter;
+		tran_TranDetails3.BranchID = LoginDetails.BranchID;
+		db.Tran_TranDetails.Add(tran_TranDetails3);
+		num = ((DbContext)db).SaveChanges();
+		if (Vat > 0m)
+		{
+			Tran_TranDetails tran_TranDetails4 = new Tran_TranDetails();
+			tran_TranDetails4.TranSn = TranID;
+			tran_TranDetails4.Account_Sn = LoginDetails.Acc_VatNum;
+			tran_TranDetails4.AccounIindex = 0;
+			tran_TranDetails4.TranDesc = "  مبيعات آجلة  رقم  ( " + PurID + " ) ح/ " + Name + " معدلة";
+			tran_TranDetails4.Debit = 0m;
+			tran_TranDetails4.Credit = Vat;
+			tran_TranDetails4.CostCentersID = CostCenter;
+			tran_TranDetails4.BranchID = LoginDetails.BranchID;
+			db.Tran_TranDetails.Add(tran_TranDetails4);
+			((DbContext)db).SaveChanges();
+		}
+		Tran_TranDetails tran_TranDetails5 = new Tran_TranDetails();
+		tran_TranDetails5.TranSn = TranID;
+		tran_TranDetails5.Account_Sn = LoginDetails.Acc_OrderAjila;
+		tran_TranDetails5.AccounIindex = 1;
+		tran_TranDetails5.TranDesc = "  مبيعات آجلة  رقم  ( " + PurID + " ) ح/ " + Name + "معدلة ";
+		tran_TranDetails5.Debit = 0m;
+		tran_TranDetails5.Credit = TotalSell;
+		tran_TranDetails5.CostCentersID = CostCenter;
+		tran_TranDetails5.BranchID = LoginDetails.BranchID;
+		db.Tran_TranDetails.Add(tran_TranDetails5);
+		num = ((DbContext)db).SaveChanges();
+		if (TotalTobacc > 0m)
+		{
+			Tran_TranDetails tran_TranDetails6 = new Tran_TranDetails();
+			tran_TranDetails6.TranSn = TranID;
+			tran_TranDetails6.Account_Sn = LoginDetails.TobaccoNum;
+			tran_TranDetails6.AccounIindex = 1;
+			tran_TranDetails6.TranDesc = "  حساب ضريبة التبغ   ( " + PurID + " ) معدلة";
+			tran_TranDetails6.Debit = 0m;
+			tran_TranDetails6.Credit = TotalTobacc;
+			tran_TranDetails6.CostCentersID = CostCenter;
+			tran_TranDetails6.BranchID = LoginDetails.BranchID;
+			db.Tran_TranDetails.Add(tran_TranDetails6);
+			num = ((DbContext)db).SaveChanges();
+		}
+		return num;
+	}
+
+	public int DeleteTran(int Code)
+	{
+		int result = 0;
+		try
+		{
+			int TranID = ((IQueryable<Tran_Tran>)db.Tran_Tran).Where((Tran_Tran x) => x.ReferenceCode == (int?)Code && x.TranTypeID == (int?)5 && x.BranchID == (int?)LoginDetails.BranchID).FirstOrDefault().ID;
+			Tran_Tran tran_Tran = ((IQueryable<Tran_Tran>)db.Tran_Tran).Where((Tran_Tran x) => x.ID == TranID && x.BranchID == (int?)LoginDetails.BranchID).FirstOrDefault();
+			if (tran_Tran != null)
+			{
+				db.Tran_Tran.Attach(tran_Tran);
+				db.Tran_Tran.Remove(tran_Tran);
+				result = ((DbContext)db).SaveChanges();
+			}
+		}
+		catch (Exception)
+		{
+		}
+		return result;
+	}
+
+	public int DeleteTranDetails(int Code)
+	{
+		int result = 0;
+		try
+		{
+			int TranID = ((IQueryable<Tran_Tran>)db.Tran_Tran).Where((Tran_Tran x) => x.ReferenceCode == (int?)Code && x.TranTypeID == (int?)5 && x.BranchID == (int?)LoginDetails.BranchID).FirstOrDefault().ID;
+			List<Tran_TranDetails> list = ((IQueryable<Tran_TranDetails>)db.Tran_TranDetails).Where((Tran_TranDetails x) => x.TranSn == (int?)TranID && x.BranchID == (int?)LoginDetails.BranchID).ToList();
+			if (list != null)
+			{
+				foreach (Tran_TranDetails item in list)
+				{
+					db.Tran_TranDetails.Attach(item);
+					db.Tran_TranDetails.Remove(item);
+				}
+				result = ((DbContext)db).SaveChanges();
+			}
+		}
+		catch (Exception)
+		{
+		}
+		return result;
+	}
+
+	public int GetItmID(string Code)
+	{
+		return (from xx in (IQueryable<Item_Items>)db.Item_Items
+			where xx.Item_code == Code
+			select xx.ItemId).FirstOrDefault();
+	}
+
+	public int GetItmIDType(int Code)
+	{
+		int result = 1;
+		Item_Items item_Items = ((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.ItemId == Code).FirstOrDefault();
+		if (item_Items != null)
+		{
+			result = Convert.ToInt32(item_Items.item_Type);
+		}
+		return result;
+	}
+
+	public int GetItmCodeType(string Code)
+	{
+		int result = 1;
+		Item_Items item_Items = ((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.Item_code == Code).FirstOrDefault();
+		if (item_Items != null)
+		{
+			result = Convert.ToInt32(item_Items.item_Type);
+		}
+		return result;
+	}
+
+	public decimal GetAverageCostID(int ItmID)
+	{
+		return Convert.ToDecimal(((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.ItemId == ItmID).FirstOrDefault().Average_cost);
+	}
+
+	public decimal GetSellPermission(string Item_code, int UserSellPricePer, string Type)
+	{
+		decimal result = 0m;
+		try
+		{
+			switch (Type)
+			{
+			case "الصغرى":
+				if (UserSellPricePer == 1)
+				{
+					return Convert.ToDecimal(((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.Item_code == Item_code).FirstOrDefault().SellPriceSmall);
+				}
+				if (UserSellPricePer == 2)
+				{
+					return Convert.ToDecimal(((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.Item_code == Item_code).FirstOrDefault().SellPriceSmall2);
+				}
+				if (UserSellPricePer == 3)
+				{
+					return Convert.ToDecimal(((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.Item_code == Item_code).FirstOrDefault().SellPriceSmall3);
+				}
+				if (UserSellPricePer >= 4)
+				{
+					return Convert.ToDecimal(((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.Item_code == Item_code).FirstOrDefault().LastCost);
+				}
+				break;
+			case "المتوسطة":
+				if (UserSellPricePer == 1)
+				{
+					return Convert.ToDecimal(((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.Item_code == Item_code).FirstOrDefault().SellPriceMedium);
+				}
+				if (UserSellPricePer == 2)
+				{
+					return Convert.ToDecimal(((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.Item_code == Item_code).FirstOrDefault().SellPriceMedium2);
+				}
+				if (UserSellPricePer == 3)
+				{
+					return Convert.ToDecimal(((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.Item_code == Item_code).FirstOrDefault().SellPriceMedium3);
+				}
+				if (UserSellPricePer >= 4)
+				{
+					return Convert.ToDecimal(((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.Item_code == Item_code).FirstOrDefault().LastCost2);
+				}
+				break;
+			case "الكبرى":
+				if (UserSellPricePer == 1)
+				{
+					return Convert.ToDecimal(((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.Item_code == Item_code).FirstOrDefault().SellpriceLarge);
+				}
+				if (UserSellPricePer == 2)
+				{
+					return Convert.ToDecimal(((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.Item_code == Item_code).FirstOrDefault().SellpriceLarge2);
+				}
+				if (UserSellPricePer == 3)
+				{
+					return Convert.ToDecimal(((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.Item_code == Item_code).FirstOrDefault().SellpriceLarge3);
+				}
+				if (UserSellPricePer >= 4)
+				{
+					return Convert.ToDecimal(((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.Item_code == Item_code).FirstOrDefault().LastCost3);
+				}
+				break;
+			}
+		}
+		catch (Exception)
+		{
+			result = 0m;
+		}
+		return result;
+	}
+
+	public decimal GetQuantityPermissionReturn(int ItemID, int PurID)
+	{
+		decimal result = 0m;
+		Order_OrdersDetails order_OrdersDetails = ((IQueryable<Order_OrdersDetails>)db.Order_OrdersDetails).Where((Order_OrdersDetails x) => x.Purchese_ID == (int?)PurID && x.ItemID == (int?)ItemID).FirstOrDefault();
+		if (order_OrdersDetails != null)
+		{
+			return Convert.ToDecimal(order_OrdersDetails.Quantity);
+		}
+		return result;
+	}
+
+	public decimal GetQuantityPermission(int ItemID, int StoreID, string Type)
+	{
+		decimal result = 0m;
+		try
+		{
+			switch (Type)
+			{
+			case "الصغرى":
+			{
+				ItemQuantity itemQuantity2 = ((IQueryable<ItemQuantity>)db.ItemQuantities).Where((ItemQuantity x) => x.ItemID == (int?)ItemID && x.StoreID == (int?)StoreID).FirstOrDefault();
+				if (itemQuantity2 != null)
+				{
+					return Convert.ToDecimal(itemQuantity2.CurrentBalance);
+				}
+				break;
+			}
+			case "المتوسطة":
+			{
+				ItemQuantity itemQuantity3 = ((IQueryable<ItemQuantity>)db.ItemQuantities).Where((ItemQuantity x) => x.ItemID == (int?)ItemID && x.StoreID == (int?)StoreID).FirstOrDefault();
+				if (itemQuantity3 != null)
+				{
+					decimal num4 = Convert.ToDecimal(((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.ItemId == ItemID).FirstOrDefault().ConvertMediumUnit);
+					decimal num5 = Convert.ToDecimal(itemQuantity3.CurrentBalance);
+					return num5 / num4;
+				}
+				break;
+			}
+			case "الكبرى":
+			{
+				ItemQuantity itemQuantity = ((IQueryable<ItemQuantity>)db.ItemQuantities).Where((ItemQuantity x) => x.ItemID == (int?)ItemID && x.StoreID == (int?)StoreID).FirstOrDefault();
+				if (itemQuantity != null)
+				{
+					Item_Items item_Items = ((IQueryable<Item_Items>)db.Item_Items).Where((Item_Items x) => x.ItemId == ItemID).FirstOrDefault();
+					decimal num = Convert.ToDecimal(item_Items.ConvertMediumUnit);
+					decimal num2 = Convert.ToDecimal(item_Items.ConvertBigUnit);
+					decimal num3 = Convert.ToDecimal(itemQuantity.CurrentBalance);
+					return num3 / (num * num2);
+				}
+				break;
+			}
+			}
+		}
+		catch (Exception)
+		{
+			result = 0m;
+		}
+		return result;
+	}
+
+	public int UpdateRoom(int RoomID, bool ISPause, decimal Money, int OrderID)
+	{
+		int result = 0;
+		Restaurant_Room restaurant_Room = ((IQueryable<Restaurant_Room>)db.Restaurant_Room).Where((Restaurant_Room x) => x.ID == RoomID && x.BranchID == (int?)LoginDetails.BranchID).FirstOrDefault();
+		if (restaurant_Room != null)
+		{
+			restaurant_Room.ISPause = ISPause;
+			restaurant_Room.Money = Money;
+			restaurant_Room.OrderID = OrderID;
+			restaurant_Room.BranchID = LoginDetails.BranchID;
+			result = ((DbContext)db).SaveChanges();
+		}
+		return result;
+	}
+
+	public int UpdateRoom(int OrderID)
+	{
+		int result = 0;
+		Restaurant_Room restaurant_Room = ((IQueryable<Restaurant_Room>)db.Restaurant_Room).Where((Restaurant_Room x) => x.OrderID == (int?)OrderID && x.BranchID == (int?)LoginDetails.BranchID).FirstOrDefault();
+		if (restaurant_Room != null)
+		{
+			restaurant_Room.ISPause = false;
+			restaurant_Room.Money = 0m;
+			restaurant_Room.OrderID = 0;
+			restaurant_Room.BranchID = LoginDetails.BranchID;
+			result = ((DbContext)db).SaveChanges();
+		}
+		return result;
+	}
+
+	public int UpdateTable(int RoomID, bool ISPause, decimal Money, int OrderID)
+	{
+		int result = 0;
+		Restaurant_Table restaurant_Table = ((IQueryable<Restaurant_Table>)db.Restaurant_Table).Where((Restaurant_Table x) => x.ID == RoomID && x.BranchID == (int?)LoginDetails.BranchID).FirstOrDefault();
+		if (restaurant_Table != null)
+		{
+			restaurant_Table.ISPause = ISPause;
+			restaurant_Table.Money = Money;
+			restaurant_Table.OrderID = OrderID;
+			restaurant_Table.BranchID = LoginDetails.BranchID;
+			result = ((DbContext)db).SaveChanges();
+		}
+		return result;
+	}
+
+	public int UpdateTable(int OrderID)
+	{
+		int result = 0;
+		Restaurant_Table restaurant_Table = ((IQueryable<Restaurant_Table>)db.Restaurant_Table).Where((Restaurant_Table x) => x.OrderID == (int?)OrderID && x.BranchID == (int?)LoginDetails.BranchID).FirstOrDefault();
+		if (restaurant_Table != null)
+		{
+			restaurant_Table.ISPause = false;
+			restaurant_Table.Money = 0m;
+			restaurant_Table.OrderID = 0;
+			restaurant_Table.BranchID = LoginDetails.BranchID;
+			result = ((DbContext)db).SaveChanges();
+		}
+		return result;
+	}
+
+	public void InsertTawsel(int DeliveryID, string CustName, string CustPhone, string CustPlace, decimal Money, int OrderID)
+	{
+		Restaurant_Delivery restaurant_Delivery = new Restaurant_Delivery();
+		restaurant_Delivery.DeliveryID = DeliveryID;
+		restaurant_Delivery.CustName = CustName;
+		restaurant_Delivery.CustPhone = CustPhone;
+		restaurant_Delivery.CustPlace = CustPlace;
+		restaurant_Delivery.Money = Money;
+		restaurant_Delivery.OrderID = OrderID;
+		restaurant_Delivery.BranchID = LoginDetails.BranchID;
+		db.Restaurant_Delivery.Add(restaurant_Delivery);
+		((DbContext)db).SaveChanges();
+	}
+
+	public void updateOdrderMahlyType(int OdederID, decimal Cash, decimal Bank, decimal Discount)
+	{
+		int TRNIDDS = 0;
+		Order_Orders order_Orders = ((IQueryable<Order_Orders>)db.Order_Orders).Where((Order_Orders x) => x.PurBranchID == (int?)OdederID && x.BranchID == (int?)LoginDetails.BranchID).FirstOrDefault();
+		decimal value = Convert.ToDecimal(order_Orders.CashMoney) + Cash;
+		decimal value2 = Convert.ToDecimal(order_Orders.CashBank) + Bank;
+		if (order_Orders != null)
+		{
+			order_Orders.Order_Paymant_Type = 1;
+			order_Orders.CashMoney = value;
+			order_Orders.CashBank = value2;
+			((DbContext)db).SaveChanges();
+		}
+		Tran_Tran tran_Tran = ((IQueryable<Tran_Tran>)db.Tran_Tran).Where((Tran_Tran x) => x.ReferenceCode == (int?)OdederID && x.TranTypeID == (int?)5 && x.BranchID == (int?)LoginDetails.BranchID).FirstOrDefault();
+		if (tran_Tran != null)
+		{
+			DeleteTranDetails(OdederID);
+			DeleteTran(OdederID);
+		}
+		InsertTran(out TRNIDDS, OdederID, Convert.ToInt32(order_Orders.Order_Paymant_Type), order_Orders.SupplierName, order_Orders.NoteNum, Convert.ToDateTime(order_Orders.Purchases_Date));
+		InsertTranDetailsCash(TRNIDDS, OdederID, Convert.ToDecimal(order_Orders.CostOrder), Convert.ToDecimal(order_Orders.TotalPrices_Discount), Convert.ToDecimal(order_Orders.TobaccoTax), Convert.ToDecimal(order_Orders.AllTax), Convert.ToDecimal(Cash), Convert.ToDecimal(Bank), Convert.ToDecimal(order_Orders.Net), 0);
+		if (Discount > 0m)
+		{
+			InsertTranDetailsDiscount(TRNIDDS, OdederID, Convert.ToDecimal(order_Orders.CostOrder), Convert.ToDecimal(order_Orders.TotalPrices_Discount), Convert.ToDecimal(order_Orders.TobaccoTax), Convert.ToDecimal(order_Orders.AllTax), Convert.ToDecimal(Cash), Convert.ToDecimal(Bank), Convert.ToDecimal(order_Orders.Net), 0, Discount);
+		}
+	}
+
+	public void UpdateOrderDetialsIsPrint(int ORDID)
+	{
+		List<Order_OrdersDetails> list = ((IQueryable<Order_OrdersDetails>)db.Order_OrdersDetails).Where((Order_OrdersDetails x) => x.Purchese_ID == (int?)ORDID && x.BranchID == (int?)LoginDetails.BranchID).ToList();
+		if (list == null)
+		{
+			return;
+		}
+		foreach (Order_OrdersDetails item in list)
+		{
+			item.IsPrint = true;
+		}
+		((DbContext)db).SaveChanges();
+	}
+
+	public void UpdateOrderDetialsIsPrintCook(int ORDID)
+	{
+		List<Order_OrdersDetails> list = ((IQueryable<Order_OrdersDetails>)db.Order_OrdersDetails).Where((Order_OrdersDetails x) => x.Purchese_ID == (int?)ORDID && x.BranchID == (int?)LoginDetails.BranchID).ToList();
+		if (list == null)
+		{
+			return;
+		}
+		foreach (Order_OrdersDetails item in list)
+		{
+			item.IsPrintCook = true;
+		}
+		((DbContext)db).SaveChanges();
+	}
+
+	public void DeleteRestaurant_Delivery(int PurID)
+	{
+		Restaurant_Delivery restaurant_Delivery = ((IQueryable<Restaurant_Delivery>)db.Restaurant_Delivery).Where((Restaurant_Delivery x) => x.OrderID == (int?)PurID && x.BranchID == (int?)LoginDetails.BranchID).FirstOrDefault();
+		if (restaurant_Delivery != null)
+		{
+			db.Restaurant_Delivery.Attach(restaurant_Delivery);
+			db.Restaurant_Delivery.Remove(restaurant_Delivery);
+			((DbContext)db).SaveChanges();
+		}
+	}
+
+	public int InsertTranDetailsDiscount(int TranID, int PurID, decimal TotalCost, decimal TotalSell, decimal TotalTobacc, decimal Vat, decimal TotalCash, decimal TotalBank, decimal NetCash, int NoteNum, decimal Discount)
+	{
+		int num = 0;
+		Tran_TranDetails tran_TranDetails = new Tran_TranDetails();
+		tran_TranDetails.TranSn = TranID;
+		tran_TranDetails.Account_Sn = LoginDetails.Acc_DiscountForAll;
+		tran_TranDetails.AccounIindex = 5;
+		tran_TranDetails.TranDesc = "  خصم مسموح به لفاتورة رقم  ( " + PurID + " ) ";
+		tran_TranDetails.Debit = Discount;
+		tran_TranDetails.Credit = 0m;
+		tran_TranDetails.CostCentersID = NoteNum;
+		tran_TranDetails.BranchID = LoginDetails.BranchID;
+		db.Tran_TranDetails.Add(tran_TranDetails);
+		return ((DbContext)db).SaveChanges();
+	}
+
+	public int SaveOrders(int SupplierID, bool IsWaiting, string SupplierName, string SupplierPhone, string SupplierVatNum, DateTime Purchases_Date, int Order_Paymant_Type, string Restaurant_PayType, int Restaurant_TypeID, int CostCentersID, int BounceID, string Note, string NoteNum, decimal CostOrder, decimal Tax, decimal TotalPrices, decimal Safy, decimal DiscountNum, decimal DiscountPerantage, decimal Tax_Discount, decimal TotalPrices_Discount, decimal TobaccoTax, decimal AllTax, decimal Net, decimal CashMoney, decimal CashBank, bool OrderCashierType, int RoomNum, int TableNum, DataTable Items, int Sectoral, string SalesMan, DateTime DateHold, string BuildingNum, string Street, string District, string City, string Country, string PostalCode, string AdditionalNum, string CommercialRecord, decimal HasmPer, decimal HasmAmount, decimal Charge, int ProjectID, decimal AllDiscount, decimal BounsAmount, string DisCode, decimal AmountPaid, decimal Rest, string CarName, string CarModel, string PlateNumber, string ChassisNum, string CarColor, string Counter)
+	{
+		int result = 0;
+		if (!OrderCashierType)
+		{
+			Restaurant_TypeID = 1;
+		}
+		else if (OrderCashierType)
+		{
+			Restaurant_TypeID = 2;
+		}
+		using (SqlCommand sqlCommand = new SqlCommand("Insert_Order_Order_ALL", con))
+		{
+			sqlCommand.CommandType = CommandType.StoredProcedure;
+			sqlCommand.Parameters.Clear();
+			sqlCommand.Parameters.Add("@BranchID", SqlDbType.Int).Value = LoginDetails.BranchID;
+			sqlCommand.Parameters.Add("@SupplierID", SqlDbType.Int).Value = SupplierID;
+			sqlCommand.Parameters.Add("@IsWaiting", SqlDbType.Bit).Value = IsWaiting;
+			sqlCommand.Parameters.Add("@SupplierName", SqlDbType.NVarChar).Value = SupplierName;
+			sqlCommand.Parameters.Add("@SupplierPhone", SqlDbType.NVarChar).Value = SupplierPhone;
+			sqlCommand.Parameters.Add("@BuildingNum", SqlDbType.NVarChar).Value = BuildingNum;
+			sqlCommand.Parameters.Add("@Street", SqlDbType.NVarChar).Value = Street;
+			sqlCommand.Parameters.Add("@District", SqlDbType.NVarChar).Value = District;
+			sqlCommand.Parameters.Add("@City", SqlDbType.NVarChar).Value = City;
+			sqlCommand.Parameters.Add("@Country", SqlDbType.NVarChar).Value = Country;
+			sqlCommand.Parameters.Add("@PostalCode", SqlDbType.NVarChar).Value = PostalCode;
+			sqlCommand.Parameters.Add("@AdditionalNum", SqlDbType.NVarChar).Value = AdditionalNum;
+			sqlCommand.Parameters.Add("@CommercialRecord", SqlDbType.NVarChar).Value = CommercialRecord;
+			sqlCommand.Parameters.Add("@SupplierVatNum", SqlDbType.NVarChar).Value = SupplierVatNum;
+			sqlCommand.Parameters.Add("@Purchases_Date", SqlDbType.DateTime).Value = Purchases_Date;
+			sqlCommand.Parameters.Add("@Order_Paymant_Type", SqlDbType.Int).Value = Order_Paymant_Type;
+			sqlCommand.Parameters.Add("@Restaurant_PayType", SqlDbType.NVarChar).Value = Restaurant_PayType;
+			sqlCommand.Parameters.Add("@Restaurant_TypeID", SqlDbType.Int).Value = Restaurant_TypeID;
+			sqlCommand.Parameters.Add("@CostCentersID", SqlDbType.Int).Value = CostCentersID;
+			sqlCommand.Parameters.Add("@BounceID", SqlDbType.Int).Value = BounceID;
+			sqlCommand.Parameters.Add("@Note", SqlDbType.NVarChar).Value = Note;
+			sqlCommand.Parameters.Add("@NoteNum", SqlDbType.NVarChar).Value = NoteNum;
+			sqlCommand.Parameters.Add("@CostOrder", SqlDbType.Decimal).Value = CostOrder;
+			sqlCommand.Parameters.Add("@Tax", SqlDbType.Decimal).Value = Tax;
+			sqlCommand.Parameters.Add("@TotalPrices", SqlDbType.Decimal).Value = TotalPrices;
+			sqlCommand.Parameters.Add("@Safy", SqlDbType.Decimal).Value = Safy;
+			sqlCommand.Parameters.Add("@DiscountNum", SqlDbType.Decimal).Value = DiscountNum;
+			sqlCommand.Parameters.Add("@DiscountPerantage", SqlDbType.Decimal).Value = DiscountPerantage;
+			sqlCommand.Parameters.Add("@HasmPer", SqlDbType.Decimal).Value = HasmPer;
+			sqlCommand.Parameters.Add("@HasmAmount", SqlDbType.Decimal).Value = HasmAmount;
+			sqlCommand.Parameters.Add("@Tax_Discount", SqlDbType.Decimal).Value = Tax_Discount;
+			sqlCommand.Parameters.Add("@TotalPrices_Discount", SqlDbType.Decimal).Value = TotalPrices_Discount;
+			sqlCommand.Parameters.Add("@TobaccoTax", SqlDbType.Decimal).Value = TobaccoTax;
+			sqlCommand.Parameters.Add("@AllTax", SqlDbType.Decimal).Value = AllTax;
+			sqlCommand.Parameters.Add("@Net", SqlDbType.Decimal).Value = Net;
+			sqlCommand.Parameters.Add("@CashMoney", SqlDbType.Decimal).Value = CashMoney;
+			sqlCommand.Parameters.Add("@CashBank", SqlDbType.Decimal).Value = CashBank;
+			sqlCommand.Parameters.Add("@OrderCashierType", SqlDbType.Bit).Value = OrderCashierType;
+			sqlCommand.Parameters.Add("@ProjectID", SqlDbType.Int).Value = ProjectID;
+			sqlCommand.Parameters.Add("@RoomNum", SqlDbType.Int).Value = RoomNum;
+			sqlCommand.Parameters.Add("@TableNum", SqlDbType.Int).Value = TableNum;
+			sqlCommand.Parameters.Add("@Sectoral", SqlDbType.Int).Value = Sectoral;
+			sqlCommand.Parameters.Add("@UserID_Add", SqlDbType.Int).Value = LoginDetails.UserID;
+			sqlCommand.Parameters.Add("@UserBranch_Add", SqlDbType.Int).Value = LoginDetails.BranchID;
+			sqlCommand.Parameters.Add("@UserMacAddress_Add", SqlDbType.NVarChar).Value = LoginDetails.macAddress;
+			sqlCommand.Parameters.Add("@SalesMan", SqlDbType.NVarChar).Value = SalesMan;
+			sqlCommand.Parameters.Add("@DateHold", SqlDbType.DateTime).Value = DateHold;
+			sqlCommand.Parameters.Add("@Charge", SqlDbType.Decimal).Value = Charge;
+			sqlCommand.Parameters.Add("@AllDiscount", SqlDbType.Decimal).Value = AllDiscount;
+			sqlCommand.Parameters.Add("@BounsAmount", SqlDbType.Decimal).Value = BounsAmount;
+			sqlCommand.Parameters.Add("@DisCode", SqlDbType.NVarChar).Value = DisCode;
+			sqlCommand.Parameters.Add("@AmountPaid", SqlDbType.NVarChar).Value = AmountPaid;
+			sqlCommand.Parameters.Add("@Rest", SqlDbType.NVarChar).Value = Rest;
+			sqlCommand.Parameters.Add("@CarName", SqlDbType.NVarChar).Value = CarName;
+			sqlCommand.Parameters.Add("@CarModel", SqlDbType.NVarChar).Value = CarModel;
+			sqlCommand.Parameters.Add("@PlateNumber", SqlDbType.NVarChar).Value = PlateNumber;
+			sqlCommand.Parameters.Add("@ChassisNum", SqlDbType.NVarChar).Value = ChassisNum;
+			sqlCommand.Parameters.Add("@CarColor", SqlDbType.NVarChar).Value = CarColor;
+			sqlCommand.Parameters.Add("@Counter", SqlDbType.NVarChar).Value = Counter;
+			DataTable changes = Items.GetChanges(DataRowState.Added);
+			sqlCommand.Parameters.AddWithValue("@Items", changes);
+			SqlParameter sqlParameter = sqlCommand.Parameters.Add("@Return Value", SqlDbType.Int);
+			sqlParameter.Direction = ParameterDirection.ReturnValue;
+			sqlCommand.CommandTimeout = 999999;
+			if (con.State == ConnectionState.Closed)
+			{
+				con.Open();
+			}
+			try
+			{
+				result = sqlCommand.ExecuteNonQuery();
+			}
+			catch
+			{
+			}
+			object value = sqlParameter.Value;
+			con.Close();
+			result = Convert.ToInt32(value);
+		}
+		return result;
+	}
+
+	public int SaveOrdersDraft(int SupplierID, bool IsWaiting, string SupplierName, string SupplierPhone, string SupplierVatNum, DateTime Purchases_Date, int Order_Paymant_Type, string Restaurant_PayType, int Restaurant_TypeID, int CostCentersID, int BounceID, string Note, string NoteNum, decimal CostOrder, decimal Tax, decimal TotalPrices, decimal Safy, decimal DiscountNum, decimal DiscountPerantage, decimal Tax_Discount, decimal TotalPrices_Discount, decimal TobaccoTax, decimal AllTax, decimal Net, decimal CashMoney, decimal CashBank, bool OrderCashierType, int RoomNum, int TableNum, DataTable Items, int Sectoral, string SalesMan, DateTime DateHold, string BuildingNum, string Street, string District, string City, string Country, string PostalCode, string AdditionalNum, string CommercialRecord, decimal HasmPer, decimal HasmAmount, decimal Charge, int ProjectID, decimal AllDiscount, decimal BounsAmount, string DisCode, decimal AmountPaid, decimal Rest, string CarName, string CarModel, string PlateNumber, string ChassisNum, string CarColor, string Counter)
+	{
+		int result = 0;
+		if (!OrderCashierType)
+		{
+			Restaurant_TypeID = 1;
+		}
+		else if (OrderCashierType)
+		{
+			Restaurant_TypeID = 2;
+		}
+		using (SqlCommand sqlCommand = new SqlCommand("Insert_Order_Order_ALL_Draft", con))
+		{
+			sqlCommand.CommandType = CommandType.StoredProcedure;
+			sqlCommand.Parameters.Clear();
+			sqlCommand.Parameters.Add("@BranchID", SqlDbType.Int).Value = LoginDetails.BranchID;
+			sqlCommand.Parameters.Add("@SupplierID", SqlDbType.Int).Value = SupplierID;
+			sqlCommand.Parameters.Add("@IsWaiting", SqlDbType.Bit).Value = IsWaiting;
+			sqlCommand.Parameters.Add("@SupplierName", SqlDbType.NVarChar).Value = SupplierName;
+			sqlCommand.Parameters.Add("@SupplierPhone", SqlDbType.NVarChar).Value = SupplierPhone;
+			sqlCommand.Parameters.Add("@BuildingNum", SqlDbType.NVarChar).Value = BuildingNum;
+			sqlCommand.Parameters.Add("@Street", SqlDbType.NVarChar).Value = Street;
+			sqlCommand.Parameters.Add("@District", SqlDbType.NVarChar).Value = District;
+			sqlCommand.Parameters.Add("@City", SqlDbType.NVarChar).Value = City;
+			sqlCommand.Parameters.Add("@Country", SqlDbType.NVarChar).Value = Country;
+			sqlCommand.Parameters.Add("@PostalCode", SqlDbType.NVarChar).Value = PostalCode;
+			sqlCommand.Parameters.Add("@AdditionalNum", SqlDbType.NVarChar).Value = AdditionalNum;
+			sqlCommand.Parameters.Add("@CommercialRecord", SqlDbType.NVarChar).Value = CommercialRecord;
+			sqlCommand.Parameters.Add("@SupplierVatNum", SqlDbType.NVarChar).Value = SupplierVatNum;
+			sqlCommand.Parameters.Add("@Purchases_Date", SqlDbType.DateTime).Value = Purchases_Date;
+			sqlCommand.Parameters.Add("@Order_Paymant_Type", SqlDbType.Int).Value = Order_Paymant_Type;
+			sqlCommand.Parameters.Add("@Restaurant_PayType", SqlDbType.NVarChar).Value = Restaurant_PayType;
+			sqlCommand.Parameters.Add("@Restaurant_TypeID", SqlDbType.Int).Value = Restaurant_TypeID;
+			sqlCommand.Parameters.Add("@CostCentersID", SqlDbType.Int).Value = CostCentersID;
+			sqlCommand.Parameters.Add("@BounceID", SqlDbType.Int).Value = BounceID;
+			sqlCommand.Parameters.Add("@Note", SqlDbType.NVarChar).Value = Note;
+			sqlCommand.Parameters.Add("@NoteNum", SqlDbType.NVarChar).Value = NoteNum;
+			sqlCommand.Parameters.Add("@CostOrder", SqlDbType.Decimal).Value = CostOrder;
+			sqlCommand.Parameters.Add("@Tax", SqlDbType.Decimal).Value = Tax;
+			sqlCommand.Parameters.Add("@TotalPrices", SqlDbType.Decimal).Value = TotalPrices;
+			sqlCommand.Parameters.Add("@Safy", SqlDbType.Decimal).Value = Safy;
+			sqlCommand.Parameters.Add("@DiscountNum", SqlDbType.Decimal).Value = DiscountNum;
+			sqlCommand.Parameters.Add("@DiscountPerantage", SqlDbType.Decimal).Value = DiscountPerantage;
+			sqlCommand.Parameters.Add("@HasmPer", SqlDbType.Decimal).Value = HasmPer;
+			sqlCommand.Parameters.Add("@HasmAmount", SqlDbType.Decimal).Value = HasmAmount;
+			sqlCommand.Parameters.Add("@Tax_Discount", SqlDbType.Decimal).Value = Tax_Discount;
+			sqlCommand.Parameters.Add("@TotalPrices_Discount", SqlDbType.Decimal).Value = TotalPrices_Discount;
+			sqlCommand.Parameters.Add("@TobaccoTax", SqlDbType.Decimal).Value = TobaccoTax;
+			sqlCommand.Parameters.Add("@AllTax", SqlDbType.Decimal).Value = AllTax;
+			sqlCommand.Parameters.Add("@Net", SqlDbType.Decimal).Value = Net;
+			sqlCommand.Parameters.Add("@CashMoney", SqlDbType.Decimal).Value = CashMoney;
+			sqlCommand.Parameters.Add("@CashBank", SqlDbType.Decimal).Value = CashBank;
+			sqlCommand.Parameters.Add("@OrderCashierType", SqlDbType.Bit).Value = OrderCashierType;
+			sqlCommand.Parameters.Add("@ProjectID", SqlDbType.Int).Value = ProjectID;
+			sqlCommand.Parameters.Add("@RoomNum", SqlDbType.Int).Value = RoomNum;
+			sqlCommand.Parameters.Add("@TableNum", SqlDbType.Int).Value = TableNum;
+			sqlCommand.Parameters.Add("@Sectoral", SqlDbType.Int).Value = Sectoral;
+			sqlCommand.Parameters.Add("@UserID_Add", SqlDbType.Int).Value = LoginDetails.UserID;
+			sqlCommand.Parameters.Add("@UserBranch_Add", SqlDbType.Int).Value = LoginDetails.BranchID;
+			sqlCommand.Parameters.Add("@UserMacAddress_Add", SqlDbType.NVarChar).Value = LoginDetails.macAddress;
+			sqlCommand.Parameters.Add("@SalesMan", SqlDbType.NVarChar).Value = SalesMan;
+			sqlCommand.Parameters.Add("@DateHold", SqlDbType.DateTime).Value = DateHold;
+			sqlCommand.Parameters.Add("@Charge", SqlDbType.Decimal).Value = Charge;
+			sqlCommand.Parameters.Add("@AllDiscount", SqlDbType.Decimal).Value = AllDiscount;
+			sqlCommand.Parameters.Add("@BounsAmount", SqlDbType.Decimal).Value = BounsAmount;
+			sqlCommand.Parameters.Add("@DisCode", SqlDbType.NVarChar).Value = DisCode;
+			sqlCommand.Parameters.Add("@AmountPaid", SqlDbType.NVarChar).Value = AmountPaid;
+			sqlCommand.Parameters.Add("@Rest", SqlDbType.NVarChar).Value = Rest;
+			sqlCommand.Parameters.Add("@CarName", SqlDbType.NVarChar).Value = CarName;
+			sqlCommand.Parameters.Add("@CarModel", SqlDbType.NVarChar).Value = CarModel;
+			sqlCommand.Parameters.Add("@PlateNumber", SqlDbType.NVarChar).Value = PlateNumber;
+			sqlCommand.Parameters.Add("@ChassisNum", SqlDbType.NVarChar).Value = ChassisNum;
+			sqlCommand.Parameters.Add("@CarColor", SqlDbType.NVarChar).Value = CarColor;
+			sqlCommand.Parameters.Add("@Counter", SqlDbType.NVarChar).Value = Counter;
+			DataTable changes = Items.GetChanges(DataRowState.Added);
+			sqlCommand.Parameters.AddWithValue("@Items", changes);
+			SqlParameter sqlParameter = sqlCommand.Parameters.Add("@Return Value", SqlDbType.Int);
+			sqlParameter.Direction = ParameterDirection.ReturnValue;
+			sqlCommand.CommandTimeout = 999999;
+			if (con.State == ConnectionState.Closed)
+			{
+				con.Open();
+			}
+			try
+			{
+				result = sqlCommand.ExecuteNonQuery();
+			}
+			catch (Exception)
+			{
+			}
+			object value = sqlParameter.Value;
+			con.Close();
+			result = Convert.ToInt32(value);
+		}
+		return result;
+	}
+
+	public int SaveOrdersRestaurant_TakeAway(int SupplierID, bool IsWaiting, string SupplierName, string SupplierPhone, string SupplierVatNum, DateTime Purchases_Date, int Order_Paymant_Type, string Restaurant_PayType, int Restaurant_TypeID, int CostCentersID, int BounceID, string Note, string NoteNum, decimal CostOrder, decimal Tax, decimal TotalPrices, decimal Safy, decimal DiscountNum, decimal DiscountPerantage, decimal Tax_Discount, decimal TotalPrices_Discount, decimal TobaccoTax, decimal AllTax, decimal Net, decimal CashMoney, decimal CashBank, bool OrderCashierType, int RoomNum, int TableNum, DataTable Items, bool Sectoral, string SalesMan, DateTime DateHold, string BuildingNum, string Street, string District, string City, string Country, string PostalCode, string AdditionalNum, string CommercialRecord, decimal HasmPer, decimal HasmAmount, decimal Charge)
+	{
+		int result = 0;
+		if (!OrderCashierType)
+		{
+			Restaurant_TypeID = 1;
+		}
+		else if (OrderCashierType)
+		{
+			Restaurant_TypeID = 2;
+		}
+		using (SqlCommand sqlCommand = new SqlCommand("Insert_Order_Restaurant_TakeAway", con))
+		{
+			sqlCommand.CommandType = CommandType.StoredProcedure;
+			sqlCommand.Parameters.Clear();
+			sqlCommand.Parameters.Add("@BranchID", SqlDbType.Int).Value = LoginDetails.BranchID;
+			sqlCommand.Parameters.Add("@SupplierID", SqlDbType.Int).Value = SupplierID;
+			sqlCommand.Parameters.Add("@IsWaiting", SqlDbType.Bit).Value = IsWaiting;
+			sqlCommand.Parameters.Add("@SupplierName", SqlDbType.NVarChar).Value = SupplierName;
+			sqlCommand.Parameters.Add("@SupplierPhone", SqlDbType.NVarChar).Value = SupplierPhone;
+			sqlCommand.Parameters.Add("@BuildingNum", SqlDbType.NVarChar).Value = BuildingNum;
+			sqlCommand.Parameters.Add("@Street", SqlDbType.NVarChar).Value = Street;
+			sqlCommand.Parameters.Add("@District", SqlDbType.NVarChar).Value = District;
+			sqlCommand.Parameters.Add("@City", SqlDbType.NVarChar).Value = City;
+			sqlCommand.Parameters.Add("@Country", SqlDbType.NVarChar).Value = Country;
+			sqlCommand.Parameters.Add("@PostalCode", SqlDbType.NVarChar).Value = PostalCode;
+			sqlCommand.Parameters.Add("@AdditionalNum", SqlDbType.NVarChar).Value = AdditionalNum;
+			sqlCommand.Parameters.Add("@CommercialRecord", SqlDbType.NVarChar).Value = CommercialRecord;
+			sqlCommand.Parameters.Add("@SupplierVatNum", SqlDbType.NVarChar).Value = SupplierVatNum;
+			sqlCommand.Parameters.Add("@Purchases_Date", SqlDbType.DateTime).Value = Purchases_Date;
+			sqlCommand.Parameters.Add("@Order_Paymant_Type", SqlDbType.Int).Value = Order_Paymant_Type;
+			sqlCommand.Parameters.Add("@Restaurant_PayType", SqlDbType.NVarChar).Value = Restaurant_PayType;
+			sqlCommand.Parameters.Add("@Restaurant_TypeID", SqlDbType.Int).Value = Restaurant_TypeID;
+			sqlCommand.Parameters.Add("@CostCentersID", SqlDbType.Int).Value = CostCentersID;
+			sqlCommand.Parameters.Add("@BounceID", SqlDbType.Int).Value = BounceID;
+			sqlCommand.Parameters.Add("@Note", SqlDbType.NVarChar).Value = Note;
+			sqlCommand.Parameters.Add("@NoteNum", SqlDbType.NVarChar).Value = NoteNum;
+			sqlCommand.Parameters.Add("@CostOrder", SqlDbType.Decimal).Value = CostOrder;
+			sqlCommand.Parameters.Add("@Tax", SqlDbType.Decimal).Value = Tax;
+			sqlCommand.Parameters.Add("@TotalPrices", SqlDbType.Decimal).Value = TotalPrices;
+			sqlCommand.Parameters.Add("@Safy", SqlDbType.Decimal).Value = Safy;
+			sqlCommand.Parameters.Add("@DiscountNum", SqlDbType.Decimal).Value = DiscountNum;
+			sqlCommand.Parameters.Add("@DiscountPerantage", SqlDbType.Decimal).Value = DiscountPerantage;
+			sqlCommand.Parameters.Add("@HasmPer", SqlDbType.Decimal).Value = HasmPer;
+			sqlCommand.Parameters.Add("@HasmAmount", SqlDbType.Decimal).Value = HasmAmount;
+			sqlCommand.Parameters.Add("@Tax_Discount", SqlDbType.Decimal).Value = Tax_Discount;
+			sqlCommand.Parameters.Add("@TotalPrices_Discount", SqlDbType.Decimal).Value = TotalPrices_Discount;
+			sqlCommand.Parameters.Add("@TobaccoTax", SqlDbType.Decimal).Value = TobaccoTax;
+			sqlCommand.Parameters.Add("@AllTax", SqlDbType.Decimal).Value = AllTax;
+			sqlCommand.Parameters.Add("@Net", SqlDbType.Decimal).Value = Net;
+			sqlCommand.Parameters.Add("@CashMoney", SqlDbType.Decimal).Value = CashMoney;
+			sqlCommand.Parameters.Add("@CashBank", SqlDbType.Decimal).Value = CashBank;
+			sqlCommand.Parameters.Add("@OrderCashierType", SqlDbType.Bit).Value = OrderCashierType;
+			sqlCommand.Parameters.Add("@RoomNum", SqlDbType.Int).Value = RoomNum;
+			sqlCommand.Parameters.Add("@TableNum", SqlDbType.Int).Value = TableNum;
+			sqlCommand.Parameters.Add("@Sectoral", SqlDbType.Bit).Value = Sectoral;
+			sqlCommand.Parameters.Add("@UserID_Add", SqlDbType.Int).Value = LoginDetails.UserID;
+			sqlCommand.Parameters.Add("@UserBranch_Add", SqlDbType.Int).Value = LoginDetails.BranchID;
+			sqlCommand.Parameters.Add("@UserMacAddress_Add", SqlDbType.NVarChar).Value = LoginDetails.macAddress;
+			sqlCommand.Parameters.Add("@SalesMan", SqlDbType.NVarChar).Value = SalesMan;
+			sqlCommand.Parameters.Add("@DateHold", SqlDbType.DateTime).Value = DateHold;
+			sqlCommand.Parameters.Add("@Charge", SqlDbType.Decimal).Value = Charge;
+			DataTable changes = Items.GetChanges(DataRowState.Added);
+			sqlCommand.Parameters.AddWithValue("@Items", changes);
+			SqlParameter sqlParameter = sqlCommand.Parameters.Add("@Return Value", SqlDbType.Int);
+			sqlParameter.Direction = ParameterDirection.ReturnValue;
+			sqlCommand.CommandTimeout = 999999;
+			if (con.State == ConnectionState.Closed)
+			{
+				con.Open();
+			}
+			try
+			{
+				result = sqlCommand.ExecuteNonQuery();
+			}
+			catch
+			{
+			}
+			object value = sqlParameter.Value;
+			con.Close();
+			result = Convert.ToInt32(value);
+		}
+		return result;
+	}
+
+	public int SaveRestaurant(int SupplierID, int AccountID, bool IsWaiting, string SupplierName, string SupplierPhone, string SupplierVatNum, DateTime Purchases_Date, int Order_Paymant_Type, string Restaurant_PayType, int Restaurant_TypeID, int CostCentersID, string Note, string NoteNum, decimal CostOrder, decimal Tax, decimal TotalPrices, decimal Safy, decimal DiscountNum, decimal DiscountPerantage, decimal Tax_Discount, decimal TotalPrices_Discount, decimal TobaccoTax, decimal AllTax, decimal Net, decimal CashMoney, decimal CashBank, bool OrderCashierType, int RoomNum, int TableNum, bool ISPasue, bool ISPayment, bool ISDelivery, int DeliveryStatus, int DeliveryID, DateTime Time1, DataTable Items)
+	{
+		int result = 0;
+		using (SqlCommand sqlCommand = new SqlCommand("Insert_Order_Restaurant_A", con))
+		{
+			sqlCommand.CommandType = CommandType.StoredProcedure;
+			sqlCommand.Parameters.Clear();
+			sqlCommand.Parameters.Add("@BranchID", SqlDbType.Int).Value = LoginDetails.BranchID;
+			sqlCommand.Parameters.Add("@SupplierID", SqlDbType.Int).Value = SupplierID;
+			sqlCommand.Parameters.Add("@AccountID", SqlDbType.Int).Value = AccountID;
+			sqlCommand.Parameters.Add("@IsWaiting", SqlDbType.Bit).Value = IsWaiting;
+			sqlCommand.Parameters.Add("@SupplierName", SqlDbType.NVarChar).Value = SupplierName;
+			sqlCommand.Parameters.Add("@SupplierPhone", SqlDbType.NVarChar).Value = SupplierPhone;
+			sqlCommand.Parameters.Add("@SupplierVatNum", SqlDbType.NVarChar).Value = SupplierVatNum;
+			sqlCommand.Parameters.Add("@Purchases_Date", SqlDbType.DateTime).Value = Purchases_Date;
+			sqlCommand.Parameters.Add("@Order_Paymant_Type", SqlDbType.Int).Value = Order_Paymant_Type;
+			sqlCommand.Parameters.Add("@Restaurant_PayType", SqlDbType.NVarChar).Value = Restaurant_PayType;
+			sqlCommand.Parameters.Add("@Restaurant_TypeID", SqlDbType.Int).Value = Restaurant_TypeID;
+			sqlCommand.Parameters.Add("@CostCentersID", SqlDbType.Int).Value = CostCentersID;
+			sqlCommand.Parameters.Add("@Note", SqlDbType.NVarChar).Value = Note;
+			sqlCommand.Parameters.Add("@NoteNum", SqlDbType.NVarChar).Value = NoteNum;
+			sqlCommand.Parameters.Add("@CostOrder", SqlDbType.Decimal).Value = CostOrder;
+			sqlCommand.Parameters.Add("@Tax", SqlDbType.Decimal).Value = Tax;
+			sqlCommand.Parameters.Add("@TotalPrices", SqlDbType.Decimal).Value = TotalPrices;
+			sqlCommand.Parameters.Add("@Safy", SqlDbType.Decimal).Value = Safy;
+			sqlCommand.Parameters.Add("@DiscountNum", SqlDbType.Decimal).Value = DiscountNum;
+			sqlCommand.Parameters.Add("@DiscountPerantage", SqlDbType.Decimal).Value = DiscountPerantage;
+			sqlCommand.Parameters.Add("@Tax_Discount", SqlDbType.Decimal).Value = Tax_Discount;
+			sqlCommand.Parameters.Add("@TotalPrices_Discount", SqlDbType.Decimal).Value = TotalPrices_Discount;
+			sqlCommand.Parameters.Add("@TobaccoTax", SqlDbType.Decimal).Value = TobaccoTax;
+			sqlCommand.Parameters.Add("@AllTax", SqlDbType.Decimal).Value = AllTax;
+			sqlCommand.Parameters.Add("@Net", SqlDbType.Decimal).Value = Net;
+			sqlCommand.Parameters.Add("@CashMoney", SqlDbType.Decimal).Value = CashMoney;
+			sqlCommand.Parameters.Add("@CashBank", SqlDbType.Decimal).Value = CashBank;
+			sqlCommand.Parameters.Add("@OrderCashierType", SqlDbType.Bit).Value = OrderCashierType;
+			sqlCommand.Parameters.Add("@RoomNum", SqlDbType.Int).Value = RoomNum;
+			sqlCommand.Parameters.Add("@TableNum", SqlDbType.Int).Value = TableNum;
+			sqlCommand.Parameters.Add("@UserID_Add", SqlDbType.Int).Value = LoginDetails.UserID;
+			sqlCommand.Parameters.Add("@UserBranch_Add", SqlDbType.Int).Value = LoginDetails.BranchID;
+			sqlCommand.Parameters.Add("@UserMacAddress_Add", SqlDbType.NVarChar).Value = LoginDetails.macAddress;
+			sqlCommand.Parameters.Add("@ISPasue", SqlDbType.Bit).Value = ISPasue;
+			sqlCommand.Parameters.Add("@ISPayment", SqlDbType.Bit).Value = ISPayment;
+			sqlCommand.Parameters.Add("@ISDelivery", SqlDbType.Bit).Value = ISDelivery;
+			sqlCommand.Parameters.Add("@DeliveryStatus", SqlDbType.Int).Value = DeliveryStatus;
+			sqlCommand.Parameters.Add("@DeliveryID", SqlDbType.Int).Value = DeliveryID;
+			sqlCommand.Parameters.Add("@Time1", SqlDbType.DateTime).Value = Time1;
+			DataTable changes = Items.GetChanges(DataRowState.Added);
+			sqlCommand.Parameters.AddWithValue("@Items", changes);
+			SqlParameter sqlParameter = sqlCommand.Parameters.Add("@Return Value", SqlDbType.Int);
+			sqlParameter.Direction = ParameterDirection.ReturnValue;
+			sqlCommand.CommandTimeout = 999999;
+			if (con.State == ConnectionState.Closed)
+			{
+				con.Open();
+			}
+			result = sqlCommand.ExecuteNonQuery();
+			object value = sqlParameter.Value;
+			con.Close();
+			result = Convert.ToInt32(value);
+		}
+		return result;
+	}
+
+	public int UpdateOrders(int PurBranchID, int SupplierID, bool IsWaiting, string SupplierName, string SupplierPhone, string SupplierVatNum, DateTime Purchases_Date, int Order_Paymant_Type, string Restaurant_PayType, int Restaurant_TypeID, int CostCentersID, int BounceID, string Note, string NoteNum, decimal CostOrder, decimal Tax, decimal TotalPrices, decimal Safy, decimal DiscountNum, decimal DiscountPerantage, decimal Tax_Discount, decimal TotalPrices_Discount, decimal TobaccoTax, decimal AllTax, decimal Net, decimal CashMoney, decimal CashBank, bool OrderCashierType, int RoomNum, int TableNum, DataTable Items, string SalesMan, DateTime DateHold, string BuildingNum, string Street, string District, string City, string Country, string PostalCode, string AdditionalNum, string CommercialRecord, decimal HasmPer, decimal HasmAmount, decimal Charge, decimal AllDiscount, decimal BounsAmount, string CarName, string CarModel, string PlateNumber, string ChassisNum, string CarColor, string Counter, int ProjectId)
+	{
+		int result = 0;
+		if (!OrderCashierType)
+		{
+			Restaurant_TypeID = 1;
+		}
+		else if (OrderCashierType)
+		{
+			Restaurant_TypeID = 2;
+		}
+		using (SqlCommand sqlCommand = new SqlCommand("Update_Order_Order_ALL", con))
+		{
+			sqlCommand.CommandType = CommandType.StoredProcedure;
+			sqlCommand.Parameters.Clear();
+			sqlCommand.Parameters.Add("@PurBranchID", SqlDbType.Int).Value = PurBranchID;
+			sqlCommand.Parameters.Add("@BranchID", SqlDbType.Int).Value = LoginDetails.BranchID;
+			sqlCommand.Parameters.Add("@SupplierID", SqlDbType.Int).Value = SupplierID;
+			sqlCommand.Parameters.Add("@IsWaiting", SqlDbType.Bit).Value = IsWaiting;
+			sqlCommand.Parameters.Add("@SupplierName", SqlDbType.NVarChar).Value = SupplierName;
+			sqlCommand.Parameters.Add("@SupplierPhone", SqlDbType.NVarChar).Value = SupplierPhone;
+			sqlCommand.Parameters.Add("@BuildingNum", SqlDbType.NVarChar).Value = BuildingNum;
+			sqlCommand.Parameters.Add("@Street", SqlDbType.NVarChar).Value = Street;
+			sqlCommand.Parameters.Add("@District", SqlDbType.NVarChar).Value = District;
+			sqlCommand.Parameters.Add("@City", SqlDbType.NVarChar).Value = City;
+			sqlCommand.Parameters.Add("@Country", SqlDbType.NVarChar).Value = Country;
+			sqlCommand.Parameters.Add("@PostalCode", SqlDbType.NVarChar).Value = PostalCode;
+			sqlCommand.Parameters.Add("@AdditionalNum", SqlDbType.NVarChar).Value = AdditionalNum;
+			sqlCommand.Parameters.Add("@CommercialRecord", SqlDbType.NVarChar).Value = CommercialRecord;
+			sqlCommand.Parameters.Add("@SupplierVatNum", SqlDbType.NVarChar).Value = SupplierVatNum;
+			sqlCommand.Parameters.Add("@Purchases_Date", SqlDbType.DateTime).Value = Purchases_Date;
+			sqlCommand.Parameters.Add("@Order_Paymant_Type", SqlDbType.Int).Value = Order_Paymant_Type;
+			sqlCommand.Parameters.Add("@Restaurant_PayType", SqlDbType.NVarChar).Value = Restaurant_PayType;
+			sqlCommand.Parameters.Add("@Restaurant_TypeID", SqlDbType.Int).Value = Restaurant_TypeID;
+			sqlCommand.Parameters.Add("@CostCentersID", SqlDbType.Int).Value = CostCentersID;
+			sqlCommand.Parameters.Add("@BounceID", SqlDbType.Int).Value = BounceID;
+			sqlCommand.Parameters.Add("@Note", SqlDbType.NVarChar).Value = Note;
+			sqlCommand.Parameters.Add("@NoteNum", SqlDbType.NVarChar).Value = NoteNum;
+			sqlCommand.Parameters.Add("@CostOrder", SqlDbType.Decimal).Value = CostOrder;
+			sqlCommand.Parameters.Add("@Tax", SqlDbType.Decimal).Value = Tax;
+			sqlCommand.Parameters.Add("@TotalPrices", SqlDbType.Decimal).Value = TotalPrices;
+			sqlCommand.Parameters.Add("@Safy", SqlDbType.Decimal).Value = Safy;
+			sqlCommand.Parameters.Add("@DiscountNum", SqlDbType.Decimal).Value = DiscountNum;
+			sqlCommand.Parameters.Add("@DiscountPerantage", SqlDbType.Decimal).Value = DiscountPerantage;
+			sqlCommand.Parameters.Add("@Tax_Discount", SqlDbType.Decimal).Value = Tax_Discount;
+			sqlCommand.Parameters.Add("@TotalPrices_Discount", SqlDbType.Decimal).Value = TotalPrices_Discount;
+			sqlCommand.Parameters.Add("@TobaccoTax", SqlDbType.Decimal).Value = TobaccoTax;
+			sqlCommand.Parameters.Add("@AllTax", SqlDbType.Decimal).Value = AllTax;
+			sqlCommand.Parameters.Add("@Net", SqlDbType.Decimal).Value = Net;
+			sqlCommand.Parameters.Add("@CashMoney", SqlDbType.Decimal).Value = CashMoney;
+			sqlCommand.Parameters.Add("@CashBank", SqlDbType.Decimal).Value = CashBank;
+			sqlCommand.Parameters.Add("@OrderCashierType", SqlDbType.Bit).Value = OrderCashierType;
+			sqlCommand.Parameters.Add("@ProjectID", SqlDbType.Int).Value = ProjectId;
+			sqlCommand.Parameters.Add("@RoomNum", SqlDbType.Int).Value = RoomNum;
+			sqlCommand.Parameters.Add("@TableNum", SqlDbType.Int).Value = TableNum;
+			sqlCommand.Parameters.Add("@UserID_Add", SqlDbType.Int).Value = LoginDetails.UserID;
+			sqlCommand.Parameters.Add("@UserBranch_Add", SqlDbType.Int).Value = LoginDetails.BranchID;
+			sqlCommand.Parameters.Add("@UserMacAddress_Add", SqlDbType.NVarChar).Value = LoginDetails.macAddress;
+			sqlCommand.Parameters.Add("@SalesMan", SqlDbType.NVarChar).Value = SalesMan;
+			sqlCommand.Parameters.Add("@DateHold", SqlDbType.DateTime).Value = DateHold;
+			sqlCommand.Parameters.Add("@Charge", SqlDbType.Decimal).Value = Charge;
+			sqlCommand.Parameters.Add("@AllDiscount ", SqlDbType.Decimal).Value = AllDiscount;
+			sqlCommand.Parameters.Add("@BounsAmount ", SqlDbType.Decimal).Value = BounsAmount;
+			sqlCommand.Parameters.Add("@CarName", SqlDbType.NVarChar).Value = CarName;
+			sqlCommand.Parameters.Add("@CarModel", SqlDbType.NVarChar).Value = CarModel;
+			sqlCommand.Parameters.Add("@PlateNumber", SqlDbType.NVarChar).Value = PlateNumber;
+			sqlCommand.Parameters.Add("@ChassisNum", SqlDbType.NVarChar).Value = ChassisNum;
+			sqlCommand.Parameters.Add("@CarColor", SqlDbType.NVarChar).Value = CarColor;
+			sqlCommand.Parameters.Add("@Counter", SqlDbType.NVarChar).Value = Counter;
+			DataTable changes = Items.GetChanges(DataRowState.Added);
+			sqlCommand.Parameters.AddWithValue("@Items", changes);
+			sqlCommand.CommandTimeout = 999999;
+			if (con.State == ConnectionState.Closed)
+			{
+				con.Open();
+			}
+			result = sqlCommand.ExecuteNonQuery();
+			con.Close();
+			result = 1;
+		}
+		return result;
+	}
+
+	public int UpdateOrdersDraft(int PurBranchID, int SupplierID, bool IsWaiting, string SupplierName, string SupplierPhone, string SupplierVatNum, DateTime Purchases_Date, int Order_Paymant_Type, string Restaurant_PayType, int Restaurant_TypeID, int CostCentersID, int BounceID, string Note, string NoteNum, decimal CostOrder, decimal Tax, decimal TotalPrices, decimal Safy, decimal DiscountNum, decimal DiscountPerantage, decimal Tax_Discount, decimal TotalPrices_Discount, decimal TobaccoTax, decimal AllTax, decimal Net, decimal CashMoney, decimal CashBank, bool OrderCashierType, int RoomNum, int TableNum, DataTable Items, string SalesMan, DateTime DateHold, string BuildingNum, string Street, string District, string City, string Country, string PostalCode, string AdditionalNum, string CommercialRecord, decimal HasmPer, decimal HasmAmount, decimal Charge, decimal AllDiscount, decimal BounsAmount, string CarName, string CarModel, string PlateNumber, string ChassisNum, string CarColor, string Counter)
+	{
+		int result = 0;
+		if (!OrderCashierType)
+		{
+			Restaurant_TypeID = 1;
+		}
+		else if (OrderCashierType)
+		{
+			Restaurant_TypeID = 2;
+		}
+		using (SqlCommand sqlCommand = new SqlCommand("Update_Order_Order_ALL_Draft", con))
+		{
+			sqlCommand.CommandType = CommandType.StoredProcedure;
+			sqlCommand.Parameters.Clear();
+			sqlCommand.Parameters.Add("@PurBranchID", SqlDbType.Int).Value = PurBranchID;
+			sqlCommand.Parameters.Add("@BranchID", SqlDbType.Int).Value = LoginDetails.BranchID;
+			sqlCommand.Parameters.Add("@SupplierID", SqlDbType.Int).Value = SupplierID;
+			sqlCommand.Parameters.Add("@IsWaiting", SqlDbType.Bit).Value = IsWaiting;
+			sqlCommand.Parameters.Add("@SupplierName", SqlDbType.NVarChar).Value = SupplierName;
+			sqlCommand.Parameters.Add("@SupplierPhone", SqlDbType.NVarChar).Value = SupplierPhone;
+			sqlCommand.Parameters.Add("@BuildingNum", SqlDbType.NVarChar).Value = BuildingNum;
+			sqlCommand.Parameters.Add("@Street", SqlDbType.NVarChar).Value = Street;
+			sqlCommand.Parameters.Add("@District", SqlDbType.NVarChar).Value = District;
+			sqlCommand.Parameters.Add("@City", SqlDbType.NVarChar).Value = City;
+			sqlCommand.Parameters.Add("@Country", SqlDbType.NVarChar).Value = Country;
+			sqlCommand.Parameters.Add("@PostalCode", SqlDbType.NVarChar).Value = PostalCode;
+			sqlCommand.Parameters.Add("@AdditionalNum", SqlDbType.NVarChar).Value = AdditionalNum;
+			sqlCommand.Parameters.Add("@CommercialRecord", SqlDbType.NVarChar).Value = CommercialRecord;
+			sqlCommand.Parameters.Add("@SupplierVatNum", SqlDbType.NVarChar).Value = SupplierVatNum;
+			sqlCommand.Parameters.Add("@Purchases_Date", SqlDbType.DateTime).Value = Purchases_Date;
+			sqlCommand.Parameters.Add("@Order_Paymant_Type", SqlDbType.Int).Value = Order_Paymant_Type;
+			sqlCommand.Parameters.Add("@Restaurant_PayType", SqlDbType.NVarChar).Value = Restaurant_PayType;
+			sqlCommand.Parameters.Add("@Restaurant_TypeID", SqlDbType.Int).Value = Restaurant_TypeID;
+			sqlCommand.Parameters.Add("@CostCentersID", SqlDbType.Int).Value = CostCentersID;
+			sqlCommand.Parameters.Add("@BounceID", SqlDbType.Int).Value = BounceID;
+			sqlCommand.Parameters.Add("@Note", SqlDbType.NVarChar).Value = Note;
+			sqlCommand.Parameters.Add("@NoteNum", SqlDbType.NVarChar).Value = NoteNum;
+			sqlCommand.Parameters.Add("@CostOrder", SqlDbType.Decimal).Value = CostOrder;
+			sqlCommand.Parameters.Add("@Tax", SqlDbType.Decimal).Value = Tax;
+			sqlCommand.Parameters.Add("@TotalPrices", SqlDbType.Decimal).Value = TotalPrices;
+			sqlCommand.Parameters.Add("@Safy", SqlDbType.Decimal).Value = Safy;
+			sqlCommand.Parameters.Add("@DiscountNum", SqlDbType.Decimal).Value = DiscountNum;
+			sqlCommand.Parameters.Add("@DiscountPerantage", SqlDbType.Decimal).Value = DiscountPerantage;
+			sqlCommand.Parameters.Add("@Tax_Discount", SqlDbType.Decimal).Value = Tax_Discount;
+			sqlCommand.Parameters.Add("@TotalPrices_Discount", SqlDbType.Decimal).Value = TotalPrices_Discount;
+			sqlCommand.Parameters.Add("@TobaccoTax", SqlDbType.Decimal).Value = TobaccoTax;
+			sqlCommand.Parameters.Add("@AllTax", SqlDbType.Decimal).Value = AllTax;
+			sqlCommand.Parameters.Add("@Net", SqlDbType.Decimal).Value = Net;
+			sqlCommand.Parameters.Add("@CashMoney", SqlDbType.Decimal).Value = CashMoney;
+			sqlCommand.Parameters.Add("@CashBank", SqlDbType.Decimal).Value = CashBank;
+			sqlCommand.Parameters.Add("@OrderCashierType", SqlDbType.Bit).Value = OrderCashierType;
+			sqlCommand.Parameters.Add("@RoomNum", SqlDbType.Int).Value = RoomNum;
+			sqlCommand.Parameters.Add("@TableNum", SqlDbType.Int).Value = TableNum;
+			sqlCommand.Parameters.Add("@UserID_Add", SqlDbType.Int).Value = LoginDetails.UserID;
+			sqlCommand.Parameters.Add("@UserBranch_Add", SqlDbType.Int).Value = LoginDetails.BranchID;
+			sqlCommand.Parameters.Add("@UserMacAddress_Add", SqlDbType.NVarChar).Value = LoginDetails.macAddress;
+			sqlCommand.Parameters.Add("@SalesMan", SqlDbType.NVarChar).Value = SalesMan;
+			sqlCommand.Parameters.Add("@DateHold", SqlDbType.DateTime).Value = DateHold;
+			sqlCommand.Parameters.Add("@Charge", SqlDbType.Decimal).Value = Charge;
+			sqlCommand.Parameters.Add("@AllDiscount ", SqlDbType.Decimal).Value = AllDiscount;
+			sqlCommand.Parameters.Add("@BounsAmount ", SqlDbType.Decimal).Value = BounsAmount;
+			sqlCommand.Parameters.Add("@CarName", SqlDbType.NVarChar).Value = CarName;
+			sqlCommand.Parameters.Add("@CarModel", SqlDbType.NVarChar).Value = CarModel;
+			sqlCommand.Parameters.Add("@PlateNumber", SqlDbType.NVarChar).Value = PlateNumber;
+			sqlCommand.Parameters.Add("@ChassisNum", SqlDbType.NVarChar).Value = ChassisNum;
+			sqlCommand.Parameters.Add("@CarColor", SqlDbType.NVarChar).Value = CarColor;
+			sqlCommand.Parameters.Add("@Counter", SqlDbType.NVarChar).Value = Counter;
+			DataTable changes = Items.GetChanges(DataRowState.Added);
+			sqlCommand.Parameters.AddWithValue("@Items", changes);
+			sqlCommand.CommandTimeout = 999999;
+			if (con.State == ConnectionState.Closed)
+			{
+				con.Open();
+			}
+			result = sqlCommand.ExecuteNonQuery();
+			con.Close();
+			result = 1;
+		}
+		return result;
+	}
+
+	public int UpdateRestaurant(int PurBranchID, int SupplierID, bool IsWaiting, string SupplierName, string SupplierPhone, string SupplierVatNum, DateTime Purchases_Date, int Order_Paymant_Type, string Restaurant_PayType, int Restaurant_TypeID, int CostCentersID, string Note, string NoteNum, decimal CostOrder, decimal Tax, decimal TotalPrices, decimal Safy, decimal DiscountNum, decimal DiscountPerantage, decimal Tax_Discount, decimal TotalPrices_Discount, decimal TobaccoTax, decimal AllTax, decimal Net, decimal CashMoney, decimal CashBank, bool OrderCashierType, int RoomNum, int TableNum, bool ISPasue, bool ISPayment, DateTime Time1, DataTable Items)
+	{
+		int result = 0;
+		using (SqlCommand sqlCommand = new SqlCommand("Update_Order_Restaurant_B", con))
+		{
+			sqlCommand.CommandType = CommandType.StoredProcedure;
+			sqlCommand.Parameters.Clear();
+			sqlCommand.Parameters.Add("@PurBranchID", SqlDbType.Int).Value = PurBranchID;
+			sqlCommand.Parameters.Add("@BranchID", SqlDbType.Int).Value = LoginDetails.BranchID;
+			sqlCommand.Parameters.Add("@SupplierID", SqlDbType.Int).Value = SupplierID;
+			sqlCommand.Parameters.Add("@IsWaiting", SqlDbType.Bit).Value = IsWaiting;
+			sqlCommand.Parameters.Add("@SupplierName", SqlDbType.NVarChar).Value = SupplierName;
+			sqlCommand.Parameters.Add("@SupplierPhone", SqlDbType.NVarChar).Value = SupplierPhone;
+			sqlCommand.Parameters.Add("@SupplierVatNum", SqlDbType.NVarChar).Value = SupplierVatNum;
+			sqlCommand.Parameters.Add("@Purchases_Date", SqlDbType.DateTime).Value = Purchases_Date;
+			sqlCommand.Parameters.Add("@Order_Paymant_Type", SqlDbType.Int).Value = Order_Paymant_Type;
+			sqlCommand.Parameters.Add("@Restaurant_PayType", SqlDbType.NVarChar).Value = Restaurant_PayType;
+			sqlCommand.Parameters.Add("@Restaurant_TypeID", SqlDbType.Int).Value = Restaurant_TypeID;
+			sqlCommand.Parameters.Add("@CostCentersID", SqlDbType.Int).Value = CostCentersID;
+			sqlCommand.Parameters.Add("@Note", SqlDbType.NVarChar).Value = Note;
+			sqlCommand.Parameters.Add("@NoteNum", SqlDbType.NVarChar).Value = NoteNum;
+			sqlCommand.Parameters.Add("@CostOrder", SqlDbType.Decimal).Value = CostOrder;
+			sqlCommand.Parameters.Add("@Tax", SqlDbType.Decimal).Value = Tax;
+			sqlCommand.Parameters.Add("@TotalPrices", SqlDbType.Decimal).Value = TotalPrices;
+			sqlCommand.Parameters.Add("@Safy", SqlDbType.Decimal).Value = Safy;
+			sqlCommand.Parameters.Add("@DiscountNum", SqlDbType.Decimal).Value = DiscountNum;
+			sqlCommand.Parameters.Add("@DiscountPerantage", SqlDbType.Decimal).Value = DiscountPerantage;
+			sqlCommand.Parameters.Add("@Tax_Discount", SqlDbType.Decimal).Value = Tax_Discount;
+			sqlCommand.Parameters.Add("@TotalPrices_Discount", SqlDbType.Decimal).Value = TotalPrices_Discount;
+			sqlCommand.Parameters.Add("@TobaccoTax", SqlDbType.Decimal).Value = TobaccoTax;
+			sqlCommand.Parameters.Add("@AllTax", SqlDbType.Decimal).Value = AllTax;
+			sqlCommand.Parameters.Add("@Net", SqlDbType.Decimal).Value = Net;
+			sqlCommand.Parameters.Add("@CashMoney", SqlDbType.Decimal).Value = CashMoney;
+			sqlCommand.Parameters.Add("@CashBank", SqlDbType.Decimal).Value = CashBank;
+			sqlCommand.Parameters.Add("@OrderCashierType", SqlDbType.Bit).Value = OrderCashierType;
+			sqlCommand.Parameters.Add("@RoomNum", SqlDbType.Int).Value = RoomNum;
+			sqlCommand.Parameters.Add("@TableNum", SqlDbType.Int).Value = TableNum;
+			sqlCommand.Parameters.Add("@UserID_Add", SqlDbType.Int).Value = LoginDetails.UserID;
+			sqlCommand.Parameters.Add("@UserBranch_Add", SqlDbType.Int).Value = LoginDetails.BranchID;
+			sqlCommand.Parameters.Add("@UserMacAddress_Add", SqlDbType.NVarChar).Value = LoginDetails.macAddress;
+			sqlCommand.Parameters.Add("@ISPasue", SqlDbType.Bit).Value = ISPasue;
+			sqlCommand.Parameters.Add("@ISPayment", SqlDbType.Bit).Value = ISPayment;
+			sqlCommand.Parameters.Add("@Time1", SqlDbType.DateTime).Value = Time1;
+			DataTable changes = Items.GetChanges(DataRowState.Added);
+			sqlCommand.Parameters.AddWithValue("@Items", changes);
+			sqlCommand.CommandTimeout = 999999;
+			if (con.State == ConnectionState.Closed)
+			{
+				con.Open();
+			}
+			result = sqlCommand.ExecuteNonQuery();
+			con.Close();
+			result = 1;
+		}
+		return result;
+	}
+
+	public int DeleteOrders(int PurBranchID)
+	{
+		int result = 0;
+		using (SqlCommand sqlCommand = new SqlCommand("Delete_Order_Order_ALL", con))
+		{
+			sqlCommand.CommandType = CommandType.StoredProcedure;
+			sqlCommand.Parameters.Clear();
+			sqlCommand.Parameters.Add("@PurBranchID", SqlDbType.Int).Value = PurBranchID;
+			sqlCommand.Parameters.Add("@BranchID", SqlDbType.Int).Value = LoginDetails.BranchID;
+			sqlCommand.CommandTimeout = 999999;
+			if (con.State == ConnectionState.Closed)
+			{
+				con.Open();
+			}
+			result = sqlCommand.ExecuteNonQuery();
+			con.Close();
+			result = 1;
+		}
+		return result;
+	}
+
+	public int DeleteOrdersDraft(int PurBranchID)
+	{
+		int result = 0;
+		using (SqlCommand sqlCommand = new SqlCommand("Delete_Order_Order_ALL_Draft", con))
+		{
+			sqlCommand.CommandType = CommandType.StoredProcedure;
+			sqlCommand.Parameters.Clear();
+			sqlCommand.Parameters.Add("@PurBranchID", SqlDbType.Int).Value = PurBranchID;
+			sqlCommand.Parameters.Add("@BranchID", SqlDbType.Int).Value = LoginDetails.BranchID;
+			sqlCommand.CommandTimeout = 999999;
+			if (con.State == ConnectionState.Closed)
+			{
+				con.Open();
+			}
+			result = sqlCommand.ExecuteNonQuery();
+			con.Close();
+			result = 1;
+		}
+		return result;
+	}
+
+	public int DeleteDelivery(int PurBranchID, int CostCentersID, decimal Cash, decimal Bank)
+	{
+		int result = 0;
+		using (SqlCommand sqlCommand = new SqlCommand("Update_Restaurant_Tawsel", con))
+		{
+			sqlCommand.CommandType = CommandType.StoredProcedure;
+			sqlCommand.Parameters.Clear();
+			sqlCommand.Parameters.Add("@BranchID", SqlDbType.Int).Value = LoginDetails.BranchID;
+			sqlCommand.Parameters.Add("@PurBranchID", SqlDbType.Int).Value = PurBranchID;
+			sqlCommand.Parameters.Add("@CostCentersID", SqlDbType.Int).Value = CostCentersID;
+			sqlCommand.Parameters.Add("@Cash", SqlDbType.Decimal).Value = Cash;
+			sqlCommand.Parameters.Add("@Bank", SqlDbType.Decimal).Value = Bank;
+			sqlCommand.CommandTimeout = 999999;
+			if (con.State == ConnectionState.Closed)
+			{
+				con.Open();
+			}
+			result = sqlCommand.ExecuteNonQuery();
+			con.Close();
+		}
+		return result;
+	}
+
+	public int UpdateMahly(int PurBranchID, int CostCentersID, decimal Cash, decimal Bank, bool IsPaymant, int RoomNum, int TableNum)
+	{
+		int result = 0;
+		using (SqlCommand sqlCommand = new SqlCommand("Update_Restaurant_Mahly", con))
+		{
+			sqlCommand.CommandType = CommandType.StoredProcedure;
+			sqlCommand.Parameters.Clear();
+			sqlCommand.Parameters.Add("@BranchID", SqlDbType.Int).Value = LoginDetails.BranchID;
+			sqlCommand.Parameters.Add("@PurBranchID", SqlDbType.Int).Value = PurBranchID;
+			sqlCommand.Parameters.Add("@CostCentersID", SqlDbType.Int).Value = CostCentersID;
+			sqlCommand.Parameters.Add("@Cash", SqlDbType.Decimal).Value = Cash;
+			sqlCommand.Parameters.Add("@Bank", SqlDbType.Decimal).Value = Bank;
+			sqlCommand.Parameters.Add("@IsPaymant", SqlDbType.Bit).Value = IsPaymant;
+			sqlCommand.Parameters.Add("@RoomNum", SqlDbType.Int).Value = RoomNum;
+			sqlCommand.Parameters.Add("@TableNum", SqlDbType.Int).Value = TableNum;
+			sqlCommand.Parameters.Add("@UserID_Add", SqlDbType.Int).Value = LoginDetails.UserID;
+			sqlCommand.Parameters.Add("@UserMacAddress_Add", SqlDbType.NVarChar).Value = LoginDetails.macAddress;
+			sqlCommand.CommandTimeout = 999999;
+			if (con.State == ConnectionState.Closed)
+			{
+				con.Open();
+			}
+			result = sqlCommand.ExecuteNonQuery();
+			con.Close();
+		}
+		return result;
+	}
+
+	public string GetPrinterName(int ID)
+	{
+		string result = "";
+		Printer printer = ((IQueryable<Printer>)db.Printers).Where((Printer x) => x.ID == ID).FirstOrDefault();
+		if (printer != null)
+		{
+			result = printer.Name;
+		}
+		return result;
+	}
+
+	public List<Printer> GetPrinterAll()
+	{
+		return ((IQueryable<Printer>)db.Printers).Where((Printer x) => x.ID > 0).ToList();
+	}
+
+	public List<Get_Item_ByCodeALL_Result> GetItemByCode(string Code)
+	{
+		GTSdbEntities gTSdbEntities = new GTSdbEntities();
+		try
+		{
+			return ((IEnumerable<Get_Item_ByCodeALL_Result>)gTSdbEntities.Get_Item_ByCodeALL(Code, LoginDetails.BranchID)).ToList();
+		}
+		finally
+		{
+			((IDisposable)gTSdbEntities)?.Dispose();
+		}
+	}
+
+	public List<GetAllitems_Alternatives_Result> GetAllitems_Alternatives(int ItmID, int StoreID, int UnitType)
+	{
+		GTSdbEntities gTSdbEntities = new GTSdbEntities();
+		try
+		{
+			return ((IEnumerable<GetAllitems_Alternatives_Result>)gTSdbEntities.GetAllitems_Alternatives(ItmID, StoreID, UnitType)).ToList();
+		}
+		finally
+		{
+			((IDisposable)gTSdbEntities)?.Dispose();
+		}
+	}
+
+	public decimal GetCurrentBalance(int itemId, int storeId)
+	{
+		GTSdbEntities gTSdbEntities = new GTSdbEntities();
+		try
+		{
+			return (from q in (IQueryable<ItemQuantity>)gTSdbEntities.ItemQuantities
+				where q.ItemID == (int?)itemId && q.StoreID == (int?)storeId
+				select q.CurrentBalance).FirstOrDefault().GetValueOrDefault();
+		}
+		finally
+		{
+			((IDisposable)gTSdbEntities)?.Dispose();
+		}
+	}
+
+	public List<GetLastOrderDetailsByItemID_Result> GetLastOrderDetailsByItemID(int ItmID)
+	{
+		GTSdbEntities gTSdbEntities = new GTSdbEntities();
+		try
+		{
+			return ((IEnumerable<GetLastOrderDetailsByItemID_Result>)gTSdbEntities.GetLastOrderDetailsByItemID(ItmID)).ToList();
+		}
+		finally
+		{
+			((IDisposable)gTSdbEntities)?.Dispose();
+		}
+	}
+
+	public string GetUnitNameByID(int ID)
+	{
+		GTSdbEntities gTSdbEntities = new GTSdbEntities();
+		try
+		{
+			string text = ((IEnumerable<string>)gTSdbEntities.GetUnitNameByID(ID)).FirstOrDefault();
+			return text ?? string.Empty;
+		}
+		finally
+		{
+			((IDisposable)gTSdbEntities)?.Dispose();
+		}
+	}
+
+	public int InsertRes(int OrderID, int HallsID, DateTime BookingDate, DateTime InstallationDate, DateTime jawDate)
+	{
+		int num = 0;
+		int num2 = Convert.ToInt32(((IQueryable<Order_Reservations>)db.Order_Reservations).Select((Order_Reservations p) => p.ID).DefaultIfEmpty(0).Max()) + 1;
+		Order_Reservations order_Reservations = new Order_Reservations();
+		order_Reservations.ID = num2;
+		order_Reservations.OrderID = OrderID;
+		order_Reservations.HallsID = HallsID;
+		order_Reservations.BookingDate = BookingDate;
+		order_Reservations.InstallationDate = InstallationDate;
+		order_Reservations.jawDate = jawDate;
+		order_Reservations.BranchID = LoginDetails.BranchID;
+		order_Reservations.UserID_Add = LoginDetails.UserID;
+		order_Reservations.UserBranch_Add = LoginDetails.BranchID;
+		order_Reservations.UserMacAddress_Add = LoginDetails.macAddress;
+		order_Reservations.UserDate_Add = DateTime.Now;
+		db.Order_Reservations.Add(order_Reservations);
+		num = ((DbContext)db).SaveChanges();
+		return num2;
+	}
+
+	public int UpdateRes(int OrderID, int HallsID, DateTime BookingDate, DateTime InstallationDate, DateTime jawDate)
+	{
+		int result = 0;
+		Order_Reservations order_Reservations = ((IQueryable<Order_Reservations>)db.Order_Reservations).Where((Order_Reservations x) => x.OrderID == (int?)OrderID && x.BranchID == (int?)LoginDetails.BranchID).FirstOrDefault();
+		if (order_Reservations != null)
+		{
+			order_Reservations.HallsID = HallsID;
+			order_Reservations.BookingDate = BookingDate;
+			order_Reservations.InstallationDate = InstallationDate;
+			order_Reservations.jawDate = jawDate;
+			order_Reservations.UserID_Add = LoginDetails.UserID;
+			order_Reservations.UserBranch_Add = LoginDetails.BranchID;
+			order_Reservations.UserMacAddress_Add = LoginDetails.macAddress;
+			order_Reservations.UserDate_Add = DateTime.Now;
+			((DbContext)db).SaveChanges();
+			result = OrderID;
+		}
+		return result;
+	}
+
+	public int DeleteRes(int ID)
+	{
+		int result = 0;
+		Order_Reservations order_Reservations = ((IQueryable<Order_Reservations>)db.Order_Reservations).Where((Order_Reservations x) => x.OrderID == (int?)ID && x.BranchID == (int?)LoginDetails.BranchID).FirstOrDefault();
+		if (order_Reservations != null)
+		{
+			db.Order_Reservations.Attach(order_Reservations);
+			db.Order_Reservations.Remove(order_Reservations);
+			result = ((DbContext)db).SaveChanges();
+		}
+		return result;
+	}
+
+	public void UpdateOrderAFterElctorncFatora(int orderId, string newQRCode, string OrderTypeId, string NormalOrSimpleInvoice, bool ThirdParty, bool NominalInvoice, bool ExportInvoice, bool SummaryInvoice, bool SelfInvoice)
+	{
+		Order_Orders order_Orders = ((IQueryable<Order_Orders>)db.Order_Orders).FirstOrDefault((Order_Orders x) => x.ID == orderId);
+		if (order_Orders != null)
+		{
+			order_Orders.QRCode = newQRCode;
+			order_Orders.OrderTypeElectronicInvoiceId = OrderTypeId;
+			order_Orders.NormalOrSimpleInvoice = NormalOrSimpleInvoice;
+			order_Orders.ThirdParty = ThirdParty;
+			order_Orders.NominalInvoice = NominalInvoice;
+			order_Orders.ExportInvoice = ExportInvoice;
+			order_Orders.SummaryInvoice = SummaryInvoice;
+			order_Orders.SelfInvoice = SelfInvoice;
+			((DbContext)db).SaveChanges();
+		}
+	}
+
+	public void MangeGlassess(int orderId, string RightSph, string RightCYL, string RightAxis, string RightAdd, string LeftSph, string LeftCYL, string LeftAxis, string LeftAdd, string NoteGlass)
+	{
+		Order_Extension order_Extension = ((IQueryable<Order_Extension>)db.Order_Extension).FirstOrDefault((Order_Extension o) => o.OrderID == orderId);
+		if (order_Extension != null)
+		{
+			order_Extension.RightSph = RightSph;
+			order_Extension.RightCYL = RightCYL;
+			order_Extension.RightAxis = RightAxis;
+			order_Extension.RightAdd = RightAdd;
+			order_Extension.LeftSph = LeftSph;
+			order_Extension.LeftCYL = LeftCYL;
+			order_Extension.LeftAxis = LeftAxis;
+			order_Extension.LeftAdd = LeftAdd;
+			order_Extension.Note = NoteGlass;
+		}
+		else
+		{
+			Order_Extension order_Extension2 = new Order_Extension
+			{
+				OrderID = orderId,
+				RightSph = RightSph,
+				RightCYL = RightCYL,
+				RightAxis = RightAxis,
+				RightAdd = RightAdd,
+				LeftSph = LeftSph,
+				LeftCYL = LeftCYL,
+				LeftAxis = LeftAxis,
+				LeftAdd = LeftAdd,
+				Note = NoteGlass
+			};
+			db.Order_Extension.Add(order_Extension2);
+		}
+		((DbContext)db).SaveChanges();
+	}
+
+	public Order_Extension GetGlassess(int orderId)
+	{
+		return ((IQueryable<Order_Extension>)db.Order_Extension).FirstOrDefault((Order_Extension o) => o.OrderID == orderId);
+	}
+
+	public void DeleteGlassess(int orderId)
+	{
+		Order_Extension order_Extension = ((IQueryable<Order_Extension>)db.Order_Extension).FirstOrDefault((Order_Extension o) => o.OrderID == orderId);
+		if (order_Extension != null)
+		{
+			db.Order_Extension.Remove(order_Extension);
+			((DbContext)db).SaveChanges();
+		}
+	}
+
+	public void UpdateDraftNum(int id)
+	{
+		Order_OrdersDraft order_OrdersDraft = ((IQueryable<Order_OrdersDraft>)db.Order_OrdersDraft).FirstOrDefault((Order_OrdersDraft d) => d.ID == id);
+		if (order_OrdersDraft != null)
+		{
+			int valueOrDefault = order_OrdersDraft.OrderNum.GetValueOrDefault();
+			order_OrdersDraft.OrderNum = valueOrDefault + 1;
+			((DbContext)db).SaveChanges();
+		}
+	}
+}
