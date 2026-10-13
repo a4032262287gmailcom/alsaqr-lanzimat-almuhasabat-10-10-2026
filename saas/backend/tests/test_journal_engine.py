@@ -224,6 +224,24 @@ async def test_period_dual_control_lock_audit_and_journal_reversal() -> None:
 
 
 @pytest.mark.asyncio(loop_scope="session")
+async def test_journal_requires_an_open_period_covering_the_posting_date() -> None:
+    tenant_id, _ = await create_test_tenant()
+    async with SessionFactory() as session:
+        await set_tenant_context(session, str(tenant_id))
+        account_ids = await seed_chart_of_accounts(session, tenant_id)
+        with pytest.raises(HTTPException) as captured:
+            await create_journal(
+                session, tenant_id, None, date(2026, 5, 1), "قيد بلا فترة محاسبية", "MANUAL",
+                [
+                    {"account_id": account_ids["1101"], "debit": Decimal("10.00"), "credit": Decimal("0.00")},
+                    {"account_id": account_ids["3101"], "debit": Decimal("0.00"), "credit": Decimal("10.00")},
+                ],
+            )
+        assert captured.value.status_code == 422
+        assert captured.value.detail["posting_date"] == "2026-05-01"
+
+
+@pytest.mark.asyncio(loop_scope="session")
 async def test_journal_rejects_inactive_account() -> None:
     tenant_id, _ = await create_test_tenant()
     async with SessionFactory() as session:
