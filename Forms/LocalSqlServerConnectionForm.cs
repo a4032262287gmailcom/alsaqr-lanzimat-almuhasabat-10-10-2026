@@ -1,5 +1,6 @@
 using System.Data;
 using System.Drawing;
+using System.Text;
 using AlSaqr.Accounting.Services;
 
 namespace AlSaqr.Accounting.Forms;
@@ -57,9 +58,11 @@ internal sealed class LocalSqlServerConnectionForm : Form
         test.Click += (_, _) => RunTest(false);
         var save = MakeButton("اختبار الاتصال وحفظ الإعداد");
         save.Click += (_, _) => RunTest(true);
+        var export = MakeButton("تصدير مخطط الجداول");
+        export.Click += (_, _) => ExportSchema();
         var close = MakeButton("إغلاق");
         close.Click += (_, _) => Close();
-        actions.Controls.Add(test); actions.Controls.Add(save); actions.Controls.Add(close);
+        actions.Controls.Add(test); actions.Controls.Add(save); actions.Controls.Add(export); actions.Controls.Add(close);
 
         _tables.Dock = DockStyle.Fill;
         _tables.ReadOnly = true;
@@ -102,6 +105,30 @@ internal sealed class LocalSqlServerConnectionForm : Form
         };
     }
 
+    private void ExportSchema()
+    {
+        if (_tables.DataSource is not DataTable table || table.Rows.Count == 0)
+        {
+            MessageBox.Show(this, "اختبر الاتصال واعرض مخطط الجداول أولًا.", "الصقر لأنظمة المحاسبة", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+        using var dialog = new SaveFileDialog
+        {
+            Filter = "ملف CSV بترميز UTF-8 (*.csv)|*.csv",
+            FileName = "AlSaqr-SqlServer-Schema-" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".csv",
+            AddExtension = true,
+            DefaultExt = "csv"
+        };
+        if (dialog.ShowDialog(this) != DialogResult.OK) return;
+        using var writer = new StreamWriter(dialog.FileName, false, new UTF8Encoding(true));
+        writer.WriteLine(string.Join(",", table.Columns.Cast<DataColumn>().Select(x => Csv(x.ColumnName))));
+        foreach (DataRow row in table.Rows)
+            writer.WriteLine(string.Join(",", row.ItemArray.Select(x => Csv(Convert.ToString(x, CultureInfo.InvariantCulture) ?? ""))));
+        _status.Text = "تم تصدير مخطط قاعدة البيانات (أسماء الجداول والأعمدة فقط) إلى: " + dialog.FileName;
+    }
+
+    private static string Csv(string value) => "\"" + value.Replace("\"", "\"\"").Replace("\\r", " ").Replace("\\n", " ") + "\"";
+
     private void RunTest(bool save)
     {
         try
@@ -109,7 +136,8 @@ internal sealed class LocalSqlServerConnectionForm : Form
             var settings = new LocalSqlServerSettings(_server.Text.Trim(), _database.Text.Trim());
             var report = LocalSqlServerConnection.Test(settings);
             _tables.DataSource = report.Tables;
-            var status = $"اتصال ناجح — الخادم: {report.Server} — قاعدة البيانات: {report.Database} — إصدار SQL Server: {report.Version} — المستخدم: {report.Login} — عدد الجداول: {report.Tables.Rows.Count}";
+            var tableCount = report.Tables.DefaultView.ToTable(true, "المخطط", "الجدول").Rows.Count;
+            var status = $"اتصال ناجح — الخادم: {report.Server} — قاعدة البيانات: {report.Database} — إصدار SQL Server: {report.Version} — المستخدم: {report.Login} — عدد الجداول: {tableCount}";
             if (save)
             {
                 LocalSqlServerConnection.Save(settings);
