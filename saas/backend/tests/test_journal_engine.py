@@ -247,7 +247,15 @@ async def test_journal_rejects_inactive_account() -> None:
     async with SessionFactory() as session:
         await set_tenant_context(session, str(tenant_id))
         account_ids = await seed_chart_of_accounts(session, tenant_id)
-        from app.models import Account
+        session.add(FiscalPeriod(
+            tenant_id=tenant_id,
+            code="FY2026",
+            name="السنة المالية 2026",
+            start_date=date(2026, 1, 1),
+            end_date=date(2026, 12, 31),
+            status="OPEN",
+        ))
+        await session.flush()
         cash = await session.scalar(select(Account).where(Account.tenant_id == tenant_id, Account.id == account_ids["1101"]))
         assert cash is not None
         cash.is_active = False
