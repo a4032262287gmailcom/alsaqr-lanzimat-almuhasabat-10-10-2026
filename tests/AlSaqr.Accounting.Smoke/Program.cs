@@ -12,6 +12,24 @@ try
     Database.Initialize();
     var service = new AccountingService();
 
+    AppSettingsService.Save(new AccountingAppSettings(
+        "شركة اختبار الصقر", "310000000000003", "0110000000", "الرياض",
+        "شكرًا لتعاملكم", "Dark", 15m, Path.Combine(Path.GetTempPath(), "alsaqr-smoke-backups")));
+    var savedSettings = AppSettingsService.Load();
+    Check(savedSettings.LegalEntityName == "شركة اختبار الصقر" &&
+          savedSettings.VatRegistrationNumber == "310000000000003" &&
+          savedSettings.Theme == "Dark" && savedSettings.DefaultVatRate == 15m,
+          "company settings round-trip through the DPAPI-protected store");
+
+    var licenseService = new LicenseService();
+    var firstLicenseCheck = licenseService.CheckAccess();
+    var secondLicenseCheck = new LicenseService().CheckAccess();
+    Check(firstLicenseCheck.HasAccess && firstLicenseCheck.IsTrial && firstLicenseCheck.ExpiresAtUtc.HasValue,
+          "first launch starts a time-limited license trial");
+    Check(secondLicenseCheck.HasAccess && secondLicenseCheck.IsTrial &&
+          secondLicenseCheck.ExpiresAtUtc == firstLicenseCheck.ExpiresAtUtc,
+          "trial state persists across application checks");
+
     var searchData = new DataTable();
     searchData.Columns.Add("رقم المستند", typeof(string));
     searchData.Columns.Add("الإجمالي", typeof(decimal));
