@@ -290,7 +290,8 @@ internal sealed class MainForm : Form
         var report=Combo("ميزان المراجعة",
             ("ميزان المراجعة","ميزان المراجعة"),("الأستاذ العام","الأستاذ العام"),("الأرباح والخسائر","الأرباح والخسائر"),
             ("الميزانية العمومية","الميزانية العمومية"),("تقييم المخزون","تقييم المخزون"),("سجل المبيعات","سجل المبيعات"),
-            ("سجل المشتريات","سجل المشتريات"),("حركة المخزون","حركة المخزون"),("سندات القبض والصرف","سندات القبض والصرف"),
+            ("سجل المشتريات","سجل المشتريات"),("تقرير ضريبة القيمة المضافة","تقرير ضريبة القيمة المضافة"),
+            ("حركة المخزون","حركة المخزون"),("تسوية المخزون","تسوية المخزون"),("سندات القبض والصرف","سندات القبض والصرف"),
             ("ملخص العملاء والموردين","ملخص العملاء والموردين"),("سجل التدقيق","سجل التدقيق"));
         report.Width=230;
         var from = new DateTimePicker { Width=145, Format=DateTimePickerFormat.Custom, CustomFormat="yyyy-MM-dd", Value=new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1) };
@@ -309,7 +310,9 @@ internal sealed class MainForm : Form
                 "تقييم المخزون" => _service.StockValuation(),
                 "سجل المبيعات" => _service.InvoiceRegister("SALE",from.Value,to.Value),
                 "سجل المشتريات" => _service.InvoiceRegister("PURCHASE",from.Value,to.Value),
+                "تقرير ضريبة القيمة المضافة" => _service.VatSummary(from.Value,to.Value),
                 "حركة المخزون" => _service.StockMovementRegister(from.Value,to.Value),
+                "تسوية المخزون" => _service.StockReconciliation(),
                 "سندات القبض والصرف" => _service.SettlementRegister("ALL",from.Value,to.Value),
                 "ملخص العملاء والموردين" => _service.PartyBalances(from.Value,to.Value),
                 "سجل التدقيق" => IsAdmin ? _service.AuditHistory() : throw new InvalidOperationException("عرض سجل التدقيق متاح لمدير النظام فقط."),
