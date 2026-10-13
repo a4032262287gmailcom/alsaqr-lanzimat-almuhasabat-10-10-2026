@@ -5,8 +5,6 @@ namespace AlSaqr.Accounting;
 
 internal sealed partial class MainForm
 {
-    private readonly ReturnService _returns = new();
-
     private void ShowReturns(string kind)
     {
         var title = kind == "SALE_RETURN" ? "مردودات البيع المرحلة" : "مردودات الشراء المرحلة";
