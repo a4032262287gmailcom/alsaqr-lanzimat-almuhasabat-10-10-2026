@@ -113,6 +113,12 @@ internal sealed class CashierForm : Form
         };
         _search.TextChanged += (_, _) => RefreshProducts();
         _productsGrid.DoubleClick += (_, _) => AddSelectedProduct();
+        _productsGrid.SelectionChanged += (_, _) =>
+        {
+            var selected = SelectedProduct();
+            if (selected is not null)
+                _unitPrice.Value = Math.Min(_unitPrice.Maximum, Math.Max(_unitPrice.Minimum, selected.Price));
+        };
 
         var split = new SplitContainer
         {
@@ -305,6 +311,7 @@ internal sealed class CashierForm : Form
             _barcode.Focus();
             return;
         }
+        _unitPrice.Value = Math.Min(_unitPrice.Maximum, Math.Max(_unitPrice.Minimum, product.Price));
         AddProductToCart(product);
         _barcode.Clear();
         _barcode.Focus();
@@ -319,11 +326,17 @@ internal sealed class CashierForm : Form
 
     private void AddProductToCart(CashierProduct product)
     {
-        if (product.Quantity < _quantity.Value)
-            throw new InvalidOperationException($"الكمية الحالية للصنف {product.Name} هي {product.Quantity:0.###}.");
         var existing = _cart.FirstOrDefault(x => x.Product.Id == product.Id);
-        if (existing is null) _cart.Add(new CartLine(product, _quantity.Value, _unitPrice.Value > 0 ? _unitPrice.Value : product.Price));
-        else existing.Quantity += _quantity.Value;
+        var requestedQuantity = (existing?.Quantity ?? 0m) + _quantity.Value;
+        if (product.Quantity < requestedQuantity)
+            throw new InvalidOperationException($"الكمية المطلوبة {requestedQuantity:0.###} من الصنف {product.Name} تتجاوز المتوفر {product.Quantity:0.###}.");
+        if (existing is null) _cart.Add(new CartLine(product, _quantity.Value, _unitPrice.Value));
+        else
+        {
+            existing.Quantity = requestedQuantity;
+            existing.UnitPrice = _unitPrice.Value;
+        }
+        _quantity.Value = 1m;
         RefreshCart();
         UpdateTotals();
         _status.Text = "تمت إضافة " + product.Name + " إلى السلة.";
