@@ -2,6 +2,7 @@ using System.Data;
 using System.Globalization;
 using System.Text;
 using AlSaqr.Accounting.Services;
+using AlSaqr.Accounting.Forms;
 
 namespace AlSaqr.Accounting;
 
@@ -27,7 +28,7 @@ internal sealed partial class MainForm : Form
     public MainForm(AuthUser user)
     {
         _user = user;
-        Text = "الصقر | نظام المحاسبة";
+        Text = "الصقر لأنظمة المحاسبة";
         WindowState = FormWindowState.Maximized;
         MinimumSize = new Size(1120, 700);
         StartPosition = FormStartPosition.CenterScreen;
@@ -37,7 +38,7 @@ internal sealed partial class MainForm : Form
         BackColor = _paper;
 
         var header = new Panel { Dock = DockStyle.Top, Height = 58, BackColor = _navy, Padding = new Padding(18, 6, 18, 6) };
-        var title = new Label { Text = "الصقر  |  نظام المحاسبة", AutoSize = false, Dock = DockStyle.Right, Width = 310, ForeColor = Color.White, TextAlign = ContentAlignment.MiddleRight, Font = new Font("Segoe UI", 16, FontStyle.Bold) };
+        var title = new Label { Text = "الصقر لأنظمة المحاسبة", AutoSize = false, Dock = DockStyle.Right, Width = 310, ForeColor = Color.White, TextAlign = ContentAlignment.MiddleRight, Font = new Font("Segoe UI", 16, FontStyle.Bold) };
         var identity = new Label { Text = $"المستخدم: {_user.UserName}  |  الدور: {RoleArabic(_user.Role)}", Dock = DockStyle.Left, Width = 320, ForeColor = Color.FromArgb(233, 220, 180), TextAlign = ContentAlignment.MiddleLeft };
         header.Controls.Add(title); header.Controls.Add(identity);
 
@@ -47,6 +48,8 @@ internal sealed partial class MainForm : Form
         AddNavigation(nav, "القيود اليومية", ShowJournals);
         AddNavigation(nav, "العملاء والموردون", ShowParties);
         AddNavigation(nav, "الأصناف والمخزون", ShowProducts);
+        if (CanPost) AddNavigation(nav, "الكاشير / نقطة البيع", OpenCashier);
+        AddNavigation(nav, "اتصال قاعدة SQL Server", OpenLocalSqlServerConnection);
         AddNavigation(nav, "فواتير البيع", () => ShowInvoices("SALE"));
         AddNavigation(nav, "فواتير الشراء", () => ShowInvoices("PURCHASE"));
         AddNavigation(nav, "مردودات البيع", () => ShowReturns("SALE_RETURN"));
@@ -232,6 +235,7 @@ internal sealed partial class MainForm : Form
         {
             actions.Add(("إضافة صنف", AddProduct));
             actions.Add(("تعديل الصنف المحدد", EditProduct));
+            actions.Add(("تعيين / تعديل باركود", EditProductBarcode));
             actions.Add(("تفعيل / إيقاف المحدد", ToggleProduct));
         }
         actions.Add(("تسوية مخزون", AddStockAdjustment));
@@ -275,6 +279,43 @@ internal sealed partial class MainForm : Form
             form.DialogResult = DialogResult.OK; form.Close(); ShowProducts(); SetStatus("تم تحديث الصنف مع إبقاء تقييم المخزون محفوظًا.");
         });
         form.Height += 65;
+        form.ShowDialog(this);
+    }
+
+    private void EditProductBarcode()
+    {
+        if (!IsAdmin) { Denied(); return; }
+        if (_tableGrid?.CurrentRow is null) { Notice("حدد الصنف المراد تعيين باركوده."); return; }
+        var id = Convert.ToInt32(_tableGrid.CurrentRow.Cells[0].Value, CultureInfo.InvariantCulture);
+        var name = Convert.ToString(_tableGrid.CurrentRow.Cells[2].Value) ?? "";
+        var barcode = TextBox();
+        var service = new CashierService();
+        barcode.Text = service.GetBarcode(id);
+        using var form = Dialog("تعيين باركود للصنف: " + name, 1, out var body, out var save);
+        AddField(body, "الباركود (اتركه فارغًا للإزالة)", barcode);
+        save.Text = "حفظ الباركود";
+        save.Click += (_, _) => Guard(() =>
+        {
+            service.SetBarcode(id, barcode.Text, _user.UserName);
+            form.DialogResult = DialogResult.OK;
+            form.Close();
+            ShowProducts();
+            SetStatus("تم حفظ الباركود. يمكن للكاشير الآن البحث به أو مسحه.");
+        });
+        form.ShowDialog(this);
+    }
+
+    private void OpenCashier()
+    {
+        if (!CanPost) { Denied(); return; }
+        using var form = new CashierForm(_user);
+        form.ShowDialog(this);
+        ShowDashboard();
+    }
+
+    private void OpenLocalSqlServerConnection()
+    {
+        using var form = new LocalSqlServerConnectionForm();
         form.ShowDialog(this);
     }
 
@@ -553,7 +594,7 @@ internal sealed partial class MainForm : Form
         Guard(() => { Data.Database.BackupTo(save.FileName); SetStatus("تم إنشاء نسخة احتياطية متسقة من قاعدة البيانات."); });
     }
     private void Denied() => Notice("ليست لديك صلاحية تنفيذ هذه العملية.");
-    private void Notice(string message) => MessageBox.Show(this,message,"الصقر | نظام المحاسبة",MessageBoxButtons.OK,MessageBoxIcon.Information);
+    private void Notice(string message) => MessageBox.Show(this,message,"الصقر لأنظمة المحاسبة",MessageBoxButtons.OK,MessageBoxIcon.Information);
     private void SetStatus(string message) => _status.Text=message;
     private void Guard(Action action) { try { action(); } catch(Exception ex) { MessageBox.Show(this,ex.Message,"تعذر إكمال العملية",MessageBoxButtons.OK,MessageBoxIcon.Warning); } }
     private sealed record Choice(string Value,string Text);
