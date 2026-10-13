@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from uuid import UUID
 
 from fastapi import HTTPException
-from sqlalchemy import func, select
+from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import FiscalPeriod, JournalEntry, JournalLine
@@ -21,6 +21,11 @@ async def create_period(
     if payload.start_date > payload.end_date:
         raise HTTPException(status_code=422, detail="Period start date must be on or before the end date")
 
+    # Serialize period creation per tenant; a query-only overlap check is otherwise racy under concurrent requests.
+    await session.execute(
+        text("SELECT pg_advisory_xact_lock(hashtextextended(:lock_key, 0))"),
+        {"lock_key": f"fiscal-period:{tenant_id}"},
+    )
     overlap_id = await session.scalar(
         select(FiscalPeriod.id).where(
             FiscalPeriod.tenant_id == tenant_id,
