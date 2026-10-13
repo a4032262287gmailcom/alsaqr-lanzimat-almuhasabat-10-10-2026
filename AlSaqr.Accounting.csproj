@@ -16,6 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <!-- Exclude superseded root-level forms/services; the active UI is Forms/ with ECDSA licensing and AppSettingsService. -->
-    <Compile Remove="tests/**/*.cs;tools/**/*.cs;CashierForm.cs;CommercialFeatures.cs;LicenseActivationForm.cs;SystemSettingsForm.cs;Services/SystemSettingsService.cs" />
+    <Compile Remove="tests/**/*.cs;tools/**/*.cs;CashierForm.cs;CommercialFeatures.cs;LicenseActivationForm.cs;SystemSettingsForm.cs;Services/SystemSettingsService.cs;Forms/InvoiceForm.cs;Forms/JournalEntryForm.cs;Forms/MainForm.cs;Forms/PartyPaymentForm.cs;Forms/RecordEditorForm.cs;Forms/ReportsForm.cs" />
   </ItemGroup>
 </Project>
