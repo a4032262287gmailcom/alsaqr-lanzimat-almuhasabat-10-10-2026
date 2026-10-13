@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+from uuid import uuid4
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -45,7 +46,11 @@ app.add_middleware(
 
 @app.middleware("http")
 async def security_headers(request: Request, call_next):
+    supplied_request_id = request.headers.get("X-Request-ID", "").strip()
+    request_id = supplied_request_id[:80] if supplied_request_id and len(supplied_request_id) <= 80 else uuid4().hex
+    request.state.correlation_id = request_id
     response = await call_next(request)
+    response.headers.setdefault("X-Request-ID", request_id)
     response.headers.setdefault("X-Content-Type-Options", "nosniff")
     response.headers.setdefault("X-Frame-Options", "DENY")
     response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
