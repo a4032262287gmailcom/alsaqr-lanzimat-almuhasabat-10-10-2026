@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - feature/real-accounting-core-20261013
+      - desktop-accounting-core-20261013
   pull_request:
     branches:
       - main
