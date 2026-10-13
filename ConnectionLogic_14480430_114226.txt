@@ -1,0 +1,273 @@
+﻿
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmSqlConnection.cs
+   12: using System.Xml.Serialization;
+   13: using DevExpress.LookAndFeel;
+   14: using DevExpress.XtraEditors;
+   15: using DevExpress.XtraEditors.Controls;
+   16: using GTSErpSystem.BLL.Main;
+   17: 
+   18: namespace GTSErpSystem;
+   19: 
+   20: public class FrmSqlConnection : XtraForm
+   21: {
+   22: 	private SqlConnection Conn;
+   23: 
+   24: 	private SqlCommand Command;
+   25: 
+   26: 	private SqlDataReader Reader;
+   27: 
+   28: 	private string sql = "";
+   29: 
+   30: 	private string ConnectionString = "";
+   31: 
+   32: 	private IContainer components = null;
+   33: 
+   34: 	private GroupBox groupBox1;
+   35: 
+   36: 	private GroupBox groupBox3;
+   37: 
+   38: 	private GroupBox groupBox2;
+   39: 
+   40: 	private Label label4;
+   41: 
+   42: 	private Label label3;
+   43: 
+   44: 	private Label label2;
+---
+   56: 	private SimpleButton BtnExit;
+   57: 
+   58: 	private SimpleButton BtnSave;
+   59: 
+   60: 	private SimpleButton BtnTest;
+   61: 
+   62: 	private SimpleButton BtnSearch;
+   63: 
+   64: 	public FrmSqlConnection()
+   65: 	{
+   66: 		InitializeComponent();
+   67: 		BindServer();
+   68: 		UserLookAndFeel.Default.SkinName = "Office 2013";
+   69: 		comboServerName.Focus();
+   70: 	}
+   71: 
+   72: 	private void BtnConnection_Click(object sender, EventArgs e)
+   73: 	{
+   74: 		if (comboServerName.Text != "" && TxtUser.Text != "" && TxtPassword.Text != "")
+   75: 		{
+   76: 			try
+   77: 			{
+   78: 				ConnectionString = "Data Source = " + comboServerName.Text + ";User Id=" + TxtUser.Text + ";Password=***" + TxtPassword.Text;
+   79: 				Conn = new SqlConnection(ConnectionString);
+   80: 				Conn.Open();
+   81: 				sql = "SELECT * FROM sys.databases d where d.database_id > 4 AND   d.name NOT LIKE 'ReportServer'AND  d.name NOT LIKE 'ReportServerTempDB' ORDER BY d.create_date DESC ";
+   82: 				Command = new SqlCommand(sql, Conn);
+   83: 				Reader = Command.ExecuteReader();
+   84: 				comboDatabaseName.Properties.Items.Clear();
+   85: 				while (Reader.Read())
+   86: 				{
+   87: 					comboDatabaseName.Properties.Items.Add(Reader[0].ToString());
+   88: 				}
+   89: 				MessageBox.Show("تم الاتصال بنجاح", "مستكشف الاتصال", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+   90: 				return;
+   91: 			}
+   92: 			catch (Exception ex)
+   93: 			{
+---
+  128: 			fileStream.Close();
+  129: 		}
+  130: 		catch (Exception ex)
+  131: 		{
+  132: 			MessageBox.Show(ex.Message, "مستكشف البيانات", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+  133: 		}
+  134: 	}
+  135: 
+  136: 	private void BtnSave_Click(object sender, EventArgs e)
+  137: 	{
+  138: 		if (comboServerName.Text != "" && TxtUser.Text != "" && TxtPassword.Text != "" && comboDatabaseName.Text != "")
+  139: 		{
+  140: 			InsertDataInToXml();
+  141: 			MessageBox.Show("تم الحفظ اعدادات الاتصال بنجاح طŒ يرجي تشغيل البرنامج من جديد", "مستكشف البيانات", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+  142: 			SoundPlayer soundPlayer = new System.Media.SoundPlayer(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SERIAL.WAV"));
+  143: 			soundPlayer.Play();
+  144: 			Application.Exit();
+  145: 			Process.Start("الصقر لأنظمة المحاسبة.exe");
+  146: 		}
+  147: 		else
+  148: 		{
+  149: 			MessageBox.Show("عفوا، يرجي ادخال كافة البيانات المطلوبة بشكل صحيح", "مستكشف الاتصال", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+  150: 			comboDatabaseName.Focus();
+---
+  240: 		{
+  241: 			components.Dispose();
+  242: 		}
+  243: 		base.Dispose(disposing);
+  244: 	}
+  245: 
+  246: 	private void InitializeComponent()
+  247: 	{
+  248: 		System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GTSErpSystem.FrmSqlConnection));
+  249: 		this.groupBox1 = new System.Windows.Forms.GroupBox();
+  250: 		this.groupBox3 = new System.Windows.Forms.GroupBox();
+  251: 		this.BtnExit = new DevExpress.XtraEditors.SimpleButton();
+  252: 		this.BtnSave = new DevExpress.XtraEditors.SimpleButton();
+  253: 		this.BtnTest = new DevExpress.XtraEditors.SimpleButton();
+  254: 		this.groupBox2 = new System.Windows.Forms.GroupBox();
+  255: 		this.BtnSearch = new DevExpress.XtraEditors.SimpleButton();
+  256: 		this.TxtPassword=***;
+  257: 		this.TxtUser = new System.Windows.Forms.TextBox();
+  258: 		this.label4 = new System.Windows.Forms.Label();
+  259: 		this.label3 = new System.Windows.Forms.Label();
+  260: 		this.label2 = new System.Windows.Forms.Label();
+  261: 		this.label1 = new System.Windows.Forms.Label();
+  262: 		this.comboServerName = new System.Windows.Forms.ComboBox();
+---
+  295: 		this.BtnSave.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("BtnSave.ImageOptions.Image");
+  296: 		this.BtnSave.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.RightCenter;
+  297: 		this.BtnSave.Location = new System.Drawing.Point(177, 23);
+  298: 		this.BtnSave.Margin = new System.Windows.Forms.Padding(4);
+  299: 		this.BtnSave.Name = "BtnSave";
+  300: 		this.BtnSave.Size = new System.Drawing.Size(142, 40);
+  301: 		this.BtnSave.TabIndex = 1;
+  302: 		this.BtnSave.Text = "حفظ Save";
+  303: 		this.BtnSave.Click += new System.EventHandler(BtnSave_Click);
+  304: 		this.BtnSave.KeyDown += new System.Windows.Forms.KeyEventHandler(Control_KeyDown);
+  305: 		this.BtnTest.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("BtnTest.ImageOptions.Image");
+  306: 		this.BtnTest.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.RightCenter;
+  307: 		this.BtnTest.Location = new System.Drawing.Point(327, 23);
+  308: 		this.BtnTest.Margin = new System.Windows.Forms.Padding(4);
+  309: 		this.BtnTest.Name = "BtnTest";
+  310: 		this.BtnTest.Size = new System.Drawing.Size(142, 40);
+  311: 		this.BtnTest.TabIndex = 0;
+  312: 		this.BtnTest.Text = "اختبار Test";
+  313: 		this.BtnTest.Click += new System.EventHandler(BtnConnection_Click);
+  314: 		this.BtnTest.KeyDown += new System.Windows.Forms.KeyEventHandler(Control_KeyDown);
+  315: 		this.groupBox2.Controls.Add(this.BtnSearch);
+  316: 		this.groupBox2.Controls.Add(this.TxtPassword);
+  317: 		this.groupBox2.Controls.Add(this.TxtUser);
+---
+  393: 		this.comboDatabaseName.KeyDown += new System.Windows.Forms.KeyEventHandler(ControlSave_KeyDown);
+  394: 		this.comboDatabaseName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(comboDatabaseName_KeyPress);
+  395: 		base.AutoScaleDimensions = new System.Drawing.SizeF(7f, 16f);
+  396: 		base.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+  397: 		base.ClientSize = new System.Drawing.Size(649, 299);
+  398: 		base.Controls.Add(this.groupBox1);
+  399: 		base.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+  400: 		base.MaximizeBox = false;
+  401: 		base.Name = "FrmSqlConnection";
+  402: 		this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+  403: 		this.RightToLeftLayout = true;
+  404: 		base.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+  405: 		this.Text = "الاتصال بقاعدة البيانات";
+  406: 		this.groupBox1.ResumeLayout(false);
+  407: 		this.groupBox3.ResumeLayout(false);
+  408: 		this.groupBox2.ResumeLayout(false);
+  409: 		this.groupBox2.PerformLayout();
+  410: 		((System.ComponentModel.ISupportInitialize)this.comboDatabaseName.Properties).EndInit();
+  411: 		base.ResumeLayout(false);
+  412: 	}
+  413: }
+  414: 
+  415: 
+---
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\Program.cs
+   19: 		Application.EnableVisualStyles();
+   20: 		Application.SetCompatibleTextRenderingDefault(defaultValue: false);
+   21: 		SecureCrmIntegration.Load();
+   22: 		LoginDetails.Crm = SecureCrmIntegration.Crm;
+   23: 		BonusSkins.Register();
+   24: 		SkinManager.EnableFormSkins();
+   25: 		LoginDetails.VergDate = "اصدار:VER [1]26.07.08";
+   26: 		GetPass();
+   27: 		changeConnection.SaveConnectionString("GTSdbEntities", "Data Source=.\\SQLEXPRESS;Initial Catalog=GtsDb2026;Integrated Security=True;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=True;Connect Timeout=5");
+   28: 		int num = changeConnection.TestCon();
+   29: 		if (num > 0)
+   30: 		{
+   31: 			LoginDetails.Status = "نسخة مرخصة";
+   32: 			System.Windows.Forms.Application.Idle += AlSaqarTheme.OnApplicationIdle;
+   33: 			Application.Run(new FrmLogin3());
+   34: 		}
+   35: 		else
+   36: 		{
+   37: 			Application.Run(new FrmSqlConnection());
+   38: 		}
+   39: 	}
+   40: 
+   41: 	private static void GetPass()
+   42: 	{
+   43: 		string pathValue = "Software\\ERP\\Information";
+   44: 		LoginDetails.PathValue = pathValue;
+   45: 	}
+   46: 
+   47: 	private static void GetVerg2(string Verg)
+   48: 	{
+   49: 		switch (Verg)
+   50: 		{
+   51: 		case "EFms":
+---
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.BLL.Main\ChangeConnection.cs
+   14: 
+   15: 	public string DataBaseDefualt;
+   16: 
+   17: 	public ChangeConnection()
+   18: 	{
+   19: 		conifg = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+   20: 	}
+   21: 
+   22: 	public string GetConnectionString(string Key)
+   23: 	{
+   24: 		return conifg.ConnectionStrings.ConnectionStrings[Key].ConnectionString;
+   25: 	}
+   26: 
+   27: 	public void SaveConnectionString(string key, string value)
+   28: 	{
+   29: 		Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+   30: 		ConnectionStringsSection connectionStringsSection = (ConnectionStringsSection)configuration.GetSection("connectionStrings");
+   31: 		if (connectionStringsSection != null)
+   32: 		{
+   33: 			string connectionString = "metadata=res://*/Model1.csdl|res://*/Model1.ssdl|res://*/Model1.msl;provider=System.Data.SqlClient;provider connection string='" + value + ";MultipleActiveResultSets=True;App=EntityFramework'";
+   34: 			connectionStringsSection.ConnectionStrings[key].ConnectionString = connectionString;
+   35: 			connectionStringsSection.ConnectionStrings[key].ProviderName = "System.Data.EntityClient";
+   36: 			configuration.Save(ConfigurationSaveMode.Modified);
+   37: 			ConfigurationManager.RefreshSection("connectionStrings");
+   38: 		}
+   39: 	}
+   40: 
+   41: 	public int TestCon()
+   42: 	{
+   43: 		int result = 0;
+   44: 		try
+   45: 		{
+   46: 			GTSdbEntities gTSdbEntities = new GTSdbEntities();
+   47: 			User_Login user_Login = gTSdbEntities.User_Login.Where((User_Login x) => x.ID > 0).FirstOrDefault();
+   48: 			result = Convert.ToInt32(user_Login.ID);
+   49: 			return result;
+   50: 		}
+   51: 		catch (Exception)
+   52: 		{
+   53: 			DialogResult dialogResult = MessageBox.Show("حدث خطأ اثناء الاتصال بقاعدة البيانات طŒ سيتم تحويلك علي الاتصال بقاعدة البيانات", "خطأ في الاتصال", MessageBoxButtons.OKCancel, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+   54: 			if (dialogResult != DialogResult.OK && dialogResult == DialogResult.Cancel)
+   55: 			{
+   56: 				Application.Exit();
+   57: 			}
+   58: 		}
+   59: 		return result;
+   60: 	}
+   61: 
+   62: 	public string GetSqlConnectionFromFile()
+   63: 	{
+   64: 		string text = "";
+   65: 		string text2 = "";
+   66: 		string text3 = "";
+   67: 		string text4 = "";
+   68: 		try
+   69: 		{
+   70: 			XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<SaveConnectionForXml>));
+   71: 			List<SaveConnectionForXml> list = new List<SaveConnectionForXml>();
+   72: 			if (File.Exists(Application.StartupPath + "\\ERP.xml"))
+   73: 			{
+   74: 				FileStream fileStream = new FileStream(Application.StartupPath + "\\ERP.xml", FileMode.Open, FileAccess.Read);
+   75: 				list = (List<SaveConnectionForXml>)xmlSerializer.Deserialize(fileStream);
+   76: 				SaveConnectionForXml saveConnectionForXml = list[0];
+---

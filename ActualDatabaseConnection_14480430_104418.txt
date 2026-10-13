@@ -1,0 +1,11 @@
+﻿
+CONFIG: E:\KhaledERP\App\SourceCode\bin\Debug\net48\GTSErpSystem.exe.config
+[GTSdbEntities] Could not parse Entity Framework connection string: The 'ConnectionString' keyword is not supported.
+
+CONFIG: E:\KhaledERP\App\SourceCode\app.config
+[GTSdbEntities] Could not parse Entity Framework connection string: The 'ConnectionString' keyword is not supported.
+
+Connection strings found: 2
+
+=== RUNNING APPLICATION ===
+GTSErpSystem process is not currently running.

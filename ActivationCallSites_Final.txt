@@ -1,0 +1,1824 @@
+﻿FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion.cs
+LINE: 20
+17: 
+18: namespace GTSErpSystem;
+19: 
+20: public class FrmActivtion : MetroForm
+21: {
+22: 	private ChangeConnection setting = new ChangeConnection();
+23: 
+24: 	private string PathValue;
+25: 
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion.cs
+LINE: 48
+45: 
+46: 	private LinkLabel linkLabel1;
+47: 
+48: 	public FrmActivtion(string path)
+49: 	{
+50: 		InitializeComponent(); 
+51:  this.DialogResult = DialogResult.OK; 
+52:  this.Close();
+53: 		PathValue = path;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion.cs
+LINE: 61
+58: 
+59: 	private void BtnExit_Click(object sender, EventArgs e)
+60: 	{
+61: 		Application.Exit();
+62: 	}
+63: 
+64: 	private void BtnActive_Click(object sender, EventArgs e)
+65: 	{
+66: 		if (TxtActive.Text != "")
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion.cs
+LINE: 196
+193: 
+194: 	private void FrmActivition_FormClosed(object sender, FormClosedEventArgs e)
+195: 	{
+196: 		Application.Exit();
+197: 	}
+198: 
+199: 	private void TxtSerial_ButtonClick(object sender, EventArgs e)
+200: 	{
+201: 		Clipboard.SetText(TxtSerial.Text);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion.cs
+LINE: 210
+207: 		TxtActive.Text = Clipboard.GetText();
+208: 	}
+209: 
+210: 	private void FrmActivtion_FormClosing(object sender, FormClosingEventArgs e)
+211: 	{
+212: 		Application.Exit();
+213: 	}
+214: 
+215: 	private void linkLabel1_Click(object sender, EventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion.cs
+LINE: 212
+209: 
+210: 	private void FrmActivtion_FormClosing(object sender, FormClosingEventArgs e)
+211: 	{
+212: 		Application.Exit();
+213: 	}
+214: 
+215: 	private void linkLabel1_Click(object sender, EventArgs e)
+216: 	{
+217: 		linkLabel1.LinkVisited = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion.cs
+LINE: 232
+229: 
+230: 	private void InitializeComponent()
+231: 	{
+232: 		System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GTSErpSystem.FrmActivtion));
+233: 		this.groupBox1 = new System.Windows.Forms.GroupBox();
+234: 		this.BtnExit = new MetroFramework.Controls.MetroTextBox.MetroTextButton();
+235: 		this.BtnActive = new MetroFramework.Controls.MetroTextBox.MetroTextButton();
+236: 		this.label1 = new System.Windows.Forms.Label();
+237: 		this.groupBox2 = new System.Windows.Forms.GroupBox();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion.cs
+LINE: 396
+393: 		base.Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+394: 		base.Margin = new System.Windows.Forms.Padding(2);
+395: 		base.MaximizeBox = false;
+396: 		base.Name = "FrmActivtion";
+397: 		base.Padding = new System.Windows.Forms.Padding(18, 74, 18, 20);
+398: 		base.Resizable = false;
+399: 		this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+400: 		this.RightToLeftLayout = true;
+401: 		base.Style = MetroFramework.MetroColorStyle.White;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion.cs
+LINE: 404
+401: 		base.Style = MetroFramework.MetroColorStyle.White;
+402: 		this.Text = "تفعيل البرنامج";
+403: 		base.Theme = MetroFramework.MetroThemeStyle.Dark;
+404: 		base.FormClosing += new System.Windows.Forms.FormClosingEventHandler(FrmActivtion_FormClosing);
+405: 		this.groupBox1.ResumeLayout(false);
+406: 		this.groupBox2.ResumeLayout(false);
+407: 		this.groupBox2.PerformLayout();
+408: 		base.ResumeLayout(false);
+409: 		base.PerformLayout();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion3.cs
+LINE: 17
+14: 
+15: namespace GTSErpSystem;
+16: 
+17: public class FrmActivtion3 : MetroForm
+18: {
+19: 	private ChangeConnection setting = new ChangeConnection();
+20: 
+21: 	private string PathValue;
+22: 
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion3.cs
+LINE: 43
+40: 
+41: 	private Label label2;
+42: 
+43: 	public FrmActivtion3(string path)
+44: 	{
+45: 		InitializeComponent(); 
+46:  this.DialogResult = DialogResult.OK; 
+47:  this.Close();
+48: 		PathValue = path;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion3.cs
+LINE: 65
+62: 		{
+63: 			if (passwordEntry(TxtActive.Text))
+64: 			{
+65: 				Application.Exit();
+66: 				Process.Start("الصقر لأنظمة المحاسبة.exe");
+67: 			}
+68: 		}
+69: 		else
+70: 		{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion3.cs
+LINE: 99
+96: 		TxtActive.Text = Clipboard.GetText();
+97: 	}
+98: 
+99: 	private void FrmActivtion_FormClosing(object sender, FormClosingEventArgs e)
+100: 	{
+101: 		Application.Exit();
+102: 	}
+103: 
+104: 	private void linkLabel1_Click(object sender, EventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion3.cs
+LINE: 101
+98: 
+99: 	private void FrmActivtion_FormClosing(object sender, FormClosingEventArgs e)
+100: 	{
+101: 		Application.Exit();
+102: 	}
+103: 
+104: 	private void linkLabel1_Click(object sender, EventArgs e)
+105: 	{
+106: 		linkLabel1.LinkVisited = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion3.cs
+LINE: 161
+158: 	private void DecriptData()
+159: 	{
+160: 		string machineName = Environment.MachineName;
+161: 		string text = Class_Crypto.SetData("b14ca5898a4e4133bbce2ea2315a1500", "b14ca5898a4e4133bbce2ea2315a1916", MacAddress(), SerialNumber(), HardDisk(), LoginDetails.VergDate, DateTime.Now.ToString("yyyy-MM-dd"), machineName);
+162: 		string text2 = Class_Crypto.SetDataSecondWay("b14ca5898a4e4133bbce2ea2315a1500", "b14ca5898a4e4133bbce2ea2315a1916", text);
+163: 		TxtSerial.Text = text2;
+164: 	}
+165: 
+166: 	protected override void Dispose(bool disposing)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion3.cs
+LINE: 177
+174: 
+175: 	private void InitializeComponent()
+176: 	{
+177: 		System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GTSErpSystem.FrmActivtion3));
+178: 		this.groupBox1 = new System.Windows.Forms.GroupBox();
+179: 		this.label2 = new System.Windows.Forms.Label();
+180: 		this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+181: 		this.label1 = new System.Windows.Forms.Label();
+182: 		this.groupBox2 = new System.Windows.Forms.GroupBox();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion3.cs
+LINE: 345
+342: 		base.Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+343: 		base.Margin = new System.Windows.Forms.Padding(2);
+344: 		base.MaximizeBox = false;
+345: 		base.Name = "FrmActivtion3";
+346: 		base.Padding = new System.Windows.Forms.Padding(18, 74, 18, 20);
+347: 		base.Resizable = false;
+348: 		this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+349: 		this.RightToLeftLayout = true;
+350: 		base.Style = MetroFramework.MetroColorStyle.Green;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion3.cs
+LINE: 352
+349: 		this.RightToLeftLayout = true;
+350: 		base.Style = MetroFramework.MetroColorStyle.Green;
+351: 		this.Text = "برنامج G.T.S المحاسبي";
+352: 		base.FormClosing += new System.Windows.Forms.FormClosingEventHandler(FrmActivtion_FormClosing);
+353: 		this.groupBox1.ResumeLayout(false);
+354: 		this.groupBox1.PerformLayout();
+355: 		this.groupBox2.ResumeLayout(false);
+356: 		base.ResumeLayout(false);
+357: 	}
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmCheckActivationCloseYear.cs
+LINE: 13
+10: 
+11: namespace GTSErpSystem;
+12: 
+13: public class FrmCheckActivationCloseYear : XtraForm
+14: {
+15: 	public bool Active = false;
+16: 
+17: 	private IContainer components = null;
+18: 
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmCheckActivationCloseYear.cs
+LINE: 35
+32: 
+33: 	private SimpleButton BtnPasteOtp;
+34: 
+35: 	public FrmCheckActivationCloseYear()
+36: 	{
+37: 		InitializeComponent();
+38: 		ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
+39: 		ToolStripMenuItem toolStripMenuItem = new ToolStripMenuItem("لصق");
+40: 		toolStripMenuItem.Click += PasteItem_Click;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmCheckActivationCloseYear.cs
+LINE: 143
+140: 		}
+141: 	}
+142: 
+143: 	private void FrmCheckActivationElctroncInv_FormClosing(object sender, FormClosingEventArgs e)
+144: 	{
+145: 	}
+146: 
+147: 	private void BtnPasteOtp_Click(object sender, EventArgs e)
+148: 	{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmCheckActivationCloseYear.cs
+LINE: 170
+167: 
+168: 	private void InitializeComponent()
+169: 	{
+170: 		System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GTSErpSystem.FrmCheckActivationCloseYear));
+171: 		this.groupBox2 = new System.Windows.Forms.GroupBox();
+172: 		this.BtnPasteOtp = new DevExpress.XtraEditors.SimpleButton();
+173: 		this.TxtEncryption = new System.Windows.Forms.RichTextBox();
+174: 		this.label2 = new System.Windows.Forms.Label();
+175: 		this.label1 = new System.Windows.Forms.Label();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmCheckActivationCloseYear.cs
+LINE: 257
+254: 		base.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+255: 		base.MaximizeBox = false;
+256: 		base.MinimizeBox = false;
+257: 		base.Name = "FrmCheckActivationCloseYear";
+258: 		this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+259: 		this.RightToLeftLayout = true;
+260: 		base.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+261: 		this.Text = "التحقق من تفعيل اغلاق السنه الماليه";
+262: 		base.FormClosing += new System.Windows.Forms.FormClosingEventHandler(FrmCheckActivationElctroncInv_FormClosing);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmCheckActivationCloseYear.cs
+LINE: 262
+259: 		this.RightToLeftLayout = true;
+260: 		base.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+261: 		this.Text = "التحقق من تفعيل اغلاق السنه الماليه";
+262: 		base.FormClosing += new System.Windows.Forms.FormClosingEventHandler(FrmCheckActivationElctroncInv_FormClosing);
+263: 		this.groupBox2.ResumeLayout(false);
+264: 		this.groupBox2.PerformLayout();
+265: 		base.ResumeLayout(false);
+266: 	}
+267: }
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin.cs
+LINE: 371
+368: 
+369: 	private void BtnExit_Click(object sender, EventArgs e)
+370: 	{
+371: 		Application.Exit();
+372: 	}
+373: 
+374: 	private void Control_KeyDown(object sender, KeyEventArgs e)
+375: 	{
+376: 		if (e.KeyCode == Keys.Return)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 443
+440: 			Class_WaitFormFunc class_WaitFormFunc = new Class_WaitFormFunc();
+441: 			class_WaitFormFunc.Show(this);
+442: 			Thread.Sleep(50);
+443: 			FrmNameLogin(LoginDetails.TypeVerg);
+444: 			string databaseVersion = tblSetting.DatabaseVersion;
+445: 			int num = Stting.AddLoginLog(LoginDetails.UserID, LoginDetails.macAddress, LoginDetails.VergDate, databaseVersion);
+446: 			class_WaitFormFunc.Close();
+447: 			Hide();
+448: 		}
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 445
+442: 			Thread.Sleep(50);
+443: 			FrmNameLogin(LoginDetails.TypeVerg);
+444: 			string databaseVersion = tblSetting.DatabaseVersion;
+445: 			int num = Stting.AddLoginLog(LoginDetails.UserID, LoginDetails.macAddress, LoginDetails.VergDate, databaseVersion);
+446: 			class_WaitFormFunc.Close();
+447: 			Hide();
+448: 		}
+449: 		else
+450: 		{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 818
+815: 
+816: 	private void BtnExit_Click(object sender, EventArgs e)
+817: 	{
+818: 		Application.Exit();
+819: 	}
+820: 
+821: 	private void Control_KeyDown(object sender, KeyEventArgs e)
+822: 	{
+823: 		if (e.KeyCode == Keys.Return)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmSqlConnection.cs
+LINE: 144
+141: 			MessageBox.Show("تم الحفظ اعدادات الاتصال بنجاح طŒ يرجي تشغيل البرنامج من جديد", "مستكشف البيانات", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+142: 			SoundPlayer soundPlayer = new System.Media.SoundPlayer(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SERIAL.WAV"));
+143: 			soundPlayer.Play();
+144: 			Application.Exit();
+145: 			Process.Start("الصقر لأنظمة المحاسبة.exe");
+146: 		}
+147: 		else
+148: 		{
+149: 			MessageBox.Show("عفوا، يرجي ادخال كافة البيانات المطلوبة بشكل صحيح", "مستكشف الاتصال", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmSqlConnection.cs
+LINE: 156
+153: 
+154: 	private void BtnExit_Click(object sender, EventArgs e)
+155: 	{
+156: 		Application.Exit();
+157: 	}
+158: 
+159: 	private void Control_KeyDown(object sender, KeyEventArgs e)
+160: 	{
+161: 		if (e.KeyCode == Keys.Return)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\Program.cs
+LINE: 25
+22: 		LoginDetails.Crm = SecureCrmIntegration.Crm;
+23: 		BonusSkins.Register();
+24: 		SkinManager.EnableFormSkins();
+25: 		LoginDetails.VergDate = "اصدار:VER [1]26.07.08";
+26: 		GetPass();
+27: 		changeConnection.SaveConnectionString("GTSdbEntities", "Data Source=.\\SQLEXPRESS;Initial Catalog=GtsDb2026;Integrated Security=True;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=True;Connect Timeout=5");
+28: 		int num = changeConnection.TestCon();
+29: 		if (num > 0)
+30: 		{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\Program.cs
+LINE: 31
+28: 		int num = changeConnection.TestCon();
+29: 		if (num > 0)
+30: 		{
+31: 			LoginDetails.Status = "نسخة مرخصة";
+32: 			System.Windows.Forms.Application.Idle += AlSaqarTheme.OnApplicationIdle;
+33: 			Application.Run(new FrmLogin3());
+34: 		}
+35: 		else
+36: 		{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\Program.cs
+LINE: 33
+30: 		{
+31: 			LoginDetails.Status = "نسخة مرخصة";
+32: 			System.Windows.Forms.Application.Idle += AlSaqarTheme.OnApplicationIdle;
+33: 			Application.Run(new FrmLogin3());
+34: 		}
+35: 		else
+36: 		{
+37: 			Application.Run(new FrmSqlConnection());
+38: 		}
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\Program.cs
+LINE: 37
+34: 		}
+35: 		else
+36: 		{
+37: 			Application.Run(new FrmSqlConnection());
+38: 		}
+39: 	}
+40: 
+41: 	private static void GetPass()
+42: 	{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\Program.cs
+LINE: 107
+104: 			LoginDetails.PathValue = pathValue2;
+105: 			break;
+106: 		}
+107: 		case "FrmActivation":
+108: 		{
+109: 			LoginDetails.AppVerg = Verg;
+110: 			string pathValue = "Software\\SystemACC\\Protection";
+111: 			LoginDetails.PathValue = pathValue;
+112: 			break;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\Secure.cs
+LINE: 8
+5: 
+6: namespace GTSErpSystem;
+7: 
+8: public class Secure
+9: {
+10: 	private string globalPath;
+11: 
+12: 	private void firstTime()
+13: 	{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\Secure.cs
+LINE: 127
+124: 		globalPath = pass;
+125: 		if (checkPassword(appPassword))
+126: 		{
+127: 			LoginDetails.Status = "نسخة مرخصة";
+128: 			return true;
+129: 		}
+130: 		if (!blackListCheck())
+131: 		{
+132: 			string text = checkfirstDate();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.BLL.Main\AuthentationProgram.cs
+LINE: 10
+7: 
+8: namespace GTSErpSystem.BLL.Main;
+9: 
+10: internal class AuthentationProgram
+11: {
+12: 	public string isActive()
+13: 	{
+14: 		string result = "";
+15: 		try
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.CloseYears\FrmCloseYear.cs
+LINE: 205
+202: 
+203: 	private void BtnExit_Click(object sender, EventArgs e)
+204: 	{
+205: 		Application.Exit();
+206: 	}
+207: 
+208: 	private void Control_KeyDown(object sender, KeyEventArgs e)
+209: 	{
+210: 		if (e.KeyCode == Keys.Return)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmCheckActivationElctroncInv.cs
+LINE: 12
+9: 
+10: namespace GTSErpSystem.Frms.ElctorncInvoic;
+11: 
+12: public class FrmCheckActivationElctroncInv : XtraForm
+13: {
+14: 	public bool Active = false;
+15: 
+16: 	private IContainer components = null;
+17: 
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmCheckActivationElctroncInv.cs
+LINE: 36
+33: 
+34: 	private SimpleButton BtnPasteOtp;
+35: 
+36: 	public FrmCheckActivationElctroncInv()
+37: 	{
+38: 		InitializeComponent();
+39: 		ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
+40: 		ToolStripMenuItem toolStripMenuItem = new ToolStripMenuItem("لصق");
+41: 		toolStripMenuItem.Click += PasteItem_Click;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmCheckActivationElctroncInv.cs
+LINE: 140
+137: 		}
+138: 	}
+139: 
+140: 	private void FrmCheckActivationElctroncInv_FormClosing(object sender, FormClosingEventArgs e)
+141: 	{
+142: 	}
+143: 
+144: 	private void BtnPasteOtp_Click(object sender, EventArgs e)
+145: 	{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmCheckActivationElctroncInv.cs
+LINE: 167
+164: 
+165: 	private void InitializeComponent()
+166: 	{
+167: 		System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GTSErpSystem.Frms.ElctorncInvoic.FrmCheckActivationElctroncInv));
+168: 		this.groupBox1 = new System.Windows.Forms.GroupBox();
+169: 		this.groupBox2 = new System.Windows.Forms.GroupBox();
+170: 		this.BtnPasteOtp = new DevExpress.XtraEditors.SimpleButton();
+171: 		this.TxtEncryption = new System.Windows.Forms.RichTextBox();
+172: 		this.label2 = new System.Windows.Forms.Label();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmCheckActivationElctroncInv.cs
+LINE: 266
+263: 		base.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+264: 		base.MaximizeBox = false;
+265: 		base.MinimizeBox = false;
+266: 		base.Name = "FrmCheckActivationElctroncInv";
+267: 		this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+268: 		this.RightToLeftLayout = true;
+269: 		base.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+270: 		this.Text = "التحقق من تفعيل الفاتوره الاكترونيه";
+271: 		base.FormClosing += new System.Windows.Forms.FormClosingEventHandler(FrmCheckActivationElctroncInv_FormClosing);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmCheckActivationElctroncInv.cs
+LINE: 271
+268: 		this.RightToLeftLayout = true;
+269: 		base.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+270: 		this.Text = "التحقق من تفعيل الفاتوره الاكترونيه";
+271: 		base.FormClosing += new System.Windows.Forms.FormClosingEventHandler(FrmCheckActivationElctroncInv_FormClosing);
+272: 		this.groupBox2.ResumeLayout(false);
+273: 		this.groupBox2.PerformLayout();
+274: 		base.ResumeLayout(false);
+275: 	}
+276: }
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmGetDataFromCRM.cs
+LINE: 89
+86: 		try
+87: 		{
+88: 			waitForm.Show();
+89: 			if (LoginDetails.ActivationId == 0 || TxtBranch.SelectedValue == null || TxtName.SelectedValue == null)
+90: 			{
+91: 				waitForm.Close();
+92: 				MessageBox.Show("من فضلك تأكد من اختيار الفرع والمستخدم بشكل صحيح.", "تنبيه");
+93: 				return;
+94: 			}
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmGetDataFromCRM.cs
+LINE: 98
+95: 			int branchId = Convert.ToInt32(TxtBranch.SelectedValue);
+96: 			int userId = Convert.ToInt32(TxtName.SelectedValue);
+97: 			string baseUrl = LoginDetails.Crm?.TrimEnd('/') ?? throw new InvalidOperationException("LoginDetails.Crm غير محدد");
+98: 			string apiUrl = $"{baseUrl}/Zakat/GetDesktopCSRAsync?activationId={LoginDetails.ActivationId}&branchId={branchId}&userId={userId}";
+99: 			using HttpClient client = new HttpClient();
+100: 			client.DefaultRequestHeaders.Accept.Clear();
+101: 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+102: 			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", LoginDetails.Token);
+103: 			HttpResponseMessage response = await client.GetAsync(apiUrl);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 82
+79: 			{
+80: 				if (int.TryParse(await response.Content.ReadAsStringAsync(), out var activationId))
+81: 				{
+82: 					LoginDetails.ActivationId = activationId;
+83: 					MessageBox.Show($"âœ… تم إرسال البيانات بنجاح!\nActivation ID: {activationId}");
+84: 				}
+85: 				else
+86: 				{
+87: 					MessageBox.Show("تم الإرسال بنجاح، ولكن لم يتم التعرف على رقم التفعيل.", "تنبيه");
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 164
+161: 	private string DecriptData()
+162: 	{
+163: 		string machineName = Environment.MachineName;
+164: 		string text = Class_Crypto.SetData("b14ca5898a4e4133bbce2ea2315a1500", "b14ca5898a4e4133bbce2ea2315a1916", MacAddress(), SerialNumber(), HardDisk(), LoginDetails.VergDate, DateTime.Now.ToString("yyyy-MM-dd"), machineName);
+165: 		return Class_Crypto.SetDataSecondWay("b14ca5898a4e4133bbce2ea2315a1500", "b14ca5898a4e4133bbce2ea2315a1916", text);
+166: 	}
+167: 
+168: 	public static string MacAddress()
+169: 	{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmActivation.cs
+LINE: 64
+61: 
+62: namespace GTSErpSystem.Frms.FrmsHome;
+63: 
+64: public class FrmActivation : RibbonForm
+65: {
+66: 	private CheckPrvlg CheckPermession = new CheckPrvlg();
+67: 
+68: 	private Class_Setting STTG = new Class_Setting();
+69: 
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmActivation.cs
+LINE: 690
+687: 
+688: 	private RibbonPageGroup ribbonPageGroup39;
+689: 
+690: 	public FrmActivation()
+691: 	{
+692: 		if (LoginDetails.Lang == "ar-EG")
+693: 		{
+694: 			Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("ar-EG");
+695: 		}
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmActivation.cs
+LINE: 706
+703: 		LblCompany.Caption = "برنامج GTS للمحاسبة ونقاط البيع مرخص الي : " + LoginDetails.CompanyNameAR;
+704: 		LblServer.Caption = "السيرفر: " + LoginDetails.nameServer + " / " + LoginDetails.databaseServer;
+705: 		LblUser.Caption = "الموظف: " + LoginDetails.UserName;
+706: 		LblVerg.Caption = LoginDetails.VergDate;
+707: 		LblStatus.Caption = "   " + LoginDetails.Status + "   ";
+708: 		ribbonControl.SelectedPage = ribbonPage1;
+709: 	}
+710: 
+711: 	private void navBarControl_ActiveGroupChanged(object sender, NavBarGroupEventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmActivation.cs
+LINE: 707
+704: 		LblServer.Caption = "السيرفر: " + LoginDetails.nameServer + " / " + LoginDetails.databaseServer;
+705: 		LblUser.Caption = "الموظف: " + LoginDetails.UserName;
+706: 		LblVerg.Caption = LoginDetails.VergDate;
+707: 		LblStatus.Caption = "   " + LoginDetails.Status + "   ";
+708: 		ribbonControl.SelectedPage = ribbonPage1;
+709: 	}
+710: 
+711: 	private void navBarControl_ActiveGroupChanged(object sender, NavBarGroupEventArgs e)
+712: 	{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmActivation.cs
+LINE: 1249
+1246: 		switch (MessageBox.Show("هل تريد الخروج من برنامج مايكرو سمارت للمحاسبة ونقاط البيع", "خروج من البرنامج", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign))
+1247: 		{
+1248: 		case DialogResult.Yes:
+1249: 			Application.Exit();
+1250: 			break;
+1251: 		}
+1252: 	}
+1253: 
+1254: 	private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmActivation.cs
+LINE: 1277
+1274: 				if (num > 0)
+1275: 				{
+1276: 					MessageBox.Show("شكرا\u064b لك \r\n تم أخذ نسخة احتياطية بنجاح \r\n سوف يتم اغلاق البرنامج الان نستودعك الله الذي لاتضيع ودائعه", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1277: 					Application.Exit();
+1278: 				}
+1279: 				else
+1280: 				{
+1281: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1282: 					Application.Exit();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmActivation.cs
+LINE: 1282
+1279: 				else
+1280: 				{
+1281: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1282: 					Application.Exit();
+1283: 				}
+1284: 			}
+1285: 			else
+1286: 			{
+1287: 				Application.Exit();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmActivation.cs
+LINE: 1287
+1284: 			}
+1285: 			else
+1286: 			{
+1287: 				Application.Exit();
+1288: 			}
+1289: 		}
+1290: 		else
+1291: 		{
+1292: 			e.Cancel = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmActivation.cs
+LINE: 3182
+3179: 	{
+3180: 		this.components = new System.ComponentModel.Container();
+3181: 		DevExpress.Skins.SkinPaddingEdges skinPaddingEdges = new DevExpress.Skins.SkinPaddingEdges();
+3182: 		System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GTSErpSystem.Frms.FrmsHome.FrmActivation));
+3183: 		DevExpress.Skins.SkinPaddingEdges skinPaddingEdges2 = new DevExpress.Skins.SkinPaddingEdges();
+3184: 		this.tabbedView = new DevExpress.XtraBars.Docking2010.Views.Tabbed.TabbedView(this.components);
+3185: 		this.ribbonControl = new DevExpress.XtraBars.Ribbon.RibbonControl();
+3186: 		this.applicationMenu1 = new DevExpress.XtraBars.Ribbon.ApplicationMenu(this.components);
+3187: 		this.skinRibbonGalleryBarItem = new DevExpress.XtraBars.SkinRibbonGalleryBarItem();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmActivation.cs
+LINE: 5588
+5585: 		base.Controls.Add(this.navigationFrame);
+5586: 		base.Controls.Add(this.ribbonStatusBar);
+5587: 		base.Controls.Add(this.ribbonControl);
+5588: 		base.IconOptions.Icon = (System.Drawing.Icon)resources.GetObject("FrmActivation.IconOptions.Icon");
+5589: 		base.Name = "FrmActivation";
+5590: 		this.Ribbon = this.ribbonControl;
+5591: 		this.StatusBar = this.ribbonStatusBar;
+5592: 		base.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+5593: 		base.FormClosing += new System.Windows.Forms.FormClosingEventHandler(FrmMain_FormClosing);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmActivation.cs
+LINE: 5589
+5586: 		base.Controls.Add(this.ribbonStatusBar);
+5587: 		base.Controls.Add(this.ribbonControl);
+5588: 		base.IconOptions.Icon = (System.Drawing.Icon)resources.GetObject("FrmActivation.IconOptions.Icon");
+5589: 		base.Name = "FrmActivation";
+5590: 		this.Ribbon = this.ribbonControl;
+5591: 		this.StatusBar = this.ribbonStatusBar;
+5592: 		base.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+5593: 		base.FormClosing += new System.Windows.Forms.FormClosingEventHandler(FrmMain_FormClosing);
+5594: 		base.Load += new System.EventHandler(Frms_Load);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmBlue.cs
+LINE: 1108
+1105: 		switch (MessageBox.Show("هل تريد الخروج من برنامج مايكرو سمارت للمحاسبة ونقاط البيع", "خروج من البرنامج", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign))
+1106: 		{
+1107: 		case DialogResult.Yes:
+1108: 			Application.Exit();
+1109: 			break;
+1110: 		}
+1111: 	}
+1112: 
+1113: 	private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmBlue.cs
+LINE: 1136
+1133: 				if (num > 0)
+1134: 				{
+1135: 					MessageBox.Show("شكرا\u064b لك \r\n تم أخذ نسخة احتياطية بنجاح \r\n سوف يتم اغلاق البرنامج الان نستودعك الله الذي لاتضيع ودائعه", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1136: 					Application.Exit();
+1137: 				}
+1138: 				else
+1139: 				{
+1140: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1141: 					Application.Exit();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmBlue.cs
+LINE: 1141
+1138: 				else
+1139: 				{
+1140: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1141: 					Application.Exit();
+1142: 				}
+1143: 			}
+1144: 		}
+1145: 		else
+1146: 		{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGold.cs
+LINE: 569
+566: 		LblCompany.Caption = "برنامج GTS للمحاسبة ونقاط البيع مرخص الي : " + LoginDetails.CompanyNameAR;
+567: 		LblServer.Caption = "السيرفر: " + LoginDetails.nameServer + " / " + LoginDetails.databaseServer;
+568: 		LblUser.Caption = "الموظف: " + LoginDetails.UserName;
+569: 		LblVerg.Caption = LoginDetails.VergDate;
+570: 		SetDateApp();
+571: 		ribbonControl.SelectedPage = ribbonPage1;
+572: 		if (!LoginDetails.IsElectronicInvoice)
+573: 		{
+574: 			RElctornc.Visible = false;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGold.cs
+LINE: 1120
+1117: 		switch (MessageBox.Show("هل تريد الخروج من برنامج مايكرو سمارت للمحاسبة ونقاط البيع", "خروج من البرنامج", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign))
+1118: 		{
+1119: 		case DialogResult.Yes:
+1120: 			Application.Exit();
+1121: 			break;
+1122: 		}
+1123: 	}
+1124: 
+1125: 	private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGold.cs
+LINE: 1148
+1145: 				if (num > 0)
+1146: 				{
+1147: 					MessageBox.Show("شكرا\u064b لك \r\n تم أخذ نسخة احتياطية بنجاح \r\n سوف يتم اغلاق البرنامج الان نستودعك الله الذي لاتضيع ودائعه", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1148: 					Application.Exit();
+1149: 				}
+1150: 				else
+1151: 				{
+1152: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1153: 					Application.Exit();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGold.cs
+LINE: 1153
+1150: 				else
+1151: 				{
+1152: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1153: 					Application.Exit();
+1154: 				}
+1155: 			}
+1156: 		}
+1157: 		else
+1158: 		{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGold.cs
+LINE: 2394
+2391: 
+2392: 	private void BtnGenetareCSID_ItemClick(object sender, ItemClickEventArgs e)
+2393: 	{
+2394: 		FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+2395: 		frmCheckActivationElctroncInv.ShowDialog();
+2396: 		if (frmCheckActivationElctroncInv.Active)
+2397: 		{
+2398: 			new FrmGenetareCSID().Show();
+2399: 		}
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGold.cs
+LINE: 2395
+2392: 	private void BtnGenetareCSID_ItemClick(object sender, ItemClickEventArgs e)
+2393: 	{
+2394: 		FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+2395: 		frmCheckActivationElctroncInv.ShowDialog();
+2396: 		if (frmCheckActivationElctroncInv.Active)
+2397: 		{
+2398: 			new FrmGenetareCSID().Show();
+2399: 		}
+2400: 		else
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGold.cs
+LINE: 2396
+2393: 	{
+2394: 		FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+2395: 		frmCheckActivationElctroncInv.ShowDialog();
+2396: 		if (frmCheckActivationElctroncInv.Active)
+2397: 		{
+2398: 			new FrmGenetareCSID().Show();
+2399: 		}
+2400: 		else
+2401: 		{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGold.cs
+LINE: 2440
+2437: 
+2438: 	private void barButtonItem18_ItemClick(object sender, ItemClickEventArgs e)
+2439: 	{
+2440: 		new FrmCheckActivationCloseYear().ShowDialog();
+2441: 	}
+2442: 
+2443: 	private void barButtonItem17_ItemClick(object sender, ItemClickEventArgs e)
+2444: 	{
+2445: 		new FrmLoginCrm().ShowDialog();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlus.cs
+LINE: 816
+813: 		LblCompany.Caption = "برنامج GTS للمحاسبة ونقاط البيع مرخص الي : " + LoginDetails.CompanyNameAR;
+814: 		LblServer.Caption = "السيرفر: " + LoginDetails.nameServer + " / " + LoginDetails.databaseServer;
+815: 		LblUser.Caption = "الموظف: " + LoginDetails.UserName;
+816: 		LblVerg.Caption = LoginDetails.VergDate;
+817: 		LblStatus.Caption = "   " + LoginDetails.Status + "   ";
+818: 		ribbonControl.SelectedPage = ribbonPage1;
+819: 		if (!LoginDetails.IsElectronicInvoice)
+820: 		{
+821: 			RElctornc.Visible = false;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlus.cs
+LINE: 817
+814: 		LblServer.Caption = "السيرفر: " + LoginDetails.nameServer + " / " + LoginDetails.databaseServer;
+815: 		LblUser.Caption = "الموظف: " + LoginDetails.UserName;
+816: 		LblVerg.Caption = LoginDetails.VergDate;
+817: 		LblStatus.Caption = "   " + LoginDetails.Status + "   ";
+818: 		ribbonControl.SelectedPage = ribbonPage1;
+819: 		if (!LoginDetails.IsElectronicInvoice)
+820: 		{
+821: 			RElctornc.Visible = false;
+822: 		}
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlus.cs
+LINE: 1367
+1364: 		switch (MessageBox.Show("هل تريد الخروج من برنامج مايكرو سمارت للمحاسبة ونقاط البيع", "خروج من البرنامج", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign))
+1365: 		{
+1366: 		case DialogResult.Yes:
+1367: 			Application.Exit();
+1368: 			break;
+1369: 		}
+1370: 	}
+1371: 
+1372: 	private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlus.cs
+LINE: 1395
+1392: 				if (num > 0)
+1393: 				{
+1394: 					MessageBox.Show("شكرا\u064b لك \r\n تم أخذ نسخة احتياطية بنجاح \r\n سوف يتم اغلاق البرنامج الان نستودعك الله الذي لاتضيع ودائعه", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1395: 					Application.Exit();
+1396: 				}
+1397: 				else
+1398: 				{
+1399: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1400: 					Application.Exit();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlus.cs
+LINE: 1400
+1397: 				else
+1398: 				{
+1399: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1400: 					Application.Exit();
+1401: 				}
+1402: 			}
+1403: 			else
+1404: 			{
+1405: 				Application.Exit();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlus.cs
+LINE: 1405
+1402: 			}
+1403: 			else
+1404: 			{
+1405: 				Application.Exit();
+1406: 			}
+1407: 		}
+1408: 		else
+1409: 		{
+1410: 			e.Cancel = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlus.cs
+LINE: 3352
+3349: 	{
+3350: 		if (CheckPermession.CheckUserPage(LoginDetails.GroupID, 160))
+3351: 		{
+3352: 			FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+3353: 			frmCheckActivationElctroncInv.ShowDialog();
+3354: 			if (frmCheckActivationElctroncInv.Active)
+3355: 			{
+3356: 				new FrmGenetareCSID().Show();
+3357: 			}
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlus.cs
+LINE: 3353
+3350: 		if (CheckPermession.CheckUserPage(LoginDetails.GroupID, 160))
+3351: 		{
+3352: 			FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+3353: 			frmCheckActivationElctroncInv.ShowDialog();
+3354: 			if (frmCheckActivationElctroncInv.Active)
+3355: 			{
+3356: 				new FrmGenetareCSID().Show();
+3357: 			}
+3358: 			else
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlus.cs
+LINE: 3354
+3351: 		{
+3352: 			FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+3353: 			frmCheckActivationElctroncInv.ShowDialog();
+3354: 			if (frmCheckActivationElctroncInv.Active)
+3355: 			{
+3356: 				new FrmGenetareCSID().Show();
+3357: 			}
+3358: 			else
+3359: 			{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlus.cs
+LINE: 3466
+3463: 
+3464: 	private void BtnCloseYear_ItemClick(object sender, ItemClickEventArgs e)
+3465: 	{
+3466: 		new FrmCheckActivationCloseYear().ShowDialog();
+3467: 	}
+3468: 
+3469: 	private void barButtonItem25_ItemClick(object sender, ItemClickEventArgs e)
+3470: 	{
+3471: 		new FrmLoginCrm().ShowDialog();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlus.cs
+LINE: 3476
+3473: 
+3474: 	private void barButtonItem26_ItemClick(object sender, ItemClickEventArgs e)
+3475: 	{
+3476: 		new FrmCheckActivationCloseYear().ShowDialog();
+3477: 	}
+3478: 
+3479: 	private void BarContract_ItemClick(object sender, ItemClickEventArgs e)
+3480: 	{
+3481: 		new FrmContractScaffolds().Show();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlusImportExport.cs
+LINE: 692
+689: 		LblCompany.Caption = "برنامج GTS للمحاسبة ونقاط البيع مرخص الي : " + LoginDetails.CompanyNameAR;
+690: 		LblServer.Caption = "السيرفر: " + LoginDetails.nameServer + " / " + LoginDetails.databaseServer;
+691: 		LblUser.Caption = "الموظف: " + LoginDetails.UserName;
+692: 		LblVerg.Caption = LoginDetails.VergDate;
+693: 		LblStatus.Caption = "   " + LoginDetails.Status + "   ";
+694: 		ribbonControl.SelectedPage = ribbonPage1;
+695: 	}
+696: 
+697: 	private void navBarControl_ActiveGroupChanged(object sender, NavBarGroupEventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlusImportExport.cs
+LINE: 693
+690: 		LblServer.Caption = "السيرفر: " + LoginDetails.nameServer + " / " + LoginDetails.databaseServer;
+691: 		LblUser.Caption = "الموظف: " + LoginDetails.UserName;
+692: 		LblVerg.Caption = LoginDetails.VergDate;
+693: 		LblStatus.Caption = "   " + LoginDetails.Status + "   ";
+694: 		ribbonControl.SelectedPage = ribbonPage1;
+695: 	}
+696: 
+697: 	private void navBarControl_ActiveGroupChanged(object sender, NavBarGroupEventArgs e)
+698: 	{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlusImportExport.cs
+LINE: 1235
+1232: 		switch (MessageBox.Show("هل تريد الخروج من برنامج مايكرو سمارت للمحاسبة ونقاط البيع", "خروج من البرنامج", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign))
+1233: 		{
+1234: 		case DialogResult.Yes:
+1235: 			Application.Exit();
+1236: 			break;
+1237: 		}
+1238: 	}
+1239: 
+1240: 	private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlusImportExport.cs
+LINE: 1263
+1260: 				if (num > 0)
+1261: 				{
+1262: 					MessageBox.Show("شكرا\u064b لك \r\n تم أخذ نسخة احتياطية بنجاح \r\n سوف يتم اغلاق البرنامج الان نستودعك الله الذي لاتضيع ودائعه", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1263: 					Application.Exit();
+1264: 				}
+1265: 				else
+1266: 				{
+1267: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1268: 					Application.Exit();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlusImportExport.cs
+LINE: 1268
+1265: 				else
+1266: 				{
+1267: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1268: 					Application.Exit();
+1269: 				}
+1270: 			}
+1271: 			else
+1272: 			{
+1273: 				Application.Exit();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlusImportExport.cs
+LINE: 1273
+1270: 			}
+1271: 			else
+1272: 			{
+1273: 				Application.Exit();
+1274: 			}
+1275: 		}
+1276: 		else
+1277: 		{
+1278: 			e.Cancel = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlusTransportation.cs
+LINE: 717
+714: 		LblCompany.Caption = "برنامج GTS للمحاسبة ونقاط البيع مرخص الي : " + LoginDetails.CompanyNameAR;
+715: 		LblServer.Caption = "السيرفر: " + LoginDetails.nameServer + " / " + LoginDetails.databaseServer;
+716: 		LblUser.Caption = "الموظف: " + LoginDetails.UserName;
+717: 		LblVerg.Caption = LoginDetails.VergDate;
+718: 		LblStatus.Caption = "   " + LoginDetails.Status + "   ";
+719: 		ribbonControl.SelectedPage = ribbonPage1;
+720: 	}
+721: 
+722: 	private void navBarControl_ActiveGroupChanged(object sender, NavBarGroupEventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlusTransportation.cs
+LINE: 718
+715: 		LblServer.Caption = "السيرفر: " + LoginDetails.nameServer + " / " + LoginDetails.databaseServer;
+716: 		LblUser.Caption = "الموظف: " + LoginDetails.UserName;
+717: 		LblVerg.Caption = LoginDetails.VergDate;
+718: 		LblStatus.Caption = "   " + LoginDetails.Status + "   ";
+719: 		ribbonControl.SelectedPage = ribbonPage1;
+720: 	}
+721: 
+722: 	private void navBarControl_ActiveGroupChanged(object sender, NavBarGroupEventArgs e)
+723: 	{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlusTransportation.cs
+LINE: 1260
+1257: 		switch (MessageBox.Show("هل تريد الخروج من برنامج مايكرو سمارت للمحاسبة ونقاط البيع", "خروج من البرنامج", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign))
+1258: 		{
+1259: 		case DialogResult.Yes:
+1260: 			Application.Exit();
+1261: 			break;
+1262: 		}
+1263: 	}
+1264: 
+1265: 	private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlusTransportation.cs
+LINE: 1288
+1285: 				if (num > 0)
+1286: 				{
+1287: 					MessageBox.Show("شكرا\u064b لك \r\n تم أخذ نسخة احتياطية بنجاح \r\n سوف يتم اغلاق البرنامج الان نستودعك الله الذي لاتضيع ودائعه", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1288: 					Application.Exit();
+1289: 				}
+1290: 				else
+1291: 				{
+1292: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1293: 					Application.Exit();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlusTransportation.cs
+LINE: 1293
+1290: 				else
+1291: 				{
+1292: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1293: 					Application.Exit();
+1294: 				}
+1295: 			}
+1296: 			else
+1297: 			{
+1298: 				Application.Exit();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlusTransportation.cs
+LINE: 1298
+1295: 			}
+1296: 			else
+1297: 			{
+1298: 				Application.Exit();
+1299: 			}
+1300: 		}
+1301: 		else
+1302: 		{
+1303: 			e.Cancel = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmLight2.cs
+LINE: 1067
+1064: 		switch (MessageBox.Show("هل تريد الخروج من برنامج مايكرو سمارت للمحاسبة ونقاط البيع", "خروج من البرنامج", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign))
+1065: 		{
+1066: 		case DialogResult.Yes:
+1067: 			Application.Exit();
+1068: 			break;
+1069: 		}
+1070: 	}
+1071: 
+1072: 	private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmLight2.cs
+LINE: 1074
+1071: 
+1072: 	private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+1073: 	{
+1074: 		Application.Exit();
+1075: 		if (LoginDetails.IsBackupWhenClose)
+1076: 		{
+1077: 			int num = STTG.TakeBackup();
+1078: 			if (num > 0)
+1079: 			{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmPremium.cs
+LINE: 1073
+1070: 		switch (MessageBox.Show("هل تريد الخروج من برنامج مايكرو سمارت للمحاسبة ونقاط البيع", "خروج من البرنامج", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign))
+1071: 		{
+1072: 		case DialogResult.Yes:
+1073: 			Application.Exit();
+1074: 			break;
+1075: 		}
+1076: 	}
+1077: 
+1078: 	private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmPremium.cs
+LINE: 1080
+1077: 
+1078: 	private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+1079: 	{
+1080: 		Application.Exit();
+1081: 		if (LoginDetails.IsBackupWhenClose)
+1082: 		{
+1083: 			int num = STTG.TakeBackup();
+1084: 			if (num > 0)
+1085: 			{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurant.cs
+LINE: 551
+548: 		LblCompany.Caption = "برنامج GTS للمحاسبة ونقاط البيع مرخص الي : " + LoginDetails.CompanyNameAR;
+549: 		LblServer.Caption = "السيرفر: " + LoginDetails.nameServer + " / " + LoginDetails.databaseServer;
+550: 		LblUser.Caption = "الموظف: " + LoginDetails.UserName;
+551: 		LblVerg.Caption = LoginDetails.VergDate;
+552: 		SetDateApp();
+553: 		ribbonControl.SelectedPage = ribbonPage1;
+554: 		if (!LoginDetails.IsElectronicInvoice)
+555: 		{
+556: 			RElctornc.Visible = false;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurant.cs
+LINE: 1102
+1099: 		switch (MessageBox.Show("هل تريد الخروج من برنامج مايكرو سمارت للمحاسبة ونقاط البيع", "خروج من البرنامج", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign))
+1100: 		{
+1101: 		case DialogResult.Yes:
+1102: 			Application.Exit();
+1103: 			break;
+1104: 		}
+1105: 	}
+1106: 
+1107: 	private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurant.cs
+LINE: 1130
+1127: 				if (num > 0)
+1128: 				{
+1129: 					MessageBox.Show("شكرا\u064b لك \r\n تم أخذ نسخة احتياطية بنجاح \r\n سوف يتم اغلاق البرنامج الان نستودعك الله الذي لاتضيع ودائعه", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1130: 					Application.Exit();
+1131: 				}
+1132: 				else
+1133: 				{
+1134: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1135: 					Application.Exit();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurant.cs
+LINE: 1135
+1132: 				else
+1133: 				{
+1134: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1135: 					Application.Exit();
+1136: 				}
+1137: 			}
+1138: 		}
+1139: 		else
+1140: 		{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurant.cs
+LINE: 2265
+2262: 
+2263: 	private void BtnGenetareCSID_ItemClick(object sender, ItemClickEventArgs e)
+2264: 	{
+2265: 		FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+2266: 		frmCheckActivationElctroncInv.ShowDialog();
+2267: 		if (frmCheckActivationElctroncInv.Active)
+2268: 		{
+2269: 			new FrmGenetareCSID().Show();
+2270: 		}
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurant.cs
+LINE: 2266
+2263: 	private void BtnGenetareCSID_ItemClick(object sender, ItemClickEventArgs e)
+2264: 	{
+2265: 		FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+2266: 		frmCheckActivationElctroncInv.ShowDialog();
+2267: 		if (frmCheckActivationElctroncInv.Active)
+2268: 		{
+2269: 			new FrmGenetareCSID().Show();
+2270: 		}
+2271: 		else
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurant.cs
+LINE: 2267
+2264: 	{
+2265: 		FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+2266: 		frmCheckActivationElctroncInv.ShowDialog();
+2267: 		if (frmCheckActivationElctroncInv.Active)
+2268: 		{
+2269: 			new FrmGenetareCSID().Show();
+2270: 		}
+2271: 		else
+2272: 		{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurant.cs
+LINE: 2316
+2313: 
+2314: 	private void barButtonItem26_ItemClick(object sender, ItemClickEventArgs e)
+2315: 	{
+2316: 		new FrmCheckActivationCloseYear().ShowDialog();
+2317: 	}
+2318: 
+2319: 	private void barButtonItem27_ItemClick(object sender, ItemClickEventArgs e)
+2320: 	{
+2321: 		try
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurantSilver.cs
+LINE: 526
+523: 		LblCompany.Caption = "برنامج GTS للمحاسبة ونقاط البيع مرخص الي : " + LoginDetails.CompanyNameAR;
+524: 		LblServer.Caption = "السيرفر: " + LoginDetails.nameServer + " / " + LoginDetails.databaseServer;
+525: 		LblUser.Caption = "الموظف: " + LoginDetails.UserName;
+526: 		LblVerg.Caption = LoginDetails.VergDate;
+527: 		SetDateApp();
+528: 		ribbonControl.SelectedPage = ribbonPage1;
+529: 		if (!LoginDetails.IsElectronicInvoice)
+530: 		{
+531: 			RElctornc.Visible = false;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurantSilver.cs
+LINE: 1077
+1074: 		switch (MessageBox.Show("هل تريد الخروج من برنامج مايكرو سمارت للمحاسبة ونقاط البيع", "خروج من البرنامج", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign))
+1075: 		{
+1076: 		case DialogResult.Yes:
+1077: 			Application.Exit();
+1078: 			break;
+1079: 		}
+1080: 	}
+1081: 
+1082: 	private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurantSilver.cs
+LINE: 1105
+1102: 				if (num > 0)
+1103: 				{
+1104: 					MessageBox.Show("شكرا\u064b لك \r\n تم أخذ نسخة احتياطية بنجاح \r\n سوف يتم اغلاق البرنامج الان نستودعك الله الذي لاتضيع ودائعه", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1105: 					Application.Exit();
+1106: 				}
+1107: 				else
+1108: 				{
+1109: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1110: 					Application.Exit();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurantSilver.cs
+LINE: 1110
+1107: 				else
+1108: 				{
+1109: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1110: 					Application.Exit();
+1111: 				}
+1112: 			}
+1113: 		}
+1114: 		else
+1115: 		{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurantSilver.cs
+LINE: 2188
+2185: 
+2186: 	private void BtnGenetareCSID_ItemClick(object sender, ItemClickEventArgs e)
+2187: 	{
+2188: 		FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+2189: 		frmCheckActivationElctroncInv.ShowDialog();
+2190: 		if (frmCheckActivationElctroncInv.Active)
+2191: 		{
+2192: 			new FrmGenetareCSID().Show();
+2193: 		}
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurantSilver.cs
+LINE: 2189
+2186: 	private void BtnGenetareCSID_ItemClick(object sender, ItemClickEventArgs e)
+2187: 	{
+2188: 		FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+2189: 		frmCheckActivationElctroncInv.ShowDialog();
+2190: 		if (frmCheckActivationElctroncInv.Active)
+2191: 		{
+2192: 			new FrmGenetareCSID().Show();
+2193: 		}
+2194: 		else
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurantSilver.cs
+LINE: 2190
+2187: 	{
+2188: 		FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+2189: 		frmCheckActivationElctroncInv.ShowDialog();
+2190: 		if (frmCheckActivationElctroncInv.Active)
+2191: 		{
+2192: 			new FrmGenetareCSID().Show();
+2193: 		}
+2194: 		else
+2195: 		{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurantSilver.cs
+LINE: 2234
+2231: 
+2232: 	private void barButtonItem16_ItemClick(object sender, ItemClickEventArgs e)
+2233: 	{
+2234: 		new FrmCheckActivationCloseYear().ShowDialog();
+2235: 	}
+2236: 
+2237: 	private void barButtonItem9_ItemClick(object sender, ItemClickEventArgs e)
+2238: 	{
+2239: 		new FrmLoginCrm().ShowDialog();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilver.cs
+LINE: 534
+531: 		LblCompany.Caption = "برنامج GTS للمحاسبة ونقاط البيع مرخص الي : " + LoginDetails.CompanyNameAR;
+532: 		LblServer.Caption = "السيرفر: " + LoginDetails.nameServer + " / " + LoginDetails.databaseServer;
+533: 		LblUser.Caption = "الموظف: " + LoginDetails.UserName;
+534: 		LblVerg.Caption = LoginDetails.VergDate;
+535: 		SetDateApp();
+536: 		ribbonControl.SelectedPage = ribbonPage1;
+537: 		if (!LoginDetails.IsElectronicInvoice)
+538: 		{
+539: 			RElctornc.Visible = false;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilver.cs
+LINE: 1085
+1082: 		switch (MessageBox.Show("هل تريد الخروج من برنامج مايكرو سمارت للمحاسبة ونقاط البيع", "خروج من البرنامج", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign))
+1083: 		{
+1084: 		case DialogResult.Yes:
+1085: 			Application.Exit();
+1086: 			break;
+1087: 		}
+1088: 	}
+1089: 
+1090: 	private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilver.cs
+LINE: 1113
+1110: 				if (num > 0)
+1111: 				{
+1112: 					MessageBox.Show("شكرا\u064b لك \r\n تم أخذ نسخة احتياطية بنجاح \r\n سوف يتم اغلاق البرنامج الان نستودعك الله الذي لاتضيع ودائعه", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1113: 					Application.Exit();
+1114: 				}
+1115: 				else
+1116: 				{
+1117: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1118: 					Application.Exit();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilver.cs
+LINE: 1118
+1115: 				else
+1116: 				{
+1117: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1118: 					Application.Exit();
+1119: 				}
+1120: 			}
+1121: 		}
+1122: 		else
+1123: 		{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilver.cs
+LINE: 2223
+2220: 
+2221: 	private void BtnGenetareCSID_ItemClick(object sender, ItemClickEventArgs e)
+2222: 	{
+2223: 		FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+2224: 		frmCheckActivationElctroncInv.ShowDialog();
+2225: 		if (frmCheckActivationElctroncInv.Active)
+2226: 		{
+2227: 			new FrmGenetareCSID().Show();
+2228: 		}
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilver.cs
+LINE: 2224
+2221: 	private void BtnGenetareCSID_ItemClick(object sender, ItemClickEventArgs e)
+2222: 	{
+2223: 		FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+2224: 		frmCheckActivationElctroncInv.ShowDialog();
+2225: 		if (frmCheckActivationElctroncInv.Active)
+2226: 		{
+2227: 			new FrmGenetareCSID().Show();
+2228: 		}
+2229: 		else
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilver.cs
+LINE: 2225
+2222: 	{
+2223: 		FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+2224: 		frmCheckActivationElctroncInv.ShowDialog();
+2225: 		if (frmCheckActivationElctroncInv.Active)
+2226: 		{
+2227: 			new FrmGenetareCSID().Show();
+2228: 		}
+2229: 		else
+2230: 		{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilver.cs
+LINE: 2274
+2271: 
+2272: 	private void barButtonItem17_ItemClick(object sender, ItemClickEventArgs e)
+2273: 	{
+2274: 		new FrmCheckActivationCloseYear().ShowDialog();
+2275: 	}
+2276: 
+2277: 	private void barButtonItem18_ItemClick(object sender, ItemClickEventArgs e)
+2278: 	{
+2279: 		try
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlus.cs
+LINE: 568
+565: 		LblCompany.Caption = "برنامج المحاسبة ونقاط البيع مرخص الي : " + LoginDetails.CompanyNameAR;
+566: 		LblServer.Caption = "السيرفر: " + LoginDetails.nameServer + " / " + LoginDetails.databaseServer;
+567: 		LblUser.Caption = "الموظف: " + LoginDetails.UserName;
+568: 		LblStatus.Caption = "   " + LoginDetails.Status + "   ";
+569: 		LblVerg.Caption = LoginDetails.VergDate;
+570: 		SetDateApp();
+571: 		ribbonControl.SelectedPage = ribbonPage1;
+572: 		if (!LoginDetails.IsElectronicInvoice)
+573: 		{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlus.cs
+LINE: 569
+566: 		LblServer.Caption = "السيرفر: " + LoginDetails.nameServer + " / " + LoginDetails.databaseServer;
+567: 		LblUser.Caption = "الموظف: " + LoginDetails.UserName;
+568: 		LblStatus.Caption = "   " + LoginDetails.Status + "   ";
+569: 		LblVerg.Caption = LoginDetails.VergDate;
+570: 		SetDateApp();
+571: 		ribbonControl.SelectedPage = ribbonPage1;
+572: 		if (!LoginDetails.IsElectronicInvoice)
+573: 		{
+574: 			RElctornc.Visible = false;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlus.cs
+LINE: 1120
+1117: 		switch (MessageBox.Show("هل تريد الخروج من برنامج مايكرو سمارت للمحاسبة ونقاط البيع", "خروج من البرنامج", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign))
+1118: 		{
+1119: 		case DialogResult.Yes:
+1120: 			Application.Exit();
+1121: 			break;
+1122: 		}
+1123: 	}
+1124: 
+1125: 	private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlus.cs
+LINE: 1148
+1145: 				if (num > 0)
+1146: 				{
+1147: 					MessageBox.Show("شكرا\u064b لك \r\n تم أخذ نسخة احتياطية بنجاح \r\n سوف يتم اغلاق البرنامج الان نستودعك الله الذي لاتضيع ودائعه", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1148: 					Application.Exit();
+1149: 				}
+1150: 				else
+1151: 				{
+1152: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1153: 					Application.Exit();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlus.cs
+LINE: 1153
+1150: 				else
+1151: 				{
+1152: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1153: 					Application.Exit();
+1154: 				}
+1155: 			}
+1156: 		}
+1157: 		else
+1158: 		{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlus.cs
+LINE: 2400
+2397: 
+2398: 	private void BtnGenetareCSID_ItemClick(object sender, ItemClickEventArgs e)
+2399: 	{
+2400: 		FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+2401: 		frmCheckActivationElctroncInv.ShowDialog();
+2402: 		if (frmCheckActivationElctroncInv.Active)
+2403: 		{
+2404: 			new FrmGenetareCSID().Show();
+2405: 		}
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlus.cs
+LINE: 2401
+2398: 	private void BtnGenetareCSID_ItemClick(object sender, ItemClickEventArgs e)
+2399: 	{
+2400: 		FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+2401: 		frmCheckActivationElctroncInv.ShowDialog();
+2402: 		if (frmCheckActivationElctroncInv.Active)
+2403: 		{
+2404: 			new FrmGenetareCSID().Show();
+2405: 		}
+2406: 		else
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlus.cs
+LINE: 2402
+2399: 	{
+2400: 		FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+2401: 		frmCheckActivationElctroncInv.ShowDialog();
+2402: 		if (frmCheckActivationElctroncInv.Active)
+2403: 		{
+2404: 			new FrmGenetareCSID().Show();
+2405: 		}
+2406: 		else
+2407: 		{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlus.cs
+LINE: 2458
+2455: 
+2456: 	private void barButtonItem17_ItemClick(object sender, ItemClickEventArgs e)
+2457: 	{
+2458: 		new FrmCheckActivationCloseYear().ShowDialog();
+2459: 	}
+2460: 
+2461: 	private void barButtonItem18_ItemClick(object sender, ItemClickEventArgs e)
+2462: 	{
+2463: 		try
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlusWashing.cs
+LINE: 568
+565: 		LblCompany.Caption = "برنامج المحاسبة ونقاط البيع مرخص الي : " + LoginDetails.CompanyNameAR;
+566: 		LblServer.Caption = "السيرفر: " + LoginDetails.nameServer + " / " + LoginDetails.databaseServer;
+567: 		LblUser.Caption = "الموظف: " + LoginDetails.UserName;
+568: 		LblStatus.Caption = "   " + LoginDetails.Status + "   ";
+569: 		LblVerg.Caption = LoginDetails.VergDate;
+570: 		SetDateApp();
+571: 		ribbonControl.SelectedPage = ribbonPage1;
+572: 		if (!LoginDetails.IsElectronicInvoice)
+573: 		{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlusWashing.cs
+LINE: 569
+566: 		LblServer.Caption = "السيرفر: " + LoginDetails.nameServer + " / " + LoginDetails.databaseServer;
+567: 		LblUser.Caption = "الموظف: " + LoginDetails.UserName;
+568: 		LblStatus.Caption = "   " + LoginDetails.Status + "   ";
+569: 		LblVerg.Caption = LoginDetails.VergDate;
+570: 		SetDateApp();
+571: 		ribbonControl.SelectedPage = ribbonPage1;
+572: 		if (!LoginDetails.IsElectronicInvoice)
+573: 		{
+574: 			RElctornc.Visible = false;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlusWashing.cs
+LINE: 1120
+1117: 		switch (MessageBox.Show("هل تريد الخروج من برنامج مايكرو سمارت للمحاسبة ونقاط البيع", "خروج من البرنامج", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign))
+1118: 		{
+1119: 		case DialogResult.Yes:
+1120: 			Application.Exit();
+1121: 			break;
+1122: 		}
+1123: 	}
+1124: 
+1125: 	private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlusWashing.cs
+LINE: 1148
+1145: 				if (num > 0)
+1146: 				{
+1147: 					MessageBox.Show("شكرا\u064b لك \r\n تم أخذ نسخة احتياطية بنجاح \r\n سوف يتم اغلاق البرنامج الان نستودعك الله الذي لاتضيع ودائعه", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1148: 					Application.Exit();
+1149: 				}
+1150: 				else
+1151: 				{
+1152: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1153: 					Application.Exit();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlusWashing.cs
+LINE: 1153
+1150: 				else
+1151: 				{
+1152: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1153: 					Application.Exit();
+1154: 				}
+1155: 			}
+1156: 		}
+1157: 		else
+1158: 		{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlusWashing.cs
+LINE: 2400
+2397: 
+2398: 	private void BtnGenetareCSID_ItemClick(object sender, ItemClickEventArgs e)
+2399: 	{
+2400: 		FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+2401: 		frmCheckActivationElctroncInv.ShowDialog();
+2402: 		if (frmCheckActivationElctroncInv.Active)
+2403: 		{
+2404: 			new FrmGenetareCSID().Show();
+2405: 		}
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlusWashing.cs
+LINE: 2401
+2398: 	private void BtnGenetareCSID_ItemClick(object sender, ItemClickEventArgs e)
+2399: 	{
+2400: 		FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+2401: 		frmCheckActivationElctroncInv.ShowDialog();
+2402: 		if (frmCheckActivationElctroncInv.Active)
+2403: 		{
+2404: 			new FrmGenetareCSID().Show();
+2405: 		}
+2406: 		else
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlusWashing.cs
+LINE: 2402
+2399: 	{
+2400: 		FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+2401: 		frmCheckActivationElctroncInv.ShowDialog();
+2402: 		if (frmCheckActivationElctroncInv.Active)
+2403: 		{
+2404: 			new FrmGenetareCSID().Show();
+2405: 		}
+2406: 		else
+2407: 		{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlusWashing.cs
+LINE: 2458
+2455: 
+2456: 	private void barButtonItem17_ItemClick(object sender, ItemClickEventArgs e)
+2457: 	{
+2458: 		new FrmCheckActivationCloseYear().ShowDialog();
+2459: 	}
+2460: 
+2461: 	private void barButtonItem18_ItemClick(object sender, ItemClickEventArgs e)
+2462: 	{
+2463: 		try
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmTest.cs
+LINE: 1111
+1108: 		switch (MessageBox.Show("هل تريد الخروج من برنامج مايكرو سمارت للمحاسبة ونقاط البيع", "خروج من البرنامج", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign))
+1109: 		{
+1110: 		case DialogResult.Yes:
+1111: 			Application.Exit();
+1112: 			break;
+1113: 		}
+1114: 	}
+1115: 
+1116: 	private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmTest.cs
+LINE: 1139
+1136: 				if (num > 0)
+1137: 				{
+1138: 					MessageBox.Show("شكرا\u064b لك \r\n تم أخذ نسخة احتياطية بنجاح \r\n سوف يتم اغلاق البرنامج الان نستودعك الله الذي لاتضيع ودائعه", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1139: 					Application.Exit();
+1140: 				}
+1141: 				else
+1142: 				{
+1143: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1144: 					Application.Exit();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmTest.cs
+LINE: 1144
+1141: 				else
+1142: 				{
+1143: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1144: 					Application.Exit();
+1145: 				}
+1146: 			}
+1147: 		}
+1148: 		else
+1149: 		{
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmWindow.cs
+LINE: 1101
+1098: 		switch (MessageBox.Show("هل تريد الخروج من برنامج مايكرو للمحاسبة ونقاط البيع", "خروج من البرنامج", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign))
+1099: 		{
+1100: 		case DialogResult.Yes:
+1101: 			Application.Exit();
+1102: 			break;
+1103: 		}
+1104: 	}
+1105: 
+1106: 	private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmWindow.cs
+LINE: 1121
+1118: 				if (num > 0)
+1119: 				{
+1120: 					MessageBox.Show("شكرا\u064b لك \r\n تم أخذ نسخة احتياطية بنجاح \r\n سوف يتم اغلاق البرنامج الان نستودعك الله الذي لاتضيع ودائعه", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1121: 					Application.Exit();
+1122: 				}
+1123: 				else
+1124: 				{
+1125: 					MessageBox.Show("نعتذر، تم اكتشاف خطأ \r\n يجب التأكد من مسار مجلد النسخ الاحتياطي ثم حاول مرة أخري", "النسخ الاحتياطي", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+1126: 				}
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmWindow.cs
+LINE: 2443
+2440: 		switch (MessageBox.Show("هل تريد الخروج من برنامج مايكرو للمحاسبة ونقاط البيع", "خروج من البرنامج", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign))
+2441: 		{
+2442: 		case DialogResult.Yes:
+2443: 			Application.Exit();
+2444: 			break;
+2445: 		}
+2446: 	}
+2447: 
+2448: 	private void NavAccountDefualt_LinkClicked(object sender, NavBarLinkEventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmLock.cs
+LINE: 54
+51: 
+52: 	private void BtnExit_Click(object sender, EventArgs e)
+53: 	{
+54: 		Application.Exit();
+55: 	}
+56: 
+57: 	private void BtnContinue_Click(object sender, EventArgs e)
+58: 	{
+59: 		Login();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 1237
+1234: 			ElcotroncInvCK.Checked = false;
+1235: 			BtnSave_Click(null, null);
+1236: 			Application.Restart();
+1237: 			Environment.Exit(0);
+1238: 		}
+1239: 		else
+1240: 		{
+1241: 			ElcotroncInvCK.Checked = false;
+1242: 			FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 1242
+1239: 		else
+1240: 		{
+1241: 			ElcotroncInvCK.Checked = false;
+1242: 			FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+1243: 			frmCheckActivationElctroncInv.ShowDialog();
+1244: 			if (frmCheckActivationElctroncInv.Active)
+1245: 			{
+1246: 				ElcotroncInvCK.Checked = true;
+1247: 				BtnSave_Click(null, null);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 1243
+1240: 		{
+1241: 			ElcotroncInvCK.Checked = false;
+1242: 			FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+1243: 			frmCheckActivationElctroncInv.ShowDialog();
+1244: 			if (frmCheckActivationElctroncInv.Active)
+1245: 			{
+1246: 				ElcotroncInvCK.Checked = true;
+1247: 				BtnSave_Click(null, null);
+1248: 				Application.Restart();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 1244
+1241: 			ElcotroncInvCK.Checked = false;
+1242: 			FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+1243: 			frmCheckActivationElctroncInv.ShowDialog();
+1244: 			if (frmCheckActivationElctroncInv.Active)
+1245: 			{
+1246: 				ElcotroncInvCK.Checked = true;
+1247: 				BtnSave_Click(null, null);
+1248: 				Application.Restart();
+1249: 				Environment.Exit(0);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 1249
+1246: 				ElcotroncInvCK.Checked = true;
+1247: 				BtnSave_Click(null, null);
+1248: 				Application.Restart();
+1249: 				Environment.Exit(0);
+1250: 			}
+1251: 			else
+1252: 			{
+1253: 				ElcotroncInvCK.Checked = false;
+1254: 			}
+

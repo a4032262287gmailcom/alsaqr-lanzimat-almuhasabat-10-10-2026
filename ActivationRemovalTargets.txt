@@ -1,0 +1,1751 @@
+﻿Files scanned: 1300
+Matching lines: 437
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.csproj
+LINE: 24
+CODE: <None Remove="GTSErpSystem.exe.licenses" />
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.csproj
+LINE: 28
+CODE: <EmbeddedResource Include="GTSErpSystem.exe.licenses" LogicalName="GTSErpSystem.exe.licenses" />
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Contract.FrmContractScaffolds.resx
+LINE: 1851
+CODE: <data name="gridColumn25.Caption" xml:space="preserve"><value>تفعيل الضريبه</value></data>
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Contract.FrmEntryPermission.resx
+LINE: 1731
+CODE: <data name="gridColumn25.Caption" xml:space="preserve"><value>تفعيل الضريبه</value></data>
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Contract.FrmExitPermission.resx
+LINE: 1735
+CODE: <data name="gridColumn25.Caption" xml:space="preserve"><value>تفعيل الضريبه</value></data>
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Contract.FrmMinutesRemoval.resx
+LINE: 1773
+CODE: <data name="gridColumn25.Caption" xml:space="preserve"><value>تفعيل الضريبه</value></data>
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Contract.FrmMinutesStarted.resx
+LINE: 1780
+CODE: <data name="gridColumn25.Caption" xml:space="preserve"><value>تفعيل الضريبه</value></data>
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Contract.FrmPriceOfferScaffolds.resx
+LINE: 1759
+CODE: <data name="gridColumn25.Caption" xml:space="preserve"><value>تفعيل الضريبه</value></data>
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmRestaurant.FrmCashirRestaurant.resx
+LINE: 1245
+CODE: Cw==</value></data><data name="BtnDiscount.Text" xml:space="preserve"><value>تفعيل الخصم</value></data>
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome.FrmActivation.resx
+LINE: 3456
+CODE: kqPi8+JLsxFw4MKJu/x2fKh7cj1iPYTvhE/Mxms09/0H6HxMboSMzIQAAAAASUVORK5CYIIL</value></data><data name="FrmActivation.IconOptions.Icon" mimetype="application/x-microsoft.net.object.binary.base64"><value>AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBD
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome.FrmActivation.resx
+LINE: 8858
+CODE: <data name="&gt;&gt;$this.Name" xml:space="preserve"><value>FrmActivation</value></data>
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome.FrmActivation.resx
+LINE: 10328
+CODE: VATzOGWnpupfLfXNfo2/jnFtRJ0x9c1+jf8XFw5yUH9AcY8AAAAASUVORK5CYIIL</value></data><data name="ribbonPageGroup39.Text" xml:space="preserve"><value>التفعيلات</value></data>
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Items.FrmItems.resx
+LINE: 3066
+CODE: AAMAAAAL</value></data><data name="CBISOffer.Text" xml:space="preserve"><value>تفعيل عروض المبيعات علي الوحدة الصغري فقط</value></data>
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Properties.Resources.resx
+LINE: 636470
+CODE: m5W/+wtq9ta3rgGnXiBTrrSSy3Usq3Or6FW+ouBx/T26DUV61TrIALMQhXVb62NrcfX3pgCKdbFe
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Properties.Resources.resx
+LINE: 836034
+CODE: u12/2Nl/4373Q9b0N6dc/uFJF2P4vbi39feqHrWlvTrialLmzNb8cj/ivv1D17S3p1zSUSEEEkX/
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\AddTempTrialBalanceByTotal_Result.cs
+LINE: 3
+CODE: public class AddTempTrialBalanceByTotal_Result
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion.cs
+LINE: 75
+CODE: MessageBox.Show("تم تأكيد ترخيص التفعيل بنجاح \r\n يمكنكم الان استخدام البرنامج \r\n شكرا علي اهتمامكم شركة G.T.S للبرمجيات ", "تم التفعيل بنجاح", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion.cs
+LINE: 95
+CODE: MessageBox.Show("الرقم غير صحيح طŒ برجاء التاكد من ادخال رقم التفعيل بشكل صحيح", "مستكشف البيانات", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion.cs
+LINE: 100
+CODE: MessageBox.Show("فضلا ادخل رقم التفعيل طŒ ثم اضغط علي تفعيل", "مستكشف البيانات", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion.cs
+LINE: 123
+CODE: result = item["SerialNumber"].ToString();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion.cs
+LINE: 143
+CODE: result = "SerialNumber: " + current2["SerialNumber"];
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion.cs
+LINE: 367
+CODE: this.label2.Text = "رقم التفعيل";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion.cs
+LINE: 402
+CODE: this.Text = "تفعيل البرنامج";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion3.cs
+LINE: 71
+CODE: MessageBox.Show("فضلا ادخل رقم التفعيل طŒ ثم اضغط علي لصق وحفظ", "مستكشف البيانات", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion3.cs
+LINE: 125
+CODE: public static string SerialNumber()
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion3.cs
+LINE: 131
+CODE: result = item["SerialNumber"].ToString().Trim();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion3.cs
+LINE: 151
+CODE: result = current2["SerialNumber"].ToString();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmActivtion3.cs
+LINE: 161
+CODE: string text = Class_Crypto.SetData("b14ca5898a4e4133bbce2ea2315a1500", "b14ca5898a4e4133bbce2ea2315a1916", MacAddress(), SerialNumber(), HardDisk(), LoginDetails.VergDate, DateTime.Now.ToString("yyyy-MM-dd"), machineName);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmCheckActivationCloseYear.cs
+LINE: 13
+CODE: public class FrmCheckActivationCloseYear : XtraForm
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmCheckActivationCloseYear.cs
+LINE: 35
+CODE: public FrmCheckActivationCloseYear()
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmCheckActivationCloseYear.cs
+LINE: 143
+CODE: private void FrmCheckActivationElctroncInv_FormClosing(object sender, FormClosingEventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmCheckActivationCloseYear.cs
+LINE: 170
+CODE: System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GTSErpSystem.FrmCheckActivationCloseYear));
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmCheckActivationCloseYear.cs
+LINE: 235
+CODE: this.BtnActive.Text = "تفعيل اغلاق السنه الماليه";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmCheckActivationCloseYear.cs
+LINE: 257
+CODE: base.Name = "FrmCheckActivationCloseYear";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmCheckActivationCloseYear.cs
+LINE: 261
+CODE: this.Text = "التحقق من تفعيل اغلاق السنه الماليه";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmCheckActivationCloseYear.cs
+LINE: 262
+CODE: base.FormClosing += new System.Windows.Forms.FormClosingEventHandler(FrmCheckActivationElctroncInv_FormClosing);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\Get_Serial_Result.cs
+LINE: 27
+CODE: public string Trial { get; set; }
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\GTSdbEntities.cs
+LINE: 315
+CODE: public virtual DbSet<TempTrialBalanceByTotal> TempTrialBalanceByTotals { get; set; }
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\GTSdbEntities.cs
+LINE: 457
+CODE: public virtual int AddTempTrialBalance_New(int? pflag, DateTime? fromDate, DateTime? toDate, decimal? fromAccount_No, decimal? toAccount_No, int? branchID, bool? hideBalance)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\GTSdbEntities.cs
+LINE: 466
+CODE: return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddTempTrialBalance_New", objectParameter, objectParameter2, objectParameter3, objectParameter4, objectParameter5, objectParameter6, objectParameter7);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\GTSdbEntities.cs
+LINE: 469
+CODE: public virtual ObjectResult<AddTempTrialBalanceByTotal_Result> AddTempTrialBalanceByTotal(int? pflag, DateTime? fromDate, DateTime? toDate, decimal? fromAccount_No, decimal? toAccount_No, int? branchID, int? userID, int? account_Level, bool? hideBalance)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\GTSdbEntities.cs
+LINE: 480
+CODE: return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<AddTempTrialBalanceByTotal_Result>("AddTempTrialBalanceByTotal", new ObjectParameter[9] { objectParameter, objectParameter2, objectParameter3, objectParameter4, objectParameter5, objectParameter6, objectParameter7, objectParameter8, objectParameter9 });
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\GTSdbEntities.cs
+LINE: 3092
+CODE: public virtual int SetActivate()
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\GTSdbEntities.cs
+LINE: 3094
+CODE: return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SetActivate");
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\LoginDetails.cs
+LINE: 42
+CODE: public static string Status = "نسخة تجريبية";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\LoginDetails.cs
+LINE: 492
+CODE: public static int ActivationId { get; set; }
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\Program.cs
+LINE: 107
+CODE: case "FrmActivation":
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\Secure.cs
+LINE: 136
+CODE: return MessageBox.Show("مؤسسة G.T.S ترحب بكم \r\n انت تستخدم النسخة التجريبية الان لمدة 5 يوم، لتفعيل برنامج G.T.S الرجاء التواصل مع فريق التسويق   \r\n هل تريد تفعيل البرنامج الان؟ ", "النسخة التجريبية", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign) switch
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\Secure.cs
+LINE: 147
+CODE: DialogResult dialogResult = MessageBox.Show("لا يمكن تحميل التطبيق طŒ حدث مقاطعة غير مصرح بها! بدون تفعيل لا يمكن تشغيله! هل تريد تنشيطه؟", "النسخة التجريبية - 01", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\Secure.cs
+LINE: 156
+CODE: DialogResult dialogResult2 = MessageBox.Show("نعتذر انتهاء فترة النسخة التجريبية \r\n للتفعيل الرجاء التواصل مع فريق التسويق ", "النسخة التجريبية", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\Secure.cs
+LINE: 163
+CODE: return MessageBox.Show("انت تستخدم النسخة التجريبية، متبقي  " + text2 + " يوم علي انتهاء فترة النسخة التجريبية \r\n للتفعيل الرجاء التواصل مع فريق التسويق \r\n هل تريد تفعيل البرنامج الان؟", "النسخة التجريبية", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign) switch
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\Select_Virgins_Result.cs
+LINE: 61
+CODE: public string Trial { get; set; }
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\TempTrialBalanceByTotal.cs
+LINE: 3
+CODE: public class TempTrialBalanceByTotal
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\Virg_MasterDetails.cs
+LINE: 49
+CODE: public string Trial { get; set; }
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.BLL.Account\Class_Receipts.cs
+LINE: 178
+CODE: if (Convert.ToBoolean(row["تفعيل الضريبه"]))
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.BLL.Account\Class_Receipts.cs
+LINE: 192
+CODE: IsVat = Convert.ToBoolean(row["تفعيل الضريبه"].ToString()),
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.BLL.Account\Class_Receipts.cs
+LINE: 214
+CODE: account_ReceiptsDetails2.IsVat = Convert.ToBoolean(row["تفعيل الضريبه"].ToString());
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.BLL.Account\Class_Receipts.cs
+LINE: 410
+CODE: if (Convert.ToBoolean(row["تفعيل الضريبه"]))
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.BLL.Main\AuthentationProgram.cs
+LINE: 49
+CODE: result = item["SerialNumber"].ToString();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.BLL.Main\AuthentationProgram.cs
+LINE: 69
+CODE: result = "SerialNumber: " + current2["SerialNumber"];
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.BLL.Main\Class_Crypto.cs
+LINE: 95
+CODE: public static string SerialNumber()
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.BLL.Main\Class_Crypto.cs
+LINE: 101
+CODE: result = item["SerialNumber"].ToString().Trim();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.BLL.Main\Class_Crypto.cs
+LINE: 121
+CODE: result = current2["SerialNumber"].ToString();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 6878
+CODE: public delegate void View_TrialBalanceByTotalRowChangeEventHandler(object sender, View_TrialBalanceByTotalRowChangeEvent e);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 12925
+CODE: public class View_TrialBalanceByTotalDataTable : TypedTableBase<View_TrialBalanceByTotalRow>
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13012
+CODE: public View_TrialBalanceByTotalRow this[int index] => (View_TrialBalanceByTotalRow)base.Rows[index];
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13015
+CODE: public event View_TrialBalanceByTotalRowChangeEventHandler View_TrialBalanceByTotalRowChanging;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13018
+CODE: public event View_TrialBalanceByTotalRowChangeEventHandler View_TrialBalanceByTotalRowChanged;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13021
+CODE: public event View_TrialBalanceByTotalRowChangeEventHandler View_TrialBalanceByTotalRowDeleting;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13024
+CODE: public event View_TrialBalanceByTotalRowChangeEventHandler View_TrialBalanceByTotalRowDeleted;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13028
+CODE: public View_TrialBalanceByTotalDataTable()
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13030
+CODE: base.TableName = "View_TrialBalanceByTotal";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13038
+CODE: internal View_TrialBalanceByTotalDataTable(DataTable table)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13059
+CODE: protected View_TrialBalanceByTotalDataTable(SerializationInfo info, StreamingContext context)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13067
+CODE: public void AddView_TrialBalanceByTotalRow(View_TrialBalanceByTotalRow row)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13074
+CODE: public View_TrialBalanceByTotalRow AddView_TrialBalanceByTotalRow(string Account_Sn, string Account_No, string Account_Name, string Priv_Debit, string Priv_Credit, string Debit, string Credit, string TotalDebitBalance, string TotalCreditBalance, string DebitBalance, string CreditBalance, string Balance, string PrivBalance)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13076
+CODE: View_TrialBalanceByTotalRow view_TrialBalanceByTotalRow = (View_TrialBalanceByTotalRow)NewRow();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13082
+CODE: view_TrialBalanceByTotalRow.ItemArray = itemArray;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13083
+CODE: base.Rows.Add(view_TrialBalanceByTotalRow);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13084
+CODE: return view_TrialBalanceByTotalRow;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13091
+CODE: View_TrialBalanceByTotalDataTable view_TrialBalanceByTotalDataTable = (View_TrialBalanceByTotalDataTable)base.Clone();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13092
+CODE: view_TrialBalanceByTotalDataTable.InitVars();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13093
+CODE: return view_TrialBalanceByTotalDataTable;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13100
+CODE: return new View_TrialBalanceByTotalDataTable();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13156
+CODE: public View_TrialBalanceByTotalRow NewView_TrialBalanceByTotalRow()
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13158
+CODE: return (View_TrialBalanceByTotalRow)NewRow();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13165
+CODE: return new View_TrialBalanceByTotalRow(builder);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13172
+CODE: return typeof(View_TrialBalanceByTotalRow);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13180
+CODE: if (View_TrialBalanceByTotalRowChanged != null)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13182
+CODE: View_TrialBalanceByTotalRowChanged(this, new View_TrialBalanceByTotalRowChangeEvent((View_TrialBalanceByTotalRow)e.Row, e.Action));
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13191
+CODE: if (View_TrialBalanceByTotalRowChanging != null)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13193
+CODE: View_TrialBalanceByTotalRowChanging(this, new View_TrialBalanceByTotalRowChangeEvent((View_TrialBalanceByTotalRow)e.Row, e.Action));
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13202
+CODE: if (View_TrialBalanceByTotalRowDeleted != null)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13204
+CODE: View_TrialBalanceByTotalRowDeleted(this, new View_TrialBalanceByTotalRowChangeEvent((View_TrialBalanceByTotalRow)e.Row, e.Action));
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13213
+CODE: if (View_TrialBalanceByTotalRowDeleting != null)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13215
+CODE: View_TrialBalanceByTotalRowDeleting(this, new View_TrialBalanceByTotalRowChangeEvent((View_TrialBalanceByTotalRow)e.Row, e.Action));
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13221
+CODE: public void RemoveView_TrialBalanceByTotalRow(View_TrialBalanceByTotalRow row)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 13250
+CODE: xmlSchemaAttribute2.FixedValue = "View_TrialBalanceByTotalDataTable";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42471
+CODE: public class View_TrialBalanceByTotalRow : DataRow
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42473
+CODE: private View_TrialBalanceByTotalDataTable tableView_TrialBalanceByTotal;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42483
+CODE: return (string)base[tableView_TrialBalanceByTotal.Account_SnColumn];
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42487
+CODE: throw new StrongTypingException("The value for column 'Account_Sn' in table 'View_TrialBalanceByTotal' is DBNull.", innerException);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42492
+CODE: base[tableView_TrialBalanceByTotal.Account_SnColumn] = value;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42504
+CODE: return (string)base[tableView_TrialBalanceByTotal.Account_NoColumn];
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42508
+CODE: throw new StrongTypingException("The value for column 'Account_No' in table 'View_TrialBalanceByTotal' is DBNull.", innerException);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42513
+CODE: base[tableView_TrialBalanceByTotal.Account_NoColumn] = value;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42525
+CODE: return (string)base[tableView_TrialBalanceByTotal.Account_NameColumn];
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42529
+CODE: throw new StrongTypingException("The value for column 'Account_Name' in table 'View_TrialBalanceByTotal' is DBNull.", innerException);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42534
+CODE: base[tableView_TrialBalanceByTotal.Account_NameColumn] = value;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42546
+CODE: return (string)base[tableView_TrialBalanceByTotal.Priv_DebitColumn];
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42550
+CODE: throw new StrongTypingException("The value for column 'Priv_Debit' in table 'View_TrialBalanceByTotal' is DBNull.", innerException);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42555
+CODE: base[tableView_TrialBalanceByTotal.Priv_DebitColumn] = value;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42567
+CODE: return (string)base[tableView_TrialBalanceByTotal.Priv_CreditColumn];
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42571
+CODE: throw new StrongTypingException("The value for column 'Priv_Credit' in table 'View_TrialBalanceByTotal' is DBNull.", innerException);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42576
+CODE: base[tableView_TrialBalanceByTotal.Priv_CreditColumn] = value;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42588
+CODE: return (string)base[tableView_TrialBalanceByTotal.DebitColumn];
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42592
+CODE: throw new StrongTypingException("The value for column 'Debit' in table 'View_TrialBalanceByTotal' is DBNull.", innerException);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42597
+CODE: base[tableView_TrialBalanceByTotal.DebitColumn] = value;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42609
+CODE: return (string)base[tableView_TrialBalanceByTotal.CreditColumn];
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42613
+CODE: throw new StrongTypingException("The value for column 'Credit' in table 'View_TrialBalanceByTotal' is DBNull.", innerException);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42618
+CODE: base[tableView_TrialBalanceByTotal.CreditColumn] = value;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42630
+CODE: return (string)base[tableView_TrialBalanceByTotal.TotalDebitBalanceColumn];
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42634
+CODE: throw new StrongTypingException("The value for column 'TotalDebitBalance' in table 'View_TrialBalanceByTotal' is DBNull.", innerException);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42639
+CODE: base[tableView_TrialBalanceByTotal.TotalDebitBalanceColumn] = value;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42651
+CODE: return (string)base[tableView_TrialBalanceByTotal.TotalCreditBalanceColumn];
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42655
+CODE: throw new StrongTypingException("The value for column 'TotalCreditBalance' in table 'View_TrialBalanceByTotal' is DBNull.", innerException);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42660
+CODE: base[tableView_TrialBalanceByTotal.TotalCreditBalanceColumn] = value;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42672
+CODE: return (string)base[tableView_TrialBalanceByTotal.DebitBalanceColumn];
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42676
+CODE: throw new StrongTypingException("The value for column 'DebitBalance' in table 'View_TrialBalanceByTotal' is DBNull.", innerException);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42681
+CODE: base[tableView_TrialBalanceByTotal.DebitBalanceColumn] = value;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42693
+CODE: return (string)base[tableView_TrialBalanceByTotal.CreditBalanceColumn];
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42697
+CODE: throw new StrongTypingException("The value for column 'CreditBalance' in table 'View_TrialBalanceByTotal' is DBNull.", innerException);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42702
+CODE: base[tableView_TrialBalanceByTotal.CreditBalanceColumn] = value;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42714
+CODE: return (string)base[tableView_TrialBalanceByTotal.BalanceColumn];
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42718
+CODE: throw new StrongTypingException("The value for column 'Balance' in table 'View_TrialBalanceByTotal' is DBNull.", innerException);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42723
+CODE: base[tableView_TrialBalanceByTotal.BalanceColumn] = value;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42735
+CODE: return (string)base[tableView_TrialBalanceByTotal.PrivBalanceColumn];
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42739
+CODE: throw new StrongTypingException("The value for column 'PrivBalance' in table 'View_TrialBalanceByTotal' is DBNull.", innerException);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42744
+CODE: base[tableView_TrialBalanceByTotal.PrivBalanceColumn] = value;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42750
+CODE: internal View_TrialBalanceByTotalRow(DataRowBuilder rb)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42753
+CODE: tableView_TrialBalanceByTotal = (View_TrialBalanceByTotalDataTable)base.Table;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42760
+CODE: return IsNull(tableView_TrialBalanceByTotal.Account_SnColumn);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42767
+CODE: base[tableView_TrialBalanceByTotal.Account_SnColumn] = Convert.DBNull;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42774
+CODE: return IsNull(tableView_TrialBalanceByTotal.Account_NoColumn);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42781
+CODE: base[tableView_TrialBalanceByTotal.Account_NoColumn] = Convert.DBNull;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42788
+CODE: return IsNull(tableView_TrialBalanceByTotal.Account_NameColumn);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42795
+CODE: base[tableView_TrialBalanceByTotal.Account_NameColumn] = Convert.DBNull;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42802
+CODE: return IsNull(tableView_TrialBalanceByTotal.Priv_DebitColumn);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42809
+CODE: base[tableView_TrialBalanceByTotal.Priv_DebitColumn] = Convert.DBNull;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42816
+CODE: return IsNull(tableView_TrialBalanceByTotal.Priv_CreditColumn);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42823
+CODE: base[tableView_TrialBalanceByTotal.Priv_CreditColumn] = Convert.DBNull;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42830
+CODE: return IsNull(tableView_TrialBalanceByTotal.DebitColumn);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42837
+CODE: base[tableView_TrialBalanceByTotal.DebitColumn] = Convert.DBNull;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42844
+CODE: return IsNull(tableView_TrialBalanceByTotal.CreditColumn);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42851
+CODE: base[tableView_TrialBalanceByTotal.CreditColumn] = Convert.DBNull;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42858
+CODE: return IsNull(tableView_TrialBalanceByTotal.TotalDebitBalanceColumn);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42865
+CODE: base[tableView_TrialBalanceByTotal.TotalDebitBalanceColumn] = Convert.DBNull;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42872
+CODE: return IsNull(tableView_TrialBalanceByTotal.TotalCreditBalanceColumn);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42879
+CODE: base[tableView_TrialBalanceByTotal.TotalCreditBalanceColumn] = Convert.DBNull;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42886
+CODE: return IsNull(tableView_TrialBalanceByTotal.DebitBalanceColumn);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42893
+CODE: base[tableView_TrialBalanceByTotal.DebitBalanceColumn] = Convert.DBNull;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42900
+CODE: return IsNull(tableView_TrialBalanceByTotal.CreditBalanceColumn);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42907
+CODE: base[tableView_TrialBalanceByTotal.CreditBalanceColumn] = Convert.DBNull;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42914
+CODE: return IsNull(tableView_TrialBalanceByTotal.BalanceColumn);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42921
+CODE: base[tableView_TrialBalanceByTotal.BalanceColumn] = Convert.DBNull;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42928
+CODE: return IsNull(tableView_TrialBalanceByTotal.PrivBalanceColumn);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 42935
+CODE: base[tableView_TrialBalanceByTotal.PrivBalanceColumn] = Convert.DBNull;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 64960
+CODE: public class View_TrialBalanceByTotalRowChangeEvent : EventArgs
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 64962
+CODE: private View_TrialBalanceByTotalRow eventRow;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 64968
+CODE: public View_TrialBalanceByTotalRow Row => eventRow;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 64976
+CODE: public View_TrialBalanceByTotalRowChangeEvent(View_TrialBalanceByTotalRow row, DataRowAction action)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 65933
+CODE: private View_TrialBalanceByTotalDataTable tableView_TrialBalanceByTotal;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 66131
+CODE: public View_TrialBalanceByTotalDataTable View_TrialBalanceByTotal => tableView_TrialBalanceByTotal;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 66493
+CODE: if (dataSet.Tables["View_TrialBalanceByTotal"] != null)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 66495
+CODE: base.Tables.Add(new View_TrialBalanceByTotalDataTable(dataSet.Tables["View_TrialBalanceByTotal"]));
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 66786
+CODE: if (dataSet.Tables["View_TrialBalanceByTotal"] != null)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 66788
+CODE: base.Tables.Add(new View_TrialBalanceByTotalDataTable(dataSet.Tables["View_TrialBalanceByTotal"]));
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 67074
+CODE: tableView_TrialBalanceByTotal = (View_TrialBalanceByTotalDataTable)base.Tables["View_TrialBalanceByTotal"];
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 67075
+CODE: if (initTable && tableView_TrialBalanceByTotal != null)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 67077
+CODE: tableView_TrialBalanceByTotal.InitVars();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 67318
+CODE: tableView_TrialBalanceByTotal = new View_TrialBalanceByTotalDataTable();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 67319
+CODE: base.Tables.Add(tableView_TrialBalanceByTotal);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.DataSetRep\DataSetALL.cs
+LINE: 67533
+CODE: private bool ShouldSerializeView_TrialBalanceByTotal()
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Dto\CertificateRequestDto.cs
+LINE: 15
+CODE: public string SerialNumber { get; set; }
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmPaymentBig.cs
+LINE: 381
+CODE: dataRow["تفعيل الضريبه"] = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmPaymentBig.cs
+LINE: 385
+CODE: dataRow["تفعيل الضريبه"] = false;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmPaymentBig.cs
+LINE: 409
+CODE: if (row["تفعيل الضريبه"] != DBNull.Value && Convert.ToBoolean(row["تفعيل الضريبه"]))
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmPaymentBig.cs
+LINE: 458
+CODE: if (row3["تفعيل الضريبه"] != DBNull.Value && Convert.ToBoolean(row3["تفعيل الضريبه"]))
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmPaymentBig.cs
+LINE: 531
+CODE: if (!(e.Column.FieldName == "تفعيل الضريبه"))
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmPaymentBig.cs
+LINE: 541
+CODE: if (Convert.ToBoolean(row["تفعيل الضريبه"]))
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmPaymentBig.cs
+LINE: 543
+CODE: row["تفعيل الضريبه"] = false;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmPaymentBig.cs
+LINE: 547
+CODE: row["تفعيل الضريبه"] = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmPaymentBig.cs
+LINE: 549
+CODE: if (row["تفعيل الضريبه"] != DBNull.Value && Convert.ToBoolean(row["تفعيل الضريبه"]))
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmPaymentBig.cs
+LINE: 703
+CODE: datatable.Columns.Add("تفعيل الضريبه", typeof(bool));
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmPaymentBig.cs
+LINE: 724
+CODE: dataRow["تفعيل الضريبه"] = false;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmPaymentBig.cs
+LINE: 792
+CODE: dataRow["تفعيل الضريبه"] = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmPaymentBig.cs
+LINE: 796
+CODE: dataRow["تفعيل الضريبه"] = false;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmPaymentBig.cs
+LINE: 1307
+CODE: dataRow["تفعيل الضريبه"] = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmPaymentBig.cs
+LINE: 1458
+CODE: dataRow["تفعيل الضريبه"] = item.IsVat;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmPaymentBig.cs
+LINE: 2126
+CODE: this.gridColumn22.FieldName = "تفعيل الضريبه";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmReceiptsBig.cs
+LINE: 382
+CODE: dataRow["تفعيل الضريبه"] = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmReceiptsBig.cs
+LINE: 386
+CODE: dataRow["تفعيل الضريبه"] = false;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmReceiptsBig.cs
+LINE: 431
+CODE: if (row2["تفعيل الضريبه"] != DBNull.Value && Convert.ToBoolean(row2["تفعيل الضريبه"]))
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmReceiptsBig.cs
+LINE: 459
+CODE: if (row3["تفعيل الضريبه"] != DBNull.Value && Convert.ToBoolean(row3["تفعيل الضريبه"]))
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmReceiptsBig.cs
+LINE: 532
+CODE: if (!(e.Column.FieldName == "تفعيل الضريبه"))
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmReceiptsBig.cs
+LINE: 542
+CODE: if (Convert.ToBoolean(row["تفعيل الضريبه"]))
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmReceiptsBig.cs
+LINE: 544
+CODE: row["تفعيل الضريبه"] = false;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmReceiptsBig.cs
+LINE: 548
+CODE: row["تفعيل الضريبه"] = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmReceiptsBig.cs
+LINE: 550
+CODE: if (row["تفعيل الضريبه"] != DBNull.Value && Convert.ToBoolean(row["تفعيل الضريبه"]))
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmReceiptsBig.cs
+LINE: 719
+CODE: datatable.Columns.Add("تفعيل الضريبه", typeof(bool));
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmReceiptsBig.cs
+LINE: 740
+CODE: dataRow["تفعيل الضريبه"] = false;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmReceiptsBig.cs
+LINE: 808
+CODE: dataRow["تفعيل الضريبه"] = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmReceiptsBig.cs
+LINE: 812
+CODE: dataRow["تفعيل الضريبه"] = false;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmReceiptsBig.cs
+LINE: 1325
+CODE: dataRow["تفعيل الضريبه"] = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmReceiptsBig.cs
+LINE: 1480
+CODE: dataRow["تفعيل الضريبه"] = item.IsVat;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Account\FrmReceiptsBig.cs
+LINE: 2191
+CODE: this.gridColumn23.FieldName = "تفعيل الضريبه";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmCheckActivationElctroncInv.cs
+LINE: 12
+CODE: public class FrmCheckActivationElctroncInv : XtraForm
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmCheckActivationElctroncInv.cs
+LINE: 36
+CODE: public FrmCheckActivationElctroncInv()
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmCheckActivationElctroncInv.cs
+LINE: 140
+CODE: private void FrmCheckActivationElctroncInv_FormClosing(object sender, FormClosingEventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmCheckActivationElctroncInv.cs
+LINE: 167
+CODE: System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GTSErpSystem.Frms.ElctorncInvoic.FrmCheckActivationElctroncInv));
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmCheckActivationElctroncInv.cs
+LINE: 188
+CODE: this.groupBox1.Text = "Verify Electronic Invoice Activation";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmCheckActivationElctroncInv.cs
+LINE: 243
+CODE: this.BtnActive.Text = "تفعيل الفاتوره الالكترونيه";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmCheckActivationElctroncInv.cs
+LINE: 266
+CODE: base.Name = "FrmCheckActivationElctroncInv";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmCheckActivationElctroncInv.cs
+LINE: 270
+CODE: this.Text = "التحقق من تفعيل الفاتوره الاكترونيه";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmCheckActivationElctroncInv.cs
+LINE: 271
+CODE: base.FormClosing += new System.Windows.Forms.FormClosingEventHandler(FrmCheckActivationElctroncInv_FormClosing);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmGenetareCSID.cs
+LINE: 380
+CODE: certificateRequest.SerialNumber = requestDto.SerialNumber;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmGenetareCSID.cs
+LINE: 404
+CODE: certificateRequestDto.SerialNumber = TxtNum.Text;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmGetDataFromCRM.cs
+LINE: 89
+CODE: if (LoginDetails.ActivationId == 0 || TxtBranch.SelectedValue == null || TxtName.SelectedValue == null)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmGetDataFromCRM.cs
+LINE: 98
+CODE: string apiUrl = $"{baseUrl}/Zakat/GetDesktopCSRAsync?activationId={LoginDetails.ActivationId}&branchId={branchId}&userId={userId}";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 34
+CODE: private TextBox TxtActivationId;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 47
+CODE: if (string.IsNullOrWhiteSpace(TxtActivationId.Text))
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 49
+CODE: MessageBox.Show("يرجي ادخال رقم التفعيل", " â‌Œ فشل الإرسال:\n");
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 66
+CODE: serialNumber = DecriptData(),
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 68
+CODE: activationId = Convert.ToInt32(TxtActivationId.Text)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 80
+CODE: if (int.TryParse(await response.Content.ReadAsStringAsync(), out var activationId))
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 82
+CODE: LoginDetails.ActivationId = activationId;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 83
+CODE: MessageBox.Show($"âœ… تم إرسال البيانات بنجاح!\nActivation ID: {activationId}");
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 87
+CODE: MessageBox.Show("تم الإرسال بنجاح، ولكن لم يتم التعرف على رقم التفعيل.", "تنبيه");
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 164
+CODE: string text = Class_Crypto.SetData("b14ca5898a4e4133bbce2ea2315a1500", "b14ca5898a4e4133bbce2ea2315a1916", MacAddress(), SerialNumber(), HardDisk(), LoginDetails.VergDate, DateTime.Now.ToString("yyyy-MM-dd"), machineName);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 183
+CODE: public static string SerialNumber()
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 189
+CODE: result = item["SerialNumber"].ToString().Trim();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 209
+CODE: result = current2["SerialNumber"].ToString();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 231
+CODE: this.TxtActivationId = new System.Windows.Forms.TextBox();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 248
+CODE: this.groupBox1.Controls.Add(this.TxtActivationId);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 262
+CODE: this.label1.Text = "رقم التفعيل";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 263
+CODE: this.TxtActivationId.Font = new System.Drawing.Font("Tahoma", 9f, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 264
+CODE: this.TxtActivationId.Location = new System.Drawing.Point(11, 23);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 265
+CODE: this.TxtActivationId.Name = "TxtActivationId";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 266
+CODE: this.TxtActivationId.Size = new System.Drawing.Size(238, 26);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 267
+CODE: this.TxtActivationId.TabIndex = 240;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.ElctorncInvoic\FrmZatcaIntgration.cs
+LINE: 268
+CODE: this.TxtActivationId.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmActivation.cs
+LINE: 64
+CODE: public class FrmActivation : RibbonForm
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmActivation.cs
+LINE: 690
+CODE: public FrmActivation()
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmActivation.cs
+LINE: 3182
+CODE: System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GTSErpSystem.Frms.FrmsHome.FrmActivation));
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmActivation.cs
+LINE: 5588
+CODE: base.IconOptions.Icon = (System.Drawing.Icon)resources.GetObject("FrmActivation.IconOptions.Icon");
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmActivation.cs
+LINE: 5589
+CODE: base.Name = "FrmActivation";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGold.cs
+LINE: 2394
+CODE: FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGold.cs
+LINE: 2395
+CODE: frmCheckActivationElctroncInv.ShowDialog();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGold.cs
+LINE: 2396
+CODE: if (frmCheckActivationElctroncInv.Active)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGold.cs
+LINE: 2440
+CODE: new FrmCheckActivationCloseYear().ShowDialog();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlus.cs
+LINE: 3352
+CODE: FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlus.cs
+LINE: 3353
+CODE: frmCheckActivationElctroncInv.ShowDialog();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlus.cs
+LINE: 3354
+CODE: if (frmCheckActivationElctroncInv.Active)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlus.cs
+LINE: 3466
+CODE: new FrmCheckActivationCloseYear().ShowDialog();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmGoldPlus.cs
+LINE: 3476
+CODE: new FrmCheckActivationCloseYear().ShowDialog();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurant.cs
+LINE: 2265
+CODE: FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurant.cs
+LINE: 2266
+CODE: frmCheckActivationElctroncInv.ShowDialog();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurant.cs
+LINE: 2267
+CODE: if (frmCheckActivationElctroncInv.Active)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurant.cs
+LINE: 2316
+CODE: new FrmCheckActivationCloseYear().ShowDialog();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurantSilver.cs
+LINE: 2188
+CODE: FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurantSilver.cs
+LINE: 2189
+CODE: frmCheckActivationElctroncInv.ShowDialog();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurantSilver.cs
+LINE: 2190
+CODE: if (frmCheckActivationElctroncInv.Active)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmRestaurantSilver.cs
+LINE: 2234
+CODE: new FrmCheckActivationCloseYear().ShowDialog();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilver.cs
+LINE: 2223
+CODE: FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilver.cs
+LINE: 2224
+CODE: frmCheckActivationElctroncInv.ShowDialog();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilver.cs
+LINE: 2225
+CODE: if (frmCheckActivationElctroncInv.Active)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilver.cs
+LINE: 2274
+CODE: new FrmCheckActivationCloseYear().ShowDialog();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlus.cs
+LINE: 2400
+CODE: FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlus.cs
+LINE: 2401
+CODE: frmCheckActivationElctroncInv.ShowDialog();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlus.cs
+LINE: 2402
+CODE: if (frmCheckActivationElctroncInv.Active)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlus.cs
+LINE: 2458
+CODE: new FrmCheckActivationCloseYear().ShowDialog();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlusWashing.cs
+LINE: 2400
+CODE: FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlusWashing.cs
+LINE: 2401
+CODE: frmCheckActivationElctroncInv.ShowDialog();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlusWashing.cs
+LINE: 2402
+CODE: if (frmCheckActivationElctroncInv.Active)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsHome\FrmSilverPlusWashing.cs
+LINE: 2458
+CODE: new FrmCheckActivationCloseYear().ShowDialog();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmItemVat.cs
+LINE: 133
+CODE: this.CBISVat.Text = "تفعيل ضريبة القيمة المضافة علي كل الاصناف";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 1079
+CODE: text = item["SerialNumber"].ToString();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 1094
+CODE: text2 = "SerialNumber: " + current2["SerialNumber"];
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 1242
+CODE: FrmCheckActivationElctroncInv frmCheckActivationElctroncInv = new FrmCheckActivationElctroncInv();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 1243
+CODE: frmCheckActivationElctroncInv.ShowDialog();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 1244
+CODE: if (frmCheckActivationElctroncInv.Active)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 1975
+CODE: this.CKBondTax.Text = "تفعيل الضريبه في السندات";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 1985
+CODE: this.ElcotroncInvCK.Text = "تفعيل الفاتوره الالكترونيه";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2014
+CODE: this.CkDisCode.Text = "تفعيل كود الخصم في المبيعات والكاشير";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2024
+CODE: this.CkBouns.Text = "تفعيل البونص فى المبيعات";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2113
+CODE: this.CkHasm.Text = "تفعيل الحسم فى المبيعات";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2240
+CODE: this.CKGabr.Text = "تفعيل الجبر فى الكاشير";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2251
+CODE: this.CBTabocco.Text = "تفعيل ضريبة التبغ 100 %";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2379
+CODE: this.CkAlItemInRow.Text = "تفعيل جمع الاصناف المتشابه في صف واحد";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2399
+CODE: this.CkBarCodeRest.Text = "تفعيل الباركود في المطعم";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2442
+CODE: this.CKIsShowRoomInFormRestaurant.Text = "تفعيل اظهار الغرف علي اعلي يسار شاشة المطعم";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2452
+CODE: this.CBISTakeDateApp.Text = "تفعيل تاريخ البرنامج علي الكاشير";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2462
+CODE: this.CBIsPrintSecondFatoraCashier.Text = "تفعيل طباعه فاتوره الكابتن اوردر";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2472
+CODE: this.CBIsResturant.Text = "تفعيل خصائص المطعم في الكاشير";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2482
+CODE: this.CBIsPrintItemCook1.Text = "تفعيل طباعة فاتورة المطبخ ";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2492
+CODE: this.Ckglass.Text = "تفعيل كاشير النظارات";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2536
+CODE: this.CBActiveImage.Text = "تفعيل الصورة";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2556
+CODE: this.CBActiveNameEN.Text = "تفعيل الانجليزي";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2577
+CODE: this.CBActivePrice.Text = "تفعيل السعر";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2598
+CODE: this.CBActiveNameAR.Text = "تفعيل الاسم العربي";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2754
+CODE: this.CBIsPrintItemCook.Text = "تفعيل طباعة المواد الخام";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2764
+CODE: this.IsTimeInRestaurant.Text = "تفعيل الوقت في الغرف";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2783
+CODE: this.checkItemTotalWithVat.Text = "تفعيل الاسعار شامل الضريبة في كرت الصنف";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2803
+CODE: this.checkVat.Text = "تفعيل ضريبة القيمة المضافة ";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2866
+CODE: this.CBOrderStore.Text = "تفعيل أمر التحميل فى المبيعات";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2875
+CODE: this.CBIsSecureCashier.Text = "تفعيل الحماية في الكاشير";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2884
+CODE: this.CBPrintReturnOrder.Text = "تفعيل الطباعة في مرتجعات المبيعات";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2894
+CODE: this.CBPrintOrder.Text = "تفعيل طباعة الكاشير مباشر";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 2903
+CODE: this.CBPrintCashier.Text = "تفعيل الطباعة في الكاشير";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\FrmSetting.cs
+LINE: 3080
+CODE: this.ckRemember.Text = "تفعيل التذكير";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\WhathAppInfo.cs
+LINE: 100
+CODE: this.groupBox1.Text = "طريقه تفعيل الارسال علي الواتساب";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\WhathAppInfo.cs
+LINE: 130
+CODE: this.label7.Text = "تفعيل ارسال الواتس اب من خلال البرنامج :\r\n\r\n";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\WhathAppInfo.cs
+LINE: 137
+CODE: this.label5.Text = "يوجد في الشاشات CheckBox تسمي  الارسال علي الواتس اب برجاء تفعيلها وسيتم ارسال الفاتوره تلقائي بعد الحفظ علي الواتس اب\r\n";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.FrmsMain\WhathAppInfo.cs
+LINE: 158
+CODE: this.label3.Text = "تفعيل رقمك كرقم واتساب بزنس على  Twilio (Self-Sign Up) :";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Items\FrmDisCode.cs
+LINE: 668
+CODE: this.CheckAmount.Text = "تفعيل القيمه";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Items\FrmDisCode.cs
+LINE: 680
+CODE: this.CheckPer.Text = "تفعيل النسبه";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Items\FrmImportExcel.cs
+LINE: 410
+CODE: if (BtnVat.Text == "تفعيل الضربية")
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Items\FrmImportExcel.cs
+LINE: 421
+CODE: BtnVat.Text = "تفعيل الضربية";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Items\FrmImportExcel.cs
+LINE: 1438
+CODE: this.BtnVat.Text = "تفعيل الضربية";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.OrderRent\FrmRentalExpenses.cs
+LINE: 1092
+CODE: this.gridColumn5.Caption = "تفعيل الضريبه";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Reports.Account\FrmRPMizan.cs
+LINE: 111
+CODE: dataSetALL.Tables["View_TrialBalanceByTotal"].Clear();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Reports.Account\FrmRPMizan.cs
+LINE: 112
+CODE: SqlCommand sqlCommand = new SqlCommand("AddTempTrialBalance_New", sqlConnection);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Reports.Account\FrmRPMizan.cs
+LINE: 152
+CODE: sqlDataAdapter.Fill(dataSetALL.View_TrialBalanceByTotal);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Reports.Account\FrmRPMizan.cs
+LINE: 154
+CODE: if (dataSetALL.Tables["View_TrialBalanceByTotal"].Rows.Count > 0)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Reports.Account\FrmRPMizan.cs
+LINE: 159
+CODE: stiReport.Load(Application.StartupPath + "\\Reports\\TrialBalanceByTotalReport.mrt");
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Reports.Account\FrmRPMizan.cs
+LINE: 163
+CODE: stiReport.Load(Application.StartupPath + "\\ReportsEN\\TrialBalanceByTotalReport.mrt");
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Reports.Account\FrmRPMizan.cs
+LINE: 165
+CODE: stiReport.RegData(dataSetALL.View_TrialBalanceByTotal);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Reports.Account\FrmRPMizanGroups.cs
+LINE: 107
+CODE: dataSetALL.Tables["View_TrialBalanceByTotal"].Clear();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Reports.Account\FrmRPMizanGroups.cs
+LINE: 117
+CODE: sqlDataAdapter.Fill(dataSetALL.View_TrialBalanceByTotal);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Reports.Account\FrmRPMizanGroups.cs
+LINE: 119
+CODE: if (dataSetALL.Tables["View_TrialBalanceByTotal"].Rows.Count > 0)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Reports.Account\FrmRPMizanGroups.cs
+LINE: 130
+CODE: stiReport.RegData(dataSetALL.View_TrialBalanceByTotal);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Reports.Account\FrmRPMizanTotal.cs
+LINE: 107
+CODE: dataSetALL.Tables["View_TrialBalanceByTotal"].Clear();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Reports.Account\FrmRPMizanTotal.cs
+LINE: 108
+CODE: SqlCommand sqlCommand = new SqlCommand("AddTempTrialBalanceByTotal", sqlConnection);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Reports.Account\FrmRPMizanTotal.cs
+LINE: 155
+CODE: sqlDataAdapter.Fill(dataSetALL.View_TrialBalanceByTotal);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Reports.Account\FrmRPMizanTotal.cs
+LINE: 157
+CODE: if (dataSetALL.Tables["View_TrialBalanceByTotal"].Rows.Count > 0)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Reports.Account\FrmRPMizanTotal.cs
+LINE: 162
+CODE: stiReport.Load(Application.StartupPath + "\\Reports\\TrialBalanceByTotalReport.mrt");
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Reports.Account\FrmRPMizanTotal.cs
+LINE: 166
+CODE: stiReport.Load(Application.StartupPath + "\\ReportsEN\\TrialBalanceByTotalReport.mrt");
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Reports.Account\FrmRPMizanTotal.cs
+LINE: 168
+CODE: stiReport.RegData(dataSetALL.View_TrialBalanceByTotal);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmSearch.cs
+LINE: 32
+CODE: private Label SerialNumber;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmSearch.cs
+LINE: 124
+CODE: this.SerialNumber = new System.Windows.Forms.Label();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmSearch.cs
+LINE: 138
+CODE: this.groupBox1.Controls.Add(this.SerialNumber);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmSearch.cs
+LINE: 185
+CODE: this.SerialNumber.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmSearch.cs
+LINE: 186
+CODE: this.SerialNumber.AutoSize = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmSearch.cs
+LINE: 187
+CODE: this.SerialNumber.Location = new System.Drawing.Point(865, 590);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmSearch.cs
+LINE: 188
+CODE: this.SerialNumber.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmSearch.cs
+LINE: 189
+CODE: this.SerialNumber.Name = "SerialNumber";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmSearch.cs
+LINE: 190
+CODE: this.SerialNumber.Size = new System.Drawing.Size(68, 17);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmSearch.cs
+LINE: 191
+CODE: this.SerialNumber.TabIndex = 235;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmSearch.cs
+LINE: 192
+CODE: this.SerialNumber.Text = "SerialNum";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 153
+CODE: private Label SerialNumber;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 183
+CODE: private SimpleButton BtnCopyTrial;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 185
+CODE: private TextBox TxtTrial;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 187
+CODE: private SimpleButton BtnTrial;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 282
+CODE: TxtStatuse.Text = "طلب تفعيل جديد";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 289
+CODE: TxtStatuse.Text = "رفض التفعيل";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 349
+CODE: TxtTrial.Clear();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 355
+CODE: TxtTrial.Enabled = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 356
+CODE: BtnCopyTrial.Enabled = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 357
+CODE: BtnTrial.Enabled = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 466
+CODE: TxtTrial.Text = select_Virgins_Result.Trial;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 607
+CODE: virg_MasterDetails.Trial = TxtTrial.Text;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 659
+CODE: DialogResult dialogResult = MessageBox.Show("اسم العميل: " + TxtName.Text + " \r\n الفيرجن: " + CBVirgin.Text + " \r\n تاريخ الانتهاء: " + TxtDateTo.DateTime.ToShortDateString() + " \r\n  \r\n الشركة: " + CBCompany.Text + " \r\n نوع التفعيل: " + text + " \r\n  \r\n موظف التفعيل: " + LoginDetails.UserName + " \r\n المسوق: " + CBMarkter.Text, "تم التفعيل بنجاح", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 664
+CODE: MessageBox.Show("اسم العميل: " + TxtName.Text + " \r\n الفيرجن: " + CBVirgin.Text + " \r\n تاريخ الانتهاء: " + TxtDateTo.DateTime.ToShortDateString() + " \r\n  \r\n الشركة: " + CBCompany.Text + " \r\n نوع التفعيل: " + text + " \r\n  \r\n موظف التفعيل: " + LoginDetails.UserName + " \r\n المسوق: " + CBMarkter.Text + " \r\n تاريخ التفعيل: " + DateTime.Now.ToString(" yyyy/MM/dd hh:mm "), "تم التفعيل بنجاح", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 669
+CODE: MessageBox.Show("عفوا، انتهت عدد مرات التفعيل لهذا الجهاز الرجاء الترخيص ", "Result", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 686
+CODE: MessageBox.Show("عفوا، لم يتم التفعيل \r\n يرجي المحاولة مرة اخري \r\n " + ex.ToString(), "Result", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 699
+CODE: TxtTrial.Text = text2;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 806
+CODE: private void BtnTrial_Click(object sender, EventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 818
+CODE: DialogResult dialogResult = MessageBox.Show("اسم العميل: " + TxtName.Text + " \r\n الفيرجن: " + CBVirgin.Text + " \r\n تاريخ الانتهاء: " + TxtDateTo.DateTime.ToShortDateString() + " \r\n  \r\n الشركة: " + CBCompany.Text + " \r\n نوع التفعيل: " + text + " \r\n  \r\n موظف التفعيل: " + LoginDetails.UserName + " \r\n المسوق: " + CBMarkter.Text, "تم التفعيل بنجاح", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 823
+CODE: if (TxtTrial.Text == "")
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 838
+CODE: TxtStatuse.Text = "قبول التفعيل";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 844
+CODE: MessageBox.Show("اسم العميل: " + TxtName.Text + " \r\n الفيرجن: " + CBVirgin.Text + " \r\n تاريخ الانتهاء: " + TxtDateTo.DateTime.ToShortDateString() + " \r\n  \r\n الشركة: " + CBCompany.Text + " \r\n نوع التفعيل: " + text + " \r\n  \r\n موظف التفعيل: " + LoginDetails.UserName + " \r\n المسوق: " + CBMarkter.Text + " \r\n تاريخ التفعيل: " + DateTime.Now.ToString(" yyyy/MM/dd hh:mm "), "تم التفعيل بنجاح", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button3, MessageBoxOptions.RightAlign);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 847
+CODE: private void BtnCopyTrial_Click(object sender, EventArgs e)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 851
+CODE: Clipboard.SetText(TxtTrial.Text);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 891
+CODE: TxtTrial.Enabled = false;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 892
+CODE: BtnTrial.Enabled = false;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 911
+CODE: TxtTrial.Enabled = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 912
+CODE: BtnTrial.Enabled = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1098
+CODE: TxtTrial.Enabled = false;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1099
+CODE: BtnTrial.Enabled = false;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1119
+CODE: TxtTrial.Enabled = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1120
+CODE: BtnTrial.Enabled = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1182
+CODE: this.BtnTrial = new DevExpress.XtraEditors.SimpleButton();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1183
+CODE: this.BtnCopyTrial = new DevExpress.XtraEditors.SimpleButton();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1184
+CODE: this.TxtTrial = new System.Windows.Forms.TextBox();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1228
+CODE: this.SerialNumber = new System.Windows.Forms.Label();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1591
+CODE: this.tabPage1.Controls.Add(this.BtnTrial);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1592
+CODE: this.tabPage1.Controls.Add(this.BtnCopyTrial);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1593
+CODE: this.tabPage1.Controls.Add(this.TxtTrial);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1693
+CODE: this.BtnOrderActive.Text = "طلب تفعيل";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1695
+CODE: this.BtnTrial.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.RightCenter;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1696
+CODE: this.BtnTrial.Location = new System.Drawing.Point(609, 442);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1697
+CODE: this.BtnTrial.Margin = new System.Windows.Forms.Padding(4);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1698
+CODE: this.BtnTrial.Name = "BtnTrial";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1699
+CODE: this.BtnTrial.Size = new System.Drawing.Size(87, 27);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1700
+CODE: this.BtnTrial.TabIndex = 259;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1701
+CODE: this.BtnTrial.Text = "تجريبي";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1702
+CODE: this.BtnTrial.Click += new System.EventHandler(BtnTrial_Click);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1703
+CODE: this.BtnCopyTrial.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.RightCenter;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1704
+CODE: this.BtnCopyTrial.Location = new System.Drawing.Point(609, 477);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1705
+CODE: this.BtnCopyTrial.Margin = new System.Windows.Forms.Padding(4);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1706
+CODE: this.BtnCopyTrial.Name = "BtnCopyTrial";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1707
+CODE: this.BtnCopyTrial.Size = new System.Drawing.Size(87, 27);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1708
+CODE: this.BtnCopyTrial.TabIndex = 258;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1709
+CODE: this.BtnCopyTrial.Text = "نسخ";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1710
+CODE: this.BtnCopyTrial.Click += new System.EventHandler(BtnCopyTrial_Click);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1711
+CODE: this.TxtTrial.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1712
+CODE: this.TxtTrial.BackColor = System.Drawing.Color.White;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1713
+CODE: this.TxtTrial.ForeColor = System.Drawing.Color.FromArgb(40, 40, 40);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1714
+CODE: this.TxtTrial.Location = new System.Drawing.Point(7, 442);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1715
+CODE: this.TxtTrial.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1716
+CODE: this.TxtTrial.Multiline = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1717
+CODE: this.TxtTrial.Name = "TxtTrial";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1718
+CODE: this.TxtTrial.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1719
+CODE: this.TxtTrial.Size = new System.Drawing.Size(594, 74);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1720
+CODE: this.TxtTrial.TabIndex = 256;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1841
+CODE: this.CKMessage.Text = "اظهار الرسالة عند انتهاء فترة التفعيل";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 1891
+CODE: this.label7.Text = "عدد التفعيل";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 2015
+CODE: this.label14.Text = "نوع التفعيل";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 2084
+CODE: this.tabPage2.Controls.Add(this.SerialNumber);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 2106
+CODE: this.label15.Text = "تاريخ التفعيل";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 2198
+CODE: this.SerialNumber.AutoSize = true;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 2199
+CODE: this.SerialNumber.Location = new System.Drawing.Point(625, 174);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 2200
+CODE: this.SerialNumber.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 2201
+CODE: this.SerialNumber.Name = "SerialNumber";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 2202
+CODE: this.SerialNumber.Size = new System.Drawing.Size(66, 16);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 2203
+CODE: this.SerialNumber.TabIndex = 229;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 2204
+CODE: this.SerialNumber.Text = "SerialNum";
+

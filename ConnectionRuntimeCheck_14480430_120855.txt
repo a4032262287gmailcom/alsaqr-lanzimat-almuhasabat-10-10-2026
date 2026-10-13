@@ -1,0 +1,33 @@
+﻿PID: 22588
+Window title: Database connection
+Responding: True
+
+=== CONNECTION ERROR LOG ===
+1448-04-30 12:09:00
+System.InvalidOperationException: The Entity Framework provider type 'System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer' registered in the application config file for the ADO.NET provider with invariant name 'System.Data.SqlClient' could not be loaded. Make sure that the assembly-qualified name is used and that the assembly is available to the running application. See http://go.microsoft.com/fwlink/?LinkId=260882 for more information.
+   ط¹ظ†ط¯ System.Data.Entity.Infrastructure.DependencyResolution.ProviderServicesFactory.GetInstance(String providerTypeName, String providerInvariantName)
+   ط¹ظ†ط¯ System.Data.Entity.Internal.AppConfig.<.ctor>b__2(ProviderElement e)
+   ط¹ظ†ط¯ System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   ط¹ظ†ط¯ System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   ط¹ظ†ط¯ System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   ط¹ظ†ط¯ System.Data.Entity.Internal.AppConfig.<.ctor>b__1()
+   ط¹ظ†ط¯ System.Lazy`1.CreateValue()
+   ط¹ظ†ط¯ System.Lazy`1.LazyInitValue()
+   ط¹ظ†ط¯ System.Lazy`1.get_Value()
+   ط¹ظ†ط¯ System.Data.Entity.Internal.AppConfig.get_DbProviderServices()
+   ط¹ظ†ط¯ System.Data.Entity.Infrastructure.DependencyResolution.AppConfigDependencyResolver.RegisterDbProviderServices()
+   ط¹ظ†ط¯ System.Data.Entity.Infrastructure.DependencyResolution.AppConfigDependencyResolver.GetServiceFactory(Type type, String name)
+   ط¹ظ†ط¯ System.Data.Entity.Infrastructure.DependencyResolution.AppConfigDependencyResolver.<>c__DisplayClass1.<GetService>b__0(Tuple`2 t)
+   ط¹ظ†ط¯ System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)
+   ط¹ظ†ط¯ System.Data.Entity.Infrastructure.DependencyResolution.AppConfigDependencyResolver.GetService(Type type, Object key)
+   ط¹ظ†ط¯ System.Data.Entity.Infrastructure.DependencyResolution.ResolverChain.<>c__DisplayClass3.<GetService>b__0(IDbDependencyResolver r)
+   ط¹ظ†ط¯ System.Linq.Enumerable.WhereSelectArrayIterator`2.MoveNext()
+   ط¹ظ†ط¯ System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source, Func`2 predicate)
+   ط¹ظ†ط¯ System.Data.Entity.Infrastructure.DependencyResolution.ResolverChain.GetService(Type type, Object key)
+   ط¹ظ†ط¯ System.Data.Entity.Infrastructure.DependencyResolution.CompositeResolver`2.GetService(Type type, Object key)
+   ط¹ظ†ط¯ System.Data.Entity.Infrastructure.DependencyResolution.DbDependencyResolverExtensions.GetService[T](IDbDependencyResolver resolver)
+   ط¹ظ†ط¯ System.Data.Entity.DbContext.InitializeLazyInternalContext(IInternalConnection internalConnection, DbCompiledModel model)
+   ط¹ظ†ط¯ System.Data.Entity.DbContext..ctor(String nameOrConnectionString)
+   ط¹ظ†ط¯ GTSErpSystem.GTSdbEntities..ctor() ظپظٹ E:\KhaledERP\App\SourceCode\GTSErpSystem\GTSdbEntities.cs:ط§ظ„ط³ط·ط± 384
+   ط¹ظ†ط¯ GTSErpSystem.BLL.Main.ChangeConnection.TestCon() ظپظٹ E:\KhaledERP\App\SourceCode\GTSErpSystem.BLL.Main\ChangeConnection.cs:ط§ظ„ط³ط·ط± 86
+------------------------------

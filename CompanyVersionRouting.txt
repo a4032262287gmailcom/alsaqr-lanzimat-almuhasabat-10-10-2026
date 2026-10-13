@@ -1,0 +1,657 @@
+﻿=== ASSIGNMENTS FOR COMPANY AND VERSION ===
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 111
+		instance.Theme = MaterialSkinManager.Themes.LIGHT;
+		LblVirgin.Visible = false;
+		CBVirgin.Visible = false;
+		BtnVirginApp.Visible = false;
+		if (text == "en-US")
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 142
+		TxtName.DisplayMember = "Name";
+		TxtName.ValueMember = "ID";
+		CBVirgin.DataSource = db.Virg_Virgins.Where((Virg_Virgins x) => x.GroupShow >= (int?)LoginDetails.GroupID && x.FranchiseShow == (bool?)true).ToList();
+		CBVirgin.DisplayMember = "Name";
+		CBVirgin.ValueMember = "ID";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 454
+		if (CBVirgin.Visible)
+		{
+			LoginDetails.Active_Virgin = Convert.ToInt32(CBVirgin.SelectedValue);
+		}
+		if (LoginDetails.Active_Company == 1)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 456
+			LoginDetails.Active_Virgin = Convert.ToInt32(CBVirgin.SelectedValue);
+		}
+		if (LoginDetails.Active_Company == 1)
+		{
+			if (LoginDetails.Active_Virgin == 1)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 458
+		if (LoginDetails.Active_Company == 1)
+		{
+			if (LoginDetails.Active_Virgin == 1)
+			{
+				FrmSilver frmSilver = new FrmSilver();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 464
+				frmSilver.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 2)
+			{
+				FrmSilverPlus frmSilverPlus = new FrmSilverPlus();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 470
+				frmSilverPlus.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 3)
+			{
+				FrmGold frmGold = new FrmGold();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 476
+				frmGold.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 4)
+			{
+				FrmGoldPlus frmGoldPlus = new FrmGoldPlus();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 482
+				frmGoldPlus.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 5)
+			{
+				FrmRestaurantSilver frmRestaurantSilver = new FrmRestaurantSilver();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 488
+				frmRestaurantSilver.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 6)
+			{
+				FrmRestaurant frmRestaurant = new FrmRestaurant();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 494
+				frmRestaurant.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 8)
+			{
+				FrmGoldPlusTransportation frmGoldPlusTransportation = new FrmGoldPlusTransportation();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 500
+				frmGoldPlusTransportation.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 9)
+			{
+				FrmGoldPlus frmGoldPlus2 = new FrmGoldPlus();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 506
+				frmGoldPlus2.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 10)
+			{
+				FrmSilverPlusWashing frmSilverPlusWashing = new FrmSilverPlusWashing();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 512
+				frmSilverPlusWashing.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 77)
+			{
+				FrmGoldPlus frmGoldPlus77 = new FrmGoldPlus();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 519
+			}
+		}
+		else if (LoginDetails.Active_Company == 2)
+		{
+			if (LoginDetails.Active_Virgin == 1)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 521
+		else if (LoginDetails.Active_Company == 2)
+		{
+			if (LoginDetails.Active_Virgin == 1)
+			{
+				FrmSilver frmSilver2 = new FrmSilver();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 527
+				frmSilver2.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 2)
+			{
+				FrmSilverPlus frmSilverPlus2 = new FrmSilverPlus();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 533
+				frmSilverPlus2.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 3)
+			{
+				FrmGold frmGold2 = new FrmGold();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 539
+				frmGold2.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 4)
+			{
+				FrmGoldPlus frmGoldPlus3 = new FrmGoldPlus();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 545
+				frmGoldPlus3.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 5)
+			{
+				FrmRestaurantSilver frmRestaurantSilver2 = new FrmRestaurantSilver();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 551
+				frmRestaurantSilver2.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 6)
+			{
+				FrmRestaurant frmRestaurant2 = new FrmRestaurant();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 557
+				frmRestaurant2.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 8)
+			{
+				FrmGoldPlusTransportation frmGoldPlusTransportation2 = new FrmGoldPlusTransportation();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 563
+				frmGoldPlusTransportation2.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 9)
+			{
+				FrmGoldPlus frmGoldPlus4 = new FrmGoldPlus();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 569
+				frmGoldPlus4.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 10)
+			{
+				FrmSilverPlusWashing frmSilverPlusWashing2 = new FrmSilverPlusWashing();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 575
+				frmSilverPlusWashing2.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 77)
+			{
+				FrmGoldPlus frmGoldPlus77 = new FrmGoldPlus();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 582
+			}
+		}
+		else if (LoginDetails.Active_Company == 3)
+		{
+			if (LoginDetails.Active_Virgin == 1)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 584
+		else if (LoginDetails.Active_Company == 3)
+		{
+			if (LoginDetails.Active_Virgin == 1)
+			{
+				FrmSilver frmSilver3 = new FrmSilver();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 590
+				frmSilver3.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 2)
+			{
+				FrmSilverPlus frmSilverPlus3 = new FrmSilverPlus();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 596
+				frmSilverPlus3.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 3)
+			{
+				FrmGold frmGold3 = new FrmGold();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 602
+				frmGold3.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 4)
+			{
+				FrmGoldPlus frmGoldPlus5 = new FrmGoldPlus();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 608
+				frmGoldPlus5.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 5)
+			{
+				FrmRestaurantSilver frmRestaurantSilver3 = new FrmRestaurantSilver();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 614
+				frmRestaurantSilver3.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 6)
+			{
+				FrmRestaurant frmRestaurant3 = new FrmRestaurant();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 620
+				frmRestaurant3.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 8)
+			{
+				FrmGoldPlusTransportation frmGoldPlusTransportation3 = new FrmGoldPlusTransportation();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 626
+				frmGoldPlusTransportation3.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 9)
+			{
+				FrmGoldPlus frmGoldPlus6 = new FrmGoldPlus();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 632
+				frmGoldPlus6.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 10)
+			{
+				FrmSilverPlusWashing frmSilverPlusWashing3 = new FrmSilverPlusWashing();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 638
+				frmSilverPlusWashing3.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 77)
+			{
+				FrmGoldPlus frmGoldPlus77 = new FrmGoldPlus();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 645
+			}
+		}
+		else if (LoginDetails.Active_Company == 4)
+		{
+			if (LoginDetails.Active_Virgin == 1)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 647
+		else if (LoginDetails.Active_Company == 4)
+		{
+			if (LoginDetails.Active_Virgin == 1)
+			{
+				FrmSilver frmSilver4 = new FrmSilver();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 653
+				frmSilver4.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 2)
+			{
+				FrmSilverPlus frmSilverPlus4 = new FrmSilverPlus();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 659
+				frmSilverPlus4.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 3)
+			{
+				FrmGold frmGold4 = new FrmGold();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 665
+				frmGold4.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 4)
+			{
+				FrmGoldPlus frmGoldPlus7 = new FrmGoldPlus();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 671
+				frmGoldPlus7.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 5)
+			{
+				FrmRestaurantSilver frmRestaurantSilver4 = new FrmRestaurantSilver();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 677
+				frmRestaurantSilver4.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 6)
+			{
+				FrmRestaurant frmRestaurant4 = new FrmRestaurant();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 683
+				frmRestaurant4.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 8)
+			{
+				FrmGoldPlusTransportation frmGoldPlusTransportation4 = new FrmGoldPlusTransportation();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 689
+				frmGoldPlusTransportation4.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 9)
+			{
+				FrmGoldPlus frmGoldPlus8 = new FrmGoldPlus();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 695
+				frmGoldPlus8.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 10)
+			{
+				FrmSilverPlusWashing frmSilverPlusWashing4 = new FrmSilverPlusWashing();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 701
+				frmSilverPlusWashing4.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 77)
+			{
+				FrmGoldPlus frmGoldPlus77 = new FrmGoldPlus();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 708
+			}
+		}
+		else if (LoginDetails.Active_Company == 5)
+		{
+			if (LoginDetails.Active_Virgin == 1)
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 710
+		else if (LoginDetails.Active_Company == 5)
+		{
+			if (LoginDetails.Active_Virgin == 1)
+			{
+				FrmSilver frmSilver5 = new FrmSilver();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 716
+				frmSilver5.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 2)
+			{
+				FrmSilverPlus frmSilverPlus5 = new FrmSilverPlus();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 722
+				frmSilverPlus5.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 3)
+			{
+				FrmGold frmGold5 = new FrmGold();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 728
+				frmGold5.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 4)
+			{
+				FrmGoldPlus frmGoldPlus9 = new FrmGoldPlus();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 734
+				frmGoldPlus9.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 5)
+			{
+				FrmRestaurantSilver frmRestaurantSilver5 = new FrmRestaurantSilver();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 740
+				frmRestaurantSilver5.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 6)
+			{
+				FrmRestaurant frmRestaurant5 = new FrmRestaurant();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 746
+				frmRestaurant5.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 8)
+			{
+				FrmGoldPlusTransportation frmGoldPlusTransportation5 = new FrmGoldPlusTransportation();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 752
+				frmGoldPlusTransportation5.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 9)
+			{
+				FrmGoldPlus frmGoldPlus10 = new FrmGoldPlus();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 758
+				frmGoldPlus10.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 10)
+			{
+				FrmSilverPlusWashing frmSilverPlusWashing5 = new FrmSilverPlusWashing();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 764
+				frmSilverPlusWashing5.Show();
+			}
+			else if (LoginDetails.Active_Virgin == 77)
+			{
+				FrmGoldPlus frmGoldPlus77 = new FrmGoldPlus();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem\FrmLogin3.cs
+LINE: 1074
+			LblLang.Text = "EN";
+		}
+		CBVirgin.Visible = LoginDetails.Lbl_CB_VirginShow;
+	}
+
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.OrderRent\FrmRentalInvoice.cs
+LINE: 2729
+		if (e.KeyCode.ToString() == "F8")
+		{
+			if (LoginDetails.Active_Virgin == 9)
+			{
+				new FrmReportReser().Show();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.OrderRent\OrdersPriceShowRental.cs
+LINE: 2537
+		if (e.KeyCode.ToString() == "F8")
+		{
+			if (LoginDetails.Active_Virgin == 9)
+			{
+				new FrmReportReser().Show();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Orders\FrmOrders.cs
+LINE: 3035
+								LoginDetails.VatCash = Math.Round(Convert.ToDecimal(TxtVatDisc.Text), DecimalNum);
+								Result = ORD.SaveOrders(Convert.ToInt32(LblSup.Text), IsWait, TxtSuppliers.Text, TxtPhone.Text, TxtNumVat.Text, DateTime.Parse(TxtDate.Text), Convert.ToInt32(TxtType.SelectedValue), string.Empty, 1, Convert.ToInt32(CBCostCenter.SelectedValue), Convert.ToInt32(CBBounce.SelectedValue), TxtNote.Text, TxtNumNote.Text, Convert.ToDecimal(TxtCost.Text), Convert.ToDecimal(TxtVat.Text), Convert.ToDecimal(TxtTotals.Text), Convert.ToDecimal(TxtTotals.Text) + Convert.ToDecimal(TxtVat.Text), Convert.ToDecimal(TxtDiscount.Text), Convert.ToDecimal(txtdicoutprege.Text), Convert.ToDecimal(TxtVatDisc.Text), Convert.ToDecimal(TxtTotalDiscount.Text), Convert.ToDecimal(TxtTabocc.Text), Convert.ToDecimal(TxtVatDisc.Text), Convert.ToDecimal(TxtNet.Text), FrmCash, FrmBank, OrderCashierType: false, 0, 0, dtCurrentTable, Convert.ToInt32(CBSaleTybe.SelectedValue), TxtSales.Text, DateTime.Parse(DateHold.Text), AccountSN.ToString(), TxtStreet.Text, TxtDistrict.Text, TxtCity.Text, TxtAddress.Text, TxtPostalCode.Text, TxtAdditionalNum.Text, TxtCommercialRecord.Text, Convert.ToDecimal(TxtHasmPer.Text), Convert.ToDecimal(TxtHasmAmount.Text), ChargeAfterSale, Convert.ToInt32(CBProject.SelectedValue), Convert.ToDecimal(TxtAllDiscount.Text), Convert.ToDecimal(TxtBounce.Text), BtnDisCode.Text, 0m, 0m, Cars.CarName, Cars.CarModel, Cars.PlateNum, Cars.ChassisNum, Cars.Color, Cars.Counter);
+								if (LoginDetails.Active_Virgin == 9)
+								{
+									ORD.InsertRes(Result, selectedHallsID, selectedBookingDate, selectedInstallationDate, selectedJawDate);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Orders\FrmOrders.cs
+LINE: 3271
+					int projectId = ((!int.TryParse(CBProject.SelectedValue?.ToString(), out var result)) ? 1 : result);
+					purchese_ID = ORD.UpdateOrders(Convert.ToInt32(TxtCode.Text), Convert.ToInt32(LblSup.Text), isOn, TxtSuppliers.Text, TxtPhone.Text, TxtNumVat.Text, DateTime.Parse(TxtDate.Text), Convert.ToInt32(TxtType.SelectedValue), string.Empty, 1, Convert.ToInt32(CBCostCenter.SelectedValue), Convert.ToInt32(CBBounce.SelectedValue), TxtNote.Text, TxtNumNote.Text, Convert.ToDecimal(TxtCost.Text), Convert.ToDecimal(TxtVat.Text), Convert.ToDecimal(TxtTotals.Text), Convert.ToDecimal(TxtTotals.Text) + Convert.ToDecimal(TxtVat.Text), Convert.ToDecimal(TxtDiscount.Text), Convert.ToDecimal(txtdicoutprege.Text), Convert.ToDecimal(TxtVatDisc.Text), Convert.ToDecimal(TxtTotalDiscount.Text), Convert.ToDecimal(TxtTabocc.Text), Convert.ToDecimal(TxtVatDisc.Text), Convert.ToDecimal(TxtNet.Text), FrmCash, FrmBank, OrderCashierType: false, 0, 0, dtCurrentTable, TxtSales.Text, DateTime.Parse(DateHold.Text), AccountSN.ToString(), TxtStreet.Text, TxtDistrict.Text, TxtCity.Text, TxtAddress.Text, TxtPostalCode.Text, TxtAdditionalNum.Text, TxtCommercialRecord.Text, Convert.ToDecimal(TxtHasmPer.Text), Convert.ToDecimal(TxtHasmAmount.Text), 0m, Convert.ToDecimal(TxtAllDiscount.Text), Convert.ToDecimal(TxtBounce.Text), Cars.CarName, Cars.CarModel, Cars.PlateNum, Cars.ChassisNum, Cars.Color, Cars.Counter, projectId);
+					if (LoginDetails.Active_Virgin == 9)
+					{
+						ORD.UpdateRes(Convert.ToInt32(TxtCode.Text), selectedHallsID, selectedBookingDate, selectedInstallationDate, selectedJawDate);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Orders\FrmOrders.cs
+LINE: 3323
+					Order_OrderReturn order_OrderReturn = gTSdbEntities.Order_OrderReturn.Where((Order_OrderReturn x) => x.FromPurchesID == (int?)PurId && x.BranchID == (int?)LoginDetails.BranchID).FirstOrDefault();
+					Order_CheckoutOrders order_CheckoutOrders = gTSdbEntities.Order_CheckoutOrders.Where((Order_CheckoutOrders x) => x.FromPurchesID == (int?)PurId && x.BranchID == (int?)LoginDetails.BranchID).FirstOrDefault();
+					if (LoginDetails.Active_Virgin == 9)
+					{
+						ORD.DeleteRes(Convert.ToInt32(TxtCode.Text));
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Orders\FrmOrders.cs
+LINE: 4684
+								LoginDetails.VatCash = Math.Round(Convert.ToDecimal(TxtVatDisc.Text), DecimalNum);
+								Result = ORD.SaveOrdersDraft(Convert.ToInt32(LblSup.Text), IsWait, TxtSuppliers.Text, TxtPhone.Text, TxtNumVat.Text, DateTime.Parse(TxtDate.Text), Convert.ToInt32(TxtType.SelectedValue), string.Empty, 1, Convert.ToInt32(CBCostCenter.SelectedValue), Convert.ToInt32(CBBounce.SelectedValue), TxtNote.Text, TxtNumNote.Text, Convert.ToDecimal(TxtCost.Text), Convert.ToDecimal(TxtVat.Text), Convert.ToDecimal(TxtTotals.Text), Convert.ToDecimal(TxtTotals.Text) + Convert.ToDecimal(TxtVat.Text), Convert.ToDecimal(TxtDiscount.Text), Convert.ToDecimal(txtdicoutprege.Text), Convert.ToDecimal(TxtVatDisc.Text), Convert.ToDecimal(TxtTotalDiscount.Text), Convert.ToDecimal(TxtTabocc.Text), Convert.ToDecimal(TxtVatDisc.Text), Convert.ToDecimal(TxtNet.Text), FrmCash, FrmBank, OrderCashierType: false, 0, 0, dtCurrentTable, Convert.ToInt32(CBSaleTybe.SelectedValue), TxtSales.Text, DateTime.Parse(DateHold.Text), AccountSN.ToString(), TxtStreet.Text, TxtDistrict.Text, TxtCity.Text, TxtAddress.Text, TxtPostalCode.Text, TxtAdditionalNum.Text, TxtCommercialRecord.Text, Convert.ToDecimal(TxtHasmPer.Text), Convert.ToDecimal(TxtHasmAmount.Text), ChargeAfterSale, Convert.ToInt32(CBProject.SelectedValue), Convert.ToDecimal(TxtAllDiscount.Text), Convert.ToDecimal(TxtBounce.Text), BtnDisCode.Text, 0m, 0m, Cars.CarName, Cars.CarModel, Cars.PlateNum, Cars.ChassisNum, Cars.Color, Cars.Counter);
+								if (LoginDetails.Active_Virgin == 9)
+								{
+									ORD.InsertRes(Result, selectedHallsID, selectedBookingDate, selectedInstallationDate, selectedJawDate);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Orders\FrmOrders.cs
+LINE: 5133
+		if (e.KeyCode.ToString() == "F2")
+		{
+			if (LoginDetails.Active_Virgin == 9)
+			{
+				GTSErpSystem.Frms.Orders.FrmReservations.FrmReservations frmReservations = new GTSErpSystem.Frms.Orders.FrmReservations.FrmReservations();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Orders\FrmOrders.cs
+LINE: 5177
+		if (e.KeyCode.ToString() == "F8")
+		{
+			if (LoginDetails.Active_Virgin == 9)
+			{
+				new FrmReportReser().Show();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Orders\FrmOrdersDraft.cs
+LINE: 2847
+								LoginDetails.VatCash = Math.Round(Convert.ToDecimal(TxtVatDisc.Text), DecimalNum);
+								Result = ORD.SaveOrdersDraft(Convert.ToInt32(LblSup.Text), IsWait, TxtSuppliers.Text, TxtPhone.Text, TxtNumVat.Text, DateTime.Parse(TxtDate.Text), Convert.ToInt32(TxtType.SelectedValue), string.Empty, 1, Convert.ToInt32(CBCostCenter.SelectedValue), Convert.ToInt32(CBBounce.SelectedValue), TxtNote.Text, TxtNumNote.Text, Convert.ToDecimal(TxtCost.Text), Convert.ToDecimal(TxtVat.Text), Convert.ToDecimal(TxtTotals.Text), Convert.ToDecimal(TxtTotals.Text) + Convert.ToDecimal(TxtVat.Text), Convert.ToDecimal(TxtDiscount.Text), Convert.ToDecimal(txtdicoutprege.Text), Convert.ToDecimal(TxtVatDisc.Text), Convert.ToDecimal(TxtTotalDiscount.Text), Convert.ToDecimal(TxtTabocc.Text), Convert.ToDecimal(TxtVatDisc.Text), Convert.ToDecimal(TxtNet.Text), FrmCash, FrmBank, OrderCashierType: false, 0, 0, dtCurrentTable, Convert.ToInt32(CBSaleTybe.SelectedValue), TxtSales.Text, DateTime.Parse(DateHold.Text), AccountSN.ToString(), TxtStreet.Text, TxtDistrict.Text, TxtCity.Text, TxtAddress.Text, TxtPostalCode.Text, TxtAdditionalNum.Text, TxtCommercialRecord.Text, Convert.ToDecimal(TxtHasmPer.Text), Convert.ToDecimal(TxtHasmAmount.Text), ChargeAfterSale, Convert.ToInt32(CBProject.SelectedValue), Convert.ToDecimal(TxtAllDiscount.Text), Convert.ToDecimal(TxtBounce.Text), BtnDisCode.Text, 0m, 0m, Cars.CarName, Cars.CarModel, Cars.PlateNum, Cars.ChassisNum, Cars.Color, Cars.Counter);
+								if (LoginDetails.Active_Virgin == 9)
+								{
+									ORD.InsertRes(Result, selectedHallsID, selectedBookingDate, selectedInstallationDate, selectedJawDate);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Orders\FrmOrdersDraft.cs
+LINE: 3003
+					LoginDetails.VatCash = Math.Round(Convert.ToDecimal(TxtVatDisc.Text), DecimalNum);
+					purchese_ID = ORD.UpdateOrdersDraft(Convert.ToInt32(TxtCode.Text), Convert.ToInt32(LblSup.Text), isOn, TxtSuppliers.Text, TxtPhone.Text, TxtNumVat.Text, DateTime.Parse(TxtDate.Text), Convert.ToInt32(TxtType.SelectedValue), string.Empty, 1, Convert.ToInt32(CBCostCenter.SelectedValue), Convert.ToInt32(CBBounce.SelectedValue), TxtNote.Text, TxtNumNote.Text, Convert.ToDecimal(TxtCost.Text), Convert.ToDecimal(TxtVat.Text), Convert.ToDecimal(TxtTotals.Text), Convert.ToDecimal(TxtTotals.Text) + Convert.ToDecimal(TxtVat.Text), Convert.ToDecimal(TxtDiscount.Text), Convert.ToDecimal(txtdicoutprege.Text), Convert.ToDecimal(TxtVatDisc.Text), Convert.ToDecimal(TxtTotalDiscount.Text), Convert.ToDecimal(TxtTabocc.Text), Convert.ToDecimal(TxtVatDisc.Text), Convert.ToDecimal(TxtNet.Text), FrmCash, FrmBank, OrderCashierType: false, 0, 0, dtCurrentTable, TxtSales.Text, DateTime.Parse(DateHold.Text), AccountSN.ToString(), TxtStreet.Text, TxtDistrict.Text, TxtCity.Text, TxtAddress.Text, TxtPostalCode.Text, TxtAdditionalNum.Text, TxtCommercialRecord.Text, Convert.ToDecimal(TxtHasmPer.Text), Convert.ToDecimal(TxtHasmAmount.Text), 0m, Convert.ToDecimal(TxtAllDiscount.Text), Convert.ToDecimal(TxtBounce.Text), Cars.CarName, Cars.CarModel, Cars.PlateNum, Cars.ChassisNum, Cars.Color, Cars.Counter);
+					if (LoginDetails.Active_Virgin == 9)
+					{
+						ORD.UpdateRes(Convert.ToInt32(TxtCode.Text), selectedHallsID, selectedBookingDate, selectedInstallationDate, selectedJawDate);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Orders\FrmOrdersDraft.cs
+LINE: 3049
+				{
+					int num2 = Convert.ToInt32(TxtCode.Text);
+					if (LoginDetails.Active_Virgin == 9)
+					{
+						ORD.DeleteRes(Convert.ToInt32(TxtCode.Text));
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Orders\FrmOrdersDraft.cs
+LINE: 4619
+		if (e.KeyCode.ToString() == "F2")
+		{
+			if (LoginDetails.Active_Virgin == 9)
+			{
+				GTSErpSystem.Frms.Orders.FrmReservations.FrmReservations frmReservations = new GTSErpSystem.Frms.Orders.FrmReservations.FrmReservations();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Orders\FrmOrdersDraft.cs
+LINE: 4663
+		if (e.KeyCode.ToString() == "F8")
+		{
+			if (LoginDetails.Active_Virgin == 9)
+			{
+				new FrmReportReser().Show();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Orders\FrmPriceOffer.cs
+LINE: 2143
+							num = POFR.InsertPurch(out var Code, Convert.ToInt32(LblSup.Text), TxtSuppliers.Text, TxtPhone.Text, TxtNumVat.Text, TxtDate.DateTime, Convert.ToInt32(CBCostCenter.SelectedValue), string.Empty, TxtNote.Text, TxtNumNote.Text, Math.Round(Convert.ToDecimal(TxtTotals.Text), DecimalNum), Math.Round(Convert.ToDecimal(TxtVat.Text), DecimalNum), Math.Round(Convert.ToDecimal(TxtTotalDiscount.Text), DecimalNum), Math.Round(Convert.ToDecimal(TxtDiscount.Text), DecimalNum), Math.Round(Convert.ToDecimal(TxtDisprege.Text), DecimalNum), Math.Round(Convert.ToDecimal(TxtVatDisc.Text), DecimalNum), Math.Round(Convert.ToDecimal(TxtAllDiscount.Text), DecimalNum), Math.Round(Convert.ToDecimal(TxtNet.Text), DecimalNum), 0m, Math.Round(Convert.ToDecimal(TxtVatDisc.Text), DecimalNum), TxtStreet.Text, TxtDistrict.Text, TxtCity.Text, TxtCountry.Text, TxtPostalCode.Text, TxtAdditionalNum.Text, TxtCommercialRecord.Text, Convert.ToInt32(CBSaleTybe.SelectedValue), Math.Round(Convert.ToDecimal(TxtAvergCost.Text), DecimalNum), Convert.ToInt32(TxtType.SelectedValue), projectId);
+							POFR.InsertItems(datatable, num);
+							if (LoginDetails.Active_Virgin == 9)
+							{
+								POFR.InsertRes(Code, selectedHallsID, selectedBookingDate, selectedInstallationDate, selectedJawDate);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Orders\FrmPriceOffer.cs
+LINE: 2241
+				POFR.deleteItemsByPurcahesId(num);
+				POFR.InsertItems(datatable, num);
+				if (LoginDetails.Active_Virgin == 9)
+				{
+					POFR.UpdateRes(Convert.ToInt32(TxtCode.Text), selectedHallsID, selectedBookingDate, selectedInstallationDate, selectedJawDate);
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Orders\FrmPriceOffer.cs
+LINE: 2288
+				case DialogResult.Yes:
+					num = POFR.Delete(Convert.ToInt32(TxtCode.Text));
+					if (LoginDetails.Active_Virgin == 9)
+					{
+						POFR.DeleteRes(Convert.ToInt32(TxtCode.Text));
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Orders\FrmPriceOffer.cs
+LINE: 3517
+		else if (e.KeyCode.ToString() == "F2")
+		{
+			if (LoginDetails.Active_Virgin == 9)
+			{
+				GTSErpSystem.Frms.Orders.FrmReservations.FrmReservations frmReservations = new GTSErpSystem.Frms.Orders.FrmReservations.FrmReservations();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Orders.FrmSearchOrder\FrmSearchOrders.cs
+LINE: 43
+		}
+		InitializeComponent();
+		if (LoginDetails.Active_Virgin == 9)
+		{
+			BindGrid2();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Orders.FrmSearchOrder\FrmSearchOrdersDraft.cs
+LINE: 43
+		}
+		InitializeComponent();
+		if (LoginDetails.Active_Virgin == 9)
+		{
+			BindGrid2();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Orders.FrmSearchOrder\FrmSearchPriceOffer.cs
+LINE: 43
+		}
+		InitializeComponent();
+		if (LoginDetails.Active_Virgin == 9)
+		{
+			BindGrid2();
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 336
+		CBType.SelectedValue = 1;
+		TglType.IsOn = false;
+		CBVirgin.SelectedValue = 1;
+		CBCompany.SelectedValue = 1;
+		CBMarkter.SelectedValue = 1;
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 406
+	public void Bind()
+	{
+		CBVirgin.DataSource = db.Virg_Virgins.ToList();
+		CBVirgin.DisplayMember = "Name";
+		CBVirgin.ValueMember = "ID";
+
+FILE: E:\KhaledERP\App\SourceCode\GTSErpSystem.Frms.Virgins\FrmVirgin.cs
+LINE: 480
+				TglType.IsOn = false;
+			}
+			CBVirgin.SelectedValue = Convert.ToInt32(select_Virgins_Result.VirgID);
+			CBCompany.SelectedValue = Convert.ToInt32(select_Virgins_Result.CompID);
+			CBMarkter.SelectedValue = Convert.ToInt32(select_Virgins_Result.MarkterID);
+
