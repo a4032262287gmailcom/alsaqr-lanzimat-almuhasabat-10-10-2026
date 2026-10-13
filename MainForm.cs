@@ -47,6 +47,11 @@ internal sealed class MainForm : Form
         AddNavigation(nav, "الأصناف والمخزون", ShowProducts);
         AddNavigation(nav, "فواتير البيع", () => ShowInvoices("SALE"));
         AddNavigation(nav, "فواتير الشراء", () => ShowInvoices("PURCHASE"));
+        if (CanPost) {
+            AddNavigation(nav, "سند قبض", () => AddSettlement("RECEIPT"));
+            AddNavigation(nav, "سند صرف", () => AddSettlement("PAYMENT"));
+        }
+        AddNavigation(nav, "سجل السندات", ShowSettlements);
         AddNavigation(nav, "التقارير", ShowReports);
         if (IsAdmin) AddNavigation(nav, "المستخدمون والصلاحيات", ShowUsers);
         AddNavigation(nav, "نسخة احتياطية", BackupDatabase);
@@ -249,6 +254,30 @@ internal sealed class MainForm : Form
         Guard(() => { _auth.SetActive(id, !active, _user.UserName); ShowUsers(); SetStatus("تم تحديث حالة المستخدم."); });
     }
 
+    private void AddSettlement(string kind)
+    {
+        if (!CanPost) { Denied(); return; }
+        using var form = new SettlementEntryForm(_service, kind);
+        if (form.ShowDialog(this) == DialogResult.OK)
+        {
+            ShowSettlements();
+            SetStatus(kind == "RECEIPT" ? "تم ترحيل سند القبض وتحديث الصندوق/البنك وذمم العملاء." : "تم ترحيل سند الصرف وتحديث الصندوق/البنك وذمم الموردين.");
+        }
+    }
+
+    private void ShowSettlements()
+    {
+        var actions = new List<(string Text, Action Run)>();
+        if (CanPost)
+        {
+            actions.Add(("سند قبض جديد", () => AddSettlement("RECEIPT")));
+            actions.Add(("سند صرف جديد", () => AddSettlement("PAYMENT")));
+        }
+        actions.Add(("تحديث", ShowSettlements));
+        ShowTablePage("سجل سندات القبض والصرف المرحلة",
+            _service.SettlementRegister("ALL", new DateTime(2000,1,1), DateTime.Today.AddDays(1)), actions.ToArray());
+    }
+
     private void ShowReports()
     {
         _content.Controls.Clear();
@@ -261,11 +290,13 @@ internal sealed class MainForm : Form
         var report=Combo("ميزان المراجعة",
             ("ميزان المراجعة","ميزان المراجعة"),("الأستاذ العام","الأستاذ العام"),("الأرباح والخسائر","الأرباح والخسائر"),
             ("الميزانية العمومية","الميزانية العمومية"),("تقييم المخزون","تقييم المخزون"),("سجل المبيعات","سجل المبيعات"),
-            ("سجل المشتريات","سجل المشتريات"),("ملخص العملاء والموردين","ملخص العملاء والموردين"),("سجل التدقيق","سجل التدقيق"));
+            ("سجل المشتريات","سجل المشتريات"),("حركة المخزون","حركة المخزون"),("سندات القبض والصرف","سندات القبض والصرف"),
+            ("ملخص العملاء والموردين","ملخص العملاء والموردين"),("سجل التدقيق","سجل التدقيق"));
         report.Width=230;
         var from = new DateTimePicker { Width=145, Format=DateTimePickerFormat.Custom, CustomFormat="yyyy-MM-dd", Value=new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1) };
         var to = new DateTimePicker { Width=145, Format=DateTimePickerFormat.Custom, CustomFormat="yyyy-MM-dd", Value=DateTime.Today };
-        var account = Combo("", _service.ActiveAccounts().Select(a => (a.Code, $"{a.Code} - {a.Name}")).ToArray()); account.Width=220;
+        var accounts = _service.ActiveAccounts();
+        var account = Combo(accounts.FirstOrDefault()?.Code ?? "", accounts.Select(a => (a.Code, $"{a.Code} - {a.Name}")).ToArray()); account.Width=220;
         filter.Controls.AddRange(new Control[] { LabelFor("التقرير"),report,LabelFor("من تاريخ"),from,LabelFor("إلى تاريخ"),to,LabelFor("الحساب"),account });
         var btn = Button("عرض التقرير"); btn.Click += (_,_) => Guard(() => {
             if (from.Value.Date > to.Value.Date && Convert.ToString(report.SelectedValue)!="الميزانية العمومية") throw new InvalidOperationException("تاريخ البداية يجب ألا يتجاوز تاريخ النهاية.");
@@ -278,6 +309,8 @@ internal sealed class MainForm : Form
                 "تقييم المخزون" => _service.StockValuation(),
                 "سجل المبيعات" => _service.InvoiceRegister("SALE",from.Value,to.Value),
                 "سجل المشتريات" => _service.InvoiceRegister("PURCHASE",from.Value,to.Value),
+                "حركة المخزون" => _service.StockMovementRegister(from.Value,to.Value),
+                "سندات القبض والصرف" => _service.SettlementRegister("ALL",from.Value,to.Value),
                 "ملخص العملاء والموردين" => _service.PartyBalances(from.Value,to.Value),
                 "سجل التدقيق" => IsAdmin ? _service.AuditHistory() : throw new InvalidOperationException("عرض سجل التدقيق متاح لمدير النظام فقط."),
                 _ => throw new InvalidOperationException("التقرير غير معروف.")
@@ -315,7 +348,7 @@ internal sealed class MainForm : Form
         catch(Exception ex) { Notice("تعذر تصدير التقرير: "+ex.Message); }
     }
 
-    private static string Csv(string value) => """ + value.Replace(""","""").Replace("\r"," ").Replace("\n"," ") + """;
+    private static string Csv(string value) => "\"" + value.Replace("\"", "\"\"").Replace("\r", " ").Replace("\n", " ") + "\"";
 
     private void ShowTablePage(string title, DataTable data, params (string Text, Action Run)[] actions)
     {
@@ -502,7 +535,12 @@ internal sealed class InvoiceEntryForm : Form
             var total=AccountingService.FromHalalas(net+vat);
             _lines.Add((new InvoiceLineInput(product.Id,_quantity.Value,_price.Value),product.Name,product.VatRate));
             _linesGrid.Rows.Add(product.Name,_quantity.Value.ToString("0.###"),_price.Value.ToString("N2"),AccountingService.FromHalalas(vat).ToString("N2"),total.ToString("N2"));
-            var totalValue=_lines.Sum(line=>AccountingService.FromHalalas(AccountingService.ToHalalas(line.Input.Quantity*line.Input.UnitPrice))*(1+line.Rate/100m));
+            var totalValue=_lines.Sum(line =>
+            {
+                var netHalalas=AccountingService.ToHalalas(line.Input.Quantity*line.Input.UnitPrice);
+                var vatHalalas=AccountingService.ToHalalas(AccountingService.FromHalalas(netHalalas)*line.Rate/100m);
+                return AccountingService.FromHalalas(netHalalas+vatHalalas);
+            });
             Controls.OfType<FlowLayoutPanel>().SelectMany(p=>p.Controls.OfType<Label>()).FirstOrDefault(l=>l.Name=="total")!.Text="الإجمالي: "+totalValue.ToString("N2")+" ر.س";
         }
         catch(Exception ex){MessageBox.Show(this,ex.Message,"سطر الفاتورة",MessageBoxButtons.OK,MessageBoxIcon.Warning);}
