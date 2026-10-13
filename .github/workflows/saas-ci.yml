@@ -76,4 +76,4 @@ jobs:
 
       - name: Run journal, numbering, period-lock and audit tests
         working-directory: saas/backend
-        run: pytest -q
+        run: pytest -q --cov=app.services.accounting --cov=app.services.periods --cov-report=term-missing --cov-fail-under=80
