@@ -89,19 +89,47 @@ FROM Users ORDER BY UserName";
     public void SetActive(int id, bool active, string actor)
     {
         using var db = Database.Open();
-        using var cmd = db.CreateCommand();
-        cmd.CommandText = "UPDATE Users SET IsActive=$active WHERE Id=$id";
-        cmd.Parameters.AddWithValue("$active", active ? 1 : 0);
-        cmd.Parameters.AddWithValue("$id", id);
-        if (cmd.ExecuteNonQuery() != 1) throw new InvalidOperationException("المستخدم غير موجود.");
-        using var audit = db.CreateCommand();
-        audit.CommandText = "INSERT INTO AuditLog(EventAt,Actor,Action,Entity,EntityId,Details) VALUES($at,$actor,$action,'User',$id,$details)";
-        audit.Parameters.AddWithValue("$at", DateTime.UtcNow.ToString("O"));
-        audit.Parameters.AddWithValue("$actor", actor);
-        audit.Parameters.AddWithValue("$action", active ? "تفعيل" : "إيقاف");
-        audit.Parameters.AddWithValue("$id", id.ToString());
-        audit.Parameters.AddWithValue("$details", "تغيير حالة حساب المستخدم");
-        audit.ExecuteNonQuery();
+        using var tx = db.BeginTransaction();
+        string role;
+        long currentActive;
+        using (var check = db.CreateCommand())
+        {
+            check.Transaction = tx;
+            check.CommandText = "SELECT Role,IsActive FROM Users WHERE Id=$id";
+            check.Parameters.AddWithValue("$id", id);
+            using var reader = check.ExecuteReader();
+            if (!reader.Read()) throw new InvalidOperationException("المستخدم غير موجود.");
+            role = reader.GetString(0);
+            currentActive = reader.GetInt64(1);
+        }
+        if (!active && role == "Admin" && currentActive == 1)
+        {
+            using var count = db.CreateCommand();
+            count.Transaction = tx;
+            count.CommandText = "SELECT COUNT(*) FROM Users WHERE Role='Admin' AND IsActive=1";
+            if (Convert.ToInt64(count.ExecuteScalar()) <= 1)
+                throw new InvalidOperationException("لا يمكن إيقاف آخر مدير نشط في النظام.");
+        }
+        using (var cmd = db.CreateCommand())
+        {
+            cmd.Transaction = tx;
+            cmd.CommandText = "UPDATE Users SET IsActive=$active WHERE Id=$id";
+            cmd.Parameters.AddWithValue("$active", active ? 1 : 0);
+            cmd.Parameters.AddWithValue("$id", id);
+            if (cmd.ExecuteNonQuery() != 1) throw new InvalidOperationException("المستخدم غير موجود.");
+        }
+        using (var audit = db.CreateCommand())
+        {
+            audit.Transaction = tx;
+            audit.CommandText = "INSERT INTO AuditLog(EventAt,Actor,Action,Entity,EntityId,Details) VALUES($at,$actor,$action,'User',$id,$details)";
+            audit.Parameters.AddWithValue("$at", DateTime.UtcNow.ToString("O"));
+            audit.Parameters.AddWithValue("$actor", actor);
+            audit.Parameters.AddWithValue("$action", active ? "تفعيل" : "إيقاف");
+            audit.Parameters.AddWithValue("$id", id.ToString());
+            audit.Parameters.AddWithValue("$details", "تغيير حالة حساب المستخدم");
+            audit.ExecuteNonQuery();
+        }
+        tx.Commit();
     }
 
     private static void InsertUser(SqliteConnection db, SqliteTransaction tx, string userName, string password, string role)
