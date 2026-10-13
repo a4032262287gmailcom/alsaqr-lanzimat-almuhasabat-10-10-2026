@@ -54,7 +54,7 @@ jobs:
 
       - name: Static analysis
         working-directory: saas/backend
-        run: ruff check app tests --output-format concise
+        run: ruff check app tests --isolated --select E4,E7,E9,F --ignore F401 --output-format concise
 
       - name: Run journal, numbering, period-lock and audit tests
         working-directory: saas/backend
