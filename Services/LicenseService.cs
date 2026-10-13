@@ -20,7 +20,7 @@ internal sealed class LicenseService
 
     private const string PublicKeyPem = """
 -----BEGIN PUBLIC KEY-----
-MIIBojANBgkqhkiG9w0BAQEFAAOCAYEArqdXUo5ZS2zk2/WAX9pK
+MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEArqdXUo5ZS2zk2/WAX9pK
 2XCQVMKK4djSS8u9tQxzoXY4jnMUpGW3ysf8S6NZyo9ZSbObAjfAmbbupwkUMG4d
 zef4tI8vOZ5rUenZ/KstGkDxw23Ot2KzPL5sQuWCBIqWGYfgrZnhNpcaD9mAbEbI
 yJi4Y3aJtgd3BF1NUNz0WVtjUyvvPaOfEfdjlmlKT7mdLSS4c3wNBCTIsfzvKALr
@@ -37,7 +37,12 @@ BiS7R8eGdSImfTvU9H6KkASrWBWM9kPthU/8fvBTNupjqaiRn4F90XGNUI63pBEb
     public LicenseStatus GetStatus()
     {
         var now = DateTimeOffset.UtcNow;
-        var state = LoadOrCreateState(now);
+        PersistedState state;
+        try { state = LoadOrCreateState(now); }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or CryptographicException or JsonException or InvalidDataException)
+        {
+            return new(false, false, 0, "تعذر قراءة حالة الترخيص المحلية. أدخل ملف ترخيص صحيحًا لإصلاحها. " + ex.GetType().Name, MachineId);
+        }
         if (now.AddMinutes(5) < state.LastSeenUtc)
             return new(false, false, 0, "تم اكتشاف رجوع ساعة النظام إلى وقت أقدم من آخر تشغيل. صحّح الساعة ثم أعد فتح البرنامج.", MachineId);
 
