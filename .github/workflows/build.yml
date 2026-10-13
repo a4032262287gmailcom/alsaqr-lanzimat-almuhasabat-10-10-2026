@@ -41,44 +41,7 @@ jobs:
         run: dotnet build tools/AlSaqr.LicenseIssuer/AlSaqr.LicenseIssuer.csproj -c Release --no-restore
 
       - name: Verify license issuer rejects a mismatched signing key
-        shell: pwsh
-        run: |
-          $ErrorActionPreference = 'Stop'
-          $testDir = Join-Path $env:RUNNER_TEMP 'AlSaqrLicenseIssuerKeyGuard'
-          New-Item -ItemType Directory -Path $testDir -Force | Out-Null
-          $privateKeyPath = Join-Path $testDir 'wrong-key.pem'
-          $requestPath = Join-Path $testDir 'request.json'
-          $outputPath = Join-Path $testDir 'must-not-be-issued.json'
-
-          $wrongKey = [System.Security.Cryptography.ECDsa]::Create()
-          if ($null -eq $wrongKey) {
-            throw 'Could not create a temporary ECDSA provider for the negative test.'
-          }
-          try {
-            $wrongKey.KeySize = 256
-            [System.IO.File]::WriteAllText($privateKeyPath, $wrongKey.ExportPkcs8PrivateKeyPem())
-          } finally {
-            $wrongKey.Dispose()
-          }
-
-          $request = @{
-            productId = 'ALSAQR-ACCOUNTING-DESKTOP'
-            productName = 'الصقر لأنظمة المحاسبة'
-            licensee = 'CI mismatch-key test'
-            machineId = '0123456789ABCDEF0123456789ABCDEF'
-            requestedAtUtc = [DateTimeOffset]::UtcNow.ToString('O')
-          } | ConvertTo-Json -Compress
-          [System.IO.File]::WriteAllText($requestPath, $request, [System.Text.UTF8Encoding]::new($false))
-
-          & dotnet run --project tools/AlSaqr.LicenseIssuer/AlSaqr.LicenseIssuer.csproj -c Release --no-build -- "$privateKeyPath" "$requestPath" "CI mismatch-key test" "2027-12-31" "$outputPath" "Accounting,POS"
-          $issuerExitCode = $LASTEXITCODE
-          if ($issuerExitCode -eq 0) {
-            throw 'The issuer accepted a key that does not match the application public key.'
-          }
-          if (Test-Path -LiteralPath $outputPath) {
-            throw 'The issuer wrote an invalid license file despite rejecting the key.'
-          }
-          Write-Host 'PASS: mismatched signing key rejected before a license file is written.' -ForegroundColor Green
+        run: dotnet run --project tools/AlSaqr.LicenseIssuer/AlSaqr.LicenseIssuer.csproj -c Release --no-build -- --self-test-key-guard
 
       - name: Run accounting integration smoke tests
         run: dotnet run --project tests/AlSaqr.Accounting.Smoke/AlSaqr.Accounting.Smoke.csproj -c Release -r win-x64 --no-restore
