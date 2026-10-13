@@ -12,6 +12,17 @@ function buildTotals(items) {
   return { subtotal, vat, total: roundMoney(subtotal + vat) };
 }
 
+function saudiDate() {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Riyadh",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date());
+  const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day}`;
+}
+
 function errorIsOffline(error) {
   return !navigator.onLine || (error instanceof TypeError && !(error instanceof ApiError));
 }
@@ -43,8 +54,8 @@ export default function POS({ membership }) {
   }, [products, query]);
 
   const refreshPending = useCallback(async () => {
-    try { setPending(await getQueuedSales()); } catch { setPending([]); }
-  }, []);
+    try { setPending(await getQueuedSales(membership.tenant_id)); } catch { setPending([]); }
+  }, [membership.tenant_id]);
 
   const loadBaseData = useCallback(async () => {
     setLoading(true);
@@ -73,7 +84,7 @@ export default function POS({ membership }) {
 
   const syncPending = useCallback(async () => {
     if (!navigator.onLine) return;
-    const queue = await getQueuedSales().catch(() => []);
+    const queue = await getQueuedSales(membership.tenant_id).catch(() => []);
     let synced = 0;
     for (const record of queue) {
       try {
@@ -149,7 +160,7 @@ export default function POS({ membership }) {
       return;
     }
     const payload = {
-      issue_date: new Date().toISOString().slice(0, 10),
+      issue_date: saudiDate(),
       contact_id: selectedContact,
       warehouse_id: warehouseId || null,
       is_credit: isCredit,
@@ -178,7 +189,7 @@ export default function POS({ membership }) {
     } catch (error) {
       if (errorIsOffline(error)) {
         try {
-          await queueSale(payload);
+          await queueSale(payload, membership.tenant_id);
           await refreshPending();
           setCart([]);
           setNotice({ type: "pending", text: "حُفظ الطلب محليًا بانتظار الاتصال. لم يُعتبر البيع مرحّلًا حتى يؤكده الخادم." });
