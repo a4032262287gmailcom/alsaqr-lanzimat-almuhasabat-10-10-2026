@@ -649,7 +649,7 @@ WHERE j.Status='POSTED' AND j.EntryDate >= $from AND j.EntryDate <= $to";
             cmd.Parameters.AddWithValue("$at", Now());
             cmd.ExecuteNonQuery();
         }
-        var id = db.LastInsertRowId;
+        var id = LastInsertId(db, tx);
         foreach (var line in lines)
         {
             if (line.Debit < 0 || line.Credit < 0 || (line.Debit > 0 && line.Credit > 0) || (line.Debit == 0 && line.Credit == 0))
