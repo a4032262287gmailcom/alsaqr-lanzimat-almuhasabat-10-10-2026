@@ -102,6 +102,104 @@ FROM Parties WHERE ($kind='All' OR Kind=$kind OR Kind='Both') ORDER BY Name";
         Audit(db, "إضافة", "Party", LastInsertId(db).ToString(), $"إضافة الطرف {name.Trim()}");
     }
 
+    public void UpdateParty(int id, string name, string kind, string phone, string vatNumber)
+    {
+        if (id <= 0) throw new ArgumentException("معرف الطرف غير صالح.");
+        if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("اسم الطرف مطلوب.");
+        if (!new[] { "Customer", "Supplier", "Both" }.Contains(kind))
+            throw new ArgumentException("نوع الطرف غير صالح.");
+
+        using var db = Database.Open();
+        using var tx = db.BeginTransaction();
+        using var cmd = db.CreateCommand();
+        cmd.Transaction = tx;
+        cmd.CommandText = @"UPDATE Parties SET Name=$name,Kind=$kind,Phone=$phone,VatNumber=$vat WHERE Id=$id";
+        cmd.Parameters.AddWithValue("$name", name.Trim());
+        cmd.Parameters.AddWithValue("$kind", kind);
+        cmd.Parameters.AddWithValue("$phone", Db(phone));
+        cmd.Parameters.AddWithValue("$vat", Db(vatNumber));
+        cmd.Parameters.AddWithValue("$id", id);
+        if (cmd.ExecuteNonQuery() != 1) throw new InvalidOperationException("العميل أو المورد غير موجود.");
+        Audit(db, tx, "تعديل", "Party", id.ToString(CultureInfo.InvariantCulture), $"تعديل بيانات الطرف {name.Trim()}");
+        tx.Commit();
+    }
+
+    public void SetPartyActive(int id, bool active)
+    {
+        if (id <= 0) throw new ArgumentException("معرف الطرف غير صالح.");
+        using var db = Database.Open();
+        using var tx = db.BeginTransaction();
+        using var cmd = db.CreateCommand();
+        cmd.Transaction = tx;
+        cmd.CommandText = "UPDATE Parties SET IsActive=$active WHERE Id=$id";
+        cmd.Parameters.AddWithValue("$active", active ? 1 : 0);
+        cmd.Parameters.AddWithValue("$id", id);
+        if (cmd.ExecuteNonQuery() != 1) throw new InvalidOperationException("العميل أو المورد غير موجود.");
+        Audit(db, tx, active ? "تفعيل" : "إيقاف", "Party", id.ToString(CultureInfo.InvariantCulture), "تغيير حالة الطرف");
+        tx.Commit();
+    }
+
+    // Product quantity and valuation cost are not editable through the master-data form.
+    // Quantity changes go through invoices, linked returns, or the audited stock-adjustment workflow.
+    public void UpdateProduct(int id, string code, string name, string unit, decimal price, decimal vatRate)
+    {
+        if (id <= 0) throw new ArgumentException("معرف الصنف غير صالح.");
+        if (string.IsNullOrWhiteSpace(code) || string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("رمز الصنف والاسم مطلوبان.");
+        if (price < 0) throw new ArgumentException("سعر البيع لا يمكن أن يكون سالبًا.");
+        if (vatRate is < 0 or > 100) throw new ArgumentException("نسبة الضريبة يجب أن تكون بين صفر و100.");
+
+        using var db = Database.Open();
+        using var tx = db.BeginTransaction();
+        using var cmd = db.CreateCommand();
+        cmd.Transaction = tx;
+        cmd.CommandText = @"UPDATE Products SET Code=$code,Name=$name,Unit=$unit,PriceHalalas=$price,VatRate=$vat
+WHERE Id=$id AND IsActive IN (0,1)";
+        cmd.Parameters.AddWithValue("$code", code.Trim());
+        cmd.Parameters.AddWithValue("$name", name.Trim());
+        cmd.Parameters.AddWithValue("$unit", string.IsNullOrWhiteSpace(unit) ? "حبة" : unit.Trim());
+        cmd.Parameters.AddWithValue("$price", ToHalalas(price));
+        cmd.Parameters.AddWithValue("$vat", (double)vatRate);
+        cmd.Parameters.AddWithValue("$id", id);
+        try
+        {
+            if (cmd.ExecuteNonQuery() != 1) throw new InvalidOperationException("الصنف غير موجود.");
+        }
+        catch (SqliteException ex) when (ex.SqliteErrorCode == 19)
+        {
+            throw new InvalidOperationException("رمز الصنف مستخدم في سجل آخر.", ex);
+        }
+        Audit(db, tx, "تعديل", "Product", id.ToString(CultureInfo.InvariantCulture), $"تعديل الصنف {name.Trim()}");
+        tx.Commit();
+    }
+
+    public void SetProductActive(int id, bool active)
+    {
+        using var db = Database.Open();
+        using var tx = db.BeginTransaction();
+        using (var check = db.CreateCommand())
+        {
+            check.Transaction = tx;
+            check.CommandText = "SELECT Quantity FROM Products WHERE Id=$id";
+            check.Parameters.AddWithValue("$id", id);
+            var current = check.ExecuteScalar();
+            if (current is null || current == DBNull.Value) throw new InvalidOperationException("الصنف غير موجود.");
+            var quantity = Convert.ToDecimal(current, CultureInfo.InvariantCulture);
+            if (!active && Math.Abs(quantity) > 0.0000001m)
+                throw new InvalidOperationException("لا يمكن إيقاف صنف له رصيد مخزني. صفّر الرصيد بتسوية مخزون معتمدة أولًا.");
+        }
+        using (var cmd = db.CreateCommand())
+        {
+            cmd.Transaction = tx;
+            cmd.CommandText = "UPDATE Products SET IsActive=$active WHERE Id=$id";
+            cmd.Parameters.AddWithValue("$active", active ? 1 : 0);
+            cmd.Parameters.AddWithValue("$id", id);
+            if (cmd.ExecuteNonQuery() != 1) throw new InvalidOperationException("الصنف غير موجود.");
+        }
+        Audit(db, tx, active ? "تفعيل" : "إيقاف", "Product", id.ToString(CultureInfo.InvariantCulture), "تغيير حالة الصنف");
+        tx.Commit();
+    }
+
     public DataTable Products()
     {
         using var db = Database.Open();
