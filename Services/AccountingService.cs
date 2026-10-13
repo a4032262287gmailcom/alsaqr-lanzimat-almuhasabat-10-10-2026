@@ -61,7 +61,7 @@ internal sealed class AccountingService
 
     public void SetAccountActive(string code, bool active)
     {
-        if (!active && new[] { "1010","1020","1100","1200","1300","2100","2200","3000","3100","4000","5000","6000" }.Contains(code))
+        if (!active && new[] { "1010","1020","1100","1200","1300","2100","2200","3000","3100","4000","4010","5000","6000" }.Contains(code))
             throw new InvalidOperationException("لا يمكن إيقاف حساب نظام أساسي مستخدم في الترحيل. أنشئ حسابًا فرعيًا بدلًا منه.");
         using var db = Database.Open();
         using var cmd = db.CreateCommand();
@@ -448,14 +448,26 @@ FROM Products ORDER BY Code";
         using var db = Database.Open();
         using var cmd = db.CreateCommand();
         cmd.CommandText = @"
+WITH TaxDocuments AS (
+ SELECT Kind,SubtotalHalalas,VatHalalas
+ FROM Invoices
+ WHERE Status='POSTED' AND InvoiceDate >= $from AND InvoiceDate <= $to
+ UNION ALL
+ SELECT CASE Kind WHEN 'SALE_RETURN' THEN 'SALE' ELSE 'PURCHASE' END,
+        -SubtotalHalalas,-VatHalalas
+ FROM Returns
+ WHERE Status='POSTED' AND ReturnDate >= $from AND ReturnDate <= $to
+)
 SELECT
 ROUND(COALESCE(SUM(CASE WHEN Kind='SALE' THEN SubtotalHalalas ELSE 0 END),0)/100.0,2) AS 'مبيعات خاضعة للضريبة قبل الضريبة',
 ROUND(COALESCE(SUM(CASE WHEN Kind='SALE' THEN VatHalalas ELSE 0 END),0)/100.0,2) AS 'ضريبة المخرجات',
 ROUND(COALESCE(SUM(CASE WHEN Kind='PURCHASE' THEN SubtotalHalalas ELSE 0 END),0)/100.0,2) AS 'مشتريات قبل الضريبة',
 ROUND(COALESCE(SUM(CASE WHEN Kind='PURCHASE' THEN VatHalalas ELSE 0 END),0)/100.0,2) AS 'ضريبة المدخلات',
-ROUND((COALESCE(SUM(CASE WHEN Kind='SALE' THEN VatHalalas ELSE 0 END),0)-COALESCE(SUM(CASE WHEN Kind='PURCHASE' THEN VatHalalas ELSE 0 END),0))/100.0,2) AS 'صافي الضريبة المستحقة',
-COUNT(*) AS 'عدد الفواتير'
-FROM Invoices WHERE Status='POSTED' AND InvoiceDate >= $from AND InvoiceDate <= $to";
+ROUND((COALESCE(SUM(CASE WHEN Kind='SALE' THEN VatHalalas ELSE 0 END),0)
+      - COALESCE(SUM(CASE WHEN Kind='PURCHASE' THEN VatHalalas ELSE 0 END),0))/100.0,2) AS 'صافي الضريبة المستحقة',
+(SELECT COUNT(*) FROM Invoices WHERE Status='POSTED' AND InvoiceDate >= $from AND InvoiceDate <= $to)
++ (SELECT COUNT(*) FROM Returns WHERE Status='POSTED' AND ReturnDate >= $from AND ReturnDate <= $to) AS 'عدد الفواتير والمردودات'
+FROM TaxDocuments";
         cmd.Parameters.AddWithValue("$from", Date(from));
         cmd.Parameters.AddWithValue("$to", Date(to));
         return ReadTable(cmd);
