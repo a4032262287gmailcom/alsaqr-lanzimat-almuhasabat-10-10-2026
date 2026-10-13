@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>تفاصيل الدالة</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div>
+                <h1>تفاصيل الدالة</h1>
+                <p>{{ function.method }}</p>
+            </div>
+            <a class="back-btn" href="{{ url_for('index') }}">العودة</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="detail-grid">
+            <div class="card">
+                <h3>بيانات عامة</h3>
+                <ul class="detail-list">
+                    <li><strong>الملف:</strong> {{ function.file }}</li>
+                    <li><strong>Namespace:</strong> {{ function.namespace }}</li>
+                    <li><strong>Type:</strong> {{ function.type }}</li>
+                    <li><strong>Method:</strong> {{ function.method }}</li>
+                    <li><strong>Access:</strong> {{ function.access }}</li>
+                    <li><strong>Return Type:</strong> {{ function.return_type }}</li>
+                    <li><strong>Parameters:</strong> {{ function.parameters }}</li>
+                    <li><strong>Line:</strong> {{ function.line }}</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Behavior Guess</h3>
+                <p>{{ function.behavior_guess or 'لا يوجد' }}</p>
+                <h3>Calls Found</h3>
+                <p>{{ function.calls_found or 'لا توجد' }}</p>
+            </div>
+        </section>
+
+        <section class="card code-block">
+            <h3>Code Preview</h3>
+            <pre>{{ function.code_preview or 'لا توجد معاينة' }}</pre>
+        </section>
+    </main>
+</body>
+</html>
