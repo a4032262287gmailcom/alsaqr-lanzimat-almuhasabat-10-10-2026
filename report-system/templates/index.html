@@ -8,43 +8,48 @@
 </head>
 <body>
     <header class="topbar">
-        <div>
-            <h1>لوحة تقارير ERP</h1>
-            <p>نظام تحليل مستندات المشروع ومؤشرات التقارير</p>
+        <div class="topbar-inner">
+            <div>
+                <h1>لوحة تقارير ERP</h1>
+                <p>نظام تجريبي لعرض تحليل المشروع من ملفات التقارير</p>
+            </div>
+            <a class="export-btn" href="{{ url_for('export_functions', q=query) }}">تصدير CSV</a>
         </div>
     </header>
 
     <main class="container">
         <section class="summary-grid">
-            <div class="card accent-blue">
+            <div class="card blue">
                 <span>ملفات C# مُفحوصة</span>
                 <strong>{{ summary.files_scanned }}</strong>
             </div>
-            <div class="card accent-green">
+            <div class="card green">
                 <span>عدد الدوال</span>
                 <strong>{{ summary.method_declarations }}</strong>
             </div>
-            <div class="card accent-gold">
-                <span>عدد Events</span>
+            <div class="card gold">
+                <span>عدد الـ Events</span>
                 <strong>{{ summary.event_hookups }}</strong>
             </div>
-            <div class="card accent-purple">
+            <div class="card purple">
                 <span>عدد الأنواع</span>
                 <strong>{{ summary.type_declarations }}</strong>
             </div>
         </section>
 
-        <section class="filters card">
+        <section class="card filters">
             <form method="get">
                 <label for="q">بحث سريع</label>
-                <input id="q" name="q" value="{{ query }}" placeholder="ابحث مع اسم الملف، الدالة، namespace، أو behavior">
-                <button type="submit">ابحث</button>
+                <div class="search-row">
+                    <input id="q" name="q" value="{{ query }}" placeholder="ابحث باسم الملف، الدالة، الـ Namespace، أو Behavior Guess">
+                    <button type="submit">بحث</button>
+                </div>
             </form>
         </section>
 
         <section class="stats-grid">
             <div class="card">
-                <h3>أكثر الـNamespaces</h3>
+                <h3>أكثر الـ Namespaces</h3>
                 <ul>
                     {% for name, count in top_namespaces %}
                     <li>{{ name or 'غير معروف' }}: {{ count }}</li>
@@ -52,7 +57,7 @@
                 </ul>
             </div>
             <div class="card">
-                <h3>أكثر الـBehavior Guess</h3>
+                <h3>أكثر الـ Behavior Guess</h3>
                 <ul>
                     {% for name, count in top_behaviors %}
                     <li>{{ name or 'غير معروف' }}: {{ count }}</li>
@@ -61,7 +66,7 @@
             </div>
         </section>
 
-        <section class="table-section card">
+        <section class="card table-card">
             <h2>الدوال</h2>
             <table>
                 <thead>
@@ -75,9 +80,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for row in methods %}
+                    {% for row in functions %}
                     <tr>
-                        <td>{{ row.file }}</td>
+                        <td><a href="{{ url_for('function_detail', id=row.id) }}">{{ row.file }}</a></td>
                         <td>{{ row.namespace }}</td>
                         <td>{{ row.type }}</td>
                         <td>{{ row.method }}</td>
@@ -91,7 +96,7 @@
             </table>
         </section>
 
-        <section class="table-section card">
+        <section class="card table-card">
             <h2>Event Handlers</h2>
             <table>
                 <thead>

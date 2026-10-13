@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  erp-report-dashboard:
+    build: ./report-system
+    container_name: erp-report-dashboard
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./report-system:/app
+    environment:
+      FLASK_ENV: development

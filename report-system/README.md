@@ -1,22 +1,22 @@
-# تقرير ERP Dashboard
+# نظام تقارير ERP
 
-هذا النظام مصمم لتحليل ملفات التقارير المولّدة للمشروع ERP:
+هذا المشروع هو نسخة تجريبية حقيقية لعرض وتحليل ملفات التقارير التي تم توليدها عن المشروع ERP.
 
-- ERP_FunctionInventory_*.csv
-- ERP_EventHandlers_*.csv
-- ERP_FunctionDetails_*.txt
+## ما الذي يعرضه النظام؟
+- ملخص إحصائي للمشروع
+- قائمة الدوال وملفاتها
+- قائمة Event Handlers
+- بحث سريع عبر أسماء الملفات، الدوال، Namespace، Behavior Guess
+- صفحة تفاصيل للدالة المختارة
+- تصدير نتائج البحث إلى CSV
 
-## المميزات
-- عرض ملخص عام للمشروع
-- عدد الدوال، الأنواع، وEvent Hookups
-- بحث سريع عبر اسم الملف أو الدالة أو namespace
-- عرض أكثر الـNamespaces وBehavior Guess شيوعًا
-- جدول للدوال وEvent Handlers
-
-## التشغيل
+## التشغيل محلياً
 
 ```bash
 cd report-system
+python -m venv .venv
+source .venv/bin/activate   # Linux/Mac
+# أو على ويندوز: .venv\Scripts\activate
 pip install -r requirements.txt
 python app.py
 ```
@@ -27,5 +27,15 @@ python app.py
 http://localhost:5000
 ```
 
-## ملاحظة
-هذا النظام يعتمد على التقارير الموجودة في جذر الريبو، ولا يضيف كود التطبيق نفسه.
+## التشغيل عبر Docker
+
+```bash
+docker-compose up --build
+```
+
+## ملاحظات
+- يعتمد التطبيق على الملفات الموجودة في جذر الريبو مثل:
+  - ERP_FunctionInventory_*.csv
+  - ERP_EventHandlers_*.csv
+  - ERP_FunctionDetails_*.txt
+- هذا نظام تجريبي ومفيد لك كقاعدة لنظام أكبر لاحقاً.
