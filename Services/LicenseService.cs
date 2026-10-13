@@ -33,8 +33,9 @@ sCAuxnK1HxUyg9++ME0Sxjim4iv2nP3Crk+SwzuKVuP/UbC81dfaOR+gWg==
 -----END PUBLIC KEY-----
 """;
 
-    private static readonly string Folder = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AlSaqrAccounting");
+    private static readonly string Folder =
+        Environment.GetEnvironmentVariable("ALSAQR_ACCOUNTING_DATA_DIR") ??
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AlSaqrAccounting");
     private static readonly string LicensePath = Path.Combine(Folder, "license.json");
     private static readonly string TrialPath = Path.Combine(Folder, "trial.bin");
     private static readonly byte[] TrialEntropy = Encoding.UTF8.GetBytes("AlSaqrAccountingTrial-2026-v1");
