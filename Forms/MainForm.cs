@@ -27,7 +27,7 @@ public sealed class MainForm : Form
     private void BuildLayout()
     {
         var header = new Panel { Dock = DockStyle.Top, Height = 66, BackColor = Color.FromArgb(24, 42, 68) };
-        header.Controls.Add(new Label { Text = "الصقر | نظام المحاسبة", Dock = DockStyle.Right, Width = 340, ForeColor = Color.White, Font = new Font("Segoe UI", 17F, FontStyle.Bold), TextAlign = ContentAlignment.MiddleCenter });
+        header.Controls.Add(new Label { Text = "الصقر لأنظمة المحاسبة", Dock = DockStyle.Right, Width = 340, ForeColor = Color.White, Font = new Font("Segoe UI", 17F, FontStyle.Bold), TextAlign = ContentAlignment.MiddleCenter });
         header.Controls.Add(new Label { Text = "إدارة الحسابات والعمليات المالية", Dock = DockStyle.Fill, ForeColor = Color.WhiteSmoke, TextAlign = ContentAlignment.MiddleLeft, Padding = new Padding(18, 0, 0, 0) });
 
         var nav = new FlowLayoutPanel { Dock = DockStyle.Right, Width = 210, FlowDirection = FlowDirection.TopDown, WrapContents = false, BackColor = Color.FromArgb(33, 52, 79), Padding = new Padding(8) };
