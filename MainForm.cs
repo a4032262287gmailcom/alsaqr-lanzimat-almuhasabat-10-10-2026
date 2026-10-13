@@ -13,21 +13,29 @@ internal sealed partial class MainForm : Form
     private readonly ReturnService _returns = new();
     private readonly InventoryAdjustmentService _adjustmentService = new();
     private readonly AuthService _auth = new();
+    private readonly LicenseService _licenseService = new();
     private readonly Panel _content = new();
     private readonly Label _status = new();
-    private readonly Color _navy = Color.FromArgb(18, 32, 52);
-    private readonly Color _blue = Color.FromArgb(37, 66, 101);
-    private readonly Color _gold = Color.FromArgb(190, 151, 61);
-    private readonly Color _paper = Color.FromArgb(244, 246, 249);
+    private Panel? _headerPanel;
+    private FlowLayoutPanel? _navPanel;
+    private AccountingAppSettings _appSettings = AccountingAppSettings.Defaults();
+    private UiThemePalette _palette = UiThemePalette.All[0];
+    private Color _navy = Color.FromArgb(18, 32, 52);
+    private Color _blue = Color.FromArgb(37, 66, 101);
+    private Color _gold = Color.FromArgb(190, 151, 61);
+    private Color _paper = Color.FromArgb(244, 246, 249);
     private DataGridView? _tableGrid;
     private DataTable? _lastReport;
 
-    private bool IsAdmin => _user.Role == "Admin";
-    private bool CanPost => _user.Role is "Admin" or "Accountant";
+    private bool LicenseAllowsUse => _licenseService.CheckAccess().HasAccess;
+    private bool IsAdmin => _user.Role == "Admin" && LicenseAllowsUse;
+    private bool CanPost => _user.Role is "Admin" or "Accountant" && LicenseAllowsUse;
 
     public MainForm(AuthUser user)
     {
         _user = user;
+        _appSettings = AppSettingsService.Load();
+        ApplyThemeColors(_appSettings.Theme);
         Text = "الصقر لأنظمة المحاسبة";
         WindowState = FormWindowState.Maximized;
         MinimumSize = new Size(1120, 700);
@@ -38,11 +46,13 @@ internal sealed partial class MainForm : Form
         BackColor = _paper;
 
         var header = new Panel { Dock = DockStyle.Top, Height = 58, BackColor = _navy, Padding = new Padding(18, 6, 18, 6) };
+        _headerPanel = header;
         var title = new Label { Text = "الصقر لأنظمة المحاسبة", AutoSize = false, Dock = DockStyle.Right, Width = 310, ForeColor = Color.White, TextAlign = ContentAlignment.MiddleRight, Font = new Font("Segoe UI", 16, FontStyle.Bold) };
         var identity = new Label { Text = $"المستخدم: {_user.UserName}  |  الدور: {RoleArabic(_user.Role)}", Dock = DockStyle.Left, Width = 320, ForeColor = Color.FromArgb(233, 220, 180), TextAlign = ContentAlignment.MiddleLeft };
         header.Controls.Add(title); header.Controls.Add(identity);
 
         var nav = new FlowLayoutPanel { Dock = DockStyle.Top, Height = 54, BackColor = _blue, FlowDirection = FlowDirection.RightToLeft, WrapContents = false, AutoScroll = true, Padding = new Padding(8, 5, 8, 5) };
+        _navPanel = nav;
         AddNavigation(nav, "الرئيسية", ShowDashboard);
         AddNavigation(nav, "دليل الحسابات", ShowAccounts);
         AddNavigation(nav, "القيود اليومية", ShowJournals);
@@ -50,6 +60,8 @@ internal sealed partial class MainForm : Form
         AddNavigation(nav, "الأصناف والمخزون", ShowProducts);
         if (CanPost) AddNavigation(nav, "الكاشير / نقطة البيع", OpenCashier);
         AddNavigation(nav, "اتصال قاعدة SQL Server", OpenLocalSqlServerConnection);
+        AddNavigation(nav, "الإعدادات والثيمات", OpenSettings);
+        AddNavigation(nav, "الترخيص والتفعيل", OpenLicense);
         AddNavigation(nav, "فواتير البيع", () => ShowInvoices("SALE"));
         AddNavigation(nav, "فواتير الشراء", () => ShowInvoices("PURCHASE"));
         AddNavigation(nav, "مردودات البيع", () => ShowReturns("SALE_RETURN"));
@@ -71,10 +83,78 @@ internal sealed partial class MainForm : Form
         _status.BackColor = Color.FromArgb(230, 234, 240);
         _status.ForeColor = _navy;
         Controls.Add(_content); Controls.Add(_status); Controls.Add(nav); Controls.Add(header);
+        ApplyThemeToChrome();
         ShowDashboard();
     }
 
     private static string RoleArabic(string role) => role switch { "Admin" => "مدير النظام", "Accountant" => "محاسب", _ => "عرض فقط" };
+
+    private static Color ThemeColor(int r, int g, int b) => Color.FromArgb(r, g, b);
+
+    private void ApplyThemeColors(string themeName)
+    {
+        _palette = AppSettingsService.GetPalette(themeName);
+        _navy = ThemeColor(_palette.PrimaryR, _palette.PrimaryG, _palette.PrimaryB);
+        _blue = ThemeColor(_palette.SecondaryR, _palette.SecondaryG, _palette.SecondaryB);
+        _gold = ThemeColor(_palette.AccentR, _palette.AccentG, _palette.AccentB);
+        _paper = ThemeColor(_palette.BackgroundR, _palette.BackgroundG, _palette.BackgroundB);
+        BackColor = _paper;
+    }
+
+    private void ApplyThemeToChrome()
+    {
+        if (_headerPanel is not null)
+        {
+            _headerPanel.BackColor = _navy;
+            foreach (Control control in _headerPanel.Controls)
+            {
+                if (control is Label label)
+                {
+                    label.BackColor = _navy;
+                    label.ForeColor = label.Dock == DockStyle.Left ? _gold : Color.White;
+                }
+            }
+        }
+        if (_navPanel is not null)
+        {
+            _navPanel.BackColor = _blue;
+            foreach (var button in _navPanel.Controls.OfType<Button>())
+            {
+                button.BackColor = _blue;
+                button.ForeColor = Color.White;
+                button.FlatAppearance.BorderColor = _gold;
+            }
+        }
+        _status.BackColor = ThemeColor(_palette.SurfaceR, _palette.SurfaceG, _palette.SurfaceB);
+        _status.ForeColor = ThemeColor(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB);
+        _content.BackColor = _paper;
+    }
+
+    private void OpenSettings()
+    {
+        if (!IsAdmin) { Denied(); return; }
+        using var form = new SettingsForm();
+        if (form.ShowDialog(this) != DialogResult.OK || form.SavedSettings is null) return;
+        _appSettings = form.SavedSettings;
+        ApplyThemeColors(_appSettings.Theme);
+        ApplyThemeToChrome();
+        ShowDashboard();
+        SetStatus("تم حفظ الإعدادات التجارية والثيم «" + _palette.DisplayName + "» على هذا الجهاز.");
+    }
+
+    private void OpenLicense()
+    {
+        using var form = new LicenseForm(_licenseService);
+        form.ShowDialog(this);
+        var status = _licenseService.CheckAccess();
+        SetStatus(status.Message);
+        if (!status.HasAccess)
+        {
+            Notice("انتهى الوصول المرخص. احفظ العمل الجاري وأعد تفعيل الترخيص.");
+            return;
+        }
+        ShowDashboard();
+    }
 
     private void AddNavigation(FlowLayoutPanel nav, string caption, Action action)
     {
@@ -104,15 +184,16 @@ internal sealed partial class MainForm : Form
         recentPanel.Controls.Add(recent); recentPanel.Controls.Add(recentTitle);
         layout.Controls.Add(heading, 0, 0); layout.Controls.Add(cards, 0, 1); layout.Controls.Add(recentPanel, 0, 2);
         _content.Controls.Add(layout);
-        SetStatus($"جاهز — قاعدة البيانات الفعلية: {Data.Database.DatabasePath} — قيود الشهر: {dash.PostedEntries}");
+        SetStatus($"جاهز — قاعدة البيانات المحلية: {Data.Database.DatabasePath} — قيود الشهر: {dash.PostedEntries} — {_licenseService.CheckAccess().Message}");
     }
 
     private Control Card(string caption, string value, string subtitle)
     {
         var panel = new Panel { Width = 255, Height = 118, Margin = new Padding(6), BackColor = Color.White, BorderStyle = BorderStyle.FixedSingle, Padding = new Padding(12) };
+        panel.BackColor = ThemeColor(_palette.SurfaceR, _palette.SurfaceG, _palette.SurfaceB);
         panel.Controls.Add(new Label { Text = caption, Dock = DockStyle.Top, Height = 25, ForeColor = _blue, TextAlign = ContentAlignment.MiddleRight });
         panel.Controls.Add(new Label { Text = value, Dock = DockStyle.Top, Height = 39, ForeColor = _navy, Font = new Font("Segoe UI", 17, FontStyle.Bold), TextAlign = ContentAlignment.MiddleRight });
-        panel.Controls.Add(new Label { Text = subtitle, Dock = DockStyle.Bottom, Height = 23, ForeColor = Color.DimGray, TextAlign = ContentAlignment.MiddleRight });
+        panel.Controls.Add(new Label { Text = subtitle, Dock = DockStyle.Bottom, Height = 23, ForeColor = ThemeColor(_palette.MutedR, _palette.MutedG, _palette.MutedB), TextAlign = ContentAlignment.MiddleRight });
         return panel;
     }
 
@@ -249,7 +330,7 @@ internal sealed partial class MainForm : Form
         if (!IsAdmin) { Denied(); return; }
         using var form = Dialog("إضافة صنف / رصيد افتتاحي", 6, out var body, out var save);
         var code = TextBox(); var name = TextBox(); var unit = TextBox(); unit.Text = "حبة";
-        var qty = Numeric(0, 100000000, 3); var cost = Numeric(0, 1000000000, 2); var price = Numeric(0, 1000000000, 2); var vat = Numeric(0,100,2); vat.Value=15;
+        var qty = Numeric(0, 100000000, 3); var cost = Numeric(0, 1000000000, 2); var price = Numeric(0, 1000000000, 2); var vat = Numeric(0,100,2); vat.Value=Math.Min(vat.Maximum, Math.Max(vat.Minimum, _appSettings.DefaultVatRate));
         AddField(body, "رمز الصنف", code); AddField(body, "اسم الصنف", name); AddField(body, "الوحدة", unit);
         AddField(body, "الكمية الافتتاحية", qty); AddField(body, "تكلفة الوحدة (ر.س)", cost); AddField(body, "سعر البيع (ر.س)", price); AddField(body, "ضريبة القيمة المضافة %", vat);
         save.Text = "حفظ الصنف";
@@ -543,15 +624,18 @@ internal sealed partial class MainForm : Form
         SetStatus($"عدد السجلات المعروضة: {data.Rows.Count}");
     }
 
-    private static DataGridView MakeGrid(DataTable data)
+    private DataGridView MakeGrid(DataTable data)
     {
-        var grid=new DataGridView { Dock=DockStyle.Fill, DataSource=data, ReadOnly=true, AllowUserToAddRows=false, AllowUserToDeleteRows=false, MultiSelect=false, SelectionMode=DataGridViewSelectionMode.FullRowSelect, AutoSizeColumnsMode=DataGridViewAutoSizeColumnsMode.Fill, BackgroundColor=Color.White, BorderStyle=BorderStyle.FixedSingle, RowHeadersVisible=false, RightToLeft=RightToLeft.Yes, EnableHeadersVisualStyles=false };
-        grid.ColumnHeadersDefaultCellStyle.BackColor=Color.FromArgb(18,32,52);
+        var surface = ThemeColor(_palette.SurfaceR, _palette.SurfaceG, _palette.SurfaceB);
+        var grid=new DataGridView { Dock=DockStyle.Fill, DataSource=data, ReadOnly=true, AllowUserToAddRows=false, AllowUserToDeleteRows=false, MultiSelect=false, SelectionMode=DataGridViewSelectionMode.FullRowSelect, AutoSizeColumnsMode=DataGridViewAutoSizeColumnsMode.Fill, BackgroundColor=surface, BorderStyle=BorderStyle.FixedSingle, RowHeadersVisible=false, RightToLeft=RightToLeft.Yes, EnableHeadersVisualStyles=false };
+        grid.ColumnHeadersDefaultCellStyle.BackColor=_navy;
         grid.ColumnHeadersDefaultCellStyle.ForeColor=Color.White;
         grid.ColumnHeadersDefaultCellStyle.Font=new Font("Segoe UI",9.5F,FontStyle.Bold);
-        grid.DefaultCellStyle.SelectionBackColor=Color.FromArgb(205,220,239);
-        grid.DefaultCellStyle.SelectionForeColor=Color.FromArgb(18,32,52);
-        grid.AlternatingRowsDefaultCellStyle.BackColor=Color.FromArgb(246,248,251);
+        grid.DefaultCellStyle.SelectionBackColor=Color.FromArgb(_palette.AccentR, _palette.AccentG, _palette.AccentB);
+        grid.DefaultCellStyle.SelectionForeColor=Color.White;
+        grid.DefaultCellStyle.BackColor=surface;
+        grid.DefaultCellStyle.ForeColor=ThemeColor(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB);
+        grid.AlternatingRowsDefaultCellStyle.BackColor=_paper;
         grid.RowTemplate.Height=28;
         return grid;
     }
@@ -589,9 +673,14 @@ internal sealed partial class MainForm : Form
 
     private void BackupDatabase()
     {
-        using var save=new SaveFileDialog { Filter="قاعدة بيانات SQLite (*.db)|*.db", FileName="AlSaqr-backup-"+DateTime.Now.ToString("yyyyMMdd-HHmm")+".db", AddExtension=true, DefaultExt="db" };
+        using var save=new SaveFileDialog { Filter="قاعدة بيانات SQLite (*.db)|*.db", FileName="AlSaqr-backup-"+DateTime.Now.ToString("yyyyMMdd-HHmm")+".db", InitialDirectory=Directory.Exists(_appSettings.BackupDirectory) ? _appSettings.BackupDirectory : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), AddExtension=true, DefaultExt="db" };
         if(save.ShowDialog(this)!=DialogResult.OK) return;
-        Guard(() => { Data.Database.BackupTo(save.FileName); SetStatus("تم إنشاء نسخة احتياطية متسقة من قاعدة البيانات."); });
+        Guard(() => {
+            Data.Database.BackupTo(save.FileName);
+            _appSettings = _appSettings with { BackupDirectory = Path.GetDirectoryName(save.FileName) ?? _appSettings.BackupDirectory };
+            AppSettingsService.Save(_appSettings);
+            SetStatus("تم إنشاء نسخة احتياطية متسقة وحفظ مجلد النسخ الاحتياطي الافتراضي.");
+        });
     }
     private void Denied() => Notice("ليست لديك صلاحية تنفيذ هذه العملية.");
     private void Notice(string message) => MessageBox.Show(this,message,"الصقر لأنظمة المحاسبة",MessageBoxButtons.OK,MessageBoxIcon.Information);
