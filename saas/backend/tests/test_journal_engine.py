@@ -10,6 +10,7 @@ from sqlalchemy import select
 from app.core.security import hash_password
 from app.database import SessionFactory, set_tenant_context
 from app.models import (
+    Account,
     AuditLog,
     JournalEntry,
     JournalLine,
@@ -229,3 +230,29 @@ async def test_journal_rejects_inactive_account() -> None:
                 ],
             )
         assert captured.value.status_code == 422
+
+@pytest.mark.asyncio(loop_scope="session")
+async def test_postgres_rls_blocks_cross_tenant_reads_without_application_filter() -> None:
+    tenant_a, _ = await create_test_tenant()
+    tenant_b, _ = await create_test_tenant()
+
+    async with SessionFactory() as session:
+        visible_without_context = await session.scalar(select(Account.id).limit(1))
+        assert visible_without_context is None
+
+    async with SessionFactory() as session:
+        await set_tenant_context(session, str(tenant_b))
+        await seed_chart_of_accounts(session, tenant_b)
+        await session.commit()
+
+    async with SessionFactory() as session:
+        await set_tenant_context(session, str(tenant_a))
+        leaked_account = await session.scalar(select(Account).where(Account.code == "1101").limit(1))
+        assert leaked_account is None
+
+    async with SessionFactory() as session:
+        await set_tenant_context(session, str(tenant_b))
+        visible_account = await session.scalar(select(Account).where(Account.code == "1101").limit(1))
+        assert visible_account is not None
+        assert visible_account.tenant_id == tenant_b
+
