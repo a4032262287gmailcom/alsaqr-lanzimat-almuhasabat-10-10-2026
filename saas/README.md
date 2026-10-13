@@ -38,5 +38,19 @@ The values in `.env.example` are for local development only. Replace database cr
 - In production, the application database role must not be a PostgreSQL superuser or have `BYPASSRLS`; those roles can bypass row-level security.
 - Posted documents are not edited silently. Corrections should use reversal/credit-note workflows that are implemented and audited explicitly.
 
+## Phase 1 — accounting data and posting foundation
+
+The following checks are currently implemented in the PostgreSQL-backed core:
+- Tenant-owned rows use PostgreSQL RLS with a transaction-local company context, and relationships between tenant-owned records use tenant-aware composite foreign keys.
+- The general ledger supports a hierarchical chart of accounts, statement type/nature, active/postable controls, and automatic child-code generation.
+- Journal lines use NUMERIC values and optional cost centers; posting validates two or more single-sided lines and balances debit and credit to two decimal places.
+- Posting requires an open fiscal period covering the journal date, rejects inactive or non-postable accounts, and allocates sequence numbers safely across concurrent requests.
+- Posted journal entries are immutable; correction is done through a reversal journal with a second approver.
+- Period closing/reopening is audited, requires a second approver, and refuses closing when draft or unbalanced posted journals remain.
+- Audit events retain before/after JSON snapshots, actor, request address, user-agent and correlation ID. PostgreSQL prevents audit rows from being updated or deleted.
+- The Alembic bootstrap installs row-level isolation policies and database triggers that independently enforce journal balance/immutability and append-only audit behavior.
+
+### Verified CI run
+The SaaS CI run 38433569500 completed successfully. It applied the PostgreSQL migrations, passed Ruff static analysis, and passed **12 tests** covering balance validation, rounding, account-code generation, concurrent numbering and year reset, period overlap/dual-control, posting without a period, reversals, inactive accounts, RLS cross-tenant reads, database-enforced journal immutability and balance, and append-only audit snapshots.
 ## Scope honesty
 This is a concrete starter platform, not yet a market-ready/certified ERP. The accounting core and CRUD/posting APIs are being laid down; IFRS presentation, year-end closing, multi-currency revaluation, payment/bank reconciliation, payroll, restaurant/POS, construction job costing, audit requirements, ZATCA Phase 2 onboarding/signing/clearance/reporting, penetration testing, restore drills and commercial subscription billing each require dedicated implementation and domain review. Do not claim ZATCA compliance merely because an invoice table or endpoint exists.
