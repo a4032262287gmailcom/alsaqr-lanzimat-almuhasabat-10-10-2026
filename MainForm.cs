@@ -80,8 +80,8 @@ internal sealed partial class MainForm : Form
         _status.Dock = DockStyle.Bottom;
         _status.Height = 26;
         _status.Padding = new Padding(14, 4, 14, 4);
-        _status.BackColor = Color.FromArgb(230, 234, 240);
-        _status.ForeColor = _navy;
+        _status.BackColor = Color.FromArgb(_palette.SurfaceR, _palette.SurfaceG, _palette.SurfaceB);
+        _status.ForeColor = ThemeColor(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB);
         Controls.Add(_content); Controls.Add(_status); Controls.Add(nav); Controls.Add(header);
         ApplyThemeToChrome();
         ShowDashboard();
@@ -171,7 +171,7 @@ internal sealed partial class MainForm : Form
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 58));
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 140));
         layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
-        var heading = new Label { Text = "لوحة المؤشرات المالية", Dock = DockStyle.Fill, Font = new Font("Segoe UI", 19, FontStyle.Bold), ForeColor = _navy, TextAlign = ContentAlignment.MiddleRight };
+        var heading = new Label { Text = "لوحة المؤشرات المالية", Dock = DockStyle.Fill, Font = new Font("Segoe UI", 19, FontStyle.Bold), ForeColor = ThemeColor(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB), TextAlign = ContentAlignment.MiddleRight };
         var cards = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.RightToLeft, WrapContents = true, Padding = new Padding(2), BackColor = _paper };
         var dash = _service.Dashboard(DateTime.Today);
         cards.Controls.Add(Card("الصندوق والبنوك", Money(dash.Cash), "الأرصدة المرحلة"));
@@ -179,8 +179,8 @@ internal sealed partial class MainForm : Form
         cards.Controls.Add(Card("ذمم الموردين", Money(dash.Payables), "حركة حساب الموردين"));
         cards.Controls.Add(Card("مبيعات الشهر", Money(dash.SalesMonth), $"مصروفات الشهر: {Money(dash.ExpensesMonth)}"));
         var recent = MakeGrid(_service.RecentJournals());
-        var recentPanel = new Panel { Dock = DockStyle.Fill, Padding = new Padding(2), BackColor = Color.White };
-        var recentTitle = new Label { Text = "آخر القيود المرحلة (حتى 500 قيد)", Dock = DockStyle.Top, Height = 38, ForeColor = _navy, Font = new Font("Segoe UI", 12, FontStyle.Bold), TextAlign = ContentAlignment.MiddleRight };
+        var recentPanel = new Panel { Dock = DockStyle.Fill, Padding = new Padding(2), BackColor = ThemeColor(_palette.SurfaceR, _palette.SurfaceG, _palette.SurfaceB) };
+        var recentTitle = new Label { Text = "آخر القيود المرحلة (حتى 500 قيد)", Dock = DockStyle.Top, Height = 38, ForeColor = ThemeColor(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB), Font = new Font("Segoe UI", 12, FontStyle.Bold), TextAlign = ContentAlignment.MiddleRight };
         recentPanel.Controls.Add(recent); recentPanel.Controls.Add(recentTitle);
         layout.Controls.Add(heading, 0, 0); layout.Controls.Add(cards, 0, 1); layout.Controls.Add(recentPanel, 0, 2);
         _content.Controls.Add(layout);
@@ -192,7 +192,7 @@ internal sealed partial class MainForm : Form
         var panel = new Panel { Width = 255, Height = 118, Margin = new Padding(6), BackColor = Color.White, BorderStyle = BorderStyle.FixedSingle, Padding = new Padding(12) };
         panel.BackColor = ThemeColor(_palette.SurfaceR, _palette.SurfaceG, _palette.SurfaceB);
         panel.Controls.Add(new Label { Text = caption, Dock = DockStyle.Top, Height = 25, ForeColor = _blue, TextAlign = ContentAlignment.MiddleRight });
-        panel.Controls.Add(new Label { Text = value, Dock = DockStyle.Top, Height = 39, ForeColor = _navy, Font = new Font("Segoe UI", 17, FontStyle.Bold), TextAlign = ContentAlignment.MiddleRight });
+        panel.Controls.Add(new Label { Text = value, Dock = DockStyle.Top, Height = 39, ForeColor = ThemeColor(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB), Font = new Font("Segoe UI", 17, FontStyle.Bold), TextAlign = ContentAlignment.MiddleRight });
         panel.Controls.Add(new Label { Text = subtitle, Dock = DockStyle.Bottom, Height = 23, ForeColor = ThemeColor(_palette.MutedR, _palette.MutedG, _palette.MutedB), TextAlign = ContentAlignment.MiddleRight });
         return panel;
     }
@@ -534,7 +534,7 @@ internal sealed partial class MainForm : Form
         root.RowStyles.Add(new RowStyle(SizeType.Absolute, 50));
         root.RowStyles.Add(new RowStyle(SizeType.Absolute, 118));
         root.RowStyles.Add(new RowStyle(SizeType.Percent,100));
-        root.Controls.Add(new Label { Text="مركز التقارير المحاسبية", Dock=DockStyle.Fill, Font=new Font("Segoe UI",19,FontStyle.Bold), ForeColor=_navy, TextAlign=ContentAlignment.MiddleRight },0,0);
+        root.Controls.Add(new Label { Text="مركز التقارير المحاسبية", Dock=DockStyle.Fill, Font=new Font("Segoe UI",19,FontStyle.Bold), ForeColor=ThemeColor(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB), TextAlign=ContentAlignment.MiddleRight },0,0);
         var filter = new FlowLayoutPanel { Dock=DockStyle.Fill, FlowDirection=FlowDirection.RightToLeft, WrapContents=true, Padding=new Padding(4), BackColor=Color.White };
         var report=Combo("ميزان المراجعة",
             ("ميزان المراجعة","ميزان المراجعة"),("الأستاذ العام","الأستاذ العام"),("الأرباح والخسائر","الأرباح والخسائر"),
@@ -611,7 +611,7 @@ internal sealed partial class MainForm : Form
         var root=new TableLayoutPanel { Dock=DockStyle.Fill, ColumnCount=1, RowCount=2, BackColor=_paper };
         root.RowStyles.Add(new RowStyle(SizeType.Absolute,58)); root.RowStyles.Add(new RowStyle(SizeType.Percent,100));
         var header=new Panel { Dock=DockStyle.Fill, BackColor=_paper };
-        header.Controls.Add(new Label { Text=title, Dock=DockStyle.Right, Width=Math.Max(300,TextRenderer.MeasureText(title,Font).Width+60), Font=new Font("Segoe UI",16,FontStyle.Bold), ForeColor=_navy, TextAlign=ContentAlignment.MiddleRight });
+        header.Controls.Add(new Label { Text=title, Dock=DockStyle.Right, Width=Math.Max(300,TextRenderer.MeasureText(title,Font).Width+60), Font=new Font("Segoe UI",16,FontStyle.Bold), ForeColor=ThemeColor(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB), TextAlign=ContentAlignment.MiddleRight });
         var toolbar=new FlowLayoutPanel { Dock=DockStyle.Left, AutoSize=true, FlowDirection=FlowDirection.RightToLeft, WrapContents=false, Padding=new Padding(2) };
         foreach(var action in actions)
         {
