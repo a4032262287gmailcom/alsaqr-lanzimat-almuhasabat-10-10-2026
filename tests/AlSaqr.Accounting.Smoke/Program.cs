@@ -23,8 +23,12 @@ try
           "company settings and theme persist through DPAPI-protected storage");
 
     var licenseCheck = new LicenseService().CheckAccess();
-    Check(licenseCheck.HasAccess && licenseCheck.IsTrial && !licenseCheck.IsLicensed,
+    Check(licenseCheck.HasAccess && licenseCheck.IsTrial && !licenseCheck.IsLicensed && licenseCheck.ExpiresAtUtc.HasValue,
           "first launch grants the configured device-bound trial");
+    var licenseCheckAgain = new LicenseService().CheckAccess();
+    Check(licenseCheckAgain.HasAccess && licenseCheckAgain.IsTrial &&
+          licenseCheckAgain.ExpiresAtUtc == licenseCheck.ExpiresAtUtc,
+          "trial expiration persists between application checks");
 
     var searchData = new DataTable();
     searchData.Columns.Add("رقم المستند", typeof(string));
