@@ -51,6 +51,7 @@ async def create_period(
         "FiscalPeriod", period.id,
         {"code": period.code, "start_date": period.start_date.isoformat(), "end_date": period.end_date.isoformat()},
         remote_address,
+        after_data={"status": period.status, "code": period.code, "start_date": period.start_date.isoformat(), "end_date": period.end_date.isoformat()},
     )
     return period
 
@@ -79,6 +80,11 @@ async def close_period(
     second_approver = await validate_second_approver(
         session, tenant_id, actor_user_id, second_approver_email, second_approver_password
     )
+    before_data = {
+        "status": period.status,
+        "closed_at": period.closed_at.isoformat() if period.closed_at else None,
+        "closed_by": str(period.closed_by) if period.closed_by else None,
+    }
 
     draft_count = await session.scalar(
         select(func.count()).select_from(JournalEntry).where(
@@ -125,6 +131,12 @@ async def close_period(
         session, tenant_id, actor_user_id, "FISCAL_PERIOD_CLOSED", "FiscalPeriod", period.id,
         {"code": period.code, "reason": reason.strip(), "second_approver_user_id": str(second_approver.id)},
         remote_address,
+        before_data=before_data,
+        after_data={
+            "status": period.status,
+            "closed_at": period.closed_at.isoformat() if period.closed_at else None,
+            "closed_by": str(period.closed_by) if period.closed_by else None,
+        },
     )
     return period
 
@@ -153,6 +165,11 @@ async def reopen_period(
     second_approver = await validate_second_approver(
         session, tenant_id, actor_user_id, second_approver_email, second_approver_password
     )
+    before_data = {
+        "status": period.status,
+        "closed_at": period.closed_at.isoformat() if period.closed_at else None,
+        "closed_by": str(period.closed_by) if period.closed_by else None,
+    }
 
     period.status = "OPEN"
     period.reopened_by = actor_user_id
@@ -163,5 +180,11 @@ async def reopen_period(
         session, tenant_id, actor_user_id, "FISCAL_PERIOD_REOPENED", "FiscalPeriod", period.id,
         {"code": period.code, "reason": reason.strip(), "second_approver_user_id": str(second_approver.id)},
         remote_address,
+        before_data=before_data,
+        after_data={
+            "status": period.status,
+            "reopened_at": period.reopened_at.isoformat() if period.reopened_at else None,
+            "reopened_by": str(period.reopened_by) if period.reopened_by else None,
+        },
     )
     return period
