@@ -2,6 +2,7 @@ using System.Data;
 using System.Globalization;
 using System.Text;
 using AlSaqr.Accounting.Services;
+using AlSaqr.Accounting.Forms;
 
 namespace AlSaqr.Accounting;
 
@@ -10,28 +11,32 @@ internal sealed partial class MainForm : Form
     private readonly AuthUser _user;
     private readonly AccountingService _service = new();
     private readonly ReturnService _returns = new();
+    private readonly InventoryAdjustmentService _adjustmentService = new();
     private readonly AuthService _auth = new();
+    private readonly LicenseService _licenseService = new();
     private readonly Panel _content = new();
     private readonly Label _status = new();
+    private Panel? _headerPanel;
+    private FlowLayoutPanel? _navPanel;
+    private AccountingAppSettings _appSettings = AccountingAppSettings.Defaults();
+    private UiThemePalette _palette = UiThemePalette.All[0];
     private Color _navy = Color.FromArgb(18, 32, 52);
     private Color _blue = Color.FromArgb(37, 66, 101);
     private Color _gold = Color.FromArgb(190, 151, 61);
     private Color _paper = Color.FromArgb(244, 246, 249);
     private DataGridView? _tableGrid;
     private DataTable? _lastReport;
-    private DataView? _tableView;
-    private string _lastReportTitle = "تقرير محاسبي";
-    private Button? _activeNavigationButton;
 
-    private bool IsAdmin => _user.Role == "Admin";
-    private bool CanPost => _user.Role is "Admin" or "Accountant";
+    private bool LicenseAllowsUse => _licenseService.CheckAccess().HasAccess;
+    private bool IsAdmin => _user.Role == "Admin" && LicenseAllowsUse;
+    private bool CanPost => (_user.Role is "Admin" or "Accountant") && LicenseAllowsUse;
 
     public MainForm(AuthUser user)
     {
         _user = user;
-        var initialPalette = SystemSettingsService.PaletteFor(_settingsService.Load().Theme);
-        _navy = initialPalette.Navy; _blue = initialPalette.Blue; _gold = initialPalette.Gold; _paper = initialPalette.Paper;
-        Text = "الصقر | نظام المحاسبة";
+        _appSettings = AppSettingsService.Load();
+        ApplyThemeColors(_appSettings.Theme);
+        Text = "الصقر لأنظمة المحاسبة";
         WindowState = FormWindowState.Maximized;
         MinimumSize = new Size(1120, 700);
         StartPosition = FormStartPosition.CenterScreen;
@@ -41,18 +46,23 @@ internal sealed partial class MainForm : Form
         BackColor = _paper;
 
         var header = new Panel { Dock = DockStyle.Top, Height = 58, BackColor = _navy, Padding = new Padding(18, 6, 18, 6) };
-        var title = new Label { Text = "الصقر  |  نظام المحاسبة", AutoSize = false, Dock = DockStyle.Right, Width = 310, ForeColor = Color.White, TextAlign = ContentAlignment.MiddleRight, Font = new Font("Segoe UI", 16, FontStyle.Bold) };
+        _headerPanel = header;
+        var title = new Label { Text = "الصقر لأنظمة المحاسبة", AutoSize = false, Dock = DockStyle.Right, Width = 310, ForeColor = Color.White, TextAlign = ContentAlignment.MiddleRight, Font = new Font("Segoe UI", 16, FontStyle.Bold) };
         var identity = new Label { Text = $"المستخدم: {_user.UserName}  |  الدور: {RoleArabic(_user.Role)}", Dock = DockStyle.Left, Width = 320, ForeColor = Color.FromArgb(233, 220, 180), TextAlign = ContentAlignment.MiddleLeft };
         header.Controls.Add(title); header.Controls.Add(identity);
 
         var nav = new FlowLayoutPanel { Dock = DockStyle.Top, Height = 54, BackColor = _blue, FlowDirection = FlowDirection.RightToLeft, WrapContents = false, AutoScroll = true, Padding = new Padding(8, 5, 8, 5) };
-        var homeButton = AddNavigation(nav, "الرئيسية", ShowDashboard);
+        _navPanel = nav;
+        AddNavigation(nav, "الرئيسية", ShowDashboard);
         AddNavigation(nav, "دليل الحسابات", ShowAccounts);
         AddNavigation(nav, "القيود اليومية", ShowJournals);
         AddNavigation(nav, "العملاء والموردون", ShowParties);
         AddNavigation(nav, "الأصناف والمخزون", ShowProducts);
+        if (CanPost) AddNavigation(nav, "الكاشير / نقطة البيع", OpenCashier);
+        AddNavigation(nav, "اتصال قاعدة SQL Server", OpenLocalSqlServerConnection);
+        AddNavigation(nav, "الإعدادات والثيمات", OpenSettings);
+        AddNavigation(nav, "الترخيص والتفعيل", OpenLicense);
         AddNavigation(nav, "فواتير البيع", () => ShowInvoices("SALE"));
-        if (CanPost) AddNavigation(nav, "الكاشير", ShowCashier);
         AddNavigation(nav, "فواتير الشراء", () => ShowInvoices("PURCHASE"));
         AddNavigation(nav, "مردودات البيع", () => ShowReturns("SALE_RETURN"));
         AddNavigation(nav, "مردودات الشراء", () => ShowReturns("PURCHASE_RETURN"));
@@ -62,12 +72,7 @@ internal sealed partial class MainForm : Form
         }
         AddNavigation(nav, "سجل السندات", ShowSettlements);
         AddNavigation(nav, "التقارير", ShowReports);
-        if (IsAdmin)
-        {
-            AddNavigation(nav, "إعدادات النظام", ShowSystemSettings);
-            AddNavigation(nav, "ترخيص النظام", ShowLicenseManagement);
-            AddNavigation(nav, "المستخدمون والصلاحيات", ShowUsers);
-        }
+        if (IsAdmin) AddNavigation(nav, "المستخدمون والصلاحيات", ShowUsers);
         AddNavigation(nav, "نسخة احتياطية", BackupDatabase);
 
         _content.Dock = DockStyle.Fill;
@@ -75,58 +80,88 @@ internal sealed partial class MainForm : Form
         _status.Dock = DockStyle.Bottom;
         _status.Height = 26;
         _status.Padding = new Padding(14, 4, 14, 4);
-        _status.BackColor = Color.FromArgb(230, 234, 240);
-        _status.ForeColor = _navy;
+        _status.BackColor = Color.FromArgb(_palette.SurfaceR, _palette.SurfaceG, _palette.SurfaceB);
+        _status.ForeColor = ThemeColor(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB);
         Controls.Add(_content); Controls.Add(_status); Controls.Add(nav); Controls.Add(header);
-        ActivateNavigation(homeButton);
+        ApplyThemeToChrome();
         ShowDashboard();
     }
 
     private static string RoleArabic(string role) => role switch { "Admin" => "مدير النظام", "Accountant" => "محاسب", _ => "عرض فقط" };
 
-    private Button AddNavigation(FlowLayoutPanel nav, string caption, Action action)
+    private static Color ThemeColor(int r, int g, int b) => Color.FromArgb(r, g, b);
+
+    private void ApplyThemeColors(string themeName)
     {
-        var button = new Button
-        {
-            Text = caption,
-            Width = caption.Length > 12 ? 170 : 125,
-            Height = 40,
-            Margin = new Padding(4, 1, 4, 1),
-            BackColor = _blue,
-            ForeColor = Color.White,
-            FlatStyle = FlatStyle.Flat,
-            Cursor = Cursors.Hand,
-            UseVisualStyleBackColor = false,
-            Padding = new Padding(6, 1, 6, 1)
-        };
-        button.FlatAppearance.BorderColor = _gold;
-        button.FlatAppearance.BorderSize = 1;
-        button.FlatAppearance.MouseOverBackColor = Color.FromArgb(48, 79, 116);
-        button.FlatAppearance.MouseDownBackColor = Color.FromArgb(159, 123, 43);
-        button.Click += (_, _) =>
-        {
-            ActivateNavigation(button);
-            action();
-        };
-        nav.Controls.Add(button);
-        return button;
+        _palette = AppSettingsService.GetPalette(themeName);
+        _navy = ThemeColor(_palette.PrimaryR, _palette.PrimaryG, _palette.PrimaryB);
+        _blue = ThemeColor(_palette.SecondaryR, _palette.SecondaryG, _palette.SecondaryB);
+        _gold = ThemeColor(_palette.AccentR, _palette.AccentG, _palette.AccentB);
+        _paper = ThemeColor(_palette.BackgroundR, _palette.BackgroundG, _palette.BackgroundB);
+        BackColor = _paper;
     }
 
-    private void ActivateNavigation(Button button)
+    private void ApplyThemeToChrome()
     {
-        if (_activeNavigationButton is not null && !_activeNavigationButton.IsDisposed)
+        if (_headerPanel is not null)
         {
-            _activeNavigationButton.BackColor = _blue;
-            _activeNavigationButton.ForeColor = Color.White;
-            _activeNavigationButton.FlatAppearance.BorderColor = _gold;
-            _activeNavigationButton.FlatAppearance.BorderSize = 1;
+            _headerPanel.BackColor = _navy;
+            foreach (Control control in _headerPanel.Controls)
+            {
+                if (control is Label label)
+                {
+                    label.BackColor = _navy;
+                    label.ForeColor = label.Dock == DockStyle.Left ? _gold : Color.White;
+                }
+            }
         }
+        if (_navPanel is not null)
+        {
+            _navPanel.BackColor = _blue;
+            foreach (var button in _navPanel.Controls.OfType<Button>())
+            {
+                button.BackColor = _blue;
+                button.ForeColor = Color.White;
+                button.FlatAppearance.BorderColor = _gold;
+            }
+        }
+        _status.BackColor = ThemeColor(_palette.SurfaceR, _palette.SurfaceG, _palette.SurfaceB);
+        _status.ForeColor = ThemeColor(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB);
+        _content.BackColor = _paper;
+    }
 
-        _activeNavigationButton = button;
-        button.BackColor = _gold;
-        button.ForeColor = _navy;
-        button.FlatAppearance.BorderColor = Color.FromArgb(236, 216, 169);
-        button.FlatAppearance.BorderSize = 2;
+    private void OpenSettings()
+    {
+        if (!IsAdmin) { Denied(); return; }
+        using var form = new SettingsForm();
+        if (form.ShowDialog(this) != DialogResult.OK || form.SavedSettings is null) return;
+        _appSettings = form.SavedSettings;
+        ApplyThemeColors(_appSettings.Theme);
+        ApplyThemeToChrome();
+        ShowDashboard();
+        SetStatus("تم حفظ الإعدادات التجارية والثيم «" + _palette.DisplayName + "» على هذا الجهاز.");
+    }
+
+    private void OpenLicense()
+    {
+        using var form = new LicenseForm(_licenseService);
+        form.ShowDialog(this);
+        var status = _licenseService.CheckAccess();
+        SetStatus(status.Message);
+        if (!status.HasAccess)
+        {
+            Notice("انتهى الوصول المرخص. احفظ العمل الجاري وأعد تفعيل الترخيص.");
+            return;
+        }
+        ShowDashboard();
+    }
+
+    private void AddNavigation(FlowLayoutPanel nav, string caption, Action action)
+    {
+        var button = new Button { Text = caption, Width = caption.Length > 12 ? 170 : 125, Height = 40, Margin = new Padding(4, 1, 4, 1), BackColor = _blue, ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Cursor = Cursors.Hand };
+        button.FlatAppearance.BorderColor = _gold;
+        button.Click += (_, _) => action();
+        nav.Controls.Add(button);
     }
 
     private void ShowDashboard()
@@ -136,7 +171,7 @@ internal sealed partial class MainForm : Form
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 58));
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 140));
         layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
-        var heading = new Label { Text = "لوحة المؤشرات المالية", Dock = DockStyle.Fill, Font = new Font("Segoe UI", 19, FontStyle.Bold), ForeColor = _navy, TextAlign = ContentAlignment.MiddleRight };
+        var heading = new Label { Text = "لوحة المؤشرات المالية", Dock = DockStyle.Fill, Font = new Font("Segoe UI", 19, FontStyle.Bold), ForeColor = ThemeColor(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB), TextAlign = ContentAlignment.MiddleRight };
         var cards = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.RightToLeft, WrapContents = true, Padding = new Padding(2), BackColor = _paper };
         var dash = _service.Dashboard(DateTime.Today);
         cards.Controls.Add(Card("الصندوق والبنوك", Money(dash.Cash), "الأرصدة المرحلة"));
@@ -144,20 +179,21 @@ internal sealed partial class MainForm : Form
         cards.Controls.Add(Card("ذمم الموردين", Money(dash.Payables), "حركة حساب الموردين"));
         cards.Controls.Add(Card("مبيعات الشهر", Money(dash.SalesMonth), $"مصروفات الشهر: {Money(dash.ExpensesMonth)}"));
         var recent = MakeGrid(_service.RecentJournals());
-        var recentPanel = new Panel { Dock = DockStyle.Fill, Padding = new Padding(2), BackColor = Color.White };
-        var recentTitle = new Label { Text = "آخر القيود المرحلة (حتى 500 قيد)", Dock = DockStyle.Top, Height = 38, ForeColor = _navy, Font = new Font("Segoe UI", 12, FontStyle.Bold), TextAlign = ContentAlignment.MiddleRight };
+        var recentPanel = new Panel { Dock = DockStyle.Fill, Padding = new Padding(2), BackColor = ThemeColor(_palette.SurfaceR, _palette.SurfaceG, _palette.SurfaceB) };
+        var recentTitle = new Label { Text = "آخر القيود المرحلة (حتى 500 قيد)", Dock = DockStyle.Top, Height = 38, ForeColor = ThemeColor(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB), Font = new Font("Segoe UI", 12, FontStyle.Bold), TextAlign = ContentAlignment.MiddleRight };
         recentPanel.Controls.Add(recent); recentPanel.Controls.Add(recentTitle);
         layout.Controls.Add(heading, 0, 0); layout.Controls.Add(cards, 0, 1); layout.Controls.Add(recentPanel, 0, 2);
         _content.Controls.Add(layout);
-        SetStatus($"جاهز — قاعدة البيانات الفعلية: {Data.Database.DatabasePath} — قيود الشهر: {dash.PostedEntries}");
+        SetStatus($"جاهز — قاعدة البيانات المحلية: {Data.Database.DatabasePath} — قيود الشهر: {dash.PostedEntries} — {_licenseService.CheckAccess().Message}");
     }
 
     private Control Card(string caption, string value, string subtitle)
     {
         var panel = new Panel { Width = 255, Height = 118, Margin = new Padding(6), BackColor = Color.White, BorderStyle = BorderStyle.FixedSingle, Padding = new Padding(12) };
+        panel.BackColor = ThemeColor(_palette.SurfaceR, _palette.SurfaceG, _palette.SurfaceB);
         panel.Controls.Add(new Label { Text = caption, Dock = DockStyle.Top, Height = 25, ForeColor = _blue, TextAlign = ContentAlignment.MiddleRight });
-        panel.Controls.Add(new Label { Text = value, Dock = DockStyle.Top, Height = 39, ForeColor = _navy, Font = new Font("Segoe UI", 17, FontStyle.Bold), TextAlign = ContentAlignment.MiddleRight });
-        panel.Controls.Add(new Label { Text = subtitle, Dock = DockStyle.Bottom, Height = 23, ForeColor = Color.DimGray, TextAlign = ContentAlignment.MiddleRight });
+        panel.Controls.Add(new Label { Text = value, Dock = DockStyle.Top, Height = 39, ForeColor = ThemeColor(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB), Font = new Font("Segoe UI", 17, FontStyle.Bold), TextAlign = ContentAlignment.MiddleRight });
+        panel.Controls.Add(new Label { Text = subtitle, Dock = DockStyle.Bottom, Height = 23, ForeColor = ThemeColor(_palette.MutedR, _palette.MutedG, _palette.MutedB), TextAlign = ContentAlignment.MiddleRight });
         return panel;
     }
 
@@ -214,7 +250,12 @@ internal sealed partial class MainForm : Form
     private void ShowParties()
     {
         var actions = new List<(string Text, Action Run)>();
-        if (IsAdmin) actions.Add(("إضافة عميل / مورد", AddParty));
+        if (IsAdmin)
+        {
+            actions.Add(("إضافة عميل / مورد", AddParty));
+            actions.Add(("تعديل الطرف المحدد", EditParty));
+            actions.Add(("تفعيل / إيقاف المحدد", ToggleParty));
+        }
         actions.Add(("تحديث", ShowParties));
         ShowTablePage("العملاء والموردون", _service.Parties(), actions.ToArray());
     }
@@ -231,10 +272,54 @@ internal sealed partial class MainForm : Form
         form.ShowDialog(this);
     }
 
+    private void EditParty()
+    {
+        if (!IsAdmin) { Denied(); return; }
+        if (_tableGrid?.CurrentRow is null) { Notice("حدد العميل أو المورد المراد تعديله."); return; }
+        var row = _tableGrid.CurrentRow;
+        var id = Convert.ToInt32(row.Cells[0].Value, CultureInfo.InvariantCulture);
+        var name = TextBox(); name.Text = Convert.ToString(row.Cells[1].Value) ?? "";
+        var kindText = Convert.ToString(row.Cells[2].Value) ?? "عميل";
+        var kindValue = kindText switch { "مورد" => "Supplier", "عميل ومورد" => "Both", _ => "Customer" };
+        var kind = Combo(kindValue, ("Customer", "عميل"), ("Supplier", "مورد"), ("Both", "عميل ومورد"));
+        var phone = TextBox(); phone.Text = Convert.ToString(row.Cells[3].Value) ?? "";
+        var vat = TextBox(); vat.Text = Convert.ToString(row.Cells[4].Value) ?? "";
+        using var form = Dialog("تعديل بيانات العميل / المورد", 4, out var body, out var save);
+        AddField(body, "الاسم التجاري / اسم الطرف", name); AddField(body, "النوع", kind);
+        AddField(body, "الهاتف", phone); AddField(body, "الرقم الضريبي", vat);
+        save.Text = "حفظ التعديلات";
+        save.Click += (_, _) => Guard(() => {
+            _service.UpdateParty(id, name.Text, Convert.ToString(kind.SelectedValue) ?? "Customer", phone.Text, vat.Text);
+            form.DialogResult = DialogResult.OK; form.Close(); ShowParties(); SetStatus("تم تحديث بيانات الطرف في قاعدة البيانات المحلية.");
+        });
+        form.ShowDialog(this);
+    }
+
+    private void ToggleParty()
+    {
+        if (!IsAdmin) { Denied(); return; }
+        if (_tableGrid?.CurrentRow is null) { Notice("حدد العميل أو المورد أولًا."); return; }
+        var row = _tableGrid.CurrentRow;
+        var id = Convert.ToInt32(row.Cells[0].Value, CultureInfo.InvariantCulture);
+        var active = Convert.ToString(row.Cells[5].Value) == "نشط";
+        Guard(() => {
+            _service.SetPartyActive(id, !active);
+            ShowParties();
+            SetStatus(active ? "تم إيقاف الطرف مع الاحتفاظ بسجلاته المحاسبية." : "تم تفعيل الطرف.");
+        });
+    }
+
     private void ShowProducts()
     {
         var actions = new List<(string Text, Action Run)>();
-        if (IsAdmin) actions.Add(("إضافة صنف", AddProduct));
+        if (IsAdmin)
+        {
+            actions.Add(("إضافة صنف", AddProduct));
+            actions.Add(("تعديل الصنف المحدد", EditProduct));
+            actions.Add(("تعيين / تعديل باركود", EditProductBarcode));
+            actions.Add(("تفعيل / إيقاف المحدد", ToggleProduct));
+        }
+        actions.Add(("تسوية مخزون", AddStockAdjustment));
         actions.Add(("عرض تقييم المخزون", () => ShowReportTable("تقييم المخزون", _service.StockValuation())));
         actions.Add(("تحديث", ShowProducts));
         ShowTablePage("الأصناف والمخزون", _service.Products(), actions.ToArray());
@@ -243,15 +328,127 @@ internal sealed partial class MainForm : Form
     private void AddProduct()
     {
         if (!IsAdmin) { Denied(); return; }
-        using var form = Dialog("إضافة صنف / رصيد افتتاحي", 8, out var body, out var save);
-        var code = TextBox(); var barcode = TextBox(); var name = TextBox(); var unit = TextBox(); unit.Text = "حبة";
-        var qty = Numeric(0, 100000000, 3); var cost = Numeric(0, 1000000000, 2); var price = Numeric(0, 1000000000, 2); var vat = Numeric(0,100,2); vat.Value=15;
-        AddField(body, "رمز الصنف", code); AddField(body, "الباركود (اختياري)", barcode); AddField(body, "اسم الصنف", name); AddField(body, "الوحدة", unit);
+        using var form = Dialog("إضافة صنف / رصيد افتتاحي", 6, out var body, out var save);
+        var code = TextBox(); var name = TextBox(); var unit = TextBox(); unit.Text = "حبة";
+        var qty = Numeric(0, 100000000, 3); var cost = Numeric(0, 1000000000, 2); var price = Numeric(0, 1000000000, 2); var vat = Numeric(0,100,2); vat.Value=Math.Min(vat.Maximum, Math.Max(vat.Minimum, _appSettings.DefaultVatRate));
+        AddField(body, "رمز الصنف", code); AddField(body, "اسم الصنف", name); AddField(body, "الوحدة", unit);
         AddField(body, "الكمية الافتتاحية", qty); AddField(body, "تكلفة الوحدة (ر.س)", cost); AddField(body, "سعر البيع (ر.س)", price); AddField(body, "ضريبة القيمة المضافة %", vat);
         save.Text = "حفظ الصنف";
-        save.Click += (_, _) => Guard(() => { _service.AddProduct(code.Text, name.Text, unit.Text, qty.Value, cost.Value, price.Value, vat.Value, barcode.Text); form.DialogResult = DialogResult.OK; form.Close(); ShowProducts(); SetStatus("تم حفظ الصنف والباركود."); });
-        form.Height += 130;
+        save.Click += (_, _) => Guard(() => { _service.AddProduct(code.Text, name.Text, unit.Text, qty.Value, cost.Value, price.Value, vat.Value); form.DialogResult = DialogResult.OK; form.Close(); ShowProducts(); SetStatus("تم حفظ الصنف."); });
+        form.Height += 70;
         form.ShowDialog(this);
+    }
+
+    private void EditProduct()
+    {
+        if (!IsAdmin) { Denied(); return; }
+        if (_tableGrid?.CurrentRow is null) { Notice("حدد الصنف المراد تعديله."); return; }
+        var row = _tableGrid.CurrentRow;
+        var id = Convert.ToInt32(row.Cells[0].Value, CultureInfo.InvariantCulture);
+        var code = TextBox(); code.Text = Convert.ToString(row.Cells[1].Value) ?? "";
+        var name = TextBox(); name.Text = Convert.ToString(row.Cells[2].Value) ?? "";
+        var unit = TextBox(); unit.Text = Convert.ToString(row.Cells[3].Value) ?? "حبة";
+        var price = Numeric(0, 1000000000, 2); price.Value = Math.Min(price.Maximum, Math.Max(price.Minimum, Convert.ToDecimal(row.Cells[6].Value, CultureInfo.InvariantCulture)));
+        var vat = Numeric(0, 100, 2); vat.Value = Math.Min(vat.Maximum, Math.Max(vat.Minimum, Convert.ToDecimal(row.Cells[7].Value, CultureInfo.InvariantCulture)));
+        using var form = Dialog("تعديل بيانات الصنف", 5, out var body, out var save);
+        AddField(body, "رمز الصنف", code); AddField(body, "اسم الصنف", name); AddField(body, "الوحدة", unit);
+        AddField(body, "سعر البيع", price); AddField(body, "ضريبة القيمة المضافة %", vat);
+        AddField(body, "ملاحظة", new Label { Text = "لا يتم تعديل الرصيد أو التكلفة من شاشة البيانات الأساسية؛ استخدم تسوية المخزون.", Width = 360, Height = 45 });
+        save.Text = "حفظ التعديلات";
+        save.Click += (_, _) => Guard(() => {
+            _service.UpdateProduct(id, code.Text, name.Text, unit.Text, price.Value, vat.Value);
+            form.DialogResult = DialogResult.OK; form.Close(); ShowProducts(); SetStatus("تم تحديث الصنف مع إبقاء تقييم المخزون محفوظًا.");
+        });
+        form.Height += 65;
+        form.ShowDialog(this);
+    }
+
+    private void EditProductBarcode()
+    {
+        if (!IsAdmin) { Denied(); return; }
+        if (_tableGrid?.CurrentRow is null) { Notice("حدد الصنف المراد تعيين باركوده."); return; }
+        var id = Convert.ToInt32(_tableGrid.CurrentRow.Cells[0].Value, CultureInfo.InvariantCulture);
+        var name = Convert.ToString(_tableGrid.CurrentRow.Cells[2].Value) ?? "";
+        var barcode = TextBox();
+        var service = new CashierService();
+        barcode.Text = service.GetBarcode(id);
+        using var form = Dialog("تعيين باركود للصنف: " + name, 1, out var body, out var save);
+        AddField(body, "الباركود (اتركه فارغًا للإزالة)", barcode);
+        save.Text = "حفظ الباركود";
+        save.Click += (_, _) => Guard(() =>
+        {
+            service.SetBarcode(id, barcode.Text, _user.UserName);
+            form.DialogResult = DialogResult.OK;
+            form.Close();
+            ShowProducts();
+            SetStatus("تم حفظ الباركود. يمكن للكاشير الآن البحث به أو مسحه.");
+        });
+        form.ShowDialog(this);
+    }
+
+    private void OpenCashier()
+    {
+        if (!CanPost) { Denied(); return; }
+        using var form = new CashierForm(_user);
+        form.ShowDialog(this);
+        ShowDashboard();
+    }
+
+    private void OpenLocalSqlServerConnection()
+    {
+        using var form = new LocalSqlServerConnectionForm();
+        form.ShowDialog(this);
+    }
+
+    private void ToggleProduct()
+    {
+        if (!IsAdmin) { Denied(); return; }
+        if (_tableGrid?.CurrentRow is null) { Notice("حدد الصنف أولًا."); return; }
+        var row = _tableGrid.CurrentRow;
+        var id = Convert.ToInt32(row.Cells[0].Value, CultureInfo.InvariantCulture);
+        var active = Convert.ToString(row.Cells[8].Value) == "نشط";
+        Guard(() => {
+            _service.SetProductActive(id, !active);
+            ShowProducts();
+            SetStatus(active ? "تم إيقاف الصنف." : "تم تفعيل الصنف.");
+        });
+    }
+
+    private void AddStockAdjustment()
+    {
+        if (!CanPost) { Denied(); return; }
+        var products = _service.ActiveProducts();
+        if (products.Count == 0) { Notice("أضف أصنافًا نشطة إلى دليل الأصناف أولًا."); return; }
+        var options = products.Select(p => (p.Id.ToString(CultureInfo.InvariantCulture), $"{p.Code} - {p.Name} | الرصيد {p.Quantity:0.###} | التكلفة {p.Cost:N2}")).ToArray();
+        using var form = Dialog("تسوية مخزون فعلية", 5, out var body, out var save);
+        var product = Combo(options[0].Item1, options.Select(p => (Value: p.Item1, Text: p.Item2)).ToArray());
+        var direction = Combo("IN", ("IN", "زيادة رصيد حسب الجرد"), ("OUT", "عجز / تخفيض رصيد حسب الجرد"));
+        var qty = Numeric(0.001m, 100000000m, 3);
+        var date = new DateTimePicker { Width = 340, Format = DateTimePickerFormat.Custom, CustomFormat = "yyyy-MM-dd", Value = DateTime.Today };
+        var reason = TextBox();
+        AddField(body, "الصنف", product);
+        AddField(body, "نوع التسوية", direction);
+        AddField(body, "فرق الكمية", qty);
+        AddField(body, "تاريخ الجرد", date);
+        AddField(body, "سبب التسوية / رقم محضر الجرد", reason);
+        save.Text = "ترحيل التسوية";
+        save.Click += (_, _) => Guard(() => {
+            var productId = Convert.ToInt32(product.SelectedValue, CultureInfo.InvariantCulture);
+            var delta = Convert.ToString(direction.SelectedValue) == "OUT" ? -qty.Value : qty.Value;
+            var id = _adjustmentService.AdjustStock(productId, date.Value.Date, delta, reason.Text);
+            form.DialogResult = DialogResult.OK;
+            form.Close();
+            ShowProducts();
+            SetStatus($"تم ترحيل تسوية المخزون رقم داخلي {id} مع قيد محاسبي وحركة مخزنية وسجل تدقيق.");
+        });
+        form.ShowDialog(this);
+    }
+
+    private void ShowStockAdjustments()
+    {
+        ShowTablePage("سجل تسويات المخزون المرحلة",
+            _adjustmentService.Register(new DateTime(2000, 1, 1), DateTime.Today.AddDays(1)),
+            ("تصدير CSV", ExportReport), ("تحديث", ShowStockAdjustments));
     }
 
     private void ShowInvoices(string kind)
@@ -337,13 +534,13 @@ internal sealed partial class MainForm : Form
         root.RowStyles.Add(new RowStyle(SizeType.Absolute, 50));
         root.RowStyles.Add(new RowStyle(SizeType.Absolute, 118));
         root.RowStyles.Add(new RowStyle(SizeType.Percent,100));
-        root.Controls.Add(new Label { Text="مركز التقارير المحاسبية", Dock=DockStyle.Fill, Font=new Font("Segoe UI",19,FontStyle.Bold), ForeColor=_navy, TextAlign=ContentAlignment.MiddleRight },0,0);
+        root.Controls.Add(new Label { Text="مركز التقارير المحاسبية", Dock=DockStyle.Fill, Font=new Font("Segoe UI",19,FontStyle.Bold), ForeColor=ThemeColor(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB), TextAlign=ContentAlignment.MiddleRight },0,0);
         var filter = new FlowLayoutPanel { Dock=DockStyle.Fill, FlowDirection=FlowDirection.RightToLeft, WrapContents=true, Padding=new Padding(4), BackColor=Color.White };
         var report=Combo("ميزان المراجعة",
             ("ميزان المراجعة","ميزان المراجعة"),("الأستاذ العام","الأستاذ العام"),("الأرباح والخسائر","الأرباح والخسائر"),
             ("الميزانية العمومية","الميزانية العمومية"),("تقييم المخزون","تقييم المخزون"),("سجل المبيعات","سجل المبيعات"),
             ("سجل المشتريات","سجل المشتريات"),("مردودات البيع","مردودات البيع"),("مردودات الشراء","مردودات الشراء"),("تقرير ضريبة القيمة المضافة","تقرير ضريبة القيمة المضافة"),
-            ("حركة المخزون","حركة المخزون"),("تسوية المخزون","تسوية المخزون"),("سندات القبض والصرف","سندات القبض والصرف"),
+            ("حركة المخزون","حركة المخزون"),("تسوية المخزون","تسوية المخزون"),("سجل تسويات المخزون","سجل تسويات المخزون"),("سندات القبض والصرف","سندات القبض والصرف"),
             ("ملخص العملاء والموردين","ملخص العملاء والموردين"),("سجل التدقيق","سجل التدقيق"));
         report.Width=230;
         var from = new DateTimePicker { Width=145, Format=DateTimePickerFormat.Custom, CustomFormat="yyyy-MM-dd", Value=new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1) };
@@ -367,22 +564,20 @@ internal sealed partial class MainForm : Form
                 "تقرير ضريبة القيمة المضافة" => _service.VatSummary(from.Value,to.Value),
                 "حركة المخزون" => _service.StockMovementRegister(from.Value,to.Value),
                 "تسوية المخزون" => _service.StockReconciliation(),
+                "سجل تسويات المخزون" => _adjustmentService.Register(from.Value,to.Value),
                 "سندات القبض والصرف" => _service.SettlementRegister("ALL",from.Value,to.Value),
                 "ملخص العملاء والموردين" => _service.PartyBalances(from.Value,to.Value),
                 "سجل التدقيق" => IsAdmin ? _service.AuditHistory() : throw new InvalidOperationException("عرض سجل التدقيق متاح لمدير النظام فقط."),
                 _ => throw new InvalidOperationException("التقرير غير معروف.")
             };
-            _lastReport=table; _lastReportTitle=key; var grid=MakeGrid(table); var old=root.GetControlFromPosition(0,2); if(old is not null) root.Controls.Remove(old); root.Controls.Add(grid,0,2);
+            _lastReport=table; var grid=MakeGrid(table); var old=root.GetControlFromPosition(0,2); if(old is not null) root.Controls.Remove(old); root.Controls.Add(grid,0,2);
             SetStatus($"تم إعداد التقرير «{key}» — عدد الصفوف: {table.Rows.Count}. التصدير يطابق النتائج الحالية.");
         });
         var export=Button("تصدير CSV"); export.Click += (_,_) => ExportReport();
-        var print=Button("معاينة / طباعة"); print.Click += (_,_) => PrintCurrentReport();
-        filter.Controls.Add(btn); filter.Controls.Add(export); filter.Controls.Add(print);
+        filter.Controls.Add(btn); filter.Controls.Add(export);
         root.Controls.Add(filter,0,1);
-        var initialTrialBalance = _service.TrialBalance(from.Value,to.Value);
-        root.Controls.Add(MakeGrid(initialTrialBalance),0,2);
-        _lastReport=initialTrialBalance;
-        _lastReportTitle="ميزان المراجعة";
+        root.Controls.Add(MakeGrid(_service.TrialBalance(from.Value,to.Value)),0,2);
+        _lastReport=_service.TrialBalance(from.Value,to.Value);
         _content.Controls.Add(root);
     }
 
@@ -390,18 +585,6 @@ internal sealed partial class MainForm : Form
     {
         ShowTablePage(title, data, ("تصدير CSV", ExportReport), ("التقارير", ShowReports));
         _lastReport=data;
-        _lastReportTitle=title;
-    }
-
-    private void PrintCurrentReport()
-    {
-        if (_lastReport is null)
-        {
-            Notice("اعرض تقريرًا أو سجلًا أولًا.");
-            return;
-        }
-
-        Guard(() => ReportPrintService.Preview(this, _lastReport, _lastReportTitle, _navy));
     }
 
     private void ExportReport()
@@ -422,68 +605,37 @@ internal sealed partial class MainForm : Form
 
     private static string Csv(string value) => "\"" + value.Replace("\"", "\"\"").Replace("\r", " ").Replace("\n", " ") + "\"";
 
-    private void ApplyTableSearch(string query)
-    {
-        if (_tableView is null) return;
-
-        try
-        {
-            TableSearchFilter.Apply(_tableView, query);
-            _lastReport = _tableView.ToTable();
-            var totalRows = _tableView.Table?.Rows.Count ?? _tableView.Count;
-            SetStatus($"السجلات المطابقة: {_tableView.Count} من {totalRows}");
-        }
-        catch (Exception ex)
-        {
-            SetStatus("تعذر تطبيق البحث: " + ex.Message);
-        }
-    }
-
     private void ShowTablePage(string title, DataTable data, params (string Text, Action Run)[] actions)
     {
         _content.Controls.Clear();
-        _tableView = data.DefaultView;
-        _tableView.RowFilter = string.Empty;
         var root=new TableLayoutPanel { Dock=DockStyle.Fill, ColumnCount=1, RowCount=2, BackColor=_paper };
         root.RowStyles.Add(new RowStyle(SizeType.Absolute,58)); root.RowStyles.Add(new RowStyle(SizeType.Percent,100));
         var header=new Panel { Dock=DockStyle.Fill, BackColor=_paper };
-        header.Controls.Add(new Label { Text=title, Dock=DockStyle.Right, Width=Math.Max(300,TextRenderer.MeasureText(title,Font).Width+60), Font=new Font("Segoe UI",16,FontStyle.Bold), ForeColor=_navy, TextAlign=ContentAlignment.MiddleRight });
+        header.Controls.Add(new Label { Text=title, Dock=DockStyle.Right, Width=Math.Max(300,TextRenderer.MeasureText(title,Font).Width+60), Font=new Font("Segoe UI",16,FontStyle.Bold), ForeColor=ThemeColor(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB), TextAlign=ContentAlignment.MiddleRight });
         var toolbar=new FlowLayoutPanel { Dock=DockStyle.Left, AutoSize=true, FlowDirection=FlowDirection.RightToLeft, WrapContents=false, Padding=new Padding(2) };
         foreach(var action in actions)
         {
             var button=Button(action.Text); button.Width=Math.Max(110,Math.Min(230,TextRenderer.MeasureText(action.Text,Font).Width+38)); button.Click += (_,_) => action.Run(); toolbar.Controls.Add(button);
         }
-        var searchBox = new TextBox
-        {
-            Width = 190,
-            Height = 31,
-            BorderStyle = BorderStyle.FixedSingle,
-            PlaceholderText = "بحث في السجلات..."
-        };
-        searchBox.TextChanged += (_, _) => ApplyTableSearch(searchBox.Text);
-        toolbar.Controls.Add(searchBox);
-        var printButton=Button("معاينة / طباعة");
-        printButton.Width=160;
-        printButton.Click += (_,_) => PrintCurrentReport();
-        toolbar.Controls.Add(printButton);
         header.Controls.Add(toolbar);
         _tableGrid=MakeGrid(data);
-        _tableGrid.DataSource = _tableView;
         root.Controls.Add(header,0,0); root.Controls.Add(_tableGrid,0,1); _content.Controls.Add(root);
         _lastReport=data;
-        _lastReportTitle=title;
         SetStatus($"عدد السجلات المعروضة: {data.Rows.Count}");
     }
 
-    private static DataGridView MakeGrid(DataTable data)
+    private DataGridView MakeGrid(DataTable data)
     {
-        var grid=new DataGridView { Dock=DockStyle.Fill, DataSource=data, ReadOnly=true, AllowUserToAddRows=false, AllowUserToDeleteRows=false, MultiSelect=false, SelectionMode=DataGridViewSelectionMode.FullRowSelect, AutoSizeColumnsMode=DataGridViewAutoSizeColumnsMode.Fill, BackgroundColor=Color.White, BorderStyle=BorderStyle.FixedSingle, RowHeadersVisible=false, RightToLeft=RightToLeft.Yes, EnableHeadersVisualStyles=false };
-        grid.ColumnHeadersDefaultCellStyle.BackColor=Color.FromArgb(18,32,52);
+        var surface = ThemeColor(_palette.SurfaceR, _palette.SurfaceG, _palette.SurfaceB);
+        var grid=new DataGridView { Dock=DockStyle.Fill, DataSource=data, ReadOnly=true, AllowUserToAddRows=false, AllowUserToDeleteRows=false, MultiSelect=false, SelectionMode=DataGridViewSelectionMode.FullRowSelect, AutoSizeColumnsMode=DataGridViewAutoSizeColumnsMode.Fill, BackgroundColor=surface, BorderStyle=BorderStyle.FixedSingle, RowHeadersVisible=false, RightToLeft=RightToLeft.Yes, EnableHeadersVisualStyles=false };
+        grid.ColumnHeadersDefaultCellStyle.BackColor=_navy;
         grid.ColumnHeadersDefaultCellStyle.ForeColor=Color.White;
         grid.ColumnHeadersDefaultCellStyle.Font=new Font("Segoe UI",9.5F,FontStyle.Bold);
-        grid.DefaultCellStyle.SelectionBackColor=Color.FromArgb(205,220,239);
-        grid.DefaultCellStyle.SelectionForeColor=Color.FromArgb(18,32,52);
-        grid.AlternatingRowsDefaultCellStyle.BackColor=Color.FromArgb(246,248,251);
+        grid.DefaultCellStyle.SelectionBackColor=Color.FromArgb(_palette.AccentR, _palette.AccentG, _palette.AccentB);
+        grid.DefaultCellStyle.SelectionForeColor=Color.White;
+        grid.DefaultCellStyle.BackColor=surface;
+        grid.DefaultCellStyle.ForeColor=ThemeColor(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB);
+        grid.AlternatingRowsDefaultCellStyle.BackColor=_paper;
         grid.RowTemplate.Height=28;
         return grid;
     }
@@ -521,12 +673,17 @@ internal sealed partial class MainForm : Form
 
     private void BackupDatabase()
     {
-        using var save=new SaveFileDialog { Filter="قاعدة بيانات SQLite (*.db)|*.db", FileName="AlSaqr-backup-"+DateTime.Now.ToString("yyyyMMdd-HHmm")+".db", AddExtension=true, DefaultExt="db" };
+        using var save=new SaveFileDialog { Filter="قاعدة بيانات SQLite (*.db)|*.db", FileName="AlSaqr-backup-"+DateTime.Now.ToString("yyyyMMdd-HHmm")+".db", InitialDirectory=Directory.Exists(_appSettings.BackupDirectory) ? _appSettings.BackupDirectory : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), AddExtension=true, DefaultExt="db" };
         if(save.ShowDialog(this)!=DialogResult.OK) return;
-        Guard(() => { Data.Database.BackupTo(save.FileName); SetStatus("تم إنشاء نسخة احتياطية متسقة من قاعدة البيانات."); });
+        Guard(() => {
+            Data.Database.BackupTo(save.FileName);
+            _appSettings = _appSettings with { BackupDirectory = Path.GetDirectoryName(save.FileName) ?? _appSettings.BackupDirectory };
+            AppSettingsService.Save(_appSettings);
+            SetStatus("تم إنشاء نسخة احتياطية متسقة وحفظ مجلد النسخ الاحتياطي الافتراضي.");
+        });
     }
     private void Denied() => Notice("ليست لديك صلاحية تنفيذ هذه العملية.");
-    private void Notice(string message) => MessageBox.Show(this,message,"الصقر | نظام المحاسبة",MessageBoxButtons.OK,MessageBoxIcon.Information);
+    private void Notice(string message) => MessageBox.Show(this,message,"الصقر لأنظمة المحاسبة",MessageBoxButtons.OK,MessageBoxIcon.Information);
     private void SetStatus(string message) => _status.Text=message;
     private void Guard(Action action) { try { action(); } catch(Exception ex) { MessageBox.Show(this,ex.Message,"تعذر إكمال العملية",MessageBoxButtons.OK,MessageBoxIcon.Warning); } }
     private sealed record Choice(string Value,string Text);
@@ -534,6 +691,7 @@ internal sealed partial class MainForm : Form
 
 internal sealed class JournalEntryForm : Form
 {
+    private readonly LicenseService _licensing = new();
     private readonly AccountingService _service;
     private readonly List<AccountInfo> _accounts;
     private readonly List<PartyLookup> _parties;
@@ -570,6 +728,8 @@ internal sealed class JournalEntryForm : Form
     {
         try
         {
+            if (!_licensing.CheckAccess().HasAccess)
+                throw new InvalidOperationException("الترخيص غير صالح أو انتهت صلاحيته؛ لا يمكن ترحيل القيد.");
             _grid.EndEdit();
             var lines=new List<JournalLineInput>();
             foreach(DataGridViewRow row in _grid.Rows)
@@ -600,6 +760,7 @@ internal sealed class JournalEntryForm : Form
 
 internal sealed class InvoiceEntryForm : Form
 {
+    private readonly LicenseService _licensing = new();
     private readonly AccountingService _service;
     private readonly string _kind;
     private readonly ComboBox _party=new() { Width=330,DropDownStyle=ComboBoxStyle.DropDownList };
@@ -674,6 +835,8 @@ internal sealed class InvoiceEntryForm : Form
     {
         try
         {
+            if (!_licensing.CheckAccess().HasAccess)
+                throw new InvalidOperationException("الترخيص غير صالح أو انتهت صلاحيته؛ لا يمكن ترحيل الفاتورة.");
             if(_party.SelectedValue is null) throw new InvalidOperationException("أضف الطرف المناسب واختره أولًا.");
             _service.CreateInvoice(_kind,_date.Value.Date,Convert.ToInt32(_party.SelectedValue),_credit.Checked,_lines.Select(l=>l.Input).ToList());
             DialogResult=DialogResult.OK; Close();
