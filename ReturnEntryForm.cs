@@ -6,7 +6,6 @@ namespace AlSaqr.Accounting;
 
 internal sealed class ReturnEntryForm : Form
 {
-    private readonly AccountingService _accounting;
     private readonly ReturnService _returns;
     private readonly string _kind;
     private readonly ComboBox _party = new() { Width = 300, DropDownStyle = ComboBoxStyle.DropDownList };
@@ -25,7 +24,6 @@ internal sealed class ReturnEntryForm : Form
     public ReturnEntryForm(AccountingService accounting, ReturnService returns, string kind)
     {
         if (kind is not ("SALE_RETURN" or "PURCHASE_RETURN")) throw new ArgumentException("نوع المردود غير صالح.");
-        _accounting = accounting;
         _returns = returns;
         _kind = kind;
         Text = kind == "SALE_RETURN" ? "مردود بيع / إشعار دائن" : "مردود شراء";
@@ -224,8 +222,9 @@ internal sealed class ReturnEntryForm : Form
             if (_invoice.SelectedValue is null) throw new InvalidOperationException("حدد الفاتورة الأصلية أولًا.");
             if (_productLine.SelectedItem is not ProductReturnChoice selected)
                 throw new InvalidOperationException("لا يوجد سطر فاتورة متاح للإرجاع.");
-            var alreadyAdded = _lines.Where(x => x.SourceInvoiceLineId == selected.SourceInvoiceLineId).Sum(x => x.Quantity);
-            var remaining = selected.AvailableQuantity - alreadyAdded;
+            if (_lines.Any(x => x.SourceInvoiceLineId == selected.SourceInvoiceLineId))
+                throw new InvalidOperationException("أُضيف سطر الفاتورة بالفعل. احذفه من الجدول قبل إضافته مرة أخرى.");
+            var remaining = selected.AvailableQuantity;
             if (_quantity.Value > remaining + 0.0000001m)
                 throw new InvalidOperationException($"الكمية المتاحة في هذا السطر بعد احتساب الأسطر المضافة: {Math.Max(remaining, 0):0.###}.");
             var net = AccountingService.ToHalalas(_quantity.Value * selected.UnitPrice);
