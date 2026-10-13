@@ -68,7 +68,44 @@ try
     ExpectFailure(() => service.SetAccountActive("1100", false), "system control account cannot be disabled");
     ExpectFailure(() => auth.SetActive(user!.Id, false, user.UserName), "last administrator cannot be disabled");
 
-    Console.WriteLine("SMOKE TEST PASSED: real posting, inventory, customer/supplier subledgers, VAT, reports, security and audit.");
+    var returnService = new ReturnService();
+    var salesReturnable = returnService.ReturnableLines("SALE_RETURN", salesInvoice);
+    Check(salesReturnable.Rows.Count > 0, "sale invoice lines are available for a linked return");
+    var saleLine = salesReturnable.Rows[0];
+    var saleLineId = Convert.ToInt64(saleLine["SourceInvoiceLineId"]);
+    var saleReturnId = returnService.CreateReturn("SALE_RETURN", DateTime.Today, salesInvoice, true,
+        new[] { new ReturnLineInput(saleLineId, product.Id, 1m) });
+    Check(saleReturnId > 0, "sales return posts against the original invoice");
+    Check(service.ActiveProducts().Single(p => p.Id == product.Id).Quantity == 14m, "sales return restores returned quantity");
+    Check(returnService.Register("SALE_RETURN", DateTime.Today, DateTime.Today).Rows.Count == 1, "sales return appears in the returns register");
+    ExpectFailure(() => returnService.CreateReturn("SALE_RETURN", DateTime.Today, salesInvoice, true,
+        new[] { new ReturnLineInput(saleLineId, product.Id, 2m) }),
+        "return quantities cannot exceed the original invoice line less earlier returns");
+
+    var purchaseReturnable = returnService.ReturnableLines("PURCHASE_RETURN", purchaseInvoice);
+    Check(purchaseReturnable.Rows.Count > 0, "purchase invoice lines are available for a linked return");
+    var purchaseLine = purchaseReturnable.Rows[0];
+    var purchaseLineId = Convert.ToInt64(purchaseLine["SourceInvoiceLineId"]);
+    var purchaseReturnId = returnService.CreateReturn("PURCHASE_RETURN", DateTime.Today, purchaseInvoice, true,
+        new[] { new ReturnLineInput(purchaseLineId, product.Id, 1m) });
+    Check(purchaseReturnId > 0, "purchase return posts against the original supplier invoice");
+    Check(service.ActiveProducts().Single(p => p.Id == product.Id).Quantity == 13m, "purchase return removes the returned stock");
+    Check(returnService.Register("PURCHASE_RETURN", DateTime.Today, DateTime.Today).Rows.Count == 1, "purchase return appears in the returns register");
+    ExpectFailure(() => returnService.CreateReturn("PURCHASE_RETURN", DateTime.Today, purchaseInvoice, true,
+        new[] { new ReturnLineInput(purchaseLineId, product.Id, 100m) }),
+        "purchase return cannot exceed the original invoice quantity");
+
+    var finalVat = service.VatSummary(DateTime.Today, DateTime.Today);
+    Check(Money(finalVat.Rows[0]["ضريبة المخرجات"]) == 3m, "sales return reduces output VAT");
+    Check(Money(finalVat.Rows[0]["ضريبة المدخلات"]) == 4.8m, "purchase return reduces input VAT");
+    Check(Money(finalVat.Rows[0]["صافي الضريبة المستحقة"]) == -1.8m, "VAT report nets both kinds of returns");
+    Check(service.StockMovementRegister(DateTime.Today, DateTime.Today).Rows.Count == 5, "both returns create auditable stock movements");
+    Check(service.StockReconciliation().Rows.Count == 0, "stock ledger reconciles after both returns");
+    var finalTrialBalance = service.TrialBalance(DateTime.Today, DateTime.Today);
+    Check(finalTrialBalance.Rows.Cast<DataRow>().Sum(r => Money(r["إجمالي مدين"])) ==
+          finalTrialBalance.Rows.Cast<DataRow>().Sum(r => Money(r["إجمالي دائن"])),
+          "trial balance remains balanced after returns");
+    Console.WriteLine("SMOKE TEST PASSED: real posting, inventory, customer/supplier subledgers, VAT, reports, returns, security and audit.");
     Environment.ExitCode = 0;
 }
 catch (Exception ex)
