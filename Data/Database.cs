@@ -5,6 +5,7 @@ namespace AlSaqr.Accounting.Data;
 internal static class Database
 {
     private static readonly string DataDirectory =
+        Environment.GetEnvironmentVariable("ALSAQR_ACCOUNTING_DATA_DIR") ??
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AlSaqrAccounting");
     public static string DatabasePath => Path.Combine(DataDirectory, "accounting.db");
 
@@ -23,6 +24,17 @@ internal static class Database
         cmd.CommandText = "PRAGMA foreign_keys=ON; PRAGMA journal_mode=WAL; PRAGMA busy_timeout=30000;";
         cmd.ExecuteNonQuery();
         return connection;
+    }
+
+    public static void BackupTo(string destinationPath)
+    {
+        if (string.IsNullOrWhiteSpace(destinationPath)) throw new ArgumentException("مسار النسخة الاحتياطية مطلوب.");
+        var fullPath = Path.GetFullPath(destinationPath);
+        Directory.CreateDirectory(Path.GetDirectoryName(fullPath)!);
+        using var source = Open();
+        using var destination = new SqliteConnection(new SqliteConnectionStringBuilder { DataSource = fullPath, ForeignKeys = true }.ToString());
+        destination.Open();
+        source.BackupDatabase(destination);
     }
 
     public static void Initialize()
@@ -51,6 +63,7 @@ CREATE TABLE IF NOT EXISTS Journals(
 CREATE TABLE IF NOT EXISTS JournalLines(
   Id INTEGER PRIMARY KEY AUTOINCREMENT, JournalId INTEGER NOT NULL REFERENCES Journals(Id) ON DELETE RESTRICT,
   AccountCode TEXT NOT NULL REFERENCES Accounts(Code) ON DELETE RESTRICT,
+  PartyId INTEGER NULL REFERENCES Parties(Id) ON DELETE RESTRICT,
   Memo TEXT NOT NULL DEFAULT '', DebitHalalas INTEGER NOT NULL DEFAULT 0 CHECK(DebitHalalas >= 0),
   CreditHalalas INTEGER NOT NULL DEFAULT 0 CHECK(CreditHalalas >= 0),
   CHECK((DebitHalalas > 0 AND CreditHalalas = 0) OR (CreditHalalas > 0 AND DebitHalalas = 0))
@@ -72,12 +85,91 @@ CREATE TABLE IF NOT EXISTS InvoiceLines(
   VatRate REAL NOT NULL, NetHalalas INTEGER NOT NULL, VatHalalas INTEGER NOT NULL, TotalHalalas INTEGER NOT NULL
 );
 CREATE INDEX IF NOT EXISTS IX_Invoices_DateKind ON Invoices(InvoiceDate,Kind);
+CREATE TABLE IF NOT EXISTS Returns(
+  Id INTEGER PRIMARY KEY AUTOINCREMENT,
+  Kind TEXT NOT NULL CHECK(Kind IN ('SALE_RETURN','PURCHASE_RETURN')),
+  Number TEXT NOT NULL,
+  ReturnDate TEXT NOT NULL,
+  PartyId INTEGER NOT NULL REFERENCES Parties(Id) ON DELETE RESTRICT,
+  SourceInvoiceId INTEGER NULL REFERENCES Invoices(Id) ON DELETE RESTRICT,
+  IsCredit INTEGER NOT NULL CHECK(IsCredit IN (0,1)),
+  Status TEXT NOT NULL CHECK(Status='POSTED'),
+  SubtotalHalalas INTEGER NOT NULL CHECK(SubtotalHalalas >= 0),
+  VatHalalas INTEGER NOT NULL CHECK(VatHalalas >= 0),
+  TotalHalalas INTEGER NOT NULL CHECK(TotalHalalas >= 0),
+  JournalId INTEGER NOT NULL REFERENCES Journals(Id) ON DELETE RESTRICT,
+  CreatedAt TEXT NOT NULL,
+  UNIQUE(Kind, Number)
+);
+CREATE TABLE IF NOT EXISTS ReturnLines(
+  Id INTEGER PRIMARY KEY AUTOINCREMENT,
+  ReturnId INTEGER NOT NULL REFERENCES Returns(Id) ON DELETE RESTRICT,
+  SourceInvoiceLineId INTEGER NULL REFERENCES InvoiceLines(Id) ON DELETE RESTRICT,
+  ProductId INTEGER NOT NULL REFERENCES Products(Id) ON DELETE RESTRICT,
+  Quantity REAL NOT NULL CHECK(Quantity > 0),
+  UnitPriceHalalas INTEGER NOT NULL CHECK(UnitPriceHalalas >= 0),
+  CostAtPostingHalalas INTEGER NOT NULL CHECK(CostAtPostingHalalas >= 0),
+  VatRate REAL NOT NULL CHECK(VatRate >= 0 AND VatRate <= 100),
+  NetHalalas INTEGER NOT NULL CHECK(NetHalalas >= 0),
+  VatHalalas INTEGER NOT NULL CHECK(VatHalalas >= 0),
+  TotalHalalas INTEGER NOT NULL CHECK(TotalHalalas >= 0)
+);
+CREATE INDEX IF NOT EXISTS IX_Returns_DateKind ON Returns(ReturnDate,Kind);
+CREATE INDEX IF NOT EXISTS IX_ReturnLines_Product ON ReturnLines(ProductId);
+CREATE TABLE IF NOT EXISTS StockMovements(
+  Id INTEGER PRIMARY KEY AUTOINCREMENT, MovementDate TEXT NOT NULL,
+  ProductId INTEGER NOT NULL REFERENCES Products(Id), Source TEXT NOT NULL, SourceId TEXT NOT NULL,
+  QuantityIn REAL NOT NULL DEFAULT 0 CHECK(QuantityIn >= 0), QuantityOut REAL NOT NULL DEFAULT 0 CHECK(QuantityOut >= 0),
+  UnitCostHalalas INTEGER NOT NULL DEFAULT 0 CHECK(UnitCostHalalas >= 0), Memo TEXT NOT NULL DEFAULT '', CreatedAt TEXT NOT NULL,
+  CHECK((QuantityIn > 0 AND QuantityOut = 0) OR (QuantityOut > 0 AND QuantityIn = 0))
+);
+CREATE INDEX IF NOT EXISTS IX_StockMovements_DateProduct ON StockMovements(MovementDate,ProductId);
+CREATE TABLE IF NOT EXISTS Settlements(
+  Id INTEGER PRIMARY KEY AUTOINCREMENT, Kind TEXT NOT NULL CHECK(Kind IN ('RECEIPT','PAYMENT')),
+  Number TEXT NOT NULL UNIQUE, SettlementDate TEXT NOT NULL,
+  PartyId INTEGER NOT NULL REFERENCES Parties(Id), AmountHalalas INTEGER NOT NULL CHECK(AmountHalalas > 0),
+  CashAccountCode TEXT NOT NULL REFERENCES Accounts(Code), JournalId INTEGER NOT NULL REFERENCES Journals(Id),
+  Memo TEXT NOT NULL, CreatedAt TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS IX_Settlements_DateKind ON Settlements(SettlementDate,Kind);
+CREATE TABLE IF NOT EXISTS Users(
+  Id INTEGER PRIMARY KEY AUTOINCREMENT, UserName TEXT NOT NULL UNIQUE COLLATE NOCASE,
+  PasswordSalt TEXT NOT NULL, PasswordHash TEXT NOT NULL,
+  Role TEXT NOT NULL CHECK(Role IN ('Admin','Accountant','ReadOnly')),
+  IsActive INTEGER NOT NULL DEFAULT 1 CHECK(IsActive IN (0,1)), CreatedAt TEXT NOT NULL
+);
 CREATE TABLE IF NOT EXISTS AuditLog(
   Id INTEGER PRIMARY KEY AUTOINCREMENT, EventAt TEXT NOT NULL, Actor TEXT NOT NULL,
   Action TEXT NOT NULL, Entity TEXT NOT NULL, EntityId TEXT NOT NULL, Details TEXT NOT NULL
 );
 ";
         cmd.ExecuteNonQuery();
+
+        // Safe in-place schema migration for databases created by earlier builds.
+        var hasPartyId = false;
+        using (var columns = db.CreateCommand())
+        {
+            columns.CommandText = "PRAGMA table_info(JournalLines)";
+            using var reader = columns.ExecuteReader();
+            while (reader.Read())
+                if (string.Equals(reader.GetString(1), "PartyId", StringComparison.OrdinalIgnoreCase))
+                    hasPartyId = true;
+        }
+        if (!hasPartyId)
+        {
+            using var migration = db.CreateCommand();
+            migration.CommandText = "ALTER TABLE JournalLines ADD COLUMN PartyId INTEGER NULL REFERENCES Parties(Id) ON DELETE RESTRICT";
+            migration.ExecuteNonQuery();
+        }
+        using (var index = db.CreateCommand())
+        {
+            index.CommandText = "CREATE INDEX IF NOT EXISTS IX_JournalLines_PartyAccount ON JournalLines(PartyId,AccountCode)";
+            index.ExecuteNonQuery();
+        }
+
+        // Forward-compatible schema migrations for existing local databases.
+        EnsureColumn(db, "Returns", "SourceInvoiceId", "INTEGER NULL REFERENCES Invoices(Id) ON DELETE RESTRICT");
+        EnsureColumn(db, "ReturnLines", "SourceInvoiceLineId", "INTEGER NULL REFERENCES InvoiceLines(Id) ON DELETE RESTRICT");
 
         using var transaction = db.BeginTransaction();
         var accounts = new (string Code, string Name, string Type)[]
@@ -86,7 +178,8 @@ CREATE TABLE IF NOT EXISTS AuditLog(
             ("1200","المخزون","Asset"), ("1300","ضريبة القيمة المضافة - مدخلات","Asset"),
             ("2100","الموردون","Liability"), ("2200","ضريبة القيمة المضافة - مخرجات","Liability"),
             ("3000","رأس المال","Equity"), ("3100","الأرباح المبقاة","Equity"),
-            ("4000","إيرادات المبيعات","Revenue"), ("5000","تكلفة البضاعة المباعة","Expense"),
+            ("4000","إيرادات المبيعات","Revenue"), ("4010","مردودات المبيعات","Revenue"),
+            ("5000","تكلفة البضاعة المباعة","Expense"), ("5050","فروقات تكلفة المردودات","Expense"),
             ("6000","المصروفات التشغيلية","Expense")
         };
         foreach (var account in accounts)
@@ -102,4 +195,20 @@ CREATE TABLE IF NOT EXISTS AuditLog(
         }
         transaction.Commit();
     }
+    private static void EnsureColumn(SqliteConnection db, string tableName, string columnName, string definition)
+    {
+        // The table and column identifiers are compile-time constants at each call site.
+        using var inspect = db.CreateCommand();
+        inspect.CommandText = "PRAGMA table_info(" + tableName + ")";
+        using var reader = inspect.ExecuteReader();
+        while (reader.Read())
+            if (string.Equals(reader.GetString(1), columnName, StringComparison.OrdinalIgnoreCase))
+                return;
+        reader.Close();
+        using var alter = db.CreateCommand();
+        alter.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " " + definition;
+        alter.ExecuteNonQuery();
+    }
+
+
 }

@@ -1,0 +1,49 @@
+name: Build AlSaqr Accounting Desktop
+
+on:
+  push:
+    branches:
+      - main
+      - feature/real-accounting-core-20261013
+      - desktop-accounting-core-20261013
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore Windows x64 dependencies
+        run: |
+          dotnet restore AlSaqr.Accounting.csproj -r win-x64
+          dotnet restore tests/AlSaqr.Accounting.Smoke/AlSaqr.Accounting.Smoke.csproj -r win-x64
+
+      - name: Compile Release
+        run: dotnet build AlSaqr.Accounting.csproj -c Release -r win-x64 --no-restore
+
+      - name: Run accounting integration smoke tests
+        run: dotnet run --project tests/AlSaqr.Accounting.Smoke/AlSaqr.Accounting.Smoke.csproj -c Release -r win-x64 --no-restore
+
+      - name: Publish Windows x64 application
+        run: dotnet publish AlSaqr.Accounting.csproj -c Release -r win-x64 --no-restore -p:SelfContained=true -o artifacts/publish
+
+      - name: Upload publish artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AlSaqr-Accounting-win-x64
+          path: artifacts/publish/
+          if-no-files-found: error
+          retention-days: 14
