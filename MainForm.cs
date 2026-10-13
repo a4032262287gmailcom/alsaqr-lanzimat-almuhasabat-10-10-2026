@@ -29,7 +29,7 @@ internal sealed partial class MainForm : Form
 
     private bool LicenseAllowsUse => _licenseService.CheckAccess().HasAccess;
     private bool IsAdmin => _user.Role == "Admin" && LicenseAllowsUse;
-    private bool CanPost => _user.Role is "Admin" or "Accountant" && LicenseAllowsUse;
+    private bool CanPost => (_user.Role is "Admin" or "Accountant") && LicenseAllowsUse;
 
     public MainForm(AuthUser user)
     {
