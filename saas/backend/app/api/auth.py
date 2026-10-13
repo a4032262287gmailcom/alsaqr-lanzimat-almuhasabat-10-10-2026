@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.core.security import create_access_token, hash_password, verify_password
+from app.core.permissions import seed_permission_catalog
 from app.database import get_db, set_tenant_context
 from app.dependencies import get_current_user
 from app.models import Membership, NumberSequence, Tenant, User, Warehouse
@@ -96,11 +97,12 @@ async def register(payload: RegisterRequest, session: AsyncSession = Depends(get
     except IntegrityError as exc:
         raise HTTPException(status_code=409, detail="Email or company slug is already in use") from exc
 
-    membership = Membership(tenant_id=tenant.id, user_id=user.id, role="Owner", is_active=True)
+    membership = Membership(tenant_id=tenant.id, user_id=user.id, role="Owner", branch_scope_all=True, is_active=True)
     session.add(membership)
     await session.flush()
     await set_tenant_context(session, str(tenant.id))
 
+    await seed_permission_catalog(session)
     await seed_chart_of_accounts(session, tenant.id)
     session.add(Warehouse(tenant_id=tenant.id, code="MAIN", name="المستودع الرئيسي", is_default=True, is_active=True))
     for key in ("JOURNAL", "SALE", "PURCHASE"):
