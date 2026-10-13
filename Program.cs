@@ -21,24 +21,6 @@ internal static class Program
             }
 
             Database.Initialize();
- feature/erp-pos-cashier-20261013
-            var licensing = new LicenseService();
-            var licenseStatus = licensing.CheckAccess();
-            if (!licenseStatus.HasAccess)
-            {
-                using var licenseForm = new LicenseForm(licensing, startupGate: true);
-                if (licenseForm.ShowDialog() != DialogResult.OK) return;
-                licenseStatus = licensing.CheckAccess();
-                if (!licenseStatus.HasAccess)
-                {
-                    MessageBox.Show(licenseStatus.Message, "الصقر لأنظمة المحاسبة | الترخيص",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-            }
-
-=======
- main
             var auth = new AuthService();
             using var login = new LoginForm(auth);
             if (login.ShowDialog() != DialogResult.OK || login.User is null) return;
@@ -47,11 +29,7 @@ internal static class Program
         catch (Exception ex)
         {
             MessageBox.Show("تعذر بدء نظام المحاسبة. لم يتم تجاوز الخطأ أو إنشاء معاملات تلقائيًا.\r\n\r\n" + ex.Message,
-feature/erp-pos-cashier-20261013
-                "الصقر لأنظمة المحاسبة | خطأ بدء التشغيل", MessageBoxButtons.OK, MessageBoxIcon.Error);
-=======
                 "خطأ بدء التشغيل", MessageBoxButtons.OK, MessageBoxIcon.Error);
- main
         }
     }
 }
