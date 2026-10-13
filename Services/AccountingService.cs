@@ -661,6 +661,27 @@ WHERE j.Status='POSTED' AND j.EntryDate >= $from AND j.EntryDate <= $to";
             var active = account.ExecuteScalar();
             if (active is null || active == DBNull.Value || Convert.ToInt64(active) != 1)
                 throw new InvalidOperationException($"الحساب {line.AccountCode} غير موجود أو موقوف.");
+            if (line.AccountCode is "1100" or "2100")
+            {
+                if (!line.PartyId.HasValue)
+                    throw new InvalidOperationException($"يجب تحديد العميل/المورد لسطر حساب الذمم {line.AccountCode}.");
+                using var party = db.CreateCommand();
+                party.Transaction = tx;
+                party.CommandText = "SELECT Kind,IsActive FROM Parties WHERE Id=$id";
+                party.Parameters.AddWithValue("$id", line.PartyId.Value);
+                using var partyReader = party.ExecuteReader();
+                if (!partyReader.Read() || partyReader.GetInt64(1) != 1)
+                    throw new InvalidOperationException("الطرف المرتبط بالذمم غير موجود أو موقوف.");
+                var partyKind = partyReader.GetString(0);
+                if ((line.AccountCode == "1100" && partyKind == "Supplier") ||
+                    (line.AccountCode == "2100" && partyKind == "Customer"))
+                    throw new InvalidOperationException("نوع الطرف لا يتوافق مع حساب الذمم المحدد.");
+            }
+            else if (line.PartyId.HasValue)
+            {
+                throw new InvalidOperationException("يمكن ربط الطرف فقط بأسطر حساب العملاء أو الموردين 1100 و2100.");
+            }
+
             using var detail = db.CreateCommand();
             detail.Transaction = tx;
             detail.CommandText = "INSERT INTO JournalLines(JournalId,AccountCode,PartyId,Memo,DebitHalalas,CreditHalalas) VALUES($id,$account,$party,$memo,$debit,$credit)";
