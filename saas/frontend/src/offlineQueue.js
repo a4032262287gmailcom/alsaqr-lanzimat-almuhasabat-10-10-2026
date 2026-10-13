@@ -31,9 +31,10 @@ async function transact(storeName, mode, action) {
   }
 }
 
-export async function queueSale(payload) {
+export async function queueSale(payload, tenantId) {
   const record = {
     id: payload.client_reference,
+    tenant_id: tenantId,
     kind: "SALE",
     payload,
     createdAt: new Date().toISOString(),
@@ -42,12 +43,12 @@ export async function queueSale(payload) {
   return record;
 }
 
-export async function getQueuedSales() {
+export async function getQueuedSales(tenantId) {
   const db = await openDatabase();
   try {
     return await new Promise((resolve, reject) => {
       const request = db.transaction("outbox", "readonly").objectStore("outbox").getAll();
-      request.onsuccess = () => resolve((request.result || []).sort((a, b) => a.createdAt.localeCompare(b.createdAt)));
+      request.onsuccess = () => resolve((request.result || []).filter(item => !tenantId || item.tenant_id === tenantId).sort((a, b) => a.createdAt.localeCompare(b.createdAt)));
       request.onerror = () => reject(request.error || new Error("تعذر قراءة الفواتير المعلقة"));
     });
   } finally {
