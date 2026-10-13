@@ -30,7 +30,7 @@ internal sealed class ReportsForm : Form
         var bar = new FlowLayoutPanel { Dock = DockStyle.Top, Height = 55, Padding = new Padding(10), FlowDirection = FlowDirection.RightToLeft, WrapContents = false };
         _report.DropDownStyle = ComboBoxStyle.DropDownList;
         _report.Width = 230;
-        _report.Items.AddRange(new object[] { "ميزان المراجعة", "قائمة الدخل", "المركز المالي", "تقرير ضريبة القيمة المضافة", "أرصدة العملاء والموردين", "حركة المخزون" });
+        _report.Items.AddRange(new object[] { "ميزان المراجعة", "قائمة الدخل", "المركز المالي", "تقرير ضريبة القيمة المضافة", "فواتير العملاء والموردين", "حركة المخزون", "كشف حساب الأطراف", "سندات القبض والصرف", "سجل المبيعات", "سجل المشتريات", "ربحية الأصناف", "كشف الأستاذ العام" });
         _report.SelectedIndex = 0;
         _from.Value = new DateTime(DateTime.Today.Year, 1, 1);
         _to.Value = DateTime.Today;
@@ -107,6 +107,39 @@ SUM(CASE WHEN i.IsCredit=1 THEN i.TotalHalalas ELSE 0 END)/100.0 AS 'على ال
 FROM Parties p JOIN Invoices i ON i.PartyId=p.Id
 WHERE i.Status='POSTED' AND i.InvoiceDate BETWEEN $from AND $to
 GROUP BY p.Id,p.Name,i.Kind ORDER BY p.Name",
+            6 => @"SELECT p.Name AS 'الطرف',x.Date AS 'التاريخ',x.Kind AS 'نوع الحركة',x.Number AS 'رقم المستند',
+x.Debit/100.0 AS 'مدين',x.Credit/100.0 AS 'دائن',
+SUM(x.Debit-x.Credit) OVER(PARTITION BY x.PartyId ORDER BY x.Date,x.Sort,x.Id ROWS UNBOUNDED PRECEDING)/100.0 AS 'الرصيد الجاري'
+FROM Parties p JOIN (
+ SELECT i.PartyId,i.InvoiceDate AS Date,CASE i.Kind WHEN 'SALE' THEN 'فاتورة مبيعات' ELSE 'فاتورة مشتريات' END AS Kind,
+ i.Number,i.TotalHalalas AS Amount,CASE WHEN i.Kind='SALE' THEN i.TotalHalalas ELSE 0 END AS Debit,
+ CASE WHEN i.Kind='PURCHASE' THEN i.TotalHalalas ELSE 0 END AS Credit,1 AS Sort,i.Id
+ FROM Invoices i WHERE i.Status='POSTED' AND i.InvoiceDate BETWEEN $from AND $to
+ UNION ALL
+ SELECT pp.PartyId,pp.PaymentDate,CASE pp.Kind WHEN 'RECEIPT' THEN 'سند قبض' ELSE 'سند صرف' END,
+ pp.Number,pp.AmountHalalas,CASE WHEN pp.Kind='PAYMENT' THEN pp.AmountHalalas ELSE 0 END,
+ CASE WHEN pp.Kind='RECEIPT' THEN pp.AmountHalalas ELSE 0 END,2,pp.Id
+ FROM PartyPayments pp WHERE pp.PaymentDate BETWEEN $from AND $to
+) x ON x.PartyId=p.Id ORDER BY p.Name,x.Date,x.Sort,x.Id",
+            7 => @"SELECT pp.PaymentDate AS 'التاريخ',pp.Number AS 'رقم السند',CASE pp.Kind WHEN 'RECEIPT' THEN 'قبض' ELSE 'صرف' END AS 'النوع',
+p.Name AS 'الطرف',pp.AmountHalalas/100.0 AS 'المبلغ',pp.Method AS 'طريقة الدفع',pp.Memo AS 'البيان'
+FROM PartyPayments pp JOIN Parties p ON p.Id=pp.PartyId WHERE pp.PaymentDate BETWEEN $from AND $to ORDER BY pp.PaymentDate,pp.Id",
+            8 => @"SELECT i.InvoiceDate AS 'التاريخ',i.Number AS 'رقم فاتورة البيع',p.Name AS 'العميل',
+i.SubtotalHalalas/100.0 AS 'قبل الضريبة',i.VatHalalas/100.0 AS 'الضريبة',i.TotalHalalas/100.0 AS 'الإجمالي'
+FROM Invoices i JOIN Parties p ON p.Id=i.PartyId WHERE i.Kind='SALE' AND i.InvoiceDate BETWEEN $from AND $to ORDER BY i.InvoiceDate,i.Number",
+            9 => @"SELECT i.InvoiceDate AS 'التاريخ',i.Number AS 'رقم فاتورة الشراء',p.Name AS 'المورد',
+i.SubtotalHalalas/100.0 AS 'قبل الضريبة',i.VatHalalas/100.0 AS 'الضريبة',i.TotalHalalas/100.0 AS 'الإجمالي'
+FROM Invoices i JOIN Parties p ON p.Id=i.PartyId WHERE i.Kind='PURCHASE' AND i.InvoiceDate BETWEEN $from AND $to ORDER BY i.InvoiceDate,i.Number",
+            10 => @"SELECT pr.Code AS 'رمز الصنف',pr.Name AS 'الصنف',SUM(il.Quantity) AS 'الكمية المباعة',
+SUM(il.NetHalalas)/100.0 AS 'صافي المبيعات',SUM(il.CostAtPostingHalalas*il.Quantity)/100.0 AS 'تكلفة المبيعات',
+SUM(il.NetHalalas-il.CostAtPostingHalalas*il.Quantity)/100.0 AS 'مجمل الربح'
+FROM InvoiceLines il JOIN Invoices i ON i.Id=il.InvoiceId JOIN Products pr ON pr.Id=il.ProductId
+WHERE i.Kind='SALE' AND i.InvoiceDate BETWEEN $from AND $to GROUP BY pr.Code,pr.Name ORDER BY pr.Name",
+            11 => @"SELECT a.Code AS 'رمز الحساب',a.Name AS 'الحساب',j.EntryDate AS 'التاريخ',j.Number AS 'رقم القيد',
+l.Memo AS 'البيان',l.DebitHalalas/100.0 AS 'مدين',l.CreditHalalas/100.0 AS 'دائن',
+SUM(l.DebitHalalas-l.CreditHalalas) OVER(PARTITION BY a.Code ORDER BY j.EntryDate,j.Id,l.Id ROWS UNBOUNDED PRECEDING)/100.0 AS 'الرصيد الجاري'
+FROM JournalLines l JOIN Journals j ON j.Id=l.JournalId JOIN Accounts a ON a.Code=l.AccountCode
+WHERE j.Status='POSTED' AND j.EntryDate BETWEEN $from AND $to ORDER BY a.Code,j.EntryDate,j.Id,l.Id",
             _ => @"SELECT p.Code AS 'رمز الصنف',p.Name AS 'الصنف',p.Unit AS 'الوحدة',
 COALESCE(SUM(CASE WHEN mv.Kind='PURCHASE' THEN mv.Quantity ELSE 0 END),0) AS 'كمية واردة',
 COALESCE(SUM(CASE WHEN mv.Kind='SALE' THEN mv.Quantity ELSE 0 END),0) AS 'كمية منصرفة',
