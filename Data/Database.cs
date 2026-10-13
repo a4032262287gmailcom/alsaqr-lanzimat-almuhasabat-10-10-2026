@@ -181,6 +181,12 @@ CREATE TABLE IF NOT EXISTS AuditLog(
 
         // Forward-compatible schema migrations for existing local databases.
         EnsureColumn(db, "Returns", "SourceInvoiceId", "INTEGER NULL REFERENCES Invoices(Id) ON DELETE RESTRICT");
+        EnsureColumn(db, "Products", "Barcode", "TEXT NULL");
+        using (var barcodeIndex = db.CreateCommand())
+        {
+            barcodeIndex.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS IX_Products_Barcode ON Products(Barcode) WHERE Barcode IS NOT NULL AND Barcode <> ''";
+            barcodeIndex.ExecuteNonQuery();
+        }
         EnsureColumn(db, "ReturnLines", "SourceInvoiceLineId", "INTEGER NULL REFERENCES InvoiceLines(Id) ON DELETE RESTRICT");
 
         using var transaction = db.BeginTransaction();
