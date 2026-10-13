@@ -62,6 +62,7 @@ CREATE TABLE IF NOT EXISTS Journals(
 CREATE TABLE IF NOT EXISTS JournalLines(
   Id INTEGER PRIMARY KEY AUTOINCREMENT, JournalId INTEGER NOT NULL REFERENCES Journals(Id) ON DELETE RESTRICT,
   AccountCode TEXT NOT NULL REFERENCES Accounts(Code) ON DELETE RESTRICT,
+  PartyId INTEGER NULL REFERENCES Parties(Id) ON DELETE RESTRICT,
   Memo TEXT NOT NULL DEFAULT '', DebitHalalas INTEGER NOT NULL DEFAULT 0 CHECK(DebitHalalas >= 0),
   CreditHalalas INTEGER NOT NULL DEFAULT 0 CHECK(CreditHalalas >= 0),
   CHECK((DebitHalalas > 0 AND CreditHalalas = 0) OR (CreditHalalas > 0 AND DebitHalalas = 0))
@@ -111,6 +112,28 @@ CREATE TABLE IF NOT EXISTS AuditLog(
 );
 ";
         cmd.ExecuteNonQuery();
+
+        // Safe in-place schema migration for databases created by earlier builds.
+        var hasPartyId = false;
+        using (var columns = db.CreateCommand())
+        {
+            columns.CommandText = "PRAGMA table_info(JournalLines)";
+            using var reader = columns.ExecuteReader();
+            while (reader.Read())
+                if (string.Equals(reader.GetString(1), "PartyId", StringComparison.OrdinalIgnoreCase))
+                    hasPartyId = true;
+        }
+        if (!hasPartyId)
+        {
+            using var migration = db.CreateCommand();
+            migration.CommandText = "ALTER TABLE JournalLines ADD COLUMN PartyId INTEGER NULL REFERENCES Parties(Id) ON DELETE RESTRICT";
+            migration.ExecuteNonQuery();
+        }
+        using (var index = db.CreateCommand())
+        {
+            index.CommandText = "CREATE INDEX IF NOT EXISTS IX_JournalLines_PartyAccount ON JournalLines(PartyId,AccountCode)";
+            index.ExecuteNonQuery();
+        }
 
         using var transaction = db.BeginTransaction();
         var accounts = new (string Code, string Name, string Type)[]
