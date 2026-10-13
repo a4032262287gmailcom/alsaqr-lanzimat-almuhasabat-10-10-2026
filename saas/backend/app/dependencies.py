@@ -67,6 +67,6 @@ def require_roles(*allowed_roles: str) -> Callable:
     return dependency
 
 
-admin_or_accountant = require_roles("Admin", "Accountant")
-admin_only = require_roles("Admin")
-can_sell = require_roles("Admin", "Accountant", "Cashier")
+admin_or_accountant = require_roles("Owner", "Admin", "CFO", "Accountant")
+admin_only = require_roles("Owner", "Admin")
+can_sell = require_roles("Owner", "Admin", "CFO", "Accountant", "Cashier", "Sales", "FieldAgent")
