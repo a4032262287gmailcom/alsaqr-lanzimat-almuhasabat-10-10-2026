@@ -54,7 +54,7 @@ internal static class AppSettingsService
         try
         {
             var stored = File.ReadAllBytes(PathName);
-            var first = Array.FindIndex(stored, b => b is not (byte)' ' and not (byte)'\t' and not (byte)'\r' and not (byte)'\n');
+            var first = Array.FindIndex(stored, b => b != (byte)' ' && b != (byte)'\t' && b != (byte)'\r' && b != (byte)'\n');
             var isLegacyJson = first >= 0 && stored[first] == (byte)'{';
             var jsonBytes = isLegacyJson
                 ? stored
