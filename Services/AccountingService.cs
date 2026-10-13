@@ -294,7 +294,7 @@ VALUES($date,$product,'OPENING',$product,$qty,$zero,$cost,'رصيد افتتاح
     }
 
     public long CreateInvoice(string kind, DateTime invoiceDate, int partyId, bool onCredit, IReadOnlyList<InvoiceLineInput> lines,
-        decimal discountPercent = 0m, string paymentMethod = "CASH", decimal? amountTendered = null, string cashAccountCode = "1010")
+        decimal discountPercent = 0m, string paymentMethod = "CASH", decimal? amountTendered = null, string cashAccountCode = "1010", int? cashierSessionId = null)
     {
         if (kind != "SALE" && kind != "PURCHASE") throw new ArgumentException("نوع الفاتورة غير صالح.");
         if (partyId <= 0) throw new ArgumentException("اختر العميل أو المورد.");
@@ -309,6 +309,17 @@ VALUES($date,$product,'OPENING',$product,$qty,$zero,$cost,'رصيد افتتاح
         if (kind != "SALE" && discountPercent != 0m) throw new ArgumentException("خصم شاشة الكاشير متاح للمبيعات فقط.");
         using var db = Database.Open();
         using var tx = db.BeginTransaction();
+
+        if (cashierSessionId.HasValue)
+        {
+            if (kind != "SALE") throw new ArgumentException("وردية الكاشير لا تربط بفواتير الشراء.");
+            using var session = db.CreateCommand();
+            session.Transaction = tx;
+            session.CommandText = "SELECT COUNT(*) FROM CashierSessions WHERE Id=$id AND Status='OPEN'";
+            session.Parameters.AddWithValue("$id", cashierSessionId.Value);
+            if (Convert.ToInt32(session.ExecuteScalar(), CultureInfo.InvariantCulture) != 1)
+                throw new InvalidOperationException("وردية الكاشير مغلقة أو غير موجودة؛ لم يتم ترحيل الفاتورة.");
+        }
 
         using (var partyCmd = db.CreateCommand())
         {
@@ -395,8 +406,8 @@ VALUES($date,$product,'OPENING',$product,$qty,$zero,$cost,'رصيد افتتاح
         using (var invoiceCmd = db.CreateCommand())
         {
             invoiceCmd.Transaction = tx;
-            invoiceCmd.CommandText = @"INSERT INTO Invoices(Kind,Number,InvoiceDate,PartyId,IsCredit,Status,SubtotalHalalas,VatHalalas,TotalHalalas,DiscountHalalas,DiscountPercent,PaymentMethod,AmountTenderedHalalas,ChangeHalalas,JournalId,CreatedAt)
-VALUES($kind,$number,$date,$party,$credit,'POSTED',$subtotal,$vat,$total,$discount,$discountPercent,$paymentMethod,$tendered,$change,$journal,$at)";
+            invoiceCmd.CommandText = @"INSERT INTO Invoices(Kind,Number,InvoiceDate,PartyId,IsCredit,Status,SubtotalHalalas,VatHalalas,TotalHalalas,DiscountHalalas,DiscountPercent,PaymentMethod,AmountTenderedHalalas,ChangeHalalas,CashierSessionId,JournalId,CreatedAt)
+VALUES($kind,$number,$date,$party,$credit,'POSTED',$subtotal,$vat,$total,$discount,$discountPercent,$paymentMethod,$tendered,$change,$cashierSession,$journal,$at)";
             invoiceCmd.Parameters.AddWithValue("$kind", kind);
             invoiceCmd.Parameters.AddWithValue("$number", number);
             invoiceCmd.Parameters.AddWithValue("$date", Date(invoiceDate));
@@ -410,6 +421,7 @@ VALUES($kind,$number,$date,$party,$credit,'POSTED',$subtotal,$vat,$total,$discou
             invoiceCmd.Parameters.AddWithValue("$paymentMethod", paymentMethod);
             invoiceCmd.Parameters.AddWithValue("$tendered", tenderedHalalas);
             invoiceCmd.Parameters.AddWithValue("$change", changeHalalas);
+            invoiceCmd.Parameters.AddWithValue("$cashierSession", cashierSessionId.HasValue ? cashierSessionId.Value : DBNull.Value);
             invoiceCmd.Parameters.AddWithValue("$journal", journalId);
             invoiceCmd.Parameters.AddWithValue("$at", Now());
             invoiceCmd.ExecuteNonQuery();
