@@ -91,6 +91,7 @@ CREATE TABLE IF NOT EXISTS Returns(
   Number TEXT NOT NULL,
   ReturnDate TEXT NOT NULL,
   PartyId INTEGER NOT NULL REFERENCES Parties(Id) ON DELETE RESTRICT,
+  SourceInvoiceId INTEGER NULL REFERENCES Invoices(Id) ON DELETE RESTRICT,
   IsCredit INTEGER NOT NULL CHECK(IsCredit IN (0,1)),
   Status TEXT NOT NULL CHECK(Status='POSTED'),
   SubtotalHalalas INTEGER NOT NULL CHECK(SubtotalHalalas >= 0),
@@ -103,6 +104,7 @@ CREATE TABLE IF NOT EXISTS Returns(
 CREATE TABLE IF NOT EXISTS ReturnLines(
   Id INTEGER PRIMARY KEY AUTOINCREMENT,
   ReturnId INTEGER NOT NULL REFERENCES Returns(Id) ON DELETE RESTRICT,
+  SourceInvoiceLineId INTEGER NULL REFERENCES InvoiceLines(Id) ON DELETE RESTRICT,
   ProductId INTEGER NOT NULL REFERENCES Products(Id) ON DELETE RESTRICT,
   Quantity REAL NOT NULL CHECK(Quantity > 0),
   UnitPriceHalalas INTEGER NOT NULL CHECK(UnitPriceHalalas >= 0),
@@ -165,6 +167,10 @@ CREATE TABLE IF NOT EXISTS AuditLog(
             index.ExecuteNonQuery();
         }
 
+        // Forward-compatible schema migrations for existing local databases.
+        EnsureColumn(db, "Returns", "SourceInvoiceId", "INTEGER NULL REFERENCES Invoices(Id) ON DELETE RESTRICT");
+        EnsureColumn(db, "ReturnLines", "SourceInvoiceLineId", "INTEGER NULL REFERENCES InvoiceLines(Id) ON DELETE RESTRICT");
+
         using var transaction = db.BeginTransaction();
         var accounts = new (string Code, string Name, string Type)[]
         {
@@ -173,7 +179,7 @@ CREATE TABLE IF NOT EXISTS AuditLog(
             ("2100","الموردون","Liability"), ("2200","ضريبة القيمة المضافة - مخرجات","Liability"),
             ("3000","رأس المال","Equity"), ("3100","الأرباح المبقاة","Equity"),
             ("4000","إيرادات المبيعات","Revenue"), ("4010","مردودات المبيعات","Revenue"),
-            ("5000","تكلفة البضاعة المباعة","Expense"),
+            ("5000","تكلفة البضاعة المباعة","Expense"), ("5050","فروقات تكلفة المردودات","Expense"),
             ("6000","المصروفات التشغيلية","Expense")
         };
         foreach (var account in accounts)
@@ -189,4 +195,20 @@ CREATE TABLE IF NOT EXISTS AuditLog(
         }
         transaction.Commit();
     }
+    private static void EnsureColumn(SqliteConnection db, string tableName, string columnName, string definition)
+    {
+        // The table and column identifiers are compile-time constants at each call site.
+        using var inspect = db.CreateCommand();
+        inspect.CommandText = "PRAGMA table_info(" + tableName + ")";
+        using var reader = inspect.ExecuteReader();
+        while (reader.Read())
+            if (string.Equals(reader.GetString(1), columnName, StringComparison.OrdinalIgnoreCase))
+                return;
+        reader.Close();
+        using var alter = db.CreateCommand();
+        alter.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " " + definition;
+        alter.ExecuteNonQuery();
+    }
+
+
 }
