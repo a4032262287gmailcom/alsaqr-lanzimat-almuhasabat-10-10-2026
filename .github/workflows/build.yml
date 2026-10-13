@@ -56,7 +56,7 @@ jobs:
           }
           try {
             $wrongKey.KeySize = 256
-            [System.IO.File]::WriteAllText($privateKeyPath, $wrongKey.ExportECPrivateKeyPem())
+            [System.IO.File]::WriteAllText($privateKeyPath, $wrongKey.ExportPkcs8PrivateKeyPem())
           } finally {
             $wrongKey.Dispose()
           }
