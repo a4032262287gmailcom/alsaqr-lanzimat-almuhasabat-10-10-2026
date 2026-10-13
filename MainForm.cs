@@ -422,7 +422,8 @@ internal sealed partial class MainForm : Form
         {
             TableSearchFilter.Apply(_tableView, query);
             _lastReport = _tableView.ToTable();
-            SetStatus($"السجلات المطابقة: {_tableView.Count} من {_tableView.Table.Rows.Count}");
+            var totalRows = _tableView.Table?.Rows.Count ?? _tableView.Count;
+            SetStatus($"السجلات المطابقة: {_tableView.Count} من {totalRows}");
         }
         catch (Exception ex)
         {
