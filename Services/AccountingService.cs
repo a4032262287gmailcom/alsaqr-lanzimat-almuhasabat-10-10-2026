@@ -296,10 +296,10 @@ Quantity=Quantity+$qty WHERE Id=$id";
         using var cmd = db.CreateCommand();
         cmd.CommandText = @"
 SELECT a.Code AS 'رقم الحساب',a.Name AS 'الحساب',
-ROUND(COALESCE(SUM(l.DebitHalalas),0)/100.0,2) AS 'إجمالي مدين',
-ROUND(COALESCE(SUM(l.CreditHalalas),0)/100.0,2) AS 'إجمالي دائن',
-ROUND(MAX(COALESCE(SUM(l.DebitHalalas)-SUM(l.CreditHalalas),0),0)/100.0,2) AS 'رصيد مدين',
-ROUND(MAX(COALESCE(SUM(l.CreditHalalas)-SUM(l.DebitHalalas),0),0)/100.0,2) AS 'رصيد دائن'
+ROUND(COALESCE(SUM(CASE WHEN j.Id IS NOT NULL THEN l.DebitHalalas ELSE 0 END),0)/100.0,2) AS 'إجمالي مدين',
+ROUND(COALESCE(SUM(CASE WHEN j.Id IS NOT NULL THEN l.CreditHalalas ELSE 0 END),0)/100.0,2) AS 'إجمالي دائن',
+ROUND(MAX(COALESCE(SUM(CASE WHEN j.Id IS NOT NULL THEN l.DebitHalalas-l.CreditHalalas ELSE 0 END),0),0)/100.0,2) AS 'رصيد مدين',
+ROUND(MAX(-COALESCE(SUM(CASE WHEN j.Id IS NOT NULL THEN l.DebitHalalas-l.CreditHalalas ELSE 0 END),0),0)/100.0,2) AS 'رصيد دائن'
 FROM Accounts a LEFT JOIN JournalLines l ON l.AccountCode=a.Code
 LEFT JOIN Journals j ON j.Id=l.JournalId AND j.Status='POSTED' AND j.EntryDate >= $from AND j.EntryDate <= $to
 GROUP BY a.Code,a.Name ORDER BY a.Code";
@@ -335,7 +335,7 @@ WITH Bal AS (
  LEFT JOIN Journals j ON j.Id=l.JournalId AND j.Status='POSTED'
  GROUP BY a.Code,a.Name,a.Type
 ), Profit AS (
- SELECT COALESCE(SUM(CASE WHEN a.Type='Revenue' THEN l.CreditHalalas-l.DebitHalalas ELSE l.DebitHalalas-l.CreditHalalas END),0) AS Net
+ SELECT COALESCE(SUM(l.CreditHalalas-l.DebitHalalas),0) AS Net
  FROM Accounts a JOIN JournalLines l ON l.AccountCode=a.Code JOIN Journals j ON j.Id=l.JournalId
  WHERE j.Status='POSTED' AND j.EntryDate <= $date AND a.Type IN ('Revenue','Expense')
 )
@@ -408,6 +408,28 @@ FROM Parties p LEFT JOIN Invoices i ON i.PartyId=p.Id AND i.Status='POSTED'
 AND i.InvoiceDate >= $from AND i.InvoiceDate <= $to GROUP BY p.Id,p.Name ORDER BY p.Name";
         cmd.Parameters.AddWithValue("$from", Date(from));
         cmd.Parameters.AddWithValue("$to", Date(to));
+        return ReadTable(cmd);
+    }
+
+    public DataTable RecentJournals()
+    {
+        using var db = Database.Open();
+        using var cmd = db.CreateCommand();
+        cmd.CommandText = @"SELECT j.Number AS 'رقم القيد',j.EntryDate AS 'التاريخ',j.Memo AS 'البيان',
+j.Source AS 'المصدر',ROUND(SUM(l.DebitHalalas)/100.0,2) AS 'إجمالي المدين',
+ROUND(SUM(l.CreditHalalas)/100.0,2) AS 'إجمالي الدائن',j.Status AS 'الحالة'
+FROM Journals j JOIN JournalLines l ON l.JournalId=j.Id
+GROUP BY j.Id,j.Number,j.EntryDate,j.Memo,j.Source,j.Status
+ORDER BY j.Id DESC LIMIT 500";
+        return ReadTable(cmd);
+    }
+
+    public DataTable AuditHistory()
+    {
+        using var db = Database.Open();
+        using var cmd = db.CreateCommand();
+        cmd.CommandText = @"SELECT EventAt AS 'الوقت',Actor AS 'المستخدم',Action AS 'العملية',Entity AS 'الكيان',
+EntityId AS 'المعرف',Details AS 'التفاصيل' FROM AuditLog ORDER BY Id DESC LIMIT 1000";
         return ReadTable(cmd);
     }
 
