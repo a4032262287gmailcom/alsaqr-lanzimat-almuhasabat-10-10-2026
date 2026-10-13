@@ -19,6 +19,7 @@ internal sealed partial class MainForm : Form
     private readonly Color _paper = Color.FromArgb(244, 246, 249);
     private DataGridView? _tableGrid;
     private DataTable? _lastReport;
+    private Button? _activeNavigationButton;
 
     private bool IsAdmin => _user.Role == "Admin";
     private bool CanPost => _user.Role is "Admin" or "Accountant";
@@ -41,7 +42,7 @@ internal sealed partial class MainForm : Form
         header.Controls.Add(title); header.Controls.Add(identity);
 
         var nav = new FlowLayoutPanel { Dock = DockStyle.Top, Height = 54, BackColor = _blue, FlowDirection = FlowDirection.RightToLeft, WrapContents = false, AutoScroll = true, Padding = new Padding(8, 5, 8, 5) };
-        AddNavigation(nav, "الرئيسية", ShowDashboard);
+        var homeButton = AddNavigation(nav, "الرئيسية", ShowDashboard);
         AddNavigation(nav, "دليل الحسابات", ShowAccounts);
         AddNavigation(nav, "القيود اليومية", ShowJournals);
         AddNavigation(nav, "العملاء والموردون", ShowParties);
@@ -67,17 +68,55 @@ internal sealed partial class MainForm : Form
         _status.BackColor = Color.FromArgb(230, 234, 240);
         _status.ForeColor = _navy;
         Controls.Add(_content); Controls.Add(_status); Controls.Add(nav); Controls.Add(header);
+        ActivateNavigation(homeButton);
         ShowDashboard();
     }
 
     private static string RoleArabic(string role) => role switch { "Admin" => "مدير النظام", "Accountant" => "محاسب", _ => "عرض فقط" };
 
-    private void AddNavigation(FlowLayoutPanel nav, string caption, Action action)
+    private Button AddNavigation(FlowLayoutPanel nav, string caption, Action action)
     {
-        var button = new Button { Text = caption, Width = caption.Length > 12 ? 170 : 125, Height = 40, Margin = new Padding(4, 1, 4, 1), BackColor = _blue, ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Cursor = Cursors.Hand };
+        var button = new Button
+        {
+            Text = caption,
+            Width = caption.Length > 12 ? 170 : 125,
+            Height = 40,
+            Margin = new Padding(4, 1, 4, 1),
+            BackColor = _blue,
+            ForeColor = Color.White,
+            FlatStyle = FlatStyle.Flat,
+            Cursor = Cursors.Hand,
+            UseVisualStyleBackColor = false,
+            Padding = new Padding(6, 1, 6, 1)
+        };
         button.FlatAppearance.BorderColor = _gold;
-        button.Click += (_, _) => action();
+        button.FlatAppearance.BorderSize = 1;
+        button.FlatAppearance.MouseOverBackColor = Color.FromArgb(48, 79, 116);
+        button.FlatAppearance.MouseDownBackColor = Color.FromArgb(159, 123, 43);
+        button.Click += (_, _) =>
+        {
+            ActivateNavigation(button);
+            action();
+        };
         nav.Controls.Add(button);
+        return button;
+    }
+
+    private void ActivateNavigation(Button button)
+    {
+        if (_activeNavigationButton is not null && !_activeNavigationButton.IsDisposed)
+        {
+            _activeNavigationButton.BackColor = _blue;
+            _activeNavigationButton.ForeColor = Color.White;
+            _activeNavigationButton.FlatAppearance.BorderColor = _gold;
+            _activeNavigationButton.FlatAppearance.BorderSize = 1;
+        }
+
+        _activeNavigationButton = button;
+        button.BackColor = _gold;
+        button.ForeColor = _navy;
+        button.FlatAppearance.BorderColor = Color.FromArgb(236, 216, 169);
+        button.FlatAppearance.BorderSize = 2;
     }
 
     private void ShowDashboard()
