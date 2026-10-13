@@ -6,7 +6,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     app_name: str = "AlSaqr Cloud ERP API"
     app_env: str = "development"
-    database_url: str = "postgresql+asyncpg://alsaqr_app:local_dev_change_this_password@db:5432/alsaqr_saas"
+    database_url: str = "postgresql+asyncpg://alsaqr_app:local_app_change_this_password@db:5432/alsaqr_saas"
+    migration_database_url: str | None = "postgresql+asyncpg://alsaqr_migrator:local_migrator_change_this_password@db:5432/alsaqr_saas"
     jwt_secret_key: str = "local-only-secret-key-change-this-to-a-random-value-at-least-32-chars"
     jwt_access_token_minutes: int = 20
     cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
