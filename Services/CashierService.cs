@@ -247,14 +247,14 @@ GROUP BY s.Id";
         var storedExpected = reader.IsDBNull(6) ? (long?)null : reader.GetInt64(6);
         var counted = reader.IsDBNull(7) ? (decimal?)null : AccountingService.FromHalalas(reader.GetInt64(7));
         var difference = reader.IsDBNull(8) ? (decimal?)null : AccountingService.FromHalalas(reader.GetInt64(8));
-        var opened = DateTimeOffset.Parse(reader.GetString(2), CultureInfo.InvariantCulture, DateTimeStyles.None);
-        DateTimeOffset? closed = reader.IsDBNull(3) ? null : DateTimeOffset.Parse(reader.GetString(3), CultureInfo.InvariantCulture, DateTimeStyles.None);
+        var opened = DateTimeOffset.Parse(reader.GetString(2), CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
+        DateTimeOffset? closed = reader.IsDBNull(3) ? null : DateTimeOffset.Parse(reader.GetString(3), CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
         var isOpen = reader.GetString(9) == "OPEN";
         var expectedHalalas = storedExpected ?? checked(openingHalalas + salesHalalas);
         return new CashierSessionSummary(
             reader.GetInt32(0), reader.GetString(1), opened, closed,
             AccountingService.FromHalalas(openingHalalas), AccountingService.FromHalalas(salesHalalas),
-            AccountingService.FromHalalas(expectedHalalas), counted, difference, Convert.ToInt32(reader.GetInt64(10), CultureInfo.InvariantCulture), isOpen);
+            AccountingService.FromHalalas(expectedHalalas), counted, difference, reader.GetInt32(10), isOpen);
     }
 
     public CashierSessionSummary CloseSession(int sessionId, string cashierName, decimal countedCash, string memo = "")
@@ -283,7 +283,7 @@ GROUP BY s.Id";
             if (!reader.Read()) throw new InvalidOperationException("الوردية ليست مفتوحة لهذا المستخدم أو سبق إغلاقها.");
             openingHalalas = reader.GetInt64(0);
             salesHalalas = reader.GetInt64(1);
-            invoiceCount = Convert.ToInt32(reader.GetInt64(2), CultureInfo.InvariantCulture);
+            invoiceCount = reader.GetInt32(2);
         }
         var expectedHalalas = checked(openingHalalas + salesHalalas);
         var differenceHalalas = countedHalalas - expectedHalalas;
@@ -314,42 +314,6 @@ WHERE Id=$id AND CashierName=$cashier AND Status='OPEN'";
         }
         tx.Commit();
         return GetSessionSummary(sessionId);
-    }
-
-    public DataTable SessionRegister(DateTime? from = null, DateTime? to = null)
-    {
-        using var db = Database.Open();
-        using var cmd = db.CreateCommand();
-        cmd.CommandText = @"
-SELECT s.Id AS [رقم الوردية], s.CashierName AS [الكاشير],
-       s.OpenedAt AS [وقت الفتح], COALESCE(s.ClosedAt,'') AS [وقت الإغلاق],
-       ROUND(s.OpeningCashHalalas/100.0,2) AS [رصيد البداية],
-       ROUND(COALESCE(SUM(CASE WHEN i.PaymentMethod='CASH' AND i.Kind='SALE' AND i.Status='POSTED' THEN i.TotalHalalas ELSE 0 END),0)/100.0,2) AS [المبيعات النقدية],
-       ROUND(COALESCE(s.ExpectedCashHalalas,s.OpeningCashHalalas+
-          COALESCE(SUM(CASE WHEN i.PaymentMethod='CASH' AND i.Kind='SALE' AND i.Status='POSTED' THEN i.TotalHalalas ELSE 0 END),0))/100.0,2) AS [النقد المتوقع],
-       CASE WHEN s.CountedCashHalalas IS NULL THEN NULL ELSE ROUND(s.CountedCashHalalas/100.0,2) END AS [النقد المعدود],
-       CASE WHEN s.DifferenceHalalas IS NULL THEN NULL ELSE ROUND(s.DifferenceHalalas/100.0,2) END AS [الفرق],
-       COUNT(CASE WHEN i.Kind='SALE' AND i.Status='POSTED' THEN 1 END) AS [عدد الفواتير],
-       CASE s.Status WHEN 'OPEN' THEN 'مفتوحة' ELSE 'مغلقة' END AS [الحالة],
-       s.Memo AS [ملاحظات]
-FROM CashierSessions s LEFT JOIN Invoices i ON i.CashierSessionId=s.Id
-WHERE ($from IS NULL OR substr(s.OpenedAt,1,10)>=$from)
-  AND ($to IS NULL OR substr(s.OpenedAt,1,10)<=$to)
-GROUP BY s.Id
-ORDER BY s.OpenedAt DESC,s.Id DESC";
-        cmd.Parameters.AddWithValue("$from", from.HasValue ? Date(from.Value) : DBNull.Value);
-        cmd.Parameters.AddWithValue("$to", to.HasValue ? Date(to.Value) : DBNull.Value);
-        using var reader = cmd.ExecuteReader();
-        var table = new DataTable();
-        for (var i = 0; i < reader.FieldCount; i++)
-            table.Columns.Add(reader.GetName(i), typeof(object));
-        while (reader.Read())
-        {
-            var values = new object[reader.FieldCount];
-            reader.GetValues(values);
-            table.Rows.Add(values);
-        }
-        return table;
     }
 
     public long Checkout(
