@@ -34,7 +34,7 @@ internal sealed class SystemSettingsForm : Form
         _theme.SelectedItem = _theme.Items.Cast<Choice>().FirstOrDefault(c => c.Value == settings.Theme) ?? (Choice)_theme.Items[0];
 
         _printer.Items.Add(new Choice("", "الطابعة الافتراضية"));
-        foreach (string name in PrinterSettings.InstalledPrinters)
+        foreach (string name in PrinterSettings.InstalledPrinters.Cast<string>())
             _printer.Items.Add(new Choice(name, name));
         if (!string.IsNullOrWhiteSpace(settings.PrinterName) && !_printer.Items.Cast<Choice>().Any(p => p.Value == settings.PrinterName))
             _printer.Items.Add(new Choice(settings.PrinterName, settings.PrinterName));
