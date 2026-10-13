@@ -46,15 +46,17 @@ BiS7R8eGdSImfTvU9H6KkASrWBWM9kPthU/8fvBTNupjqaiRn4F90XGNUI63pBEb
         if (now.AddMinutes(5) < state.LastSeenUtc)
             return new(false, false, 0, "تم اكتشاف رجوع ساعة النظام إلى وقت أقدم من آخر تشغيل. صحّح الساعة ثم أعد فتح البرنامج.", MachineId);
 
+        LicensePayload? activationPayload = null;
+        var licenseError = "لا يوجد ترخيص محفوظ.";
         if (!string.IsNullOrWhiteSpace(state.LicenseEnvelopeJson) &&
-            TryReadLicense(state.LicenseEnvelopeJson, out var payload, out var error, verifyMachine: true))
+            TryReadLicense(state.LicenseEnvelopeJson, out activationPayload, out licenseError, verifyMachine: true))
         {
-            var expiry = payload!.ExpiresUtc;
+            var expiry = activationPayload!.ExpiresUtc;
             if (now <= expiry)
             {
                 SaveState(state with { LastSeenUtc = now });
                 return new(true, true, DaysUntil(expiry, now),
-                    $"الترخيص مفعل باسم {payload.Customer} حتى {expiry.ToLocalTime():yyyy-MM-dd}.", MachineId);
+                    $"الترخيص مفعل باسم {activationPayload.Customer} حتى {expiry.ToLocalTime():yyyy-MM-dd}.", MachineId);
             }
 
             SaveState(state with { LastSeenUtc = now });
@@ -66,8 +68,8 @@ BiS7R8eGdSImfTvU9H6KkASrWBWM9kPthU/8fvBTNupjqaiRn4F90XGNUI63pBEb
             var remainingAfterInvalid = RemainingTrialDays(state.FirstStartedUtc, now);
             SaveState(state with { LastSeenUtc = now });
             if (remainingAfterInvalid > 0)
-                return new(true, false, remainingAfterInvalid, $"ملف الترخيص المحفوظ غير صالح ({error}). تستمر الفترة التجريبية مؤقتًا.", MachineId);
-            return new(false, false, 0, $"ملف الترخيص المحفوظ غير صالح ({error}). يلزم تفعيل صحيح.", MachineId);
+                return new(true, false, remainingAfterInvalid, $"ملف الترخيص المحفوظ غير صالح ({licenseError}). تستمر الفترة التجريبية مؤقتًا.", MachineId);
+            return new(false, false, 0, $"ملف الترخيص المحفوظ غير صالح ({licenseError}). يلزم تفعيل صحيح.", MachineId);
         }
 
         var remaining = RemainingTrialDays(state.FirstStartedUtc, now);
