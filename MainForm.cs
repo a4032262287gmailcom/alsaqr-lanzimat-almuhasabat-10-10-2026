@@ -19,6 +19,7 @@ internal sealed partial class MainForm : Form
     private readonly Color _paper = Color.FromArgb(244, 246, 249);
     private DataGridView? _tableGrid;
     private DataTable? _lastReport;
+    private DataView? _tableView;
     private string _lastReportTitle = "تقرير محاسبي";
     private Button? _activeNavigationButton;
 
@@ -413,9 +414,27 @@ internal sealed partial class MainForm : Form
 
     private static string Csv(string value) => "\"" + value.Replace("\"", "\"\"").Replace("\r", " ").Replace("\n", " ") + "\"";
 
+    private void ApplyTableSearch(string query)
+    {
+        if (_tableView is null) return;
+
+        try
+        {
+            TableSearchFilter.Apply(_tableView, query);
+            _lastReport = _tableView.ToTable();
+            SetStatus($"السجلات المطابقة: {_tableView.Count} من {_tableView.Table.Rows.Count}");
+        }
+        catch (Exception ex)
+        {
+            SetStatus("تعذر تطبيق البحث: " + ex.Message);
+        }
+    }
+
     private void ShowTablePage(string title, DataTable data, params (string Text, Action Run)[] actions)
     {
         _content.Controls.Clear();
+        _tableView = data.DefaultView;
+        _tableView.RowFilter = string.Empty;
         var root=new TableLayoutPanel { Dock=DockStyle.Fill, ColumnCount=1, RowCount=2, BackColor=_paper };
         root.RowStyles.Add(new RowStyle(SizeType.Absolute,58)); root.RowStyles.Add(new RowStyle(SizeType.Percent,100));
         var header=new Panel { Dock=DockStyle.Fill, BackColor=_paper };
@@ -425,12 +444,22 @@ internal sealed partial class MainForm : Form
         {
             var button=Button(action.Text); button.Width=Math.Max(110,Math.Min(230,TextRenderer.MeasureText(action.Text,Font).Width+38)); button.Click += (_,_) => action.Run(); toolbar.Controls.Add(button);
         }
+        var searchBox = new TextBox
+        {
+            Width = 190,
+            Height = 31,
+            BorderStyle = BorderStyle.FixedSingle,
+            PlaceholderText = "بحث في السجلات..."
+        };
+        searchBox.TextChanged += (_, _) => ApplyTableSearch(searchBox.Text);
+        toolbar.Controls.Add(searchBox);
         var printButton=Button("معاينة / طباعة");
         printButton.Width=160;
         printButton.Click += (_,_) => PrintCurrentReport();
         toolbar.Controls.Add(printButton);
         header.Controls.Add(toolbar);
         _tableGrid=MakeGrid(data);
+        _tableGrid.DataSource = _tableView;
         root.Controls.Add(header,0,0); root.Controls.Add(_tableGrid,0,1); _content.Controls.Add(root);
         _lastReport=data;
         _lastReportTitle=title;
