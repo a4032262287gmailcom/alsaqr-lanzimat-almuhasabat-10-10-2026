@@ -32,7 +32,7 @@ internal static class Program
             var requestPath = Path.GetFullPath(args[1]);
             var licensee = args[2].Trim();
             var expiryDate = DateTime.ParseExact(args[3], "yyyy-MM-dd", CultureInfo.InvariantCulture,
-                DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
+                DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal).Date.AddDays(1).AddTicks(-1);
             var outputPath = Path.GetFullPath(args[4]);
             var features = (args.Length >= 6 ? args[5] : "Accounting,POS,Inventory,Reports,Settings")
                 .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
