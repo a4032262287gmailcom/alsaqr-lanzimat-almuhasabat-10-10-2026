@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 
 namespace AlSaqr.Accounting.Services;
@@ -39,9 +41,11 @@ internal sealed record UiThemePalette(
 
 internal static class AppSettingsService
 {
-    private static readonly string Folder = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AlSaqrAccounting");
-    private static readonly string PathName = Path.Combine(Folder, "app-settings.json");
+    private static readonly byte[] Entropy = SHA256.HashData(Encoding.UTF8.GetBytes("AlSaqr.Accounting.AppSettings.v1"));
+    private static string Folder =>
+        Environment.GetEnvironmentVariable("ALSAQR_ACCOUNTING_DATA_DIR") ??
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AlSaqrAccounting");
+    private static string PathName => Path.Combine(Folder, "app-settings.json");
     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
 
     public static AccountingAppSettings Load()
@@ -49,15 +53,24 @@ internal static class AppSettingsService
         if (!File.Exists(PathName)) return AccountingAppSettings.Defaults();
         try
         {
-            var saved = JsonSerializer.Deserialize<AccountingAppSettings>(File.ReadAllText(PathName));
-            if (saved is null || UiThemePalette.All.All(x => x.Name != saved.Theme))
-                return (saved ?? AccountingAppSettings.Defaults()) with { Theme = "Navy" };
-            if (saved.DefaultVatRate is < 0m or > 100m) return saved with { DefaultVatRate = 15m };
+            var stored = File.ReadAllBytes(PathName);
+            var first = Array.FindIndex(stored, b => b is not (byte)' ' and not (byte)'\t' and not (byte)'\r' and not (byte)'\n');
+            var isLegacyJson = first >= 0 && stored[first] == (byte)'{';
+            var jsonBytes = isLegacyJson
+                ? stored
+                : ProtectedData.Unprotect(stored, Entropy, DataProtectionScope.CurrentUser);
+            var saved = JsonSerializer.Deserialize<AccountingAppSettings>(jsonBytes, JsonOptions);
+            if (saved is null) throw new InvalidDataException("ملف إعدادات الصقر فارغ أو غير صالح.");
+            if (!UiThemePalette.All.Any(x => x.Name == saved.Theme))
+                saved = saved with { Theme = "Navy" };
+            if (saved.DefaultVatRate is < 0m or > 100m)
+                saved = saved with { DefaultVatRate = 15m };
+            if (isLegacyJson) Save(saved);
             return saved;
         }
-        catch (JsonException)
+        catch (Exception ex) when (ex is JsonException or CryptographicException or InvalidDataException or UnauthorizedAccessException or IOException)
         {
-            throw new InvalidOperationException("ملف إعدادات الصقر غير صالح. احتفظ بنسخة منه ثم أعد إنشاء الإعدادات من شاشة الإعدادات.");
+            throw new InvalidOperationException("تعذر قراءة إعدادات الصقر المحمية. تحقق من حساب Windows الحالي واحتفظ بنسخة من الملف قبل إعادة إنشائه.", ex);
         }
     }
 
@@ -68,8 +81,10 @@ internal static class AppSettingsService
         if (settings.DefaultVatRate is < 0m or > 100m)
             throw new ArgumentException("ضريبة القيمة المضافة الافتراضية يجب أن تكون بين صفر و100.");
         Directory.CreateDirectory(Folder);
+        var json = JsonSerializer.SerializeToUtf8Bytes(settings, JsonOptions);
+        var encrypted = ProtectedData.Protect(json, Entropy, DataProtectionScope.CurrentUser);
         var temp = PathName + ".tmp";
-        File.WriteAllText(temp, JsonSerializer.Serialize(settings, JsonOptions));
+        File.WriteAllBytes(temp, encrypted);
         File.Move(temp, PathName, true);
     }
 
