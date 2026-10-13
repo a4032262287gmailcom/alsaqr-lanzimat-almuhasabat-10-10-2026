@@ -85,6 +85,35 @@ CREATE TABLE IF NOT EXISTS InvoiceLines(
   VatRate REAL NOT NULL, NetHalalas INTEGER NOT NULL, VatHalalas INTEGER NOT NULL, TotalHalalas INTEGER NOT NULL
 );
 CREATE INDEX IF NOT EXISTS IX_Invoices_DateKind ON Invoices(InvoiceDate,Kind);
+CREATE TABLE IF NOT EXISTS Returns(
+  Id INTEGER PRIMARY KEY AUTOINCREMENT,
+  Kind TEXT NOT NULL CHECK(Kind IN ('SALE_RETURN','PURCHASE_RETURN')),
+  Number TEXT NOT NULL,
+  ReturnDate TEXT NOT NULL,
+  PartyId INTEGER NOT NULL REFERENCES Parties(Id) ON DELETE RESTRICT,
+  IsCredit INTEGER NOT NULL CHECK(IsCredit IN (0,1)),
+  Status TEXT NOT NULL CHECK(Status='POSTED'),
+  SubtotalHalalas INTEGER NOT NULL CHECK(SubtotalHalalas >= 0),
+  VatHalalas INTEGER NOT NULL CHECK(VatHalalas >= 0),
+  TotalHalalas INTEGER NOT NULL CHECK(TotalHalalas >= 0),
+  JournalId INTEGER NOT NULL REFERENCES Journals(Id) ON DELETE RESTRICT,
+  CreatedAt TEXT NOT NULL,
+  UNIQUE(Kind, Number)
+);
+CREATE TABLE IF NOT EXISTS ReturnLines(
+  Id INTEGER PRIMARY KEY AUTOINCREMENT,
+  ReturnId INTEGER NOT NULL REFERENCES Returns(Id) ON DELETE RESTRICT,
+  ProductId INTEGER NOT NULL REFERENCES Products(Id) ON DELETE RESTRICT,
+  Quantity REAL NOT NULL CHECK(Quantity > 0),
+  UnitPriceHalalas INTEGER NOT NULL CHECK(UnitPriceHalalas >= 0),
+  CostAtPostingHalalas INTEGER NOT NULL CHECK(CostAtPostingHalalas >= 0),
+  VatRate REAL NOT NULL CHECK(VatRate >= 0 AND VatRate <= 100),
+  NetHalalas INTEGER NOT NULL CHECK(NetHalalas >= 0),
+  VatHalalas INTEGER NOT NULL CHECK(VatHalalas >= 0),
+  TotalHalalas INTEGER NOT NULL CHECK(TotalHalalas >= 0)
+);
+CREATE INDEX IF NOT EXISTS IX_Returns_DateKind ON Returns(ReturnDate,Kind);
+CREATE INDEX IF NOT EXISTS IX_ReturnLines_Product ON ReturnLines(ProductId);
 CREATE TABLE IF NOT EXISTS StockMovements(
   Id INTEGER PRIMARY KEY AUTOINCREMENT, MovementDate TEXT NOT NULL,
   ProductId INTEGER NOT NULL REFERENCES Products(Id), Source TEXT NOT NULL, SourceId TEXT NOT NULL,
@@ -143,7 +172,8 @@ CREATE TABLE IF NOT EXISTS AuditLog(
             ("1200","المخزون","Asset"), ("1300","ضريبة القيمة المضافة - مدخلات","Asset"),
             ("2100","الموردون","Liability"), ("2200","ضريبة القيمة المضافة - مخرجات","Liability"),
             ("3000","رأس المال","Equity"), ("3100","الأرباح المبقاة","Equity"),
-            ("4000","إيرادات المبيعات","Revenue"), ("5000","تكلفة البضاعة المباعة","Expense"),
+            ("4000","إيرادات المبيعات","Revenue"), ("4010","مردودات المبيعات","Revenue"),
+            ("5000","تكلفة البضاعة المباعة","Expense"),
             ("6000","المصروفات التشغيلية","Expense")
         };
         foreach (var account in accounts)
