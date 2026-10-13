@@ -61,6 +61,8 @@ internal sealed class AccountingService
 
     public void SetAccountActive(string code, bool active)
     {
+        if (!active && new[] { "1010","1020","1100","1200","1300","2100","2200","3000","3100","4000","5000","6000" }.Contains(code))
+            throw new InvalidOperationException("لا يمكن إيقاف حساب نظام أساسي مستخدم في الترحيل. أنشئ حسابًا فرعيًا بدلًا منه.");
         using var db = Database.Open();
         using var cmd = db.CreateCommand();
         cmd.CommandText = "UPDATE Accounts SET IsActive=$active WHERE Code=$code";
@@ -128,22 +130,56 @@ FROM Products ORDER BY Code";
     {
         if (string.IsNullOrWhiteSpace(code) || string.IsNullOrWhiteSpace(name)) throw new ArgumentException("رمز الصنف والاسم مطلوبان.");
         if (openingQuantity < 0 || cost < 0 || price < 0) throw new ArgumentException("لا يُسمح بقيم سالبة.");
+        if (openingQuantity > 0 && cost <= 0) throw new ArgumentException("أدخل تكلفة موجبة عند إدخال رصيد افتتاحي للمخزون.");
         if (vatRate is < 0 or > 100) throw new ArgumentException("نسبة الضريبة يجب أن تكون بين 0 و100.");
         using var db = Database.Open();
-        using var cmd = db.CreateCommand();
-        cmd.CommandText = @"INSERT INTO Products(Code,Name,Unit,Quantity,CostHalalas,PriceHalalas,VatRate,IsActive,CreatedAt)
+        using var tx = db.BeginTransaction();
+        try
+        {
+            using var cmd = db.CreateCommand();
+            cmd.Transaction = tx;
+            cmd.CommandText = @"INSERT INTO Products(Code,Name,Unit,Quantity,CostHalalas,PriceHalalas,VatRate,IsActive,CreatedAt)
 VALUES($code,$name,$unit,$qty,$cost,$price,$vat,1,$at)";
-        cmd.Parameters.AddWithValue("$code", code.Trim());
-        cmd.Parameters.AddWithValue("$name", name.Trim());
-        cmd.Parameters.AddWithValue("$unit", string.IsNullOrWhiteSpace(unit) ? "حبة" : unit.Trim());
-        cmd.Parameters.AddWithValue("$qty", (double)openingQuantity);
-        cmd.Parameters.AddWithValue("$cost", ToHalalas(cost));
-        cmd.Parameters.AddWithValue("$price", ToHalalas(price));
-        cmd.Parameters.AddWithValue("$vat", (double)vatRate);
-        cmd.Parameters.AddWithValue("$at", Now());
-        try { cmd.ExecuteNonQuery(); }
-        catch (SqliteException ex) when (ex.SqliteErrorCode == 19) { throw new InvalidOperationException("رمز الصنف مستخدم مسبقًا.", ex); }
-        Audit(db, "إضافة", "Product", db.LastInsertRowId.ToString(), $"إضافة الصنف {name.Trim()}");
+            cmd.Parameters.AddWithValue("$code", code.Trim());
+            cmd.Parameters.AddWithValue("$name", name.Trim());
+            cmd.Parameters.AddWithValue("$unit", string.IsNullOrWhiteSpace(unit) ? "حبة" : unit.Trim());
+            cmd.Parameters.AddWithValue("$qty", (double)openingQuantity);
+            cmd.Parameters.AddWithValue("$cost", ToHalalas(cost));
+            cmd.Parameters.AddWithValue("$price", ToHalalas(price));
+            cmd.Parameters.AddWithValue("$vat", (double)vatRate);
+            cmd.Parameters.AddWithValue("$at", Now());
+            cmd.ExecuteNonQuery();
+            var productId = db.LastInsertRowId;
+
+            if (openingQuantity > 0)
+            {
+                var openingValue = ToHalalas(openingQuantity * cost);
+                var lines = new[]
+                {
+                    new JournalLineInput("1200", FromHalalas(openingValue), 0, "رصيد مخزون افتتاحي"),
+                    new JournalLineInput("3000", 0, FromHalalas(openingValue), "مقابل الرصيد الافتتاحي")
+                };
+                InsertJournal(db, tx, DateTime.Today, $"رصيد افتتاحي للصنف {code.Trim()}", "OPENING_STOCK", lines);
+
+                using var movement = db.CreateCommand();
+                movement.Transaction = tx;
+                movement.CommandText = @"INSERT INTO StockMovements(MovementDate,ProductId,Source,SourceId,QuantityIn,QuantityOut,UnitCostHalalas,Memo,CreatedAt)
+VALUES($date,$product,'OPENING',$product,$qty,$zero,$cost,'رصيد افتتاحي',$at)";
+                movement.Parameters.AddWithValue("$date", Date(DateTime.Today));
+                movement.Parameters.AddWithValue("$product", productId);
+                movement.Parameters.AddWithValue("$qty", (double)openingQuantity);
+                movement.Parameters.AddWithValue("$zero", 0d);
+                movement.Parameters.AddWithValue("$cost", ToHalalas(cost));
+                movement.Parameters.AddWithValue("$at", Now());
+                movement.ExecuteNonQuery();
+            }
+            Audit(db, tx, "إضافة", "Product", productId.ToString(), $"إضافة الصنف {name.Trim()}؛ رصيد افتتاحي={openingQuantity:0.###}");
+            tx.Commit();
+        }
+        catch (SqliteException ex) when (ex.SqliteErrorCode == 19)
+        {
+            throw new InvalidOperationException("رمز الصنف مستخدم مسبقًا أو توجد بيانات مرتبطة تمنع الحفظ.", ex);
+        }
     }
 
     public long PostJournal(DateTime entryDate, string memo, IReadOnlyList<JournalLineInput> lines)
@@ -284,6 +320,21 @@ Quantity=Quantity+$qty WHERE Id=$id";
             stockCmd.Parameters.AddWithValue("$qty", (double)item.Input.Quantity);
             stockCmd.Parameters.AddWithValue("$id", item.Input.ProductId);
             if (stockCmd.ExecuteNonQuery() != 1) throw new InvalidOperationException("تعذر تحديث رصيد المخزون؛ تم إلغاء الفاتورة كاملة.");
+
+            using var movement = db.CreateCommand();
+            movement.Transaction = tx;
+            movement.CommandText = @"INSERT INTO StockMovements(MovementDate,ProductId,Source,SourceId,QuantityIn,QuantityOut,UnitCostHalalas,Memo,CreatedAt)
+VALUES($date,$product,$source,$sourceId,$in,$out,$cost,$memo,$at)";
+            movement.Parameters.AddWithValue("$date", Date(invoiceDate));
+            movement.Parameters.AddWithValue("$product", item.Input.ProductId);
+            movement.Parameters.AddWithValue("$source", kind);
+            movement.Parameters.AddWithValue("$sourceId", invoiceId.ToString());
+            movement.Parameters.AddWithValue("$in", kind == "PURCHASE" ? (double)item.Input.Quantity : 0d);
+            movement.Parameters.AddWithValue("$out", kind == "SALE" ? (double)item.Input.Quantity : 0d);
+            movement.Parameters.AddWithValue("$cost", kind == "PURCHASE" ? ToHalalas(item.Input.UnitPrice) : item.UnitCost);
+            movement.Parameters.AddWithValue("$memo", number);
+            movement.Parameters.AddWithValue("$at", Now());
+            movement.ExecuteNonQuery();
         }
         Audit(db, tx, "ترحيل", "Invoice", invoiceId.ToString(), $"ترحيل الفاتورة {number}; النوع={kind}; الإجمالي={FromHalalas(totalHalalas):0.00} SAR");
         tx.Commit();
@@ -355,12 +406,16 @@ ORDER BY 3,1";
         using var db = Database.Open();
         using var cmd = db.CreateCommand();
         cmd.CommandText = @"
-SELECT j.EntryDate AS 'التاريخ',j.Number AS 'رقم القيد',j.Memo AS 'البيان',
-ROUND(l.DebitHalalas/100.0,2) AS 'مدين',ROUND(l.CreditHalalas/100.0,2) AS 'دائن',
-ROUND(SUM(l.DebitHalalas-l.CreditHalalas) OVER(ORDER BY j.EntryDate,j.Id,l.Id ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)/100.0,2) AS 'الرصيد المتحرك'
-FROM JournalLines l JOIN Journals j ON j.Id=l.JournalId
-WHERE l.AccountCode=$code AND j.Status='POSTED' AND j.EntryDate >= $from AND j.EntryDate <= $to
-ORDER BY j.EntryDate,j.Id,l.Id";
+WITH Movements AS (
+ SELECT j.EntryDate,j.Number,j.Memo,l.DebitHalalas,l.CreditHalalas,j.Id AS JournalId,l.Id AS LineId,
+ SUM(l.DebitHalalas-l.CreditHalalas) OVER(ORDER BY j.EntryDate,j.Id,l.Id ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS RunningBalance
+ FROM JournalLines l JOIN Journals j ON j.Id=l.JournalId
+ WHERE l.AccountCode=$code AND j.Status='POSTED' AND j.EntryDate <= $to
+)
+SELECT EntryDate AS 'التاريخ',Number AS 'رقم القيد',Memo AS 'البيان',
+ROUND(DebitHalalas/100.0,2) AS 'مدين',ROUND(CreditHalalas/100.0,2) AS 'دائن',
+ROUND(RunningBalance/100.0,2) AS 'الرصيد المتحرك'
+FROM Movements WHERE EntryDate >= $from ORDER BY EntryDate,JournalId,LineId";
         cmd.Parameters.AddWithValue("$code", accountCode);
         cmd.Parameters.AddWithValue("$from", Date(from));
         cmd.Parameters.AddWithValue("$to", Date(to));
@@ -401,36 +456,95 @@ ORDER BY i.InvoiceDate,i.Id";
         using var cmd = db.CreateCommand();
         cmd.CommandText = @"
 SELECT p.Id AS 'المعرف',p.Name AS 'الطرف',
-SUM(CASE WHEN i.Kind='SALE' THEN i.TotalHalalas ELSE 0 END)/100.0 AS 'فواتير البيع',
-SUM(CASE WHEN i.Kind='PURCHASE' THEN i.TotalHalalas ELSE 0 END)/100.0 AS 'فواتير الشراء',
+ROUND(COALESCE(SUM(CASE WHEN i.Kind='SALE' AND i.IsCredit=1 THEN i.TotalHalalas ELSE 0 END),0)/100.0,2) AS 'فواتير البيع الآجلة',
+ROUND(COALESCE((SELECT SUM(s.AmountHalalas) FROM Settlements s WHERE s.PartyId=p.Id AND s.Kind='RECEIPT' AND s.SettlementDate >= $from AND s.SettlementDate <= $to),0)/100.0,2) AS 'المقبوضات',
+ROUND(COALESCE(SUM(CASE WHEN i.Kind='PURCHASE' AND i.IsCredit=1 THEN i.TotalHalalas ELSE 0 END),0)/100.0,2) AS 'فواتير الشراء الآجلة',
+ROUND(COALESCE((SELECT SUM(s.AmountHalalas) FROM Settlements s WHERE s.PartyId=p.Id AND s.Kind='PAYMENT' AND s.SettlementDate >= $from AND s.SettlementDate <= $to),0)/100.0,2) AS 'المدفوعات',
 COUNT(i.Id) AS 'عدد الفواتير'
-FROM Parties p LEFT JOIN Invoices i ON i.PartyId=p.Id AND i.Status='POSTED'
-AND i.InvoiceDate >= $from AND i.InvoiceDate <= $to GROUP BY p.Id,p.Name ORDER BY p.Name";
+FROM Parties p LEFT JOIN Invoices i ON i.PartyId=p.Id AND i.InvoiceDate >= $from AND i.InvoiceDate <= $to AND i.Status='POSTED'
+GROUP BY p.Id,p.Name ORDER BY p.Name";
         cmd.Parameters.AddWithValue("$from", Date(from));
         cmd.Parameters.AddWithValue("$to", Date(to));
         return ReadTable(cmd);
     }
 
-    public DataTable RecentJournals()
+    public DataTable StockMovementRegister(DateTime from, DateTime to)
     {
         using var db = Database.Open();
         using var cmd = db.CreateCommand();
-        cmd.CommandText = @"SELECT j.Number AS 'رقم القيد',j.EntryDate AS 'التاريخ',j.Memo AS 'البيان',
-j.Source AS 'المصدر',ROUND(SUM(l.DebitHalalas)/100.0,2) AS 'إجمالي المدين',
-ROUND(SUM(l.CreditHalalas)/100.0,2) AS 'إجمالي الدائن',j.Status AS 'الحالة'
-FROM Journals j JOIN JournalLines l ON l.JournalId=j.Id
-GROUP BY j.Id,j.Number,j.EntryDate,j.Memo,j.Source,j.Status
-ORDER BY j.Id DESC LIMIT 500";
+        cmd.CommandText = @"SELECT m.MovementDate AS 'التاريخ',p.Code AS 'رمز الصنف',p.Name AS 'الصنف',
+m.Source AS 'نوع الحركة',m.SourceId AS 'مرجع المصدر',ROUND(m.QuantityIn,3) AS 'وارد',
+ROUND(m.QuantityOut,3) AS 'صادر',ROUND(m.UnitCostHalalas/100.0,2) AS 'تكلفة الوحدة',
+ROUND((m.QuantityIn-m.QuantityOut)*m.UnitCostHalalas/100.0,2) AS 'قيمة الحركة',m.Memo AS 'البيان'
+FROM StockMovements m JOIN Products p ON p.Id=m.ProductId
+WHERE m.MovementDate >= $from AND m.MovementDate <= $to ORDER BY m.MovementDate,m.Id";
+        cmd.Parameters.AddWithValue("$from", Date(from));
+        cmd.Parameters.AddWithValue("$to", Date(to));
         return ReadTable(cmd);
     }
 
-    public DataTable AuditHistory()
+    public DataTable SettlementRegister(string kind, DateTime from, DateTime to)
     {
         using var db = Database.Open();
         using var cmd = db.CreateCommand();
-        cmd.CommandText = @"SELECT EventAt AS 'الوقت',Actor AS 'المستخدم',Action AS 'العملية',Entity AS 'الكيان',
-EntityId AS 'المعرف',Details AS 'التفاصيل' FROM AuditLog ORDER BY Id DESC LIMIT 1000";
+        cmd.CommandText = @"SELECT s.Number AS 'رقم السند',s.SettlementDate AS 'التاريخ',
+CASE s.Kind WHEN 'RECEIPT' THEN 'قبض' ELSE 'صرف' END AS 'النوع',p.Name AS 'الطرف',
+s.CashAccountCode AS 'حساب النقدية',ROUND(s.AmountHalalas/100.0,2) AS 'المبلغ',
+s.Memo AS 'البيان',s.JournalId AS 'رقم القيد'
+FROM Settlements s JOIN Parties p ON p.Id=s.PartyId
+WHERE ($kind='ALL' OR s.Kind=$kind) AND s.SettlementDate >= $from AND s.SettlementDate <= $to
+ORDER BY s.SettlementDate,s.Id";
+        cmd.Parameters.AddWithValue("$kind", kind);
+        cmd.Parameters.AddWithValue("$from", Date(from));
+        cmd.Parameters.AddWithValue("$to", Date(to));
         return ReadTable(cmd);
+    }
+
+    public long CreateSettlement(string kind, DateTime settlementDate, int partyId, string cashAccountCode, decimal amount, string memo)
+    {
+        if (kind is not ("RECEIPT" or "PAYMENT")) throw new ArgumentException("نوع السند غير صالح.");
+        if (partyId <= 0) throw new ArgumentException("اختر العميل أو المورد.");
+        var amountHalalas = ToHalalas(amount);
+        if (amountHalalas <= 0) throw new ArgumentException("قيمة السند يجب أن تكون أكبر من صفر.");
+        if (cashAccountCode is not ("1010" or "1020")) throw new ArgumentException("اختر الصندوق أو البنك.");
+        if (string.IsNullOrWhiteSpace(memo)) memo = kind == "RECEIPT" ? "سند قبض" : "سند صرف";
+
+        using var db = Database.Open();
+        using var tx = db.BeginTransaction();
+        using (var party = db.CreateCommand())
+        {
+            party.Transaction = tx;
+            party.CommandText = "SELECT Kind FROM Parties WHERE Id=$id AND IsActive=1";
+            party.Parameters.AddWithValue("$id", partyId);
+            var partyKind = party.ExecuteScalar() as string;
+            if (partyKind is null || (kind == "RECEIPT" && partyKind == "Supplier") || (kind == "PAYMENT" && partyKind == "Customer"))
+                throw new InvalidOperationException(kind == "RECEIPT" ? "سند القبض يتطلب عميلًا نشطًا." : "سند الصرف يتطلب موردًا نشطًا.");
+        }
+        var lines = kind == "RECEIPT"
+            ? new[] { new JournalLineInput(cashAccountCode, FromHalalas(amountHalalas), 0, "قبض من عميل"), new JournalLineInput("1100", 0, FromHalalas(amountHalalas), "تخفيض ذمم العملاء") }
+            : new[] { new JournalLineInput("2100", FromHalalas(amountHalalas), 0, "تخفيض ذمم الموردين"), new JournalLineInput(cashAccountCode, 0, FromHalalas(amountHalalas), "صرف لمورد") };
+        var number = (kind == "RECEIPT" ? "RC-" : "PY-") + settlementDate.ToString("yyyyMMdd") + "-" + Guid.NewGuid().ToString("N")[..6].ToUpperInvariant();
+        var journalId = InsertJournal(db, tx, settlementDate, $"{(kind == "RECEIPT" ? "سند قبض" : "سند صرف")} {number}", kind, lines);
+        using (var cmd = db.CreateCommand())
+        {
+            cmd.Transaction = tx;
+            cmd.CommandText = @"INSERT INTO Settlements(Kind,Number,SettlementDate,PartyId,AmountHalalas,CashAccountCode,JournalId,Memo,CreatedAt)
+VALUES($kind,$number,$date,$party,$amount,$cash,$journal,$memo,$at)";
+            cmd.Parameters.AddWithValue("$kind", kind);
+            cmd.Parameters.AddWithValue("$number", number);
+            cmd.Parameters.AddWithValue("$date", Date(settlementDate));
+            cmd.Parameters.AddWithValue("$party", partyId);
+            cmd.Parameters.AddWithValue("$amount", amountHalalas);
+            cmd.Parameters.AddWithValue("$cash", cashAccountCode);
+            cmd.Parameters.AddWithValue("$journal", journalId);
+            cmd.Parameters.AddWithValue("$memo", memo.Trim());
+            cmd.Parameters.AddWithValue("$at", Now());
+            cmd.ExecuteNonQuery();
+        }
+        var id = db.LastInsertRowId;
+        Audit(db, tx, "ترحيل", "Settlement", id.ToString(), $"ترحيل {number} بقيمة {FromHalalas(amountHalalas):0.00} ر.س");
+        tx.Commit();
+        return id;
     }
 
     public DashboardInfo Dashboard(DateTime today)
