@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
 
-from app.api import accounting, ai, auth, commerce, inventory, setup, zatca
+from app.api import accounting, ai, auth, commerce, inventory, periods, setup, zatca
 from app.core.config import get_settings
 from app.database import engine
 from app.schemas import HealthOut
@@ -80,6 +80,7 @@ api_prefix = "/api/v1"
 app.include_router(auth.router, prefix=api_prefix)
 app.include_router(setup.router, prefix=api_prefix)
 app.include_router(accounting.router, prefix=api_prefix)
+app.include_router(periods.router, prefix=api_prefix)
 app.include_router(commerce.router, prefix=api_prefix)
 app.include_router(inventory.router, prefix=api_prefix)
 app.include_router(ai.router, prefix=api_prefix)
