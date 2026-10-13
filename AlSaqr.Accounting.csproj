@@ -11,13 +11,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.0" />
- feature/erp-pos-cashier-20261013
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="7.1.1" />
-    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="tests/**/*.cs;tools/**/*.cs" />
-=======
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
@@ -25,6 +18,5 @@
     <!-- The active desktop UI is implemented by MainForm.cs and the root-level accounting entry forms.
          Exclude unused legacy forms that target the pre-merge AccountingService API. -->
     <Compile Remove="Forms/InvoiceForm.cs;Forms/JournalEntryForm.cs;Forms/MainForm.cs;Forms/PartyPaymentForm.cs;Forms/RecordEditorForm.cs;Forms/ReportsForm.cs" />
-main
   </ItemGroup>
 </Project>
