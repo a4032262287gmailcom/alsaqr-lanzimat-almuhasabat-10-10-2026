@@ -11,7 +11,6 @@ from app.core.security import hash_password
 from app.database import SessionFactory, set_tenant_context
 from app.models import (
     AuditLog,
-    FiscalPeriod,
     JournalEntry,
     JournalLine,
     Membership,
