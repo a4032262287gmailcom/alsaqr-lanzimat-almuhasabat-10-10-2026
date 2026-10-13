@@ -524,10 +524,8 @@ internal sealed class CashierForm : Form
         var prompt = new Label { Text = promptText, Dock = DockStyle.Top, Height = 70, TextAlign = ContentAlignment.MiddleRight, Padding = new Padding(12), ForeColor = Color.FromArgb(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB) };
         var amount = new NumericUpDown { Dock = DockStyle.Top, Minimum = 0m, Maximum = 1000000000m, DecimalPlaces = 2, ThousandsSeparator = true, Value = Math.Clamp(initialValue, 0m, 1000000000m), Margin = new Padding(12) };
         var buttons = new FlowLayoutPanel { Dock = DockStyle.Bottom, Height = 52, FlowDirection = FlowDirection.RightToLeft, Padding = new Padding(6) };
-        var ok = MakeButton("تأكيد");
-        ok.DialogResult = DialogResult.OK;
-        var cancel = MakeButton("إلغاء");
-        cancel.DialogResult = DialogResult.Cancel;
+        var ok = new Button { Text = "تأكيد", Width = 110, Height = 34, DialogResult = DialogResult.OK, BackColor = _navy, ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Margin = new Padding(4) };
+        var cancel = new Button { Text = "إلغاء", Width = 110, Height = 34, DialogResult = DialogResult.Cancel, BackColor = _blue, ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Margin = new Padding(4) };
         buttons.Controls.Add(ok); buttons.Controls.Add(cancel);
         form.Controls.Add(amount); form.Controls.Add(prompt); form.Controls.Add(buttons);
         form.AcceptButton = ok;
