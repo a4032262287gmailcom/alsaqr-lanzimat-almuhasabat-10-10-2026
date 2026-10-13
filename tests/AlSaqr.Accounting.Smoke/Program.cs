@@ -99,8 +99,16 @@ try
     Check(Money(finalVat.Rows[0]["ضريبة المخرجات"]) == 3m, "sales return reduces output VAT");
     Check(Money(finalVat.Rows[0]["ضريبة المدخلات"]) == 4.8m, "purchase return reduces input VAT");
     Check(Money(finalVat.Rows[0]["صافي الضريبة المستحقة"]) == -1.8m, "VAT report nets both kinds of returns");
-    Check(service.StockMovementRegister(DateTime.Today, DateTime.Today).Rows.Count == 5, "both returns create auditable stock movements");
-    Check(service.StockReconciliation().Rows.Count == 0, "stock ledger reconciles after both returns");
+    var adjustments = new InventoryAdjustmentService();
+    var decreaseId = adjustments.AdjustStock(product.Id, DateTime.Today, -1m, "اختبار عجز جرد");
+    var increaseId = adjustments.AdjustStock(product.Id, DateTime.Today, 2m, "اختبار زيادة جرد");
+    Check(decreaseId > 0 && increaseId > 0, "inventory adjustments are persisted with unique references");
+    Check(service.ActiveProducts().Single(p => p.Id == product.Id).Quantity == 14m, "stock adjustment updates the real product balance");
+    Check(adjustments.Register(DateTime.Today, DateTime.Today).Rows.Count == 2, "inventory adjustment register reads persisted records");
+    ExpectFailure(() => adjustments.AdjustStock(product.Id, DateTime.Today, -100m, "اختبار عجز يتجاوز الرصيد"),
+        "stock shortage greater than quantity is rejected");
+    Check(service.StockMovementRegister(DateTime.Today, DateTime.Today).Rows.Count == 7, "both returns and stock adjustments are retained in movement ledger");
+    Check(service.StockReconciliation().Rows.Count == 0, "stock ledger reconciles after returns and adjustments");
     var finalTrialBalance = service.TrialBalance(DateTime.Today, DateTime.Today);
     Check(finalTrialBalance.Rows.Cast<DataRow>().Sum(r => Money(r["إجمالي مدين"])) ==
           finalTrialBalance.Rows.Cast<DataRow>().Sum(r => Money(r["إجمالي دائن"])),
