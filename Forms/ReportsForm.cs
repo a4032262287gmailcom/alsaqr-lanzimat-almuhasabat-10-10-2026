@@ -80,20 +80,20 @@ internal sealed class ReportsForm : Form
         string sql = _report.SelectedIndex switch
         {
             0 => @"SELECT a.Code AS 'رمز الحساب',a.Name AS 'اسم الحساب',
-COALESCE(SUM(l.DebitHalalas),0)/100.0 AS 'إجمالي المدين',
-COALESCE(SUM(l.CreditHalalas),0)/100.0 AS 'إجمالي الدائن',
-(COALESCE(SUM(l.DebitHalalas),0)-COALESCE(SUM(l.CreditHalalas),0))/100.0 AS 'الرصيد'
+COALESCE(SUM(CASE WHEN j.EntryDate BETWEEN $from AND $to THEN l.DebitHalalas ELSE 0 END),0)/100.0 AS 'إجمالي المدين',
+COALESCE(SUM(CASE WHEN j.EntryDate BETWEEN $from AND $to THEN l.CreditHalalas ELSE 0 END),0)/100.0 AS 'إجمالي الدائن',
+(COALESCE(SUM(CASE WHEN j.EntryDate BETWEEN $from AND $to THEN l.DebitHalalas ELSE 0 END),0)-COALESCE(SUM(CASE WHEN j.EntryDate BETWEEN $from AND $to THEN l.CreditHalalas ELSE 0 END),0))/100.0 AS 'الرصيد'
 FROM Accounts a LEFT JOIN JournalLines l ON l.AccountCode=a.Code
-LEFT JOIN Journals j ON j.Id=l.JournalId AND j.Status='POSTED' AND j.EntryDate BETWEEN $from AND $to
+LEFT JOIN Journals j ON j.Id=l.JournalId AND j.Status='POSTED'
 GROUP BY a.Code,a.Name ORDER BY a.Code",
             1 => @"SELECT a.Code AS 'رمز الحساب',a.Name AS 'البند',
 CASE WHEN a.Type='Revenue' THEN 'إيراد' ELSE 'مصروف' END AS 'التصنيف',
-SUM(l.CreditHalalas-l.DebitHalalas)/100.0 AS 'صافي الحساب'
+CASE WHEN a.Type='Revenue' THEN SUM(l.CreditHalalas-l.DebitHalalas)/100.0 ELSE SUM(l.DebitHalalas-l.CreditHalalas)/100.0 END AS 'صافي الحساب'
 FROM Accounts a JOIN JournalLines l ON l.AccountCode=a.Code JOIN Journals j ON j.Id=l.JournalId
 WHERE j.Status='POSTED' AND j.EntryDate BETWEEN $from AND $to AND a.Type IN ('Revenue','Expense')
 GROUP BY a.Code,a.Name,a.Type ORDER BY a.Type,a.Code",
             2 => @"SELECT a.Code AS 'رمز الحساب',a.Name AS 'البند',a.Type AS 'التصنيف',
-SUM(l.DebitHalalas-l.CreditHalalas)/100.0 AS 'الرصيد المحاسبي'
+CASE WHEN a.Type='Asset' THEN SUM(l.DebitHalalas-l.CreditHalalas)/100.0 ELSE SUM(l.CreditHalalas-l.DebitHalalas)/100.0 END AS 'الرصيد المحاسبي'
 FROM Accounts a JOIN JournalLines l ON l.AccountCode=a.Code JOIN Journals j ON j.Id=l.JournalId
 WHERE j.Status='POSTED' AND j.EntryDate <= $to AND a.Type IN ('Asset','Liability','Equity')
 GROUP BY a.Code,a.Name,a.Type ORDER BY a.Type,a.Code",
@@ -108,8 +108,13 @@ FROM Parties p JOIN Invoices i ON i.PartyId=p.Id
 WHERE i.Status='POSTED' AND i.InvoiceDate BETWEEN $from AND $to
 GROUP BY p.Id,p.Name,i.Kind ORDER BY p.Name",
             _ => @"SELECT p.Code AS 'رمز الصنف',p.Name AS 'الصنف',p.Unit AS 'الوحدة',
-p.Quantity AS 'الرصيد الحالي',p.CostHalalas/100.0 AS 'تكلفة الوحدة',p.Quantity*p.CostHalalas/10000.0 AS 'قيمة المخزون'
-FROM Products p ORDER BY p.Name"
+COALESCE(SUM(CASE WHEN mv.Kind='PURCHASE' THEN mv.Quantity ELSE 0 END),0) AS 'كمية واردة',
+COALESCE(SUM(CASE WHEN mv.Kind='SALE' THEN mv.Quantity ELSE 0 END),0) AS 'كمية منصرفة',
+p.Quantity AS 'الرصيد الحالي',p.CostHalalas/100.0 AS 'تكلفة الوحدة',p.Quantity*p.CostHalalas/100.0 AS 'قيمة المخزون'
+FROM Products p LEFT JOIN
+(SELECT il.ProductId,i.Kind,il.Quantity FROM InvoiceLines il JOIN Invoices i ON i.Id=il.InvoiceId
+ WHERE i.Status='POSTED' AND i.InvoiceDate BETWEEN $from AND $to) mv ON mv.ProductId=p.Id
+GROUP BY p.Id,p.Code,p.Name,p.Unit,p.Quantity,p.CostHalalas ORDER BY p.Name"
         };
 
         using var db = Database.Open();
