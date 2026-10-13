@@ -73,7 +73,7 @@ class TenantOwned:
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 
 
-class Account(TenantOwned, Base):
+class Account(Base, TenantOwned):
     __tablename__ = "accounts"
     __table_args__ = (
         UniqueConstraint("tenant_id", "id", name="uq_accounts_tenant_id"),
@@ -96,7 +96,7 @@ class Account(TenantOwned, Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
 
-class CostCenter(TenantOwned, Base):
+class CostCenter(Base, TenantOwned):
     __tablename__ = "cost_centers"
     __table_args__ = (
         UniqueConstraint("tenant_id", "id", name="uq_cost_centers_tenant_id"),
@@ -110,7 +110,7 @@ class CostCenter(TenantOwned, Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
 
-class Contact(TenantOwned, Base):
+class Contact(Base, TenantOwned):
     __tablename__ = "contacts"
     __table_args__ = (
         UniqueConstraint("tenant_id", "id", name="uq_contacts_tenant_id"),
@@ -133,7 +133,7 @@ class Contact(TenantOwned, Base):
     )
 
 
-class Warehouse(TenantOwned, Base):
+class Warehouse(Base, TenantOwned):
     __tablename__ = "warehouses"
     __table_args__ = (
         UniqueConstraint("tenant_id", "id", name="uq_warehouses_tenant_id"),
@@ -147,7 +147,7 @@ class Warehouse(TenantOwned, Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
 
-class Product(TenantOwned, Base):
+class Product(Base, TenantOwned):
     __tablename__ = "products"
     __table_args__ = (
         UniqueConstraint("tenant_id", "id", name="uq_products_tenant_id"),
@@ -176,7 +176,7 @@ class Product(TenantOwned, Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
 
-class ProductVariant(TenantOwned, Base):
+class ProductVariant(Base, TenantOwned):
     __tablename__ = "product_variants"
     __table_args__ = (
         UniqueConstraint("tenant_id", "id", name="uq_product_variants_tenant_id"),
@@ -193,7 +193,7 @@ class ProductVariant(TenantOwned, Base):
     unit_price_override: Mapped[Decimal | None] = mapped_column(UNIT_AMOUNT)
 
 
-class StockBalance(TenantOwned, Base):
+class StockBalance(Base, TenantOwned):
     __tablename__ = "stock_balances"
     __table_args__ = (
         UniqueConstraint("tenant_id", "id", name="uq_stock_balances_tenant_id"),
@@ -210,7 +210,7 @@ class StockBalance(TenantOwned, Base):
     average_cost: Mapped[Decimal] = mapped_column(UNIT_AMOUNT, default=Decimal("0"), nullable=False)
 
 
-class StockMove(TenantOwned, Base):
+class StockMove(Base, TenantOwned):
     __tablename__ = "stock_moves"
     __table_args__ = (
         UniqueConstraint("tenant_id", "id", name="uq_stock_moves_tenant_id"),
@@ -236,7 +236,7 @@ class StockMove(TenantOwned, Base):
     memo: Mapped[str | None] = mapped_column(Text)
 
 
-class NumberSequence(TenantOwned, Base):
+class NumberSequence(Base, TenantOwned):
     __tablename__ = "number_sequences"
     __table_args__ = (
         UniqueConstraint("tenant_id", "sequence_key", name="uq_number_sequence_key"),
@@ -246,7 +246,7 @@ class NumberSequence(TenantOwned, Base):
     next_value: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
 
 
-class JournalEntry(TenantOwned, Base):
+class JournalEntry(Base, TenantOwned):
     __tablename__ = "journal_entries"
     __table_args__ = (
         UniqueConstraint("tenant_id", "id", name="uq_journal_entries_tenant_id"),
@@ -267,7 +267,7 @@ class JournalEntry(TenantOwned, Base):
     posted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 
-class JournalLine(TenantOwned, Base):
+class JournalLine(Base, TenantOwned):
     __tablename__ = "journal_lines"
     __table_args__ = (
         UniqueConstraint("tenant_id", "id", name="uq_journal_lines_tenant_id"),
@@ -291,7 +291,7 @@ class JournalLine(TenantOwned, Base):
     currency_code: Mapped[str] = mapped_column(String(3), default="SAR", nullable=False)
 
 
-class Invoice(TenantOwned, Base):
+class Invoice(Base, TenantOwned):
     __tablename__ = "invoices"
     __table_args__ = (
         UniqueConstraint("tenant_id", "id", name="uq_invoices_tenant_id"),
@@ -327,7 +327,7 @@ class Invoice(TenantOwned, Base):
     posted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 
-class InvoiceLine(TenantOwned, Base):
+class InvoiceLine(Base, TenantOwned):
     __tablename__ = "invoice_lines"
     __table_args__ = (
         ForeignKeyConstraint(["tenant_id", "invoice_id"], ["invoices.tenant_id", "invoices.id"], ondelete="CASCADE", name="fk_invoice_line_invoice_same_tenant"),
@@ -355,7 +355,7 @@ class InvoiceLine(TenantOwned, Base):
     unit_cost_at_posting: Mapped[Decimal] = mapped_column(UNIT_AMOUNT, default=Decimal("0"), nullable=False)
 
 
-class AuditLog(TenantOwned, Base):
+class AuditLog(Base, TenantOwned):
     __tablename__ = "audit_logs"
     __table_args__ = (
         Index("ix_audit_logs_tenant_time", "tenant_id", "created_at"),
@@ -369,7 +369,7 @@ class AuditLog(TenantOwned, Base):
     remote_address: Mapped[str | None] = mapped_column(String(64))
 
 
-class BillOfMaterials(TenantOwned, Base):
+class BillOfMaterials(Base, TenantOwned):
     __tablename__ = "bills_of_materials"
     __table_args__ = (
         UniqueConstraint("tenant_id", "id", name="uq_bom_tenant_id"),
@@ -384,7 +384,7 @@ class BillOfMaterials(TenantOwned, Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
 
-class BillOfMaterialsLine(TenantOwned, Base):
+class BillOfMaterialsLine(Base, TenantOwned):
     __tablename__ = "bill_of_material_lines"
     __table_args__ = (
         ForeignKeyConstraint(["tenant_id", "bom_id"], ["bills_of_materials.tenant_id", "bills_of_materials.id"], ondelete="CASCADE", name="fk_bom_line_bom_same_tenant"),
