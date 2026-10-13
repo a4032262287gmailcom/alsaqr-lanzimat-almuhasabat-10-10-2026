@@ -48,6 +48,15 @@ class User(Base):
     last_login_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 
+class PermissionDefinition(Base):
+    __tablename__ = "permission_definitions"
+
+    code: Mapped[str] = mapped_column(String(100), primary_key=True)
+    module: Mapped[str] = mapped_column(String(60), nullable=False)
+    action: Mapped[str] = mapped_column(String(60), nullable=False)
+    description: Mapped[str] = mapped_column(String(240), nullable=False)
+
+
 class Membership(Base):
     __tablename__ = "memberships"
     __table_args__ = (
@@ -60,6 +69,7 @@ class Membership(Base):
     tenant_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), ForeignKey("tenants.id", ondelete="CASCADE"), nullable=False)
     user_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     role: Mapped[str] = mapped_column(String(24), nullable=False, default="Admin")
+    branch_scope_all: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
 
@@ -71,6 +81,60 @@ class TenantOwned:
     tenant_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), ForeignKey("tenants.id", ondelete="CASCADE"), nullable=False, index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
+
+
+class RolePermission(Base, TenantOwned):
+    __tablename__ = "role_permissions"
+    __table_args__ = (
+        UniqueConstraint("tenant_id", "role_code", "permission_code", name="uq_role_permission"),
+        CheckConstraint(
+            "role_code in ('Owner','Admin','CFO','Accountant','Cashier','Sales','Purchasing','Storekeeper','HR','Auditor','FieldAgent','ReadOnly')",
+            name="ck_role_permission_role",
+        ),
+        ForeignKeyConstraint(["permission_code"], ["permission_definitions.code"], ondelete="RESTRICT", name="fk_role_permission_permission"),
+        Index("ix_role_permissions_tenant_role", "tenant_id", "role_code"),
+    )
+
+    role_code: Mapped[str] = mapped_column(String(24), nullable=False)
+    permission_code: Mapped[str] = mapped_column(String(100), nullable=False)
+    allowed: Mapped[bool] = mapped_column(Boolean, nullable=False)
+
+
+class Branch(Base, TenantOwned):
+    __tablename__ = "branches"
+    __table_args__ = (
+        UniqueConstraint("tenant_id", "id", name="uq_branches_tenant_id"),
+        UniqueConstraint("tenant_id", "code", name="uq_branches_tenant_code"),
+    )
+
+    code: Mapped[str] = mapped_column(String(32), nullable=False)
+    name: Mapped[str] = mapped_column(String(180), nullable=False)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+
+
+class UserBranchAccess(Base, TenantOwned):
+    __tablename__ = "user_branch_access"
+    __table_args__ = (
+        UniqueConstraint("tenant_id", "user_id", "branch_id", name="uq_user_branch_access"),
+        ForeignKeyConstraint(
+            ["tenant_id", "user_id"],
+            ["memberships.tenant_id", "memberships.user_id"],
+            ondelete="CASCADE",
+            name="fk_user_branch_membership_same_tenant",
+        ),
+        ForeignKeyConstraint(
+            ["tenant_id", "branch_id"],
+            ["branches.tenant_id", "branches.id"],
+            ondelete="CASCADE",
+            name="fk_user_branch_branch_same_tenant",
+        ),
+        CheckConstraint("access_level in ('VIEW','OPERATE','ADMIN')", name="ck_user_branch_access_level"),
+        Index("ix_user_branch_access_tenant_user", "tenant_id", "user_id"),
+    )
+
+    user_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False)
+    branch_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False)
+    access_level: Mapped[str] = mapped_column(String(12), default="VIEW", nullable=False)
 
 
 class Account(Base, TenantOwned):
