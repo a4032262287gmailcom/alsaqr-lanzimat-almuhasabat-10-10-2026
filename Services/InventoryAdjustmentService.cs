@@ -27,8 +27,17 @@ ORDER BY a.AdjustmentDate,a.Id";
         cmd.Parameters.AddWithValue("$from", Date(from));
         cmd.Parameters.AddWithValue("$to", Date(to));
         using var reader = cmd.ExecuteReader();
+        // Build the schema explicitly so provider metadata from joined tables cannot
+        // attach inherited primary/unique constraints that do not apply to this report.
         var table = new DataTable();
-        table.Load(reader);
+        for (var i = 0; i < reader.FieldCount; i++)
+            table.Columns.Add(reader.GetName(i), typeof(object));
+        while (reader.Read())
+        {
+            var values = new object[reader.FieldCount];
+            reader.GetValues(values);
+            table.Rows.Add(values);
+        }
         return table;
     }
 
