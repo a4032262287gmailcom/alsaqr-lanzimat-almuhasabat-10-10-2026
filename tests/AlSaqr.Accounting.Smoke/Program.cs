@@ -118,13 +118,54 @@ try
     Check(Money(finalVat.Rows[0]["ضريبة المخرجات"]) == 3m, "sales return reduces output VAT");
     Check(Money(finalVat.Rows[0]["ضريبة المدخلات"]) == 4.8m, "purchase return reduces input VAT");
     Check(Money(finalVat.Rows[0]["صافي الضريبة المستحقة"]) == -1.8m, "VAT report nets both kinds of returns");
-    Check(service.StockMovementRegister(DateTime.Today, DateTime.Today).Rows.Count == 5, "both returns create auditable stock movements");
-    Check(service.StockReconciliation().Rows.Count == 0, "stock ledger reconciles after both returns");
+    var adjustments = new InventoryAdjustmentService();
+    var decreaseId = adjustments.AdjustStock(product.Id, DateTime.Today, -1m, "اختبار عجز جرد");
+    var increaseId = adjustments.AdjustStock(product.Id, DateTime.Today, 2m, "اختبار زيادة جرد");
+    Check(decreaseId > 0 && increaseId > 0, "inventory adjustments are persisted with unique references");
+    Check(service.ActiveProducts().Single(p => p.Id == product.Id).Quantity == 14m, "stock adjustment updates the real product balance");
+    Check(adjustments.Register(DateTime.Today, DateTime.Today).Rows.Count == 2, "inventory adjustment register reads persisted records");
+    ExpectFailure(() => adjustments.AdjustStock(product.Id, DateTime.Today, -100m, "اختبار عجز يتجاوز الرصيد"),
+        "stock shortage greater than quantity is rejected");
+    Check(service.StockMovementRegister(DateTime.Today, DateTime.Today).Rows.Count == 7, "both returns and stock adjustments are retained in movement ledger");
+    Check(service.StockReconciliation().Rows.Count == 0, "stock ledger reconciles after returns and adjustments");
     var finalTrialBalance = service.TrialBalance(DateTime.Today, DateTime.Today);
     Check(finalTrialBalance.Rows.Cast<DataRow>().Sum(r => Money(r["إجمالي مدين"])) ==
           finalTrialBalance.Rows.Cast<DataRow>().Sum(r => Money(r["إجمالي دائن"])),
           "trial balance remains balanced after returns");
-    Console.WriteLine("SMOKE TEST PASSED: real posting, inventory, customer/supplier subledgers, VAT, reports, returns, security and audit.");
+    var cashier = new CashierService();
+    var cashCustomerId = cashier.EnsureCashCustomer();
+    var shift = cashier.OpenSession("smoke-cashier", 100m, "افتتاح اختبار");
+    Check(shift.IsOpen && shift.OpeningCash == 100m, "cashier shift opens with counted opening cash");
+    ExpectFailure(() => cashier.OpenSession("smoke-cashier", 5m), "duplicate open cashier shifts are rejected");
+    var cashierInvoiceId = cashier.Checkout(DateTime.Today, cashCustomerId,
+        new[] { new InvoiceLineInput(product.Id, 1m, 20m) },
+        10m, "CASH", 25m, "smoke-cashier", shift.Id);
+    var cashierReceipt = cashier.GetReceipt(cashierInvoiceId);
+    Check(cashierReceipt.Discount == 2m && cashierReceipt.Vat == 2.7m && cashierReceipt.Total == 20.7m,
+        "cashier checkout applies line discount and VAT correctly");
+    Check(cashierReceipt.AmountTendered == 25m && cashierReceipt.Change == 4.3m,
+        "cashier checkout records tender and calculated change");
+    var openedShiftAfterSale = cashier.GetActiveSession("smoke-cashier");
+    Check(openedShiftAfterSale is not null && openedShiftAfterSale.CashSales == 20.7m && openedShiftAfterSale.InvoiceCount == 1,
+        "cashier shift tracks the posted cash invoice");
+    var closedShift = cashier.CloseSession(shift.Id, "smoke-cashier", 120m, "إقفال اختبار");
+    Check(!closedShift.IsOpen && closedShift.ExpectedCash == 120.7m && closedShift.CountedCash == 120m &&
+          closedShift.Difference == -0.7m, "cashier shift closure stores expected cash and shortage variance");
+    Check(cashier.GetActiveSession("smoke-cashier") is null, "closed cashier shift no longer appears as active");
+    var shiftRegister = cashier.SessionRegister(DateTime.Today, DateTime.Today);
+    Check(shiftRegister.Rows.Count == 1 && Convert.ToString(shiftRegister.Rows[0]["الحالة"]) == "مغلقة" &&
+          Money(shiftRegister.Rows[0]["الفرق"]) == -0.7m,
+        "cashier shift register reports closure status and counted cash variance");
+    Check(service.ActiveProducts().Single(p => p.Id == product.Id).Quantity == 13m,
+        "cashier sale persists stock reduction");
+    Check(service.StockMovementRegister(DateTime.Today, DateTime.Today).Rows.Count == 8,
+        "cashier sale is recorded in stock movement ledger");
+    Check(service.StockReconciliation().Rows.Count == 0, "stock ledger reconciles after POS sale");
+    var postCashierTrialBalance = service.TrialBalance(DateTime.Today, DateTime.Today);
+    Check(postCashierTrialBalance.Rows.Cast<DataRow>().Sum(r => Money(r["إجمالي مدين"])) ==
+          postCashierTrialBalance.Rows.Cast<DataRow>().Sum(r => Money(r["إجمالي دائن"])),
+          "trial balance remains balanced after cashier checkout");
+    Console.WriteLine("SMOKE TEST PASSED: accounting, VAT, returns, inventory adjustments, POS checkout, cashier shifts, subledgers, reports, security and audit.");
     Environment.ExitCode = 0;
 }
 catch (Exception ex)
