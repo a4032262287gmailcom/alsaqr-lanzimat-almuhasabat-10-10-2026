@@ -1,3 +1,4 @@
+import json
 from datetime import date, datetime, timezone
 from decimal import Decimal, ROUND_HALF_UP
 from typing import Any
@@ -95,7 +96,15 @@ async def assert_period_open(session: AsyncSession, tenant_id: UUID, posting_dat
         .order_by(FiscalPeriod.start_date.desc())
         .with_for_update()
     )
-    if period is not None and period.status == "CLOSED":
+    if period is None:
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "message": "No fiscal period covers this posting date; create an open period before posting",
+                "posting_date": posting_date.isoformat(),
+            },
+        )
+    if period.status != "OPEN":
         raise HTTPException(
             status_code=423,
             detail={
@@ -164,6 +173,12 @@ async def create_journal(
     return entry
 
 
+def _json_safe(value: dict[str, Any] | None) -> dict[str, Any] | None:
+    if value is None:
+        return None
+    return json.loads(json.dumps(value, ensure_ascii=False, default=str))
+
+
 async def audit(
     session: AsyncSession,
     tenant_id: UUID,
@@ -173,15 +188,25 @@ async def audit(
     entity_id: UUID | None,
     details: dict[str, Any] | None = None,
     remote_address: str | None = None,
+    *,
+    before_data: dict[str, Any] | None = None,
+    after_data: dict[str, Any] | None = None,
+    user_agent: str | None = None,
+    correlation_id: str | None = None,
 ) -> None:
+    request_context = session.info.get("request_audit_context", {})
     session.add(AuditLog(
         tenant_id=tenant_id,
         actor_user_id=actor_user_id,
         action=action,
         entity_type=entity_type,
         entity_id=entity_id,
-        details=details or {},
-        remote_address=remote_address,
+        details=_json_safe(details or {}) or {},
+        before_data=_json_safe(before_data),
+        after_data=_json_safe(after_data),
+        remote_address=remote_address or request_context.get("remote_address"),
+        user_agent=user_agent or request_context.get("user_agent"),
+        correlation_id=correlation_id or request_context.get("correlation_id"),
     ))
     await session.flush()
 
