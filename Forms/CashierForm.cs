@@ -524,9 +524,9 @@ internal sealed class CashierForm : Form
         var prompt = new Label { Text = promptText, Dock = DockStyle.Top, Height = 70, TextAlign = ContentAlignment.MiddleRight, Padding = new Padding(12), ForeColor = Color.FromArgb(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB) };
         var amount = new NumericUpDown { Dock = DockStyle.Top, Minimum = 0m, Maximum = 1000000000m, DecimalPlaces = 2, ThousandsSeparator = true, Value = Math.Clamp(initialValue, 0m, 1000000000m), Margin = new Padding(12) };
         var buttons = new FlowLayoutPanel { Dock = DockStyle.Bottom, Height = 52, FlowDirection = FlowDirection.RightToLeft, Padding = new Padding(6) };
-        var ok = MakeButton("تأكيد");
+        var ok = MakeButton("تأكيد", static () => { }, true);
         ok.DialogResult = DialogResult.OK;
-        var cancel = MakeButton("إلغاء");
+        var cancel = MakeButton("إلغاء", static () => { }, false);
         cancel.DialogResult = DialogResult.Cancel;
         buttons.Controls.Add(ok); buttons.Controls.Add(cancel);
         form.Controls.Add(amount); form.Controls.Add(prompt); form.Controls.Add(buttons);
