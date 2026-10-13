@@ -40,6 +40,7 @@ public sealed class MainForm : Form
         AddNav(nav, "الأصناف والمخزون", "products");
         AddNav(nav, "القيود اليومية", "journals");
         AddNav(nav, "فواتير البيع والشراء", "invoices");
+        AddNav(nav, "سندات القبض والصرف", "payments");
         AddNav(nav, "التقارير المالية", "reports");
         AddNav(nav, "سجل التدقيق", "audit");
 
@@ -61,11 +62,14 @@ public sealed class MainForm : Form
         journal.Click += (_, _) => { using var form = new JournalEntryForm(); if (form.ShowDialog(this) == DialogResult.OK) Navigate(_view); };
         var reports = new Button { Text = "التقارير", Width = 85, Height = 30 };
         reports.Click += (_, _) => { using var form = new ReportsForm(); form.ShowDialog(this); };
+        var payment = new Button { Text = "سند قبض/صرف", Width = 115, Height = 30 };
+        payment.Click += (_, _) => { using var form = new PartyPaymentForm(); if (form.ShowDialog(this) == DialogResult.OK) Navigate(_view); };
         tools.Controls.Add(_refresh);
         tools.Controls.Add(_add);
         tools.Controls.Add(_edit);
         tools.Controls.Add(invoice);
         tools.Controls.Add(journal);
+        tools.Controls.Add(payment);
         tools.Controls.Add(reports);
         tools.Controls.Add(_search);
 
@@ -119,6 +123,7 @@ public sealed class MainForm : Form
             "products" => "SELECT Id AS 'الرقم', Code AS 'رمز الصنف', Name AS 'اسم الصنف', Unit AS 'الوحدة', Quantity AS 'الكمية', CostHalalas / 100.0 AS 'التكلفة بالريال', PriceHalalas / 100.0 AS 'السعر بالريال', VatRate AS 'الضريبة %', IsActive AS 'نشط' FROM Products ORDER BY Name",
             "journals" => "SELECT Id AS 'الرقم', Number AS 'رقم القيد', EntryDate AS 'التاريخ', Memo AS 'البيان', Source AS 'المصدر', Status AS 'الحالة' FROM Journals ORDER BY EntryDate DESC, Id DESC",
             "invoices" => "SELECT i.Id AS 'الرقم', CASE i.Kind WHEN 'SALE' THEN 'مبيعات' ELSE 'مشتريات' END AS 'النوع', i.Number AS 'رقم الفاتورة', i.InvoiceDate AS 'التاريخ', p.Name AS 'العميل / المورد', i.SubtotalHalalas / 100.0 AS 'قبل الضريبة', i.VatHalalas / 100.0 AS 'الضريبة', i.TotalHalalas / 100.0 AS 'الإجمالي' FROM Invoices i JOIN Parties p ON p.Id=i.PartyId ORDER BY i.InvoiceDate DESC, i.Id DESC",
+            "payments" => "SELECT pp.Id AS 'الرقم', CASE pp.Kind WHEN 'RECEIPT' THEN 'قبض' ELSE 'صرف' END AS 'النوع', pp.Number AS 'رقم السند', pp.PaymentDate AS 'التاريخ', p.Name AS 'الطرف', pp.AmountHalalas/100.0 AS 'المبلغ', pp.Method AS 'الطريقة', pp.Memo AS 'البيان' FROM PartyPayments pp JOIN Parties p ON p.Id=pp.PartyId ORDER BY pp.PaymentDate DESC,pp.Id DESC",
             "audit" => "SELECT Id AS 'الرقم', EventAt AS 'الوقت', Actor AS 'المستخدم', Action AS 'العملية', Entity AS 'الكيان', EntityId AS 'معرف السجل', Details AS 'التفاصيل' FROM AuditLog ORDER BY Id DESC",
             _ => null
         };
@@ -126,7 +131,7 @@ public sealed class MainForm : Form
         {
             "dashboard" => "الرئيسية", "accounts" => "دليل الحسابات", "parties" => "العملاء والموردون",
             "products" => "الأصناف والمخزون", "journals" => "القيود اليومية", "invoices" => "فواتير البيع والشراء",
-            "audit" => "سجل التدقيق", "reports" => "التقارير المالية", _ => "النظام"
+            "audit" => "سجل التدقيق", "payments" => "سندات القبض والصرف", "reports" => "التقارير المالية", _ => "النظام"
         };
         if (view == "reports")
         {
@@ -145,6 +150,7 @@ public sealed class MainForm : Form
             table.Rows.Add("الأصناف", CountRows("Products"));
             table.Rows.Add("القيود المرحلة", CountRows("Journals"));
             table.Rows.Add("الفواتير المرحلة", CountRows("Invoices"));
+            table.Rows.Add("سندات القبض والصرف", CountRows("PartyPayments"));
             table.Rows.Add("إجمالي المبيعات (ر.س)", ScalarDecimal("SELECT COALESCE(SUM(TotalHalalas),0)/100.0 FROM Invoices WHERE Kind='SALE'"));
             table.Rows.Add("إجمالي المشتريات (ر.س)", ScalarDecimal("SELECT COALESCE(SUM(TotalHalalas),0)/100.0 FROM Invoices WHERE Kind='PURCHASE'"));
             _grid.DataSource = table;
@@ -167,7 +173,7 @@ public sealed class MainForm : Form
 
     private long CountRows(string table)
     {
-        if (!new[] { "Accounts", "Parties", "Products", "Journals", "Invoices" }.Contains(table)) throw new ArgumentOutOfRangeException(nameof(table));
+        if (!new[] { "Accounts", "Parties", "Products", "Journals", "Invoices", "PartyPayments" }.Contains(table)) throw new ArgumentOutOfRangeException(nameof(table));
         using var db = Database.Open();
         using var cmd = db.CreateCommand();
         cmd.CommandText = "SELECT COUNT(*) FROM " + table;
