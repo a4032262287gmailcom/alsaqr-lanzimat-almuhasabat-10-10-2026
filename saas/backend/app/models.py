@@ -455,7 +455,11 @@ class AuditLog(Base, TenantOwned):
     entity_type: Mapped[str] = mapped_column(String(80), nullable=False)
     entity_id: Mapped[UUID | None] = mapped_column(Uuid(as_uuid=True))
     details: Mapped[dict] = mapped_column(JSON, default=dict, nullable=False)
+    before_data: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    after_data: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     remote_address: Mapped[str | None] = mapped_column(String(64))
+    user_agent: Mapped[str | None] = mapped_column(String(500))
+    correlation_id: Mapped[str | None] = mapped_column(String(80))
 
 
 class BillOfMaterials(Base, TenantOwned):
