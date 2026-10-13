@@ -691,6 +691,7 @@ internal sealed partial class MainForm : Form
 
 internal sealed class JournalEntryForm : Form
 {
+    private readonly LicenseService _licensing = new();
     private readonly AccountingService _service;
     private readonly List<AccountInfo> _accounts;
     private readonly List<PartyLookup> _parties;
@@ -727,6 +728,8 @@ internal sealed class JournalEntryForm : Form
     {
         try
         {
+            if (!_licensing.CheckAccess().HasAccess)
+                throw new InvalidOperationException("الترخيص غير صالح أو انتهت صلاحيته؛ لا يمكن ترحيل القيد.");
             _grid.EndEdit();
             var lines=new List<JournalLineInput>();
             foreach(DataGridViewRow row in _grid.Rows)
@@ -757,6 +760,7 @@ internal sealed class JournalEntryForm : Form
 
 internal sealed class InvoiceEntryForm : Form
 {
+    private readonly LicenseService _licensing = new();
     private readonly AccountingService _service;
     private readonly string _kind;
     private readonly ComboBox _party=new() { Width=330,DropDownStyle=ComboBoxStyle.DropDownList };
@@ -831,6 +835,8 @@ internal sealed class InvoiceEntryForm : Form
     {
         try
         {
+            if (!_licensing.CheckAccess().HasAccess)
+                throw new InvalidOperationException("الترخيص غير صالح أو انتهت صلاحيته؛ لا يمكن ترحيل الفاتورة.");
             if(_party.SelectedValue is null) throw new InvalidOperationException("أضف الطرف المناسب واختره أولًا.");
             _service.CreateInvoice(_kind,_date.Value.Date,Convert.ToInt32(_party.SelectedValue),_credit.Checked,_lines.Select(l=>l.Input).ToList());
             DialogResult=DialogResult.OK; Close();
