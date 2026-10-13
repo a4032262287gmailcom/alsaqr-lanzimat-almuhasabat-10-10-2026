@@ -15,8 +15,9 @@ internal static class TableSearchFilter
             return;
         }
 
+        var table = view.Table ?? throw new ArgumentException("مصدر بيانات البحث غير متاح.", nameof(view));
         var pattern = "%" + EscapeLikeLiteral(query.Trim()).Replace("'", "''") + "%";
-        var expressions = view.Table.Columns
+        var expressions = table.Columns
             .Cast<DataColumn>()
             .Select(column => $"Convert({QuoteIdentifier(column.ColumnName)}, 'System.String') LIKE '{pattern}'")
             .ToArray();
