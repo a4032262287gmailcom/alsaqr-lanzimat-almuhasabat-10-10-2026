@@ -382,6 +382,7 @@ internal sealed class MainForm : Form
         return grid;
     }
 
+    private static string Money(decimal amount) => amount.ToString("N2", CultureInfo.GetCultureInfo("ar-SA")) + " ر.س";
     private static Button Button(string caption) => new() { Text=caption, Height=37, AutoSize=false, BackColor=Color.FromArgb(18,32,52), ForeColor=Color.White, FlatStyle=FlatStyle.Flat, Margin=new Padding(4), Cursor=Cursors.Hand, Padding=new Padding(6,2,6,2) };
     private static Label LabelFor(string caption) => new() { Text=caption, AutoSize=true, Padding=new Padding(0,10,0,0), ForeColor=Color.FromArgb(18,32,52) };
     private static TextBox TextBox() => new() { Width=340, Height=30, BorderStyle=BorderStyle.FixedSingle };
