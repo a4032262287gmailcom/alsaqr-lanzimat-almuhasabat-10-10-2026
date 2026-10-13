@@ -21,6 +21,7 @@ internal sealed class CashierForm : Form
     }
 
     private readonly CashierService _cashier = new();
+    private readonly LicenseService _licensing = new();
     private readonly AuthUser _user;
     private readonly List<CartLine> _cart = new();
     private readonly List<CashierProduct> _searchResults = new();
@@ -459,6 +460,8 @@ internal sealed class CashierForm : Form
 
     private void Checkout()
     {
+        if (!_licensing.CheckAccess().HasAccess)
+            throw new InvalidOperationException("الترخيص غير صالح أو انتهت صلاحيته؛ لا يمكن اعتماد البيع.");
         if (!_user.Role.Equals("Admin", StringComparison.Ordinal) && !_user.Role.Equals("Accountant", StringComparison.Ordinal))
             throw new InvalidOperationException("ليس لديك صلاحية اعتماد البيع.");
         if (_cart.Count == 0) throw new InvalidOperationException("السلة فارغة.");
