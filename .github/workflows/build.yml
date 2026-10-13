@@ -50,10 +50,12 @@ jobs:
           $requestPath = Join-Path $testDir 'request.json'
           $outputPath = Join-Path $testDir 'must-not-be-issued.json'
 
-          $wrongKey = [System.Security.Cryptography.ECDsa]::Create(
-            [System.Security.Cryptography.ECCurve]::NamedCurves.nistP256
-          )
+          $wrongKey = [System.Security.Cryptography.ECDsa]::Create()
+          if ($null -eq $wrongKey) {
+            throw 'Could not create a temporary ECDSA provider for the negative test.'
+          }
           try {
+            $wrongKey.GenerateKey([System.Security.Cryptography.ECCurve]::NamedCurves.nistP256)
             [System.IO.File]::WriteAllText($privateKeyPath, $wrongKey.ExportECPrivateKeyPem())
           } finally {
             $wrongKey.Dispose()
