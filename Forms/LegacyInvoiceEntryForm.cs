@@ -579,7 +579,9 @@ internal sealed class LegacyInvoiceEntryForm : Form
             if (_party.SelectedValue is null)
                 throw new InvalidOperationException(_kind == "PURCHASE" ? "أضف المورد واختره أولًا." : "أضف العميل واختره أولًا.");
             var lines = CollectLines();
-            _service.CreateInvoice(_kind, _date.Value.Date, Convert.ToInt32(_party.SelectedValue, CultureInfo.InvariantCulture), _credit.Checked, lines, notes: BuildNotes());
+            var invoiceId = _service.CreateInvoice(_kind, _date.Value.Date, Convert.ToInt32(_party.SelectedValue, CultureInfo.InvariantCulture), _credit.Checked, lines, notes: BuildNotes());
+            PostedInvoiceNumber = _service.InvoiceNumber(invoiceId);
+            _documentNumber.Text = PostedInvoiceNumber ?? "تم الاعتماد";
             DialogResult = DialogResult.OK;
             Close();
         }
