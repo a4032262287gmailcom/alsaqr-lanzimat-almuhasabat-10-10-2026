@@ -6,7 +6,7 @@ using AlSaqr.Accounting.Data;
 namespace AlSaqr.Accounting.Services;
 
 internal sealed record JournalLineInput(string AccountCode, decimal Debit, decimal Credit, string Memo = "", int? PartyId = null);
-internal sealed record InvoiceLineInput(int ProductId, decimal Quantity, decimal UnitPrice);
+internal sealed record InvoiceLineInput(int ProductId, decimal Quantity, decimal UnitPrice, decimal DiscountPercent = 0m);
 internal sealed record AccountInfo(string Code, string Name, string Type, bool IsActive);
 internal sealed record ProductInfo(int Id, string Code, string Name, string Unit, decimal Quantity, decimal Cost, decimal Price, decimal VatRate);
 internal sealed record DashboardInfo(decimal Cash, decimal Receivables, decimal Payables, decimal SalesMonth, decimal ExpensesMonth, int PostedEntries);
@@ -294,7 +294,7 @@ VALUES($date,$product,'OPENING',$product,$qty,$zero,$cost,'رصيد افتتاح
     }
 
     public long CreateInvoice(string kind, DateTime invoiceDate, int partyId, bool onCredit, IReadOnlyList<InvoiceLineInput> lines,
-        decimal discountPercent = 0m, string paymentMethod = "CASH", decimal? amountTendered = null, string cashAccountCode = "1010", int? cashierSessionId = null)
+        decimal discountPercent = 0m, string paymentMethod = "CASH", decimal? amountTendered = null, string cashAccountCode = "1010", int? cashierSessionId = null, string? notes = null)
     {
         if (kind != "SALE" && kind != "PURCHASE") throw new ArgumentException("نوع الفاتورة غير صالح.");
         if (partyId <= 0) throw new ArgumentException("اختر العميل أو المورد.");
@@ -336,6 +336,7 @@ VALUES($date,$product,'OPENING',$product,$qty,$zero,$cost,'رصيد افتتاح
         foreach (var line in lines)
         {
             if (line.ProductId <= 0 || line.Quantity <= 0 || line.UnitPrice < 0) throw new ArgumentException("بيانات سطر الفاتورة غير صالحة.");
+            if (line.DiscountPercent < 0m || line.DiscountPercent >= 100m) throw new ArgumentException("نسبة خصم السطر يجب أن تكون من صفر إلى أقل من 100%.");
             using var productCmd = db.CreateCommand();
             productCmd.Transaction = tx;
             productCmd.CommandText = "SELECT Code,Name,Quantity,CostHalalas,PriceHalalas,VatRate,IsActive FROM Products WHERE Id=$id";
@@ -352,8 +353,9 @@ VALUES($date,$product,'OPENING',$product,$qty,$zero,$cost,'رصيد افتتاح
                 throw new InvalidOperationException($"الكمية المتاحة من الصنف {productName} هي {quantity:0.###} فقط.");
 
             var originalNetHalalas = ToHalalas(line.Quantity * line.UnitPrice);
-            var netHalalas = kind == "SALE"
-                ? ToHalalas(FromHalalas(originalNetHalalas) * (100m - discountPercent) / 100m)
+            var effectiveDiscountPercent = 100m - ((100m - discountPercent) * (100m - line.DiscountPercent) / 100m);
+            var netHalalas = effectiveDiscountPercent > 0m
+                ? ToHalalas(FromHalalas(originalNetHalalas) * (100m - effectiveDiscountPercent) / 100m)
                 : originalNetHalalas;
             discountTotal += FromHalalas(originalNetHalalas - netHalalas);
             var vatHalalas = ToHalalas(FromHalalas(netHalalas) * vatRate / 100m);
@@ -401,7 +403,9 @@ VALUES($date,$product,'OPENING',$product,$qty,$zero,$cost,'رصيد افتتاح
             journalLines.Add(new JournalLineInput(onCredit ? "2100" : cashAccountCode, 0, FromHalalas(totalHalalas), onCredit ? "مستحق للمورد" : "شراء نقدي", onCredit ? partyId : null));
         }
         ValidateBalanced(journalLines);
-        var journalId = InsertJournal(db, tx, invoiceDate, $"فاتورة {(kind == "SALE" ? "بيع" : "شراء")} {number}", kind, journalLines);
+        var journalMemo = $"فاتورة {(kind == "SALE" ? "بيع" : "شراء")} {number}";
+        if (!string.IsNullOrWhiteSpace(notes)) journalMemo += " — " + notes.Trim();
+        var journalId = InsertJournal(db, tx, invoiceDate, journalMemo, kind, journalLines);
 
         using (var invoiceCmd = db.CreateCommand())
         {
@@ -417,7 +421,8 @@ VALUES($kind,$number,$date,$party,$credit,'POSTED',$subtotal,$vat,$total,$discou
             invoiceCmd.Parameters.AddWithValue("$vat", vatHalalasTotal);
             invoiceCmd.Parameters.AddWithValue("$total", totalHalalas);
             invoiceCmd.Parameters.AddWithValue("$discount", discountHalalas);
-            invoiceCmd.Parameters.AddWithValue("$discountPercent", (double)(kind == "SALE" ? discountPercent : 0m));
+            var recordedDiscountPercent = grossSubtotalHalalas > 0 ? (decimal)discountHalalas * 100m / grossSubtotalHalalas : 0m;
+            invoiceCmd.Parameters.AddWithValue("$discountPercent", (double)recordedDiscountPercent);
             invoiceCmd.Parameters.AddWithValue("$paymentMethod", paymentMethod);
             invoiceCmd.Parameters.AddWithValue("$tendered", tenderedHalalas);
             invoiceCmd.Parameters.AddWithValue("$change", changeHalalas);
@@ -457,7 +462,8 @@ VALUES($invoice,$product,$qty,$price,$cost,$rate,$net,$vat,$total)";
                 stockCmd.CommandText = @"UPDATE Products SET CostHalalas=
 CASE WHEN Quantity+$qty > 0 THEN CAST(((Quantity*CostHalalas)+($qty*$unitCost))/ (Quantity+$qty) AS INTEGER) ELSE CostHalalas END,
 Quantity=Quantity+$qty WHERE Id=$id";
-                stockCmd.Parameters.AddWithValue("$unitCost", ToHalalas(item.Input.UnitPrice));
+                var effectiveDiscount = 100m - ((100m - discountPercent) * (100m - item.Input.DiscountPercent) / 100m);
+                stockCmd.Parameters.AddWithValue("$unitCost", ToHalalas(item.Input.UnitPrice * (100m - effectiveDiscount) / 100m));
             }
             stockCmd.Parameters.AddWithValue("$qty", (double)item.Input.Quantity);
             stockCmd.Parameters.AddWithValue("$id", item.Input.ProductId);

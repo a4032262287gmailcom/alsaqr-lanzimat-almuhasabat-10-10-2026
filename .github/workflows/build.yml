@@ -8,6 +8,7 @@ on:
       - desktop-accounting-core-20261013
       - feature/erp-pos-cashier-20261013
       - fix/clean-desktop-build-20261013-2
+      - ui/purchase-data-screen-reference-20261014
   pull_request:
     branches:
       - main

@@ -575,7 +575,7 @@ internal sealed partial class MainForm : Form
     private void AddInvoice(string kind)
     {
         if (!CanPost) { Denied(); return; }
-        using var form = new InvoiceEntryForm(_service, kind);
+        using var form = new LegacyInvoiceEntryForm(_service, kind);
         if (form.ShowDialog(this) == DialogResult.OK)
         {
             ShowInvoices(kind);

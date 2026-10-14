@@ -2,7 +2,7 @@ name: Build Windows Desktop
 
 on:
   push:
-    branches: [main, desktop-no-license-window]
+    branches: [main, desktop-no-license-window, ui/purchase-data-screen-reference-20261014]
   pull_request:
     branches: [main]
 
