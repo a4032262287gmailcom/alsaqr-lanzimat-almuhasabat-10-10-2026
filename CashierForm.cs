@@ -40,18 +40,15 @@ internal sealed class CashierForm : Form
                     return true;
                 case Keys.F3:
                     _quantity.Focus();
-                    _quantity.Select(0, _quantity.Text.Length);
                     return true;
                 case Keys.F4:
                     _discount.Focus();
-                    _discount.Select(0, _discount.Text.Length);
                     return true;
                 case Keys.F6:
                     _payment.Focus();
                     return true;
                 case Keys.F7:
                     _tendered.Focus();
-                    _tendered.Select(0, _tendered.Text.Length);
                     return true;
                 case Keys.F8:
                     _grid.Focus();
