@@ -84,6 +84,43 @@ ORDER BY s.name,t.name,c.column_id";
         return new LocalSqlServerReport(server, database, version, login, tables);
     }
 
+    public static DataTable ReadTablePreview(LocalSqlServerSettings settings, string schema, string table, int maxRows = 200)
+    {
+        Validate(settings);
+        schema = (schema ?? string.Empty).Trim();
+        table = (table ?? string.Empty).Trim();
+        if (schema.Length == 0 || table.Length == 0)
+            throw new ArgumentException("اختر المخطط والجدول من القائمة أولًا.");
+        if (maxRows is < 1 or > 2000)
+            throw new ArgumentOutOfRangeException(nameof(maxRows), "عدد الصفوف يجب أن يكون بين 1 و2000.");
+
+        using var connection = Open(settings);
+        connection.Open();
+
+        // Verify the object is an actual user table in the selected database before using its identifiers.
+        using (var exists = connection.CreateCommand())
+        {
+            exists.CommandText = @"
+SELECT COUNT(1)
+FROM sys.tables t
+JOIN sys.schemas s ON s.schema_id=t.schema_id
+WHERE t.is_ms_shipped=0 AND s.name=@schema AND t.name=@table";
+            exists.Parameters.AddWithValue("@schema", schema);
+            exists.Parameters.AddWithValue("@table", table);
+            if (Convert.ToInt32(exists.ExecuteScalar(), System.Globalization.CultureInfo.InvariantCulture) != 1)
+                throw new InvalidOperationException("الجدول المحدد غير موجود ضمن جداول المستخدم في قاعدة البيانات الحالية.");
+        }
+
+        using var command = connection.CreateCommand();
+        command.CommandText = $"SELECT TOP ({maxRows.ToString(System.Globalization.CultureInfo.InvariantCulture)}) * FROM {QuoteIdentifier(schema)}.{QuoteIdentifier(table)}";
+        using var reader = command.ExecuteReader();
+        var result = new DataTable();
+        result.Load(reader);
+        return result;
+    }
+
+    private static string QuoteIdentifier(string value) => "[" + value.Replace("]", "]]") + "]";
+
     private static void Validate(LocalSqlServerSettings settings)
     {
         if (string.IsNullOrWhiteSpace(settings.Server)) throw new ArgumentException("اسم خادم SQL Server مطلوب.");
