@@ -15,13 +15,7 @@
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
- fix/finalize-license-settings-build-20261013
-    <!-- Exclude superseded root-level forms/services; the active UI is Forms/ with ECDSA licensing and AppSettingsService. -->
+    <!-- Compile the integrated desktop UI; omit obsolete duplicate forms and test/tool sources. -->
     <Compile Remove="tests/**/*.cs;tools/**/*.cs;CashierForm.cs;CommercialFeatures.cs;LicenseActivationForm.cs;SystemSettingsForm.cs;Services/SystemSettingsService.cs;Forms/InvoiceForm.cs;Forms/JournalEntryForm.cs;Forms/MainForm.cs;Forms/PartyPaymentForm.cs;Forms/RecordEditorForm.cs;Forms/ReportsForm.cs" />
-=======
-    <Compile Remove="tests/**/*.cs;tools/**/*.cs" />
-    <!-- Keep the current integrated Forms UI; exclude superseded root-level copies and legacy forms targeting retired APIs. -->
-    <Compile Remove="CashierForm.cs;CommercialFeatures.cs;LicenseActivationForm.cs;SystemSettingsForm.cs;Services/SystemSettingsService.cs;Forms/InvoiceForm.cs;Forms/JournalEntryForm.cs;Forms/MainForm.cs;Forms/PartyPaymentForm.cs;Forms/RecordEditorForm.cs;Forms/ReportsForm.cs" />
-main
-  </ItemGroup>
+  </ItemGroup>p>
 </Project>
