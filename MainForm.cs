@@ -58,6 +58,7 @@ internal sealed partial class MainForm : Form
         AddNavigation(nav, "القيود اليومية", ShowJournals);
         AddNavigation(nav, "العملاء والموردون", ShowParties);
         AddNavigation(nav, "الأصناف والمخزون", ShowProducts);
+        AddNavigation(nav, "الأصول الثابتة", OpenFixedAssets);
         if (CanPost) AddNavigation(nav, "الكاشير / نقطة البيع", OpenCashier);
         AddNavigation(nav, "اتصال قاعدة SQL Server", OpenLocalSqlServerConnection);
         AddNavigation(nav, "الإعدادات والثيمات", OpenSettings);
@@ -390,6 +391,13 @@ internal sealed partial class MainForm : Form
     {
         if (!CanPost) { Denied(); return; }
         using var form = new CashierForm(_user);
+        form.ShowDialog(this);
+        ShowDashboard();
+    }
+
+    private void OpenFixedAssets()
+    {
+        using var form = new FixedAssetsForm(_user);
         form.ShowDialog(this);
         ShowDashboard();
     }
