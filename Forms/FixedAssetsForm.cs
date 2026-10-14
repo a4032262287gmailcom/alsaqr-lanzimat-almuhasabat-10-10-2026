@@ -7,6 +7,7 @@ internal sealed class FixedAssetsForm : Form
 {
     private readonly AuthUser _user;
     private readonly FixedAssetService _service = new();
+    private readonly LicenseService _licensing = new();
     private readonly DataGridView _grid = new();
     private readonly DateTimePicker _period = new()
     {
@@ -19,7 +20,7 @@ internal sealed class FixedAssetsForm : Form
         Padding = new Padding(10)
     };
 
-    private bool CanPost => _user.Role is "Admin" or "Accountant";
+    private bool CanPost => (_user.Role is "Admin" or "Accountant") && _licensing.CheckAccess().HasAccess;
 
     public FixedAssetsForm(AuthUser user)
     {
