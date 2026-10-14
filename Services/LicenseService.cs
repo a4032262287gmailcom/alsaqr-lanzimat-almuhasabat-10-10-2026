@@ -28,20 +28,12 @@ internal sealed class LicenseService
     // Public key only. The matching private key is owned by the publisher and must never be committed.
     private const string PublicKeyPem = """
 -----BEGIN PUBLIC KEY-----
-fix/finalize-license-settings-build-20261013
-MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5Kfm6nn+eXKNq7wOydxul6BfMvvE
-=======
 MFkwEwYHKoZIzj0DAQcDQgAE5Kfm6nn+eXKNq7wOydxul6BfMvvE
- main
 sCAuxnK1HxUyg9++ME0Sxjim4iv2nP3Crk+SwzuKVuP/UbC81dfaOR+gWg==
 -----END PUBLIC KEY-----
 """;
 
- fix/finalize-license-settings-build-20261013
     private static string Folder =>
-=======
-    private static readonly string Folder =
- main
         Environment.GetEnvironmentVariable("ALSAQR_ACCOUNTING_DATA_DIR") ??
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AlSaqrAccounting");
     private static readonly string LicensePath = Path.Combine(Folder, "license.json");
