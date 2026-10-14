@@ -31,7 +31,7 @@ internal static class Program
                 licenseStatus = licensing.CheckAccess();
                 if (!licenseStatus.HasAccess)
                 {
-                    MessageBox.Show(licenseStatus.Message, "الصقر لأنظمة المحاسبة | الترخيص",
+                    MessageBox.Show(licenseStatus.Message, "خالد للأنظمة المحاسبية | الترخيص",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
@@ -48,7 +48,7 @@ internal static class Program
         {
             MessageBox.Show("تعذر بدء نظام المحاسبة. لم يتم تجاوز الخطأ أو إنشاء معاملات تلقائيًا.\r\n\r\n" + ex.Message,
 feature/erp-pos-cashier-20261013
-                "الصقر لأنظمة المحاسبة | خطأ بدء التشغيل", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                "خالد للأنظمة المحاسبية | خطأ بدء التشغيل", MessageBoxButtons.OK, MessageBoxIcon.Error);
 =======
                 "خطأ بدء التشغيل", MessageBoxButtons.OK, MessageBoxIcon.Error);
  main
