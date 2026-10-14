@@ -1,9 +1,5 @@
-<<<<<< feature/erp-enhancements-20261014
 using System.Drawing;
-// Desktop settings dialog source kept in valid C# form.
-=======
-using System.Drawing;\nusing System.Drawing.Printing;
->>>>>>
+using System.Drawing.Printing;
 using AlSaqr.Accounting.Services;
 
 namespace AlSaqr.Accounting.Forms;
@@ -32,7 +28,7 @@ internal sealed class SettingsForm : Form
     public SettingsForm()
     {
         _original = AppSettingsService.Load();
-        Text = "خالد للأنظمة المحاسبية | الإعدادات العامة والثيمات";
+        Text = "الصقر لأنظمة المحاسبة | الإعدادات العامة والثيمات";
         Width = 660;
         Height = 720;
         MinimumSize = new Size(610, 650);
@@ -186,7 +182,7 @@ internal sealed class SettingsForm : Form
         {
             var settings = new AccountingAppSettings(
                 _entity.Text.Trim(), _vatNumber.Text.Trim(), _phone.Text.Trim(), _address.Text.Trim(),
-                string.IsNullOrWhiteSpace(_footer.Text) ? "شكرًا لتعاملكم مع خالد للأنظمة المحاسبية" : _footer.Text.Trim(),
+                string.IsNullOrWhiteSpace(_footer.Text) ? "شكرًا لتعاملكم مع الصقر لأنظمة المحاسبة" : _footer.Text.Trim(),
                 Convert.ToString(_theme.SelectedValue) ?? "Navy",
                 _vatRate.Value,
                 _backup.Text.Trim())
@@ -206,7 +202,7 @@ internal sealed class SettingsForm : Form
         catch (Exception ex)
         {
             _status.Text = "تعذر حفظ الإعدادات: " + ex.Message;
-            MessageBox.Show(this, ex.Message, "خالد للأنظمة المحاسبية | الإعدادات", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show(this, ex.Message, "الصقر لأنظمة المحاسبة | الإعدادات", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 
