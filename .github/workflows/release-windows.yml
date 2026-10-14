@@ -2,6 +2,8 @@ name: Release AlSaqr Accounting for Windows
 
 on:
   push:
+    branches:
+      - "release/commercial-readiness-20261014"
     tags:
       - "v*"
   workflow_dispatch:
