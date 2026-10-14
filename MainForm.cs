@@ -51,30 +51,64 @@ internal sealed partial class MainForm : Form
         var identity = new Label { Text = $"المستخدم: {_user.UserName}  |  الدور: {RoleArabic(_user.Role)}", Dock = DockStyle.Left, Width = 320, ForeColor = Color.FromArgb(233, 220, 180), TextAlign = ContentAlignment.MiddleLeft };
         header.Controls.Add(title); header.Controls.Add(identity);
 
-        var nav = new FlowLayoutPanel { Dock = DockStyle.Top, Height = 54, BackColor = _blue, FlowDirection = FlowDirection.RightToLeft, WrapContents = false, AutoScroll = true, Padding = new Padding(8, 5, 8, 5) };
+        var nav = new FlowLayoutPanel
+        {
+            Dock = DockStyle.Top,
+            Height = 54,
+            BackColor = _blue,
+            FlowDirection = FlowDirection.RightToLeft,
+            WrapContents = false,
+            AutoScroll = true,
+            Padding = new Padding(8, 5, 8, 5),
+            Margin = Padding.Empty
+        };
         _navPanel = nav;
+
+        // Keep the requested classic ERP top navigation, grouped by work area instead of
+        // putting every operation into a single long row of buttons.
         AddNavigation(nav, "الرئيسية", ShowDashboard);
-        AddNavigation(nav, "دليل الحسابات", ShowAccounts);
-        AddNavigation(nav, "القيود اليومية", ShowJournals);
-        AddNavigation(nav, "العملاء والموردون", ShowParties);
-        AddNavigation(nav, "الأصناف والمخزون", ShowProducts);
-        AddNavigation(nav, "الأصول الثابتة", OpenFixedAssets);
-        if (CanPost) AddNavigation(nav, "الكاشير / نقطة البيع", OpenCashier);
-        AddNavigation(nav, "اتصال قاعدة SQL Server", OpenLocalSqlServerConnection);
-        AddNavigation(nav, "الإعدادات والثيمات", OpenSettings);
-        AddNavigation(nav, "الترخيص والتفعيل", OpenLicense);
-        AddNavigation(nav, "فواتير البيع", () => ShowInvoices("SALE"));
-        AddNavigation(nav, "فواتير الشراء", () => ShowInvoices("PURCHASE"));
-        AddNavigation(nav, "مردودات البيع", () => ShowReturns("SALE_RETURN"));
-        AddNavigation(nav, "مردودات الشراء", () => ShowReturns("PURCHASE_RETURN"));
-        if (CanPost) {
-            AddNavigation(nav, "سند قبض", () => AddSettlement("RECEIPT"));
-            AddNavigation(nav, "سند صرف", () => AddSettlement("PAYMENT"));
+        AddNavigationGroup(nav, "الحسابات",
+            ("دليل الحسابات", (Action)ShowAccounts),
+            ("القيود اليومية", (Action)ShowJournals),
+            ("العملاء والموردون", (Action)ShowParties),
+            ("سجل السندات", (Action)ShowSettlements),
+            ("سند قبض", (Action)(() => { if (CanPost) AddSettlement("RECEIPT"); else Denied(); })),
+            ("سند صرف", (Action)(() => { if (CanPost) AddSettlement("PAYMENT"); else Denied(); })));
+        if (CanPost)
+        {
+            AddNavigationGroup(nav, "المبيعات",
+                ("الكاشير / نقطة البيع", (Action)OpenCashier),
+                ("فواتير البيع", (Action)(() => ShowInvoices("SALE"))),
+                ("مردودات البيع", (Action)(() => ShowReturns("SALE_RETURN"))));
+            AddNavigationGroup(nav, "المشتريات",
+                ("فواتير الشراء", (Action)(() => ShowInvoices("PURCHASE"))),
+                ("مردودات الشراء", (Action)(() => ShowReturns("PURCHASE_RETURN"))));
         }
-        AddNavigation(nav, "سجل السندات", ShowSettlements);
+        else
+        {
+            AddNavigationGroup(nav, "المبيعات",
+                ("فواتير البيع", (Action)(() => ShowInvoices("SALE"))),
+                ("مردودات البيع", (Action)(() => ShowReturns("SALE_RETURN"))));
+            AddNavigationGroup(nav, "المشتريات",
+                ("فواتير الشراء", (Action)(() => ShowInvoices("PURCHASE"))),
+                ("مردودات الشراء", (Action)(() => ShowReturns("PURCHASE_RETURN"))));
+        }
+        AddNavigationGroup(nav, "المخزون",
+            ("الأصناف والمخزون", (Action)ShowProducts),
+            ("تسوية المخزون", (Action)AddStockAdjustment),
+            ("سجل تسويات المخزون", (Action)ShowStockAdjustments));
+        AddNavigationGroup(nav, "الأصول الثابتة",
+            ("سجل الأصول والإهلاك", (Action)OpenFixedAssets));
         AddNavigation(nav, "التقارير", ShowReports);
-        if (IsAdmin) AddNavigation(nav, "المستخدمون والصلاحيات", ShowUsers);
-        AddNavigation(nav, "نسخة احتياطية", BackupDatabase);
+        var systemMenu = new List<(string Caption, Action Execute)>
+        {
+            ("اتصال قاعدة SQL Server", OpenLocalSqlServerConnection),
+            ("الإعدادات والثيمات", OpenSettings),
+            ("الترخيص والتفعيل", OpenLicense),
+            ("نسخة احتياطية", BackupDatabase)
+        };
+        if (IsAdmin) systemMenu.Insert(3, ("المستخدمون والصلاحيات", (Action)ShowUsers));
+        AddNavigationGroup(nav, "النظام", systemMenu.ToArray());
 
         _content.Dock = DockStyle.Fill;
         _content.Padding = new Padding(14);
@@ -124,6 +158,17 @@ internal sealed partial class MainForm : Form
                 button.BackColor = _blue;
                 button.ForeColor = Color.White;
                 button.FlatAppearance.BorderColor = _gold;
+                button.FlatAppearance.MouseOverBackColor = _navy;
+                if (button.Tag is ContextMenuStrip menu)
+                {
+                    menu.BackColor = _paper;
+                    menu.ForeColor = _navy;
+                    foreach (ToolStripItem item in menu.Items)
+                    {
+                        item.BackColor = _paper;
+                        item.ForeColor = _navy;
+                    }
+                }
             }
         }
         _status.BackColor = ThemeColor(_palette.SurfaceR, _palette.SurfaceG, _palette.SurfaceB);
@@ -159,9 +204,68 @@ internal sealed partial class MainForm : Form
 
     private void AddNavigation(FlowLayoutPanel nav, string caption, Action action)
     {
-        var button = new Button { Text = caption, Width = caption.Length > 12 ? 170 : 125, Height = 40, Margin = new Padding(4, 1, 4, 1), BackColor = _blue, ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Cursor = Cursors.Hand };
+        var button = new Button
+        {
+            Text = caption,
+            Width = 118,
+            Height = 40,
+            Margin = new Padding(4, 1, 4, 1),
+            Padding = new Padding(8, 0, 8, 0),
+            BackColor = _blue,
+            ForeColor = Color.White,
+            FlatStyle = FlatStyle.Flat,
+            Cursor = Cursors.Hand,
+            Font = new Font("Segoe UI", 10F, FontStyle.Bold)
+        };
         button.FlatAppearance.BorderColor = _gold;
+        button.FlatAppearance.BorderSize = 1;
+        button.FlatAppearance.MouseOverBackColor = _navy;
         button.Click += (_, _) => action();
+        nav.Controls.Add(button);
+    }
+
+    private void AddNavigationGroup(FlowLayoutPanel nav, string caption, params (string Caption, Action Execute)[] entries)
+    {
+        var menu = new ContextMenuStrip
+        {
+            Font = new Font("Segoe UI", 10F),
+            RightToLeft = RightToLeft.Yes,
+            ShowImageMargin = false,
+            ShowCheckMargin = false,
+            BackColor = _paper,
+            ForeColor = _navy
+        };
+        foreach (var entry in entries)
+        {
+            var item = new ToolStripMenuItem(entry.Caption)
+            {
+                Font = new Font("Segoe UI", 10F),
+                ForeColor = _navy,
+                BackColor = _paper,
+                Padding = new Padding(8, 5, 8, 5)
+            };
+            item.Click += (_, _) => entry.Execute();
+            menu.Items.Add(item);
+        }
+
+        var button = new Button
+        {
+            Text = caption + "  ▾",
+            Width = caption.Length >= 10 ? 154 : 124,
+            Height = 40,
+            Margin = new Padding(4, 1, 4, 1),
+            Padding = new Padding(8, 0, 8, 0),
+            BackColor = _blue,
+            ForeColor = Color.White,
+            FlatStyle = FlatStyle.Flat,
+            Cursor = Cursors.Hand,
+            Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+            Tag = menu
+        };
+        button.FlatAppearance.BorderColor = _gold;
+        button.FlatAppearance.BorderSize = 1;
+        button.FlatAppearance.MouseOverBackColor = _navy;
+        button.Click += (_, _) => menu.Show(button, new Point(0, button.Height));
         nav.Controls.Add(button);
     }
 
