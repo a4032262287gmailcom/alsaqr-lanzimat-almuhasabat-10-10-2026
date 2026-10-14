@@ -10,6 +10,7 @@ internal sealed class LegacyInvoiceEntryForm : Form
     private readonly AccountingService _service;
     private readonly string _kind;
     private readonly List<ProductInfo> _products;
+    private readonly Dictionary<int, string> _productBarcodes;
     private readonly List<PartyChoice> _parties;
     private readonly ComboBox _party = new() { DropDownStyle = ComboBoxStyle.DropDownList };
     private readonly ComboBox _currency = new() { DropDownStyle = ComboBoxStyle.DropDownList, Enabled = false };
@@ -29,6 +30,8 @@ internal sealed class LegacyInvoiceEntryForm : Form
     private readonly Label _statusText = new();
     private bool _updatingGrid;
 
+    public string? PostedInvoiceNumber { get; private set; }
+
     public LegacyInvoiceEntryForm(AccountingService service, string kind)
     {
         _service = service;
@@ -39,6 +42,7 @@ internal sealed class LegacyInvoiceEntryForm : Form
             .Select(r => new PartyChoice(Convert.ToInt32(r[0]), Convert.ToString(r[1]) ?? "", Convert.ToString(r[2]) ?? ""))
             .ToList();
         _products = service.ActiveProducts();
+        _productBarcodes = service.ActiveProductBarcodes();
 
         Text = kind == "SALE" ? "بيانات المبيعات - الصقر لأنظمة المحاسبة" : "بيانات المشتريات - الصقر لأنظمة المحاسبة";
         Width = 1366;
@@ -379,7 +383,7 @@ internal sealed class LegacyInvoiceEntryForm : Form
         try
         {
             row.Cells["ProductCode"].Value = product.Code;
-            row.Cells["Barcode"].Value = "";
+            row.Cells["Barcode"].Value = _productBarcodes.TryGetValue(product.Id, out var productBarcode) ? productBarcode : "";
             row.Cells["Unit"].Value = product.Unit;
             var quantity = TryDecimal(row.Cells["Quantity"].Value, 1m);
             row.Cells["Quantity"].Value = quantity > 0m ? quantity : 1m;
@@ -575,7 +579,9 @@ internal sealed class LegacyInvoiceEntryForm : Form
             if (_party.SelectedValue is null)
                 throw new InvalidOperationException(_kind == "PURCHASE" ? "أضف المورد واختره أولًا." : "أضف العميل واختره أولًا.");
             var lines = CollectLines();
-            _service.CreateInvoice(_kind, _date.Value.Date, Convert.ToInt32(_party.SelectedValue, CultureInfo.InvariantCulture), _credit.Checked, lines, notes: BuildNotes());
+            var invoiceId = _service.CreateInvoice(_kind, _date.Value.Date, Convert.ToInt32(_party.SelectedValue, CultureInfo.InvariantCulture), _credit.Checked, lines, notes: BuildNotes());
+            PostedInvoiceNumber = _service.InvoiceNumber(invoiceId);
+            _documentNumber.Text = PostedInvoiceNumber ?? "تم الاعتماد";
             DialogResult = DialogResult.OK;
             Close();
         }

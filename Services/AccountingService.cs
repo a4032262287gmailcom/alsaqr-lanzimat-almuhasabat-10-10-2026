@@ -225,6 +225,18 @@ FROM Products ORDER BY Code";
         return result;
     }
 
+    public Dictionary<int, string> ActiveProductBarcodes()
+    {
+        using var db = Database.Open();
+        using var cmd = db.CreateCommand();
+        cmd.CommandText = "SELECT Id,COALESCE(Barcode,'') FROM Products WHERE IsActive=1";
+        using var reader = cmd.ExecuteReader();
+        var result = new Dictionary<int, string>();
+        while (reader.Read())
+            result[reader.GetInt32(0)] = reader.GetString(1);
+        return result;
+    }
+
     public void AddProduct(string code, string name, string unit, decimal openingQuantity, decimal cost, decimal price, decimal vatRate)
     {
         if (string.IsNullOrWhiteSpace(code) || string.IsNullOrWhiteSpace(name)) throw new ArgumentException("رمز الصنف والاسم مطلوبان.");
@@ -651,6 +663,18 @@ ORDER BY i.InvoiceDate,i.Id";
         cmd.Parameters.AddWithValue("$from", Date(from));
         cmd.Parameters.AddWithValue("$to", Date(to));
         return ReadTable(cmd);
+    }
+
+    public string? InvoiceNumber(long invoiceId)
+    {
+        if (invoiceId <= 0) return null;
+        using var db = Database.Open();
+        using var cmd = db.CreateCommand();
+        cmd.CommandText = "SELECT Number FROM Invoices WHERE Id=$id AND Status='POSTED'";
+        cmd.Parameters.AddWithValue("$id", invoiceId);
+        var value = cmd.ExecuteScalar();
+        if (value is null || value == DBNull.Value) return null;
+        return Convert.ToString(value, CultureInfo.InvariantCulture);
     }
 
     public DataTable PartyBalances(DateTime from, DateTime to)
