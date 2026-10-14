@@ -16,7 +16,7 @@ public sealed class MainForm : Form
 
     public MainForm()
     {
-        Text = "الصقر لأنظمة المحاسبة";
+        Text = "خالد للأنظمة المحاسبية";
         StartPosition = FormStartPosition.CenterScreen;
         WindowState = FormWindowState.Maximized;
         MinimumSize = new Size(1100, 680);
@@ -31,7 +31,7 @@ public sealed class MainForm : Form
     {
         var header = new Panel { Dock = DockStyle.Top, Height = 66, BackColor = Color.FromArgb(24, 42, 68) };
 feature/erp-pos-cashier-20261013
-        header.Controls.Add(new Label { Text = "الصقر لأنظمة المحاسبة", Dock = DockStyle.Right, Width = 340, ForeColor = Color.White, Font = new Font("Segoe UI", 17F, FontStyle.Bold), TextAlign = ContentAlignment.MiddleCenter });
+        header.Controls.Add(new Label { Text = "خالد للأنظمة المحاسبية", Dock = DockStyle.Right, Width = 340, ForeColor = Color.White, Font = new Font("Segoe UI", 17F, FontStyle.Bold), TextAlign = ContentAlignment.MiddleCenter });
         header.Controls.Add(new Label { Text = "إدارة الحسابات والعمليات المالية", Dock = DockStyle.Fill, ForeColor = Color.WhiteSmoke, TextAlign = ContentAlignment.MiddleLeft, Padding = new Padding(18, 0, 0, 0) });
 =======
         header.Controls.Add(new Label { Text = "الصقر | نظام المحاسبة", Dock = DockStyle.Right, Width = 340, ForeColor = Color.White, Font = new Font("Segoe UI", 17F, FontStyle.Bold), TextAlign = ContentAlignment.MiddleCenter });
