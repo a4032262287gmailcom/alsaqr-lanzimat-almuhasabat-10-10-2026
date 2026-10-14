@@ -3,10 +3,11 @@
 ## حالة الإصدار
 
 - **المستودع:** `a4032262287gmailcom/alsaqr-lanzimat-almuhasabat-10-10-2026`
-- **الفرع المقترح للدمج:** `main`
+- **فرع الاعتماد والنشر:** `main` (تم دمج طلب الدمج رقم [#26](https://github.com/a4032262287gmailcom/alsaqr-lanzimat-almuhasabat-10-10-2026/pull/26)).
 - **فرع تنفيذ الواجهة:** `ui/purchase-data-screen-reference-20261014`
 - **طلب الدمج:** [#26 — Implement reference-matched purchase invoice screen](https://github.com/a4032262287gmailcom/alsaqr-lanzimat-almuhasabat-10-10-2026/pull/26)
-- **البناء واختبارات التكامل:** نجحت عمليات Build AlSaqr Accounting Desktop وBuild Windows Desktop على الالتزام `e667459da7b45a452e668283a44e565a6d6f04da` قبل الدمج. يعاد تشغيل التحقق بعد إضافة هذا التوثيق.
+- **معرّف اعتماد الدمج:** `aa1cef772f1fdf21d9f26f8f89e2ef1dde6f4a36`.
+- **البناء واختبارات التكامل:** نجح بناء Release واختبار التكامل المحاسبي والنشر على فرع الواجهة قبل الدمج. وبعد الدمج، نجح سير عمل [Build AlSaqr Accounting Desktop](https://github.com/a4032262287gmailcom/alsaqr-lanzimat-almuhasabat-10-10-2026/actions/runs/38623294779) وسير عمل [Build Windows Desktop](https://github.com/a4032262287gmailcom/alsaqr-lanzimat-almuhasabat-10-10-2026/actions/runs/38623294755) على الالتزام الرئيسي `aa1cef772f1fdf21d9f26f8f89e2ef1dde6f4a36`.
 - **النطاق:** واجهة مستندات المشتريات والمبيعات داخل برنامج Windows Forms المكتبي؛ لا تمثل هذه الوثيقة اعتمادًا للفوترة الإلكترونية أو اكتمال تحويل قاعدة البيانات القديمة.
 
 ## التصميم المنفذ
