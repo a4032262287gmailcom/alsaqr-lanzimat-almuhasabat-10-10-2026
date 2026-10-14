@@ -54,6 +54,20 @@ try
     Check(user is not null && user.Role == "Admin", "first administrator can authenticate");
     Check(auth.Authenticate("smoke-admin", "wrong-password") is null, "wrong password is rejected");
 
+    var fixedAssets = new FixedAssetService();
+    var acquisitionDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).AddMonths(-2);
+    var fixedAssetId = fixedAssets.CreateAsset("FA-SMOKE-001", "أصل اختبار", acquisitionDate,
+        12000m, 1200m, 36, "1010", "smoke-admin");
+    Check(fixedAssetId > 0 && fixedAssets.Register().Rows.Count == 1,
+        "fixed asset acquisition is stored with its posted journal");
+    Check(fixedAssets.PostMonthlyDepreciation(DateTime.Today, "smoke-admin") == 1,
+        "monthly straight-line depreciation posts for eligible fixed assets");
+    Check(fixedAssets.PostMonthlyDepreciation(DateTime.Today, "smoke-admin") == 0,
+        "duplicate depreciation posting for the same asset period is prevented");
+    var fixedAsset = fixedAssets.ActiveAssets().Single(a => a.Id == fixedAssetId);
+    Check(fixedAsset.AccumulatedDepreciation == 300m && fixedAsset.BookValue == 11700m,
+        "fixed asset book value reconciles after monthly depreciation");
+
     var customerId = AddParty(service, "عميل اختبار", "Customer");
     var supplierId = AddParty(service, "مورد اختبار", "Supplier");
     service.AddProduct("SMOKE-001", "صنف اختبار", "حبة", 10m, 10m, 20m, 15m);
