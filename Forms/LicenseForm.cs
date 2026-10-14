@@ -18,7 +18,7 @@ internal sealed class LicenseForm : Form
     {
         _service = service;
         _startupGate = startupGate;
-        Text = "الصقر لأنظمة المحاسبة | الترخيص والتفعيل";
+        Text = "خالد للأنظمة المحاسبية | الترخيص والتفعيل";
         Width = 760;
         Height = 430;
         MinimumSize = new Size(680, 390);
@@ -33,7 +33,7 @@ internal sealed class LicenseForm : Form
 
         var title = new Label
         {
-            Text = "الترخيص الرسمي — الصقر لأنظمة المحاسبة",
+            Text = "الترخيص الرسمي — خالد للأنظمة المحاسبية",
             Dock = DockStyle.Top, Height = 52, Padding = new Padding(14),
             Font = new Font("Segoe UI", 15F, FontStyle.Bold),
             ForeColor = Color.FromArgb(18, 32, 52), TextAlign = ContentAlignment.MiddleRight
@@ -155,7 +155,7 @@ internal sealed class LicenseForm : Form
                 ShowError(result.Message);
                 return;
             }
-            MessageBox.Show(this, result.Message, "الصقر لأنظمة المحاسبة | تم التفعيل", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, result.Message, "خالد للأنظمة المحاسبية | تم التفعيل", MessageBoxButtons.OK, MessageBoxIcon.Information);
             DialogResult = DialogResult.OK;
             Close();
         }
@@ -163,5 +163,5 @@ internal sealed class LicenseForm : Form
     }
 
     private void ShowError(string message) =>
-        MessageBox.Show(this, message, "الصقر لأنظمة المحاسبة | الترخيص", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        MessageBox.Show(this, message, "خالد للأنظمة المحاسبية | الترخيص", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 }
