@@ -14,6 +14,13 @@ internal sealed record AccountingAppSettings(
     decimal DefaultVatRate,
     string BackupDirectory)
 {
+    public string SecondaryPhone { get; init; } = "";
+    public string LogoPath { get; init; } = "";
+    public string PrinterName { get; init; } = "";
+    public int ReceiptPaperWidthMm { get; init; } = 80;
+    public bool AutoPrintReceipt { get; init; } = false;
+    public bool PrintInvoiceBarcode { get; init; } = true;
+
     public static AccountingAppSettings Defaults() => new(
         "", "", "", "", "شكرًا لتعاملكم مع الصقر لأنظمة المحاسبة",
         "Navy", 15m,
