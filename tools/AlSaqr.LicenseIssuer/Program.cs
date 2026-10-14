@@ -9,6 +9,15 @@ internal sealed record SignedLicense(LicensePayload Payload, string Signature);
 
 internal static class Program
 {
+    // Must be the same public key embedded in Services/LicenseService.cs.
+    // The private counterpart is supplied externally and never stored in this repository.
+    private const string ApplicationPublicKeyPem = """
+-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0DAQcDQgAE5Kfm6nn+eXKNq7wOydxul6BfMvvE
+sCAuxnK1HxUyg9++ME0Sxjim4iv2nP3Crk+SwzuKVuP/UbC81dfaOR+gWg==
+-----END PUBLIC KEY-----
+""";
+
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -18,6 +27,9 @@ internal static class Program
 
     private static int Main(string[] args)
     {
+        if (args.Length == 1 && args[0] == "--self-test-key-guard")
+            return RunKeyGuardSelfTest();
+
         if (args.Length < 5)
         {
             Console.Error.WriteLine("الاستخدام:");
@@ -47,8 +59,8 @@ internal static class Program
                 ?? throw new InvalidOperationException("ملف طلب التفعيل غير صالح.");
             if (!string.Equals(request.ProductId, "ALSAQR-ACCOUNTING-DESKTOP", StringComparison.Ordinal))
                 throw new InvalidOperationException("طلب التفعيل صادر لمنتج مختلف.");
-            if (string.IsNullOrWhiteSpace(request.MachineId))
-                throw new InvalidOperationException("طلب التفعيل لا يحتوي على معرّف الجهاز.");
+            if (request.MachineId.Length != 32 || !request.MachineId.All(Uri.IsHexDigit))
+                throw new InvalidOperationException("معرّف الجهاز في طلب التفعيل غير صالح؛ المتوقع 32 خانة سداسية عشرية.");
 
             var payload = new LicensePayload(
                 "ALSAQR-ACCOUNTING-DESKTOP",
@@ -62,6 +74,7 @@ internal static class Program
             var bytes = JsonSerializer.SerializeToUtf8Bytes(payload, JsonOptions);
             using var ecdsa = ECDsa.Create();
             ecdsa.ImportFromPem(File.ReadAllText(privateKeyPath));
+            EnsureSigningKeyMatchesApplication(ecdsa);
             var signature = ecdsa.SignData(bytes, HashAlgorithmName.SHA256,
                 DSASignatureFormat.IeeeP1363FixedFieldConcatenation);
             var signed = new SignedLicense(payload, Convert.ToBase64String(signature));
@@ -81,6 +94,44 @@ internal static class Program
         {
             Console.Error.WriteLine("تعذر إصدار الترخيص: " + ex.Message);
             return 1;
+        }
+    }
+
+    private static int RunKeyGuardSelfTest()
+    {
+        try
+        {
+            using var unrelatedKey = ECDsa.Create(ECCurve.NamedCurves.nistP256);
+            try
+            {
+                EnsureSigningKeyMatchesApplication(unrelatedKey);
+                Console.Error.WriteLine("FAIL: mismatched ECDSA key was accepted.");
+                return 1;
+            }
+            catch (CryptographicException)
+            {
+                Console.WriteLine("PASS: mismatched ECDSA key rejected before license issuance.");
+                return 0;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine("FAIL: key-guard self-test could not run: " + ex.Message);
+            return 2;
+        }
+    }
+
+    private static void EnsureSigningKeyMatchesApplication(ECDsa signingKey)
+    {
+        using var expectedPublicKey = ECDsa.Create();
+        expectedPublicKey.ImportFromPem(ApplicationPublicKeyPem);
+
+        var actualPublicBytes = signingKey.ExportSubjectPublicKeyInfo();
+        var expectedPublicBytes = expectedPublicKey.ExportSubjectPublicKeyInfo();
+        if (!actualPublicBytes.AsSpan().SequenceEqual(expectedPublicBytes))
+        {
+            throw new CryptographicException(
+                "المفتاح الخاص المحدد لا يطابق المفتاح العام المعتمد داخل تطبيق الصقر. لم يتم إصدار ملف الترخيص.");
         }
     }
 }
