@@ -1,4 +1,9 @@
+<<<<<< feature/erp-enhancements-20261014
 using System.Drawing;
+// Desktop settings dialog source kept in valid C# form.
+=======
+using System.Drawing;\nusing System.Drawing.Printing;
+>>>>>>
 using AlSaqr.Accounting.Services;
 
 namespace AlSaqr.Accounting.Forms;
@@ -8,6 +13,12 @@ internal sealed class SettingsForm : Form
     private readonly TextBox _entity = new() { Width = 370 };
     private readonly TextBox _vatNumber = new() { Width = 370 };
     private readonly TextBox _phone = new() { Width = 370 };
+    private readonly TextBox _secondaryPhone = new() { Width = 370 };
+    private readonly TextBox _logoPath = new() { Width = 285 };
+    private readonly ComboBox _printer = new() { Width = 370, DropDownStyle = ComboBoxStyle.DropDownList };
+    private readonly ComboBox _paperWidth = new() { Width = 170, DropDownStyle = ComboBoxStyle.DropDownList };
+    private readonly CheckBox _autoPrint = new() { Text = "طباعة الإيصال مباشرة بعد اعتماد البيع", AutoSize = true };
+    private readonly CheckBox _printBarcode = new() { Text = "طباعة باركود رقم الفاتورة على الإيصال", AutoSize = true };
     private readonly TextBox _address = new() { Width = 370 };
     private readonly TextBox _footer = new() { Width = 370 };
     private readonly TextBox _backup = new() { Width = 315 };
@@ -37,6 +48,24 @@ internal sealed class SettingsForm : Form
         _entity.Text = _original.LegalEntityName;
         _vatNumber.Text = _original.VatRegistrationNumber;
         _phone.Text = _original.Phone;
+        _secondaryPhone.Text = _original.SecondaryPhone;
+        _logoPath.Text = _original.LogoPath;
+        _autoPrint.Checked = _original.AutoPrintReceipt;
+        _printBarcode.Checked = _original.PrintInvoiceBarcode;
+        _paperWidth.Items.Add(new PaperWidthChoice(58, "حراري 58 مم"));
+        _paperWidth.Items.Add(new PaperWidthChoice(80, "حراري 80 مم"));
+        _paperWidth.DisplayMember = nameof(PaperWidthChoice.Text);
+        _paperWidth.ValueMember = nameof(PaperWidthChoice.WidthMm);
+        _paperWidth.SelectedItem = _paperWidth.Items.Cast<PaperWidthChoice>().FirstOrDefault(x => x.WidthMm == _original.ReceiptPaperWidthMm) ?? _paperWidth.Items[1];
+        _printer.Items.Add(new PrinterChoice("", "الطابعة الافتراضية"));
+        foreach (string printerName in PrinterSettings.InstalledPrinters)
+            _printer.Items.Add(new PrinterChoice(printerName, printerName));
+        if (!string.IsNullOrWhiteSpace(_original.PrinterName) &&
+            !_printer.Items.Cast<PrinterChoice>().Any(x => x.Name == _original.PrinterName))
+            _printer.Items.Add(new PrinterChoice(_original.PrinterName, _original.PrinterName));
+        _printer.DisplayMember = nameof(PrinterChoice.Text);
+        _printer.ValueMember = nameof(PrinterChoice.Name);
+        _printer.SelectedItem = _printer.Items.Cast<PrinterChoice>().FirstOrDefault(x => x.Name == _original.PrinterName) ?? _printer.Items[0];
         _address.Text = _original.Address;
         _footer.Text = _original.ReceiptFooter;
         _backup.Text = _original.BackupDirectory;
@@ -69,7 +98,27 @@ internal sealed class SettingsForm : Form
         body.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
         AddRow(body, "اسم المنشأة في الفواتير", _entity);
         AddRow(body, "الرقم الضريبي", _vatNumber);
-        AddRow(body, "الهاتف", _phone);
+        AddRow(body, "رقم التواصل الأول", _phone);
+        AddRow(body, "رقم التواصل الثاني", _secondaryPhone);
+        var logoRow = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.RightToLeft, WrapContents = false, AutoSize = true };
+        logoRow.Controls.Add(_logoPath);
+        var chooseLogo = MakeButton("اختيار الشعار");
+        chooseLogo.Click += (_, _) =>
+        {
+            using var dialog = new OpenFileDialog
+            {
+                Title = "اختيار شعار المنشأة",
+                Filter = "ملفات الصور|*.png;*.jpg;*.jpeg;*.bmp;*.gif|كل الملفات|*.*",
+                CheckFileExists = true
+            };
+            if (dialog.ShowDialog(this) == DialogResult.OK) _logoPath.Text = dialog.FileName;
+        };
+        logoRow.Controls.Add(chooseLogo);
+        AddRow(body, "شعار المنشأة", logoRow);
+        AddRow(body, "طابعة الإيصالات", _printer);
+        AddRow(body, "عرض الورق الحراري", _paperWidth);
+        AddRow(body, "الطباعة المباشرة", _autoPrint);
+        AddRow(body, "باركود الفاتورة", _printBarcode);
         AddRow(body, "العنوان", _address);
         AddRow(body, "تذييل الفاتورة", _footer);
         AddRow(body, "الثيم الافتراضي", _theme);
@@ -140,7 +189,15 @@ internal sealed class SettingsForm : Form
                 string.IsNullOrWhiteSpace(_footer.Text) ? "شكرًا لتعاملكم مع خالد للأنظمة المحاسبية" : _footer.Text.Trim(),
                 Convert.ToString(_theme.SelectedValue) ?? "Navy",
                 _vatRate.Value,
-                _backup.Text.Trim());
+                _backup.Text.Trim())
+            {
+                SecondaryPhone = _secondaryPhone.Text.Trim(),
+                LogoPath = _logoPath.Text.Trim(),
+                PrinterName = (_printer.SelectedItem as PrinterChoice)?.Name ?? "",
+                ReceiptPaperWidthMm = (_paperWidth.SelectedItem as PaperWidthChoice)?.WidthMm ?? 80,
+                AutoPrintReceipt = _autoPrint.Checked,
+                PrintInvoiceBarcode = _printBarcode.Checked
+            };
             AppSettingsService.Save(settings);
             SavedSettings = settings;
             DialogResult = DialogResult.OK;
@@ -154,4 +211,6 @@ internal sealed class SettingsForm : Form
     }
 
     private sealed record ThemeChoice(string Value, string Text);
+    private sealed record PrinterChoice(string Name, string Text);
+    private sealed record PaperWidthChoice(int WidthMm, string Text);
 }

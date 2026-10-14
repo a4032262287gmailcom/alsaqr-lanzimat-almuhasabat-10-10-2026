@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 
 namespace AlSaqr.Accounting.Services;
@@ -12,6 +14,13 @@ internal sealed record AccountingAppSettings(
     decimal DefaultVatRate,
     string BackupDirectory)
 {
+    public string SecondaryPhone { get; init; } = "";
+    public string LogoPath { get; init; } = "";
+    public string PrinterName { get; init; } = "";
+    public int ReceiptPaperWidthMm { get; init; } = 80;
+    public bool AutoPrintReceipt { get; init; } = false;
+    public bool PrintInvoiceBarcode { get; init; } = true;
+
     public static AccountingAppSettings Defaults() => new(
         "", "", "", "", "شكرًا لتعاملكم مع خالد للأنظمة المحاسبية",
         "Navy", 15m,
@@ -39,9 +48,11 @@ internal sealed record UiThemePalette(
 
 internal static class AppSettingsService
 {
-    private static readonly string Folder = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AlSaqrAccounting");
-    private static readonly string PathName = Path.Combine(Folder, "app-settings.json");
+    private static readonly byte[] Entropy = SHA256.HashData(Encoding.UTF8.GetBytes("AlSaqr.Accounting.AppSettings.v1"));
+    private static string Folder =>
+        Environment.GetEnvironmentVariable("ALSAQR_ACCOUNTING_DATA_DIR") ??
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AlSaqrAccounting");
+    private static string PathName => Path.Combine(Folder, "app-settings.json");
     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
 
     public static AccountingAppSettings Load()
@@ -49,15 +60,26 @@ internal static class AppSettingsService
         if (!File.Exists(PathName)) return AccountingAppSettings.Defaults();
         try
         {
-            var saved = JsonSerializer.Deserialize<AccountingAppSettings>(File.ReadAllText(PathName));
-            if (saved is null || UiThemePalette.All.All(x => x.Name != saved.Theme))
-                return (saved ?? AccountingAppSettings.Defaults()) with { Theme = "Navy" };
-            if (saved.DefaultVatRate is < 0m or > 100m) return saved with { DefaultVatRate = 15m };
+            var storedBytes = File.ReadAllBytes(PathName);
+            // Migrate existing plain JSON settings once, then store future copies with DPAPI.
+            var firstContentByte = storedBytes.FirstOrDefault(b => !char.IsWhiteSpace((char)b));
+            var wasPlainJson = firstContentByte == (byte)'{';
+            var jsonBytes = wasPlainJson
+                ? storedBytes
+                : ProtectedData.Unprotect(storedBytes, Entropy, DataProtectionScope.CurrentUser);
+            var saved = JsonSerializer.Deserialize<AccountingAppSettings>(jsonBytes, JsonOptions);
+            if (saved is null)
+                throw new InvalidDataException("ملف إعدادات الصقر فارغ أو غير صالح.");
+            if (!UiThemePalette.All.Any(x => x.Name == saved.Theme))
+                saved = saved with { Theme = "Navy" };
+            if (saved.DefaultVatRate is < 0m or > 100m)
+                saved = saved with { DefaultVatRate = 15m };
+           if (wasPlainJson) Save(saved);
             return saved;
         }
-        catch (JsonException)
+        catch (Exception ex) when (ex is JsonException or CryptographicException or InvalidDataException or UnauthorizedAccessException or IOException)
         {
-            throw new InvalidOperationException("ملف إعدادات الصقر غير صالح. احتفظ بنسخة منه ثم أعد إنشاء الإعدادات من شاشة الإعدادات.");
+            throw new InvalidOperationException("تعذر قراءة إعدادات الصقر المحمية. تحقق من حساب Windows الحالي، واحتفظ بنسخة من الملف قبل إعادة إنشائه.", ex);
         }
     }
 
@@ -68,8 +90,10 @@ internal static class AppSettingsService
         if (settings.DefaultVatRate is < 0m or > 100m)
             throw new ArgumentException("ضريبة القيمة المضافة الافتراضية يجب أن تكون بين صفر و100.");
         Directory.CreateDirectory(Folder);
+        var jsonBytes = JsonSerializer.SerializeToUtf8Bytes(settings, JsonOptions);
+        var protectedBytes = ProtectedData.Protect(jsonBytes, Entropy, DataProtectionScope.CurrentUser);
         var temp = PathName + ".tmp";
-        File.WriteAllText(temp, JsonSerializer.Serialize(settings, JsonOptions));
+        File.WriteAllBytes(temp, protectedBytes);
         File.Move(temp, PathName, true);
     }
 

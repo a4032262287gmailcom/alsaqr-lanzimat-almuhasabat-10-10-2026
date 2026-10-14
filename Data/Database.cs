@@ -172,6 +172,34 @@ CREATE TABLE IF NOT EXISTS AuditLog(
   Id INTEGER PRIMARY KEY AUTOINCREMENT, EventAt TEXT NOT NULL, Actor TEXT NOT NULL,
   Action TEXT NOT NULL, Entity TEXT NOT NULL, EntityId TEXT NOT NULL, Details TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS FixedAssets(
+  Id INTEGER PRIMARY KEY AUTOINCREMENT,
+  AssetCode TEXT NOT NULL UNIQUE,
+  Name TEXT NOT NULL,
+  AcquisitionDate TEXT NOT NULL,
+  AcquisitionCostHalalas INTEGER NOT NULL CHECK(AcquisitionCostHalalas > 0),
+  ResidualValueHalalas INTEGER NOT NULL DEFAULT 0 CHECK(ResidualValueHalalas >= 0),
+  UsefulLifeMonths INTEGER NOT NULL CHECK(UsefulLifeMonths > 0),
+  AccumulatedDepreciationHalalas INTEGER NOT NULL DEFAULT 0 CHECK(AccumulatedDepreciationHalalas >= 0),
+  Status TEXT NOT NULL DEFAULT 'ACTIVE' CHECK(Status IN ('ACTIVE','DISPOSED')),
+  AcquisitionJournalId INTEGER NOT NULL REFERENCES Journals(Id) ON DELETE RESTRICT,
+  CreatedAt TEXT NOT NULL,
+  CHECK(ResidualValueHalalas < AcquisitionCostHalalas),
+  CHECK(AccumulatedDepreciationHalalas <= AcquisitionCostHalalas - ResidualValueHalalas)
+);
+CREATE TABLE IF NOT EXISTS AssetDepreciations(
+  Id INTEGER PRIMARY KEY AUTOINCREMENT,
+  AssetId INTEGER NOT NULL REFERENCES FixedAssets(Id) ON DELETE RESTRICT,
+  Period TEXT NOT NULL CHECK(length(Period)=7),
+  AmountHalalas INTEGER NOT NULL CHECK(AmountHalalas > 0),
+  JournalId INTEGER NOT NULL REFERENCES Journals(Id) ON DELETE RESTRICT,
+  CreatedAt TEXT NOT NULL,
+  UNIQUE(AssetId,Period),
+  UNIQUE(JournalId)
+);
+CREATE INDEX IF NOT EXISTS IX_FixedAssets_StatusDate ON FixedAssets(Status,AcquisitionDate);
+CREATE INDEX IF NOT EXISTS IX_AssetDepreciations_Period ON AssetDepreciations(Period);
 ";
         cmd.ExecuteNonQuery();
 
@@ -200,7 +228,6 @@ CREATE TABLE IF NOT EXISTS AuditLog(
         // Forward-compatible schema migrations for existing local databases.
         EnsureColumn(db, "Returns", "SourceInvoiceId", "INTEGER NULL REFERENCES Invoices(Id) ON DELETE RESTRICT");
         EnsureColumn(db, "Products", "Barcode", "TEXT NULL");
- feature/erp-pos-cashier-20261013
         EnsureColumn(db, "Invoices", "DiscountHalalas", "INTEGER NOT NULL DEFAULT 0");
         EnsureColumn(db, "Invoices", "DiscountPercent", "REAL NOT NULL DEFAULT 0");
         EnsureColumn(db, "Invoices", "PaymentMethod", "TEXT NOT NULL DEFAULT 'UNSPECIFIED'");
@@ -217,29 +244,19 @@ CREATE TABLE IF NOT EXISTS AuditLog(
             sessionInvoiceIndex.CommandText = "CREATE INDEX IF NOT EXISTS IX_Invoices_CashierSessionId ON Invoices(CashierSessionId, PaymentMethod, Kind)";
             sessionInvoiceIndex.ExecuteNonQuery();
         }
-=======
-        using (var barcodeIndex = db.CreateCommand())
-        {
-            barcodeIndex.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS IX_Products_Barcode ON Products(Barcode) WHERE Barcode IS NOT NULL AND Barcode <> ''";
-            barcodeIndex.ExecuteNonQuery();
-        }
- main
         EnsureColumn(db, "ReturnLines", "SourceInvoiceLineId", "INTEGER NULL REFERENCES InvoiceLines(Id) ON DELETE RESTRICT");
 
         using var transaction = db.BeginTransaction();
         var accounts = new (string Code, string Name, string Type)[]
         {
             ("1010","الصندوق","Asset"), ("1020","البنك","Asset"), ("1100","العملاء","Asset"),
+            ("1500","الأصول الثابتة","Asset"), ("1510","مجمع إهلاك الأصول الثابتة","Asset"),
             ("1200","المخزون","Asset"), ("1300","ضريبة القيمة المضافة - مدخلات","Asset"),
             ("2100","الموردون","Liability"), ("2200","ضريبة القيمة المضافة - مخرجات","Liability"),
             ("3000","رأس المال","Equity"), ("3100","الأرباح المبقاة","Equity"),
- feature/erp-pos-cashier-20261013
             ("4000","إيرادات المبيعات","Revenue"), ("4010","مردودات المبيعات","Revenue"), ("4020","خصومات المبيعات","Revenue"), ("4090","مكاسب تسوية المخزون","Revenue"),
-=======
-            ("4000","إيرادات المبيعات","Revenue"), ("4010","مردودات المبيعات","Revenue"), ("4090","مكاسب تسوية المخزون","Revenue"),
- main
             ("5000","تكلفة البضاعة المباعة","Expense"), ("5010","خسائر عجز المخزون","Expense"), ("5050","فروقات تكلفة المردودات","Expense"),
-            ("6000","المصروفات التشغيلية","Expense")
+            ("6000","المصروفات التشغيلية","Expense"), ("6010","مصروف إهلاك الأصول الثابتة","Expense")
         };
         foreach (var account in accounts)
         {

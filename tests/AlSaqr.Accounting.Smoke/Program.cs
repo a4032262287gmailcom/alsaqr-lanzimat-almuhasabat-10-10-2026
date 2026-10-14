@@ -12,6 +12,23 @@ try
     Database.Initialize();
     var service = new AccountingService();
 
+    AppSettingsService.Save(new AccountingAppSettings(
+        "شركة اختبار الصقر", "310000000000003", "0110000000", "الرياض",
+        "شكرًا لتعاملكم", "Dark", 15m, Path.Combine(Path.GetTempPath(), "alsaqr-smoke-backups")));
+    var savedSettings = AppSettingsService.Load();
+    Check(savedSettings.LegalEntityName == "شركة اختبار الصقر" &&
+          savedSettings.VatRegistrationNumber == "310000000000003" &&
+          savedSettings.Theme == "Dark" && savedSettings.DefaultVatRate == 15m,
+          "company settings round-trip through the DPAPI-protected store");
+
+    var licenseService = new LicenseService();
+    var firstLicenseCheck = licenseService.CheckAccess();
+    var secondLicenseCheck = new LicenseService().CheckAccess();
+    Check(firstLicenseCheck.HasAccess && firstLicenseCheck.IsTrial && firstLicenseCheck.ExpiresAtUtc.HasValue,
+          "first launch starts a time-limited license trial");
+    Check(secondLicenseCheck.HasAccess && secondLicenseCheck.IsTrial &&
+          secondLicenseCheck.ExpiresAtUtc == firstLicenseCheck.ExpiresAtUtc,
+          "trial state persists across application checks");
     var searchData = new DataTable();
     searchData.Columns.Add("رقم المستند", typeof(string));
     searchData.Columns.Add("الإجمالي", typeof(decimal));
@@ -36,6 +53,20 @@ try
     var user = auth.Authenticate("smoke-admin", "Smoke-Password-123!");
     Check(user is not null && user.Role == "Admin", "first administrator can authenticate");
     Check(auth.Authenticate("smoke-admin", "wrong-password") is null, "wrong password is rejected");
+
+    var fixedAssets = new FixedAssetService();
+    var acquisitionDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).AddMonths(-2);
+    var fixedAssetId = fixedAssets.CreateAsset("FA-SMOKE-001", "أصل اختبار", acquisitionDate,
+        12000m, 1200m, 36, "1010", "smoke-admin");
+    Check(fixedAssetId > 0 && fixedAssets.Register().Rows.Count == 1,
+        "fixed asset acquisition is stored with its posted journal");
+    Check(fixedAssets.PostMonthlyDepreciation(DateTime.Today, "smoke-admin") == 1,
+        "monthly straight-line depreciation posts for eligible fixed assets");
+    Check(fixedAssets.PostMonthlyDepreciation(DateTime.Today, "smoke-admin") == 0,
+        "duplicate depreciation posting for the same asset period is prevented");
+    var fixedAsset = fixedAssets.ActiveAssets().Single(a => a.Id == fixedAssetId);
+    Check(fixedAsset.AccumulatedDepreciation == 300m && fixedAsset.BookValue == 11700m,
+        "fixed asset book value reconciles after monthly depreciation");
 
     var customerId = AddParty(service, "عميل اختبار", "Customer");
     var supplierId = AddParty(service, "مورد اختبار", "Supplier");

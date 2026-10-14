@@ -19,6 +19,54 @@ internal sealed class CashierForm : Form
     private readonly DataGridView _grid = new();
     private readonly Label _totals = new() { Width = 650, Height = 58, TextAlign = ContentAlignment.MiddleRight, Font = new Font("Segoe UI", 10, FontStyle.Bold), Margin = new Padding(8) };
 
+    protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+    {
+        var key = keyData & Keys.KeyCode;
+        var modifiers = keyData & Keys.Modifiers;
+
+        if (modifiers == Keys.Control && key == Keys.Enter)
+        {
+            Checkout(forcePrint: true);
+            return true;
+        }
+
+        if (modifiers == Keys.None)
+        {
+            switch (key)
+            {
+                case Keys.F2:
+                    _barcode.Focus();
+                    _barcode.SelectAll();
+                    return true;
+                case Keys.F3:
+                    _quantity.Focus();
+                    return true;
+                case Keys.F4:
+                    _discount.Focus();
+                    return true;
+                case Keys.F6:
+                    _payment.Focus();
+                    return true;
+                case Keys.F7:
+                    _tendered.Focus();
+                    return true;
+                case Keys.F8:
+                    _grid.Focus();
+                    if (_grid.Rows.Count > 0 && _grid.CurrentCell is null)
+                        _grid.CurrentCell = _grid.Rows[0].Cells[0];
+                    return true;
+                case Keys.F9:
+                    Checkout();
+                    return true;
+                case Keys.Delete when _grid.ContainsFocus:
+                    RemoveSelectedLine();
+                    return true;
+            }
+        }
+
+        return base.ProcessCmdKey(ref msg, keyData);
+    }
+
     public CashierForm(AccountingService service, SystemSettings settings)
     {
         _service = service; _settings = settings;
@@ -75,7 +123,17 @@ internal sealed class CashierForm : Form
         bottom.Controls.Add(checkout, 1, 0);
         bottom.Controls.Add(remove, 1, 1);
         bottom.SetColumnSpan(remove, 1);
-        Controls.Add(_grid); Controls.Add(bottom); Controls.Add(top);
+        var shortcuts = new Label
+        {
+            Dock = DockStyle.Bottom,
+            Height = 28,
+            TextAlign = ContentAlignment.MiddleCenter,
+            BackColor = Color.FromArgb(235, 239, 244),
+            ForeColor = Color.FromArgb(37, 66, 101),
+            Text = "اختصارات: F2 باركود | F3 كمية | F4 خصم | F6 الدفع | F7 المستلم | F8 السلة | Delete حذف السطر | F9 إتمام البيع | Ctrl+Enter بيع وطباعة مباشرة"
+        };
+
+        Controls.Add(_grid); Controls.Add(bottom); Controls.Add(top); Controls.Add(shortcuts);
         UpdateTotals();
     }
 
@@ -163,7 +221,7 @@ internal sealed class CashierForm : Form
         _totals.Text = $"قبل الخصم: {gross:N2} ر.س    الخصم: {discount:N2}    الصافي: {net:N2}    الضريبة: {vat:N2}    الإجمالي: {total:N2} ر.س\nالمتبقي: {due:N2}    الباقي للعميل: {change:N2}";
     }
 
-    private void Checkout()
+    private void Checkout(bool forcePrint = false)
     {
         if (_cart.Count == 0) { MessageBox.Show(this, "أضف صنفًا واحدًا على الأقل.", "الكاشير", MessageBoxButtons.OK, MessageBoxIcon.Information); return; }
         if (_customer.SelectedItem is not CustomerChoice customer) { MessageBox.Show(this, "اختر عميلًا نشطًا. يمكن إنشاء عميل نقدي من شاشة العملاء والموردين.", "الكاشير", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
@@ -188,7 +246,7 @@ internal sealed class CashierForm : Form
             var completedLines = _cart.ToList();
             var gross = completedLines.Sum(line => RoundMoney(line.Quantity * line.Product.Price));
             var discount = gross - net;
-            var shouldPrint = _settings.AutoPrintReceipt ||
+            var shouldPrint = forcePrint || _settings.AutoPrintReceipt ||
                 MessageBox.Show(this, "تم ترحيل الفاتورة بنجاح. هل تريد طباعة الإيصال الآن؟", "تم البيع", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
             if (shouldPrint)
             {
@@ -249,11 +307,13 @@ internal sealed class CashierForm : Form
         {
             using var font = new Font("Segoe UI", 9F);
             using var format = new StringFormat { Alignment = StringAlignment.Far, LineAlignment = StringAlignment.Near, FormatFlags = StringFormatFlags.DirectionRightToLeft };
-            var y = e.MarginBounds.Top;
-            var lineHeight = font.GetHeight(e.Graphics) + 5;
+            var graphics = e.Graphics;
+            if (graphics is null) { e.HasMorePages = false; return; }
+            float y = e.MarginBounds.Top;
+            var lineHeight = font.GetHeight(graphics) + 5;
             while (index < content.Count && y + lineHeight <= e.MarginBounds.Bottom)
             {
-                e.Graphics.DrawString(content[index++], font, Brushes.Black,
+                graphics.DrawString(content[index++], font, Brushes.Black,
                     new RectangleF(e.MarginBounds.Left, y, e.MarginBounds.Width, lineHeight + 2), format);
                 y += lineHeight;
             }

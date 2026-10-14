@@ -6,11 +6,8 @@ on:
       - main
       - feature/real-accounting-core-20261013
       - desktop-accounting-core-20261013
- feature/erp-pos-cashier-20261013
       - feature/erp-pos-cashier-20261013
-=======
-      - feature/licensing-settings-cashier-20261013
-main
+      - fix/clean-desktop-build-20261013-2
   pull_request:
     branches:
       - main
@@ -42,6 +39,9 @@ jobs:
 
       - name: Build offline license issuer
         run: dotnet build tools/AlSaqr.LicenseIssuer/AlSaqr.LicenseIssuer.csproj -c Release --no-restore
+
+      - name: Verify license issuer rejects a mismatched signing key
+        run: dotnet run --project tools/AlSaqr.LicenseIssuer/AlSaqr.LicenseIssuer.csproj -c Release --no-build -- --self-test-key-guard
 
       - name: Run accounting integration smoke tests
         run: dotnet run --project tests/AlSaqr.Accounting.Smoke/AlSaqr.Accounting.Smoke.csproj -c Release -r win-x64 --no-restore
