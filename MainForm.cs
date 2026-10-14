@@ -579,7 +579,8 @@ internal sealed partial class MainForm : Form
         if (form.ShowDialog(this) == DialogResult.OK)
         {
             ShowInvoices(kind);
-            SetStatus("تم ترحيل الفاتورة وتحديث القيد المحاسبي والمخزون داخل معاملة واحدة.");
+            var invoiceNumber = form.PostedInvoiceNumber ?? "رقم غير متاح";
+            SetStatus($"تم ترحيل الفاتورة {invoiceNumber} وتحديث القيد المحاسبي والمخزون داخل معاملة واحدة.");
         }
     }
 
