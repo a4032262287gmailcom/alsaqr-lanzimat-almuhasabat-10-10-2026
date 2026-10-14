@@ -740,10 +740,17 @@ main
         };
         var safe = new string(invoiceNumber.ToUpperInvariant().Select(ch => patterns.ContainsKey(ch) ? ch : '-').ToArray());
         var encoded = "*" + safe + "*";
-        var units = encoded.Length * 16 - 1;
-        var narrow = Math.Min(2.0f, bounds.Width / (float)Math.Max(1, units));
+        var totalUnits = encoded.Sum(ch =>
+        {
+            var mask = ch == '*' ? 0x094 : patterns[ch];
+            var wideCount = 0;
+            for (var bit = 0; bit < 9; bit++)
+                if ((mask & (1 << (8 - bit))) != 0) wideCount++;
+            return 9 + wideCount * 2;
+        }) + encoded.Length - 1;
+        var narrow = Math.Min(2.0f, bounds.Width / (float)Math.Max(1, totalUnits));
         var wide = narrow * 3f;
-        var x = bounds.Left + Math.Max(0f, (bounds.Width - units * narrow) / 2f);
+        var x = bounds.Left + Math.Max(0f, (bounds.Width - totalUnits * narrow) / 2f);
         const float barHeight = 34f;
         using var brush = new SolidBrush(Color.Black);
         foreach (var ch in encoded)
