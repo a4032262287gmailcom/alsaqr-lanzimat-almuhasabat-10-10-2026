@@ -11,11 +11,13 @@ internal sealed class LocalSqlServerConnectionForm : Form
     private readonly TextBox _server = new() { Width = 330 };
     private readonly TextBox _database = new() { Width = 330 };
     private readonly DataGridView _tables = new();
+    private readonly ComboBox _tablePicker = new() { Width = 335, DropDownStyle = ComboBoxStyle.DropDownList };
+    private DataTable? _schemaData;
     private readonly Label _status = new() { Dock = DockStyle.Bottom, Height = 42, TextAlign = ContentAlignment.MiddleRight, Padding = new Padding(8) };
 
     public LocalSqlServerConnectionForm()
     {
-        Text = "خالد للأنظمة المحاسبية | اتصال قاعدة البيانات";
+        Text = "الصقر لأنظمة المحاسبة | اتصال قاعدة البيانات القديمة";
         Width = 900;
         Height = 680;
         MinimumSize = new Size(760, 560);
@@ -64,6 +66,16 @@ internal sealed class LocalSqlServerConnectionForm : Form
         var close = MakeButton("إغلاق");
         close.Click += (_, _) => Close();
         actions.Controls.Add(test); actions.Controls.Add(save); actions.Controls.Add(export); actions.Controls.Add(close);
+        var tableRow = new FlowLayoutPanel
+        {
+            Dock = DockStyle.Top, Height = 48, FlowDirection = FlowDirection.RightToLeft,
+            WrapContents = false, Padding = new Padding(10, 5, 10, 5), BackColor = Color.White
+        };
+        tableRow.Controls.Add(new Label { Text = "جدول للمعاينة", AutoSize = true, Padding = new Padding(4, 7, 4, 0) });
+        tableRow.Controls.Add(_tablePicker);
+        var preview = MakeButton("معاينة أول 200 صف (قراءة فقط)");
+        preview.Click += (_, _) => PreviewTable();
+        tableRow.Controls.Add(preview);
 
         _tables.Dock = DockStyle.Fill;
         _tables.ReadOnly = true;
@@ -79,12 +91,13 @@ internal sealed class LocalSqlServerConnectionForm : Form
         _tables.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
 
         Controls.Add(_tables);
+        Controls.Add(tableRow);
         Controls.Add(actions);
         Controls.Add(fields);
         Controls.Add(hint);
         Controls.Add(header);
         Controls.Add(_status);
-        _status.Text = "لم يتم اختبار الاتصال في هذه الجلسة.";
+        _status.Text = "اختبر الاتصال لعرض مخطط القاعدة. معاينة البيانات التالية للقراءة فقط ولا تعدّل قاعدة البيانات.";
     }
 
     private Control Field(string labelText, Control input)
@@ -108,9 +121,9 @@ internal sealed class LocalSqlServerConnectionForm : Form
 
     private void ExportSchema()
     {
-        if (_tables.DataSource is not DataTable table || table.Rows.Count == 0)
+        if (_schemaData is not DataTable table || table.Rows.Count == 0)
         {
-            MessageBox.Show(this, "اختبر الاتصال واعرض مخطط الجداول أولًا.", "خالد للأنظمة المحاسبية", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, "اختبر الاتصال واعرض مخطط الجداول أولًا.", "الصقر لأنظمة المحاسبة", MessageBoxButtons.OK, MessageBoxIcon.Information);
             return;
         }
         using var dialog = new SaveFileDialog
@@ -130,12 +143,60 @@ internal sealed class LocalSqlServerConnectionForm : Form
 
     private static string Csv(string value) => "\"" + value.Replace("\"", "\"\"").Replace("\\r", " ").Replace("\\n", " ") + "\"";
 
+    private void PopulateTablePicker(DataTable schema)
+    {
+        var choices = new DataTable();
+        choices.Columns.Add("DisplayName", typeof(string));
+        choices.Columns.Add("SchemaName", typeof(string));
+        choices.Columns.Add("TableName", typeof(string));
+
+        foreach (var row in schema.DefaultView.ToTable(true, "المخطط", "الجدول").Rows.Cast<DataRow>()
+                     .OrderBy(x => Convert.ToString(x["المخطط"], CultureInfo.InvariantCulture), StringComparer.Ordinal)
+                     .ThenBy(x => Convert.ToString(x["الجدول"], CultureInfo.InvariantCulture), StringComparer.Ordinal))
+        {
+            var schemaName = Convert.ToString(row["المخطط"], CultureInfo.InvariantCulture) ?? string.Empty;
+            var tableName = Convert.ToString(row["الجدول"], CultureInfo.InvariantCulture) ?? string.Empty;
+            choices.Rows.Add(schemaName + "." + tableName, schemaName, tableName);
+        }
+
+        _tablePicker.DisplayMember = "DisplayName";
+        _tablePicker.ValueMember = "TableName";
+        _tablePicker.DataSource = choices;
+        if (choices.Rows.Count > 0) _tablePicker.SelectedIndex = 0;
+    }
+
+    private void PreviewTable()
+    {
+        if (_tablePicker.SelectedItem is not DataRowView selected)
+        {
+            MessageBox.Show(this, "اختبر الاتصال واختر جدولًا من القائمة أولًا.", "الصقر لأنظمة المحاسبة", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+
+        try
+        {
+            var settings = new LocalSqlServerSettings(_server.Text.Trim(), _database.Text.Trim());
+            var schemaName = Convert.ToString(selected["SchemaName"], CultureInfo.InvariantCulture) ?? string.Empty;
+            var tableName = Convert.ToString(selected["TableName"], CultureInfo.InvariantCulture) ?? string.Empty;
+            var preview = LocalSqlServerConnection.ReadTablePreview(settings, schemaName, tableName);
+            _tables.DataSource = preview;
+            _status.Text = $"معاينة قراءة فقط: [{schemaName}].[{tableName}] — عُرض {preview.Rows.Count} صفًا كحد أقصى. لم تُعدّل أي بيانات.";
+        }
+        catch (Exception ex)
+        {
+            _status.Text = "تعذرت معاينة الجدول: " + ex.Message;
+            MessageBox.Show(this, ex.Message, "الصقر لأنظمة المحاسبة | معاينة بيانات SQL Server", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+    }
+
     private void RunTest(bool save)
     {
         try
         {
             var settings = new LocalSqlServerSettings(_server.Text.Trim(), _database.Text.Trim());
             var report = LocalSqlServerConnection.Test(settings);
+            _schemaData = report.Tables;
+            PopulateTablePicker(report.Tables);
             _tables.DataSource = report.Tables;
             var tableCount = report.Tables.DefaultView.ToTable(true, "المخطط", "الجدول").Rows.Count;
             var status = $"اتصال ناجح — الخادم: {report.Server} — قاعدة البيانات: {report.Database} — إصدار SQL Server: {report.Version} — المستخدم: {report.Login} — عدد الجداول: {tableCount}";
@@ -149,7 +210,7 @@ internal sealed class LocalSqlServerConnectionForm : Form
         catch (Exception ex)
         {
             _status.Text = "فشل الاتصال: " + ex.Message;
-            MessageBox.Show(this, ex.Message, "خالد للأنظمة المحاسبية | تعذر الاتصال", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show(this, ex.Message, "الصقر لأنظمة المحاسبة | تعذر الاتصال", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }
