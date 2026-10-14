@@ -1,0 +1,98 @@
+name: Release AlSaqr Accounting for Windows
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version, for example 1.0.0 (without v)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build-test-package:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v7
+
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Determine package version
+        id: version
+        shell: pwsh
+        run: |
+          if ("${{ github.event_name }}" -eq "workflow_dispatch") {
+            $version = "${{ inputs.version }}".Trim()
+          } else {
+            $version = "${{ github.ref_name }}".TrimStart("v")
+          }
+          if ($version -notmatch '^\d+\.\d+\.\d+$') {
+            throw "Version must use MAJOR.MINOR.PATCH, for example 1.0.0."
+          }
+          "value=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Restore projects
+        run: |
+          dotnet restore AlSaqr.Accounting.csproj -r win-x64
+          dotnet restore tests/AlSaqr.Accounting.Smoke/AlSaqr.Accounting.Smoke.csproj -r win-x64
+          dotnet restore tools/AlSaqr.LicenseIssuer/AlSaqr.LicenseIssuer.csproj
+
+      - name: Build Release
+        run: dotnet build AlSaqr.Accounting.csproj -c Release -r win-x64 --no-restore
+
+      - name: Build license issuer and verify signing-key guard
+        shell: pwsh
+        run: |
+          dotnet build tools/AlSaqr.LicenseIssuer/AlSaqr.LicenseIssuer.csproj -c Release --no-restore
+          dotnet run --project tools/AlSaqr.LicenseIssuer/AlSaqr.LicenseIssuer.csproj -c Release --no-build -- --self-test-key-guard
+
+      - name: Run accounting integration smoke tests
+        run: dotnet run --project tests/AlSaqr.Accounting.Smoke/AlSaqr.Accounting.Smoke.csproj -c Release -r win-x64 --no-restore
+
+      - name: Publish self-contained Windows x64
+        shell: pwsh
+        run: |
+          dotnet publish AlSaqr.Accounting.csproj -c Release -r win-x64 --no-restore -p:SelfContained=true -p:Version=${{ steps.version.outputs.value }} -o artifacts/publish
+
+      - name: Build installer
+        shell: pwsh
+        run: |
+          choco install innosetup --yes --no-progress
+          New-Item -ItemType Directory -Force artifacts/installer | Out-Null
+          $compiler = 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe'
+          if (!(Test-Path $compiler)) { throw "Inno Setup compiler not found at $compiler" }
+          & $compiler "/DMyAppVersion=${{ steps.version.outputs.value }}" "installer/AlSaqrSetup.iss"
+          if ($LASTEXITCODE -ne 0) { throw "Inno Setup compilation failed with code $LASTEXITCODE" }
+
+      - name: Prepare portable published files
+        shell: pwsh
+        run: |
+          Compress-Archive -Path artifacts/publish/* -DestinationPath "artifacts/AlSaqrAccounting-${{ steps.version.outputs.value }}-win-x64.zip" -CompressionLevel Optimal
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: AlSaqr-Commercial-Package-${{ steps.version.outputs.value }}
+          path: |
+            artifacts/installer/AlSaqrAccountingSetup-${{ steps.version.outputs.value }}-win-x64.exe
+            artifacts/AlSaqrAccounting-${{ steps.version.outputs.value }}-win-x64.zip
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            artifacts/installer/AlSaqrAccountingSetup-${{ steps.version.outputs.value }}-win-x64.exe
+            artifacts/AlSaqrAccounting-${{ steps.version.outputs.value }}-win-x64.zip
