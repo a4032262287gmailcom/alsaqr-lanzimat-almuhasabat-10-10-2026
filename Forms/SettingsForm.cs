@@ -1,4 +1,9 @@
+<<<<<< feature/erp-enhancements-20261014
+using System.Drawing;
+// Desktop settings dialog source kept in valid C# form.
+=======
 using System.Drawing;\nusing System.Drawing.Printing;
+>>>>>>
 using AlSaqr.Accounting.Services;
 
 namespace AlSaqr.Accounting.Forms;
