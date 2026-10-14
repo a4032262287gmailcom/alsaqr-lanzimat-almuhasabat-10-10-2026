@@ -383,7 +383,7 @@ internal sealed class LegacyInvoiceEntryForm : Form
         try
         {
             row.Cells["ProductCode"].Value = product.Code;
-            row.Cells["Barcode"].Value = "";
+            row.Cells["Barcode"].Value = _productBarcodes.TryGetValue(product.Id, out var productBarcode) ? productBarcode : "";
             row.Cells["Unit"].Value = product.Unit;
             var quantity = TryDecimal(row.Cells["Quantity"].Value, 1m);
             row.Cells["Quantity"].Value = quantity > 0m ? quantity : 1m;
