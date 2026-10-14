@@ -51,7 +51,7 @@ internal sealed class SettingsForm : Form
         _paperWidth.Items.Add(new PaperWidthChoice(80, "حراري 80 مم"));
         _paperWidth.DisplayMember = nameof(PaperWidthChoice.Text);
         _paperWidth.ValueMember = nameof(PaperWidthChoice.WidthMm);
-        _paperWidth.SelectedValue = _original.ReceiptPaperWidthMm is 58 or 80 ? _original.ReceiptPaperWidthMm : 80;
+        _paperWidth.SelectedItem = _paperWidth.Items.Cast<PaperWidthChoice>().FirstOrDefault(x => x.WidthMm == _original.ReceiptPaperWidthMm) ?? _paperWidth.Items[1];
         _printer.Items.Add(new PrinterChoice("", "الطابعة الافتراضية"));
         foreach (string printerName in PrinterSettings.InstalledPrinters)
             _printer.Items.Add(new PrinterChoice(printerName, printerName));
@@ -60,7 +60,7 @@ internal sealed class SettingsForm : Form
             _printer.Items.Add(new PrinterChoice(_original.PrinterName, _original.PrinterName));
         _printer.DisplayMember = nameof(PrinterChoice.Text);
         _printer.ValueMember = nameof(PrinterChoice.Name);
-        _printer.SelectedValue = _original.PrinterName;
+        _printer.SelectedItem = _printer.Items.Cast<PrinterChoice>().FirstOrDefault(x => x.Name == _original.PrinterName) ?? _printer.Items[0];
         _address.Text = _original.Address;
         _footer.Text = _original.ReceiptFooter;
         _backup.Text = _original.BackupDirectory;
@@ -188,8 +188,8 @@ internal sealed class SettingsForm : Form
             {
                 SecondaryPhone = _secondaryPhone.Text.Trim(),
                 LogoPath = _logoPath.Text.Trim(),
-                PrinterName = Convert.ToString(_printer.SelectedValue) ?? "",
-                ReceiptPaperWidthMm = Convert.ToInt32(_paperWidth.SelectedValue ?? 80),
+                PrinterName = (_printer.SelectedItem as PrinterChoice)?.Name ?? "",
+                ReceiptPaperWidthMm = (_paperWidth.SelectedItem as PaperWidthChoice)?.WidthMm ?? 80,
                 AutoPrintReceipt = _autoPrint.Checked,
                 PrintInvoiceBarcode = _printBarcode.Checked
             };
