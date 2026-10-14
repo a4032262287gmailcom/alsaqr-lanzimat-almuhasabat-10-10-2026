@@ -10,6 +10,7 @@ internal sealed class LegacyInvoiceEntryForm : Form
     private readonly AccountingService _service;
     private readonly string _kind;
     private readonly List<ProductInfo> _products;
+    private readonly Dictionary<int, string> _productBarcodes;
     private readonly List<PartyChoice> _parties;
     private readonly ComboBox _party = new() { DropDownStyle = ComboBoxStyle.DropDownList };
     private readonly ComboBox _currency = new() { DropDownStyle = ComboBoxStyle.DropDownList, Enabled = false };
@@ -41,6 +42,7 @@ internal sealed class LegacyInvoiceEntryForm : Form
             .Select(r => new PartyChoice(Convert.ToInt32(r[0]), Convert.ToString(r[1]) ?? "", Convert.ToString(r[2]) ?? ""))
             .ToList();
         _products = service.ActiveProducts();
+        _productBarcodes = service.ActiveProductBarcodes();
 
         Text = kind == "SALE" ? "بيانات المبيعات - الصقر لأنظمة المحاسبة" : "بيانات المشتريات - الصقر لأنظمة المحاسبة";
         Width = 1366;
