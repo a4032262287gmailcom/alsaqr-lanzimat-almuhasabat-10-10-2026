@@ -88,7 +88,7 @@ internal sealed class CashierForm : Form
         _blue = Color.FromArgb(_palette.SecondaryR, _palette.SecondaryG, _palette.SecondaryB);
         _gold = Color.FromArgb(_palette.AccentR, _palette.AccentG, _palette.AccentB);
         _paper = Color.FromArgb(_palette.BackgroundR, _palette.BackgroundG, _palette.BackgroundB);
-        Text = "الصقر لأنظمة المحاسبة | شاشة الكاشير";
+        Text = "خالد للأنظمة المحاسبية | شاشة الكاشير";
         WindowState = FormWindowState.Maximized;
         MinimumSize = new Size(1050, 700);
         StartPosition = FormStartPosition.CenterParent;
@@ -116,7 +116,7 @@ internal sealed class CashierForm : Form
         var header = new Panel { Dock = DockStyle.Top, Height = 56, BackColor = _navy, Padding = new Padding(14, 4, 14, 4) };
         header.Controls.Add(new Label
         {
-            Text = "الصقر لأنظمة المحاسبة | نقطة البيع والكاشير",
+            Text = "خالد للأنظمة المحاسبية | نقطة البيع والكاشير",
             Dock = DockStyle.Right, Width = 520, ForeColor = Color.White,
             Font = new Font("Segoe UI", 16F, FontStyle.Bold), TextAlign = ContentAlignment.MiddleRight
         });
@@ -449,7 +449,7 @@ internal sealed class CashierForm : Form
     private void ClearCart()
     {
         if (_cart.Count == 0) return;
-        if (MessageBox.Show(this, "هل تريد تفريغ جميع أصناف السلة؟", "الصقر لأنظمة المحاسبة", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
+        if (MessageBox.Show(this, "هل تريد تفريغ جميع أصناف السلة؟", "خالد للأنظمة المحاسبية", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
         _cart.Clear();
         RefreshCart();
         UpdateTotals();
@@ -530,7 +530,7 @@ internal sealed class CashierForm : Form
         var diffLabel = closed.Difference >= 0m ? "زيادة" : "عجز";
         MessageBox.Show(this,
             $"تم إغلاق الوردية #{closed.Id}\nرصيد البداية: {Money(closed.OpeningCash)}\nالمبيعات النقدية: {Money(closed.CashSales)}\nالمتوقع: {Money(closed.ExpectedCash)}\nالمعدود: {Money(closed.CountedCash ?? 0m)}\n{diffLabel}: {Money(Math.Abs(closed.Difference ?? 0m))}\nعدد الفواتير: {closed.InvoiceCount}",
-            "الصقر لأنظمة المحاسبة | إقفال الوردية", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            "خالد للأنظمة المحاسبية | إقفال الوردية", MessageBoxButtons.OK, MessageBoxIcon.Information);
         _status.Text = $"تم إغلاق الوردية #{closed.Id} وتسجيل فرق الصندوق.";
     }
 
@@ -538,7 +538,7 @@ internal sealed class CashierForm : Form
     {
         using var form = new Form
         {
-            Text = "الصقر لأنظمة المحاسبة | " + title, Width = 520, Height = 230,
+            Text = "خالد للأنظمة المحاسبية | " + title, Width = 520, Height = 230,
             StartPosition = FormStartPosition.CenterParent, FormBorderStyle = FormBorderStyle.FixedDialog,
             MaximizeBox = false, MinimizeBox = false, RightToLeft = RightToLeft.Yes,
             RightToLeftLayout = true, Font = Font, BackColor = _paper
@@ -587,7 +587,12 @@ internal sealed class CashierForm : Form
             lines, _discount.Value, method, _tendered.Value, _user.UserName, _activeSession.Id);
         _lastReceipt = _cashier.GetReceipt(invoiceId);
         _activeSession = _cashier.GetActiveSession(_user.UserName);
-        RefreshSessionUi();
+       
+        var answer = MessageBox.Show(this,
+            $"تم اعتماد الفاتورة {_lastReceipt.Number}\nالإجمالي: {Money(_lastReceipt.Total)}\nالباقي: {Money(_lastReceipt.Change)}\n\nهل تريد معاينة وطباعة الإيصال؟",
+            "خالد للأنظمة المحاسبية", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+        if (answer == DialogResult.Yes) PrintReceipt();
+=======
         if (forcePrint || _settings.AutoPrintReceipt)
         {
             try { PrintReceipt(direct: true); }
@@ -600,6 +605,7 @@ internal sealed class CashierForm : Form
                 "الصقر لأنظمة المحاسبة", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
             if (answer == DialogResult.Yes) PrintReceipt();
         }
+ main
         _cart.Clear();
         RefreshCart();
         _discount.Value = 0;
@@ -618,6 +624,10 @@ internal sealed class CashierForm : Form
         if (_lastReceipt is null) { Notice("لا توجد فاتورة جاهزة للطباعة."); return; }
         _printDocument?.Dispose();
         _printDocument = new PrintDocument();
+        feature/erp-pos-cashier-20261013
+        _printDocument.DocumentName = "خالد للأنظمة المحاسبية - " + _lastReceipt.Number;
+        _printDocument.DefaultPageSettings.Margins = new Margins(15, 15, 15, 15);
+=======
         _printDocument.DocumentName = "الصقر لأنظمة المحاسبة - " + _lastReceipt.Number;
         if (!string.IsNullOrWhiteSpace(_settings.PrinterName))
             _printDocument.PrinterSettings.PrinterName = _settings.PrinterName;
@@ -627,6 +637,7 @@ internal sealed class CashierForm : Form
         var widthHundredthsInch = (int)Math.Round(paperWidth / 25.4d * 100d);
         _printDocument.DefaultPageSettings.PaperSize = new PaperSize("AlSaqr-" + paperWidth + "mm", widthHundredthsInch, 1400);
         _printDocument.DefaultPageSettings.Margins = new Margins(8, 8, 8, 8);
+ main
         _printLineIndex = 0;
         _printDocument.PrintPage += PrintReceiptPage;
         if (direct)
@@ -661,6 +672,10 @@ internal sealed class CashierForm : Form
         }
         if (_printLineIndex == 0)
         {
+ feature/erp-pos-cashier-20261013
+            Draw("خالد للأنظمة المحاسبية", titleFont, 28);
+            if (!string.IsNullOrWhiteSpace(_settings.LegalEntityName)) Draw(_settings.LegalEntityName, boldFont, lineHeight);
+=======
             if (!string.IsNullOrWhiteSpace(_settings.LogoPath) && File.Exists(_settings.LogoPath))
             {
                 try
@@ -676,6 +691,7 @@ internal sealed class CashierForm : Form
                 catch (Exception) { /* Invalid logo must not block receipt printing. */ }
             }
             Draw(string.IsNullOrWhiteSpace(_settings.LegalEntityName) ? "الصقر لأنظمة المحاسبة" : _settings.LegalEntityName, titleFont, 28);
+main
             if (!string.IsNullOrWhiteSpace(_settings.Address)) Draw(_settings.Address, normalFont, lineHeight);
             if (!string.IsNullOrWhiteSpace(_settings.Phone)) Draw("هاتف: " + _settings.Phone, normalFont, lineHeight);
             if (!string.IsNullOrWhiteSpace(_settings.SecondaryPhone)) Draw("هاتف إضافي: " + _settings.SecondaryPhone, normalFont, lineHeight);
@@ -706,7 +722,7 @@ internal sealed class CashierForm : Form
         Draw("الإجمالي: " + Money(_lastReceipt.Total), titleFont, 26);
         Draw("المبلغ المستلم: " + Money(_lastReceipt.AmountTendered), normalFont, lineHeight);
         Draw("الباقي: " + Money(_lastReceipt.Change), normalFont, lineHeight);
-        Draw(string.IsNullOrWhiteSpace(_settings.ReceiptFooter) ? "شكرًا لتعاملكم مع الصقر لأنظمة المحاسبة" : _settings.ReceiptFooter, boldFont, lineHeight + 2);
+        Draw(string.IsNullOrWhiteSpace(_settings.ReceiptFooter) ? "شكرًا لتعاملكم مع خالد للأنظمة المحاسبية" : _settings.ReceiptFooter, boldFont, lineHeight + 2);
         e.HasMorePages = false;
         _printLineIndex = 0;
     }
@@ -767,7 +783,7 @@ internal sealed class CashierForm : Form
 
     private static string Money(decimal value) => value.ToString("N2", CultureInfo.GetCultureInfo("ar-SA")) + " ر.س";
     private void Safe(Action action) { try { action(); } catch (Exception ex) { Notice(ex.Message, "تعذر إكمال العملية"); } }
-    private void Notice(string message, string title = "الصقر لأنظمة المحاسبة") =>
+    private void Notice(string message, string title = "خالد للأنظمة المحاسبية") =>
         MessageBox.Show(this, message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
     private sealed record PaymentChoice(string Value, string Text);

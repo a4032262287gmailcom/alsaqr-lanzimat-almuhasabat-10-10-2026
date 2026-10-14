@@ -15,7 +15,7 @@ internal sealed class LocalSqlServerConnectionForm : Form
 
     public LocalSqlServerConnectionForm()
     {
-        Text = "الصقر لأنظمة المحاسبة | اتصال قاعدة البيانات";
+        Text = "خالد للأنظمة المحاسبية | اتصال قاعدة البيانات";
         Width = 900;
         Height = 680;
         MinimumSize = new Size(760, 560);
@@ -110,7 +110,7 @@ internal sealed class LocalSqlServerConnectionForm : Form
     {
         if (_tables.DataSource is not DataTable table || table.Rows.Count == 0)
         {
-            MessageBox.Show(this, "اختبر الاتصال واعرض مخطط الجداول أولًا.", "الصقر لأنظمة المحاسبة", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, "اختبر الاتصال واعرض مخطط الجداول أولًا.", "خالد للأنظمة المحاسبية", MessageBoxButtons.OK, MessageBoxIcon.Information);
             return;
         }
         using var dialog = new SaveFileDialog
@@ -149,7 +149,7 @@ internal sealed class LocalSqlServerConnectionForm : Form
         catch (Exception ex)
         {
             _status.Text = "فشل الاتصال: " + ex.Message;
-            MessageBox.Show(this, ex.Message, "الصقر لأنظمة المحاسبة | تعذر الاتصال", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show(this, ex.Message, "خالد للأنظمة المحاسبية | تعذر الاتصال", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }

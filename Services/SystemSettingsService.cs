@@ -6,7 +6,7 @@ namespace AlSaqr.Accounting.Services;
 
 internal sealed class SystemSettings
 {
-    public string CompanyName { get; set; } = "الصقر لأنظمة المحاسبة";
+    public string CompanyName { get; set; } = "خالد للأنظمة المحاسبية";
     public string CommercialRegistration { get; set; } = "";
     public string VatNumber { get; set; } = "";
     public string Address { get; set; } = "";
