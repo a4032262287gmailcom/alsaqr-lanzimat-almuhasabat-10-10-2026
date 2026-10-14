@@ -81,7 +81,7 @@ internal sealed class FixedAssetsForm : Form
             ForeColor = requiresPosting ? Color.FromArgb(18, 32, 52) : Color.White,
             FlatStyle = FlatStyle.Flat, Cursor = Cursors.Hand, Margin = new Padding(4)
         };
-        button.Click += (_, _) => Guard(action);
+        button.Click += (_, _) => Guard(() => { if (requiresPosting && !CanPost) throw new InvalidOperationException("لا تملك صلاحية الترحيل أو أن الترخيص غير نشط."); action(); });
         return button;
     }
 
@@ -137,7 +137,7 @@ internal sealed class FixedAssetsForm : Form
         var save = MakeButton("حفظ وترحيل الاقتناء", () =>
         {
             var id = _service.CreateAsset(code.Text, name.Text, date.Value.Date, cost.Value,
-                residual.Value, Decimal.ToInt32(life.Value), Convert.ToString(payment.SelectedValue, CultureInfo.InvariantCulture) ?? "1010", _user.UserName);
+                residual.Value, Decimal.ToInt32(life.Value), (payment.SelectedIndex == 1 ? "1020" : "1010"), _user.UserName);
             _status.Text = $"تم تسجيل الأصل وترحيل قيد الاقتناء رقم المعرف {id}.";
             dialog.DialogResult = DialogResult.OK;
             dialog.Close();
