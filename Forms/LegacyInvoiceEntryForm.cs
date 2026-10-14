@@ -29,6 +29,8 @@ internal sealed class LegacyInvoiceEntryForm : Form
     private readonly Label _statusText = new();
     private bool _updatingGrid;
 
+    public string? PostedInvoiceNumber { get; private set; }
+
     public LegacyInvoiceEntryForm(AccountingService service, string kind)
     {
         _service = service;
