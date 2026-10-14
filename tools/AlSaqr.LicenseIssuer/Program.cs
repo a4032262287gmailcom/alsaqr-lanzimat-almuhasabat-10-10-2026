@@ -27,6 +27,9 @@ sCAuxnK1HxUyg9++ME0Sxjim4iv2nP3Crk+SwzuKVuP/UbC81dfaOR+gWg==
 
     private static int Main(string[] args)
     {
+        if (args.Length == 1 && args[0] == "--self-test-key-guard")
+            return RunKeyGuardSelfTest();
+
         if (args.Length < 5)
         {
             Console.Error.WriteLine("الاستخدام:");
@@ -91,6 +94,30 @@ sCAuxnK1HxUyg9++ME0Sxjim4iv2nP3Crk+SwzuKVuP/UbC81dfaOR+gWg==
         {
             Console.Error.WriteLine("تعذر إصدار الترخيص: " + ex.Message);
             return 1;
+        }
+    }
+
+    private static int RunKeyGuardSelfTest()
+    {
+        try
+        {
+            using var unrelatedKey = ECDsa.Create(ECCurve.NamedCurves.nistP256);
+            try
+            {
+                EnsureSigningKeyMatchesApplication(unrelatedKey);
+                Console.Error.WriteLine("FAIL: mismatched ECDSA key was accepted.");
+                return 1;
+            }
+            catch (CryptographicException)
+            {
+                Console.WriteLine("PASS: mismatched ECDSA key rejected before license issuance.");
+                return 0;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine("FAIL: key-guard self-test could not run: " + ex.Message);
+            return 2;
         }
     }
 
