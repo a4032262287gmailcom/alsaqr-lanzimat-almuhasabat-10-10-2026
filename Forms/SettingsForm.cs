@@ -1,4 +1,5 @@
 using System.Drawing;
+// Desktop settings dialog source kept in valid C# form.
 using AlSaqr.Accounting.Services;
 
 namespace AlSaqr.Accounting.Forms;
