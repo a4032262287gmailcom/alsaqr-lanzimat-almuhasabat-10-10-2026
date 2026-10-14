@@ -57,6 +57,28 @@ internal sealed class CashierForm : Form
     private Color _gold = Color.FromArgb(190, 151, 61);
     private Color _paper = Color.FromArgb(244, 246, 249);
 
+    protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+    {
+        var key = keyData & Keys.KeyCode;
+        var modifiers = keyData & Keys.Modifiers;
+        if (modifiers == Keys.Control && key == Keys.Enter) { Checkout(forcePrint: true); return true; }
+        if (modifiers == Keys.None)
+        {
+            switch (key)
+            {
+                case Keys.F2: _barcode.Focus(); _barcode.SelectAll(); return true;
+                case Keys.F3: _quantity.Focus(); return true;
+                case Keys.F4: _discount.Focus(); return true;
+                case Keys.F6: _payment.Focus(); return true;
+                case Keys.F7: _tendered.Focus(); return true;
+                case Keys.F8: _cartGrid.Focus(); return true;
+                case Keys.F9: Checkout(); return true;
+                case Keys.Delete when _cartGrid.ContainsFocus: RemoveSelectedLine(); return true;
+            }
+        }
+        return base.ProcessCmdKey(ref msg, keyData);
+    }
+
     public CashierForm(AuthUser user)
     {
         _user = user;
@@ -545,7 +567,9 @@ internal sealed class CashierForm : Form
         UpdateTotals();
     }
 
-    private void Checkout()
+    private void Checkout() => Checkout(forcePrint: false);
+
+    private void Checkout(bool forcePrint)
     {
         if (!_licensing.CheckAccess().HasAccess)
             throw new InvalidOperationException("الترخيص غير صالح أو انتهت صلاحيته؛ لا يمكن اعتماد البيع.");
@@ -564,10 +588,18 @@ internal sealed class CashierForm : Form
         _lastReceipt = _cashier.GetReceipt(invoiceId);
         _activeSession = _cashier.GetActiveSession(_user.UserName);
         RefreshSessionUi();
-        var answer = MessageBox.Show(this,
-            $"تم اعتماد الفاتورة {_lastReceipt.Number}\nالإجمالي: {Money(_lastReceipt.Total)}\nالباقي: {Money(_lastReceipt.Change)}\n\nهل تريد معاينة وطباعة الإيصال؟",
-            "الصقر لأنظمة المحاسبة", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-        if (answer == DialogResult.Yes) PrintReceipt();
+        if (forcePrint || _settings.AutoPrintReceipt)
+        {
+            try { PrintReceipt(direct: true); }
+            catch (Exception ex) { Notice("تم اعتماد الفاتورة، لكن تعذرت الطباعة: " + ex.Message); }
+        }
+        else
+        {
+            var answer = MessageBox.Show(this,
+                $"تم اعتماد الفاتورة {_lastReceipt.Number}\nالإجمالي: {Money(_lastReceipt.Total)}\nالباقي: {Money(_lastReceipt.Change)}\n\nهل تريد معاينة وطباعة الإيصال؟",
+                "الصقر لأنظمة المحاسبة", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+            if (answer == DialogResult.Yes) PrintReceipt();
+        }
         _cart.Clear();
         RefreshCart();
         _discount.Value = 0;
@@ -581,15 +613,27 @@ internal sealed class CashierForm : Form
         _status.Text = "تم ترحيل الفاتورة وربطها بالقيد والمخزون: " + _lastReceipt.Number;
     }
 
-    private void PrintReceipt()
+    private void PrintReceipt(bool direct = false)
     {
         if (_lastReceipt is null) { Notice("لا توجد فاتورة جاهزة للطباعة."); return; }
         _printDocument?.Dispose();
         _printDocument = new PrintDocument();
         _printDocument.DocumentName = "الصقر لأنظمة المحاسبة - " + _lastReceipt.Number;
-        _printDocument.DefaultPageSettings.Margins = new Margins(15, 15, 15, 15);
+        if (!string.IsNullOrWhiteSpace(_settings.PrinterName))
+            _printDocument.PrinterSettings.PrinterName = _settings.PrinterName;
+        if (!_printDocument.PrinterSettings.IsValid)
+            throw new InvalidOperationException("الطابعة المحددة غير متاحة. اختر طابعة صحيحة من الإعدادات.");
+        var paperWidth = _settings.ReceiptPaperWidthMm is 58 or 80 ? _settings.ReceiptPaperWidthMm : 80;
+        var widthHundredthsInch = (int)Math.Round(paperWidth / 25.4d * 100d);
+        _printDocument.DefaultPageSettings.PaperSize = new PaperSize("AlSaqr-" + paperWidth + "mm", widthHundredthsInch, 1400);
+        _printDocument.DefaultPageSettings.Margins = new Margins(8, 8, 8, 8);
         _printLineIndex = 0;
         _printDocument.PrintPage += PrintReceiptPage;
+        if (direct)
+        {
+            _printDocument.Print();
+            return;
+        }
         using var preview = new PrintPreviewDialog
         {
             Document = _printDocument, Width = 950, Height = 750,
@@ -617,13 +661,28 @@ internal sealed class CashierForm : Form
         }
         if (_printLineIndex == 0)
         {
-            Draw("الصقر لأنظمة المحاسبة", titleFont, 28);
-            if (!string.IsNullOrWhiteSpace(_settings.LegalEntityName)) Draw(_settings.LegalEntityName, boldFont, lineHeight);
+            if (!string.IsNullOrWhiteSpace(_settings.LogoPath) && File.Exists(_settings.LogoPath))
+            {
+                try
+                {
+                    using var logo = Image.FromFile(_settings.LogoPath);
+                    var maxWidth = Math.Min(bounds.Width * 0.55f, 180f);
+                    var scale = Math.Min(maxWidth / logo.Width, 58f / logo.Height);
+                    var logoWidth = Math.Max(1f, logo.Width * scale);
+                    var logoHeight = Math.Max(1f, logo.Height * scale);
+                    e.Graphics.DrawImage(logo, bounds.Left + (bounds.Width - logoWidth) / 2f, y, logoWidth, logoHeight);
+                    y += logoHeight + 4f;
+                }
+                catch (Exception) { /* Invalid logo must not block receipt printing. */ }
+            }
+            Draw(string.IsNullOrWhiteSpace(_settings.LegalEntityName) ? "الصقر لأنظمة المحاسبة" : _settings.LegalEntityName, titleFont, 28);
             if (!string.IsNullOrWhiteSpace(_settings.Address)) Draw(_settings.Address, normalFont, lineHeight);
-            if (!string.IsNullOrWhiteSpace(_settings.Phone)) Draw("الهاتف: " + _settings.Phone, normalFont, lineHeight);
+            if (!string.IsNullOrWhiteSpace(_settings.Phone)) Draw("هاتف: " + _settings.Phone, normalFont, lineHeight);
+            if (!string.IsNullOrWhiteSpace(_settings.SecondaryPhone)) Draw("هاتف إضافي: " + _settings.SecondaryPhone, normalFont, lineHeight);
             if (!string.IsNullOrWhiteSpace(_settings.VatRegistrationNumber)) Draw("الرقم الضريبي: " + _settings.VatRegistrationNumber, normalFont, lineHeight);
             Draw("فاتورة ضريبية مبسطة", boldFont, 19);
             Draw("رقم الفاتورة: " + _lastReceipt.Number, normalFont, lineHeight);
+            if (_settings.PrintInvoiceBarcode) DrawInvoiceBarcode(e.Graphics, bounds, ref y, _lastReceipt.Number);
             Draw("التاريخ: " + _lastReceipt.InvoiceDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture), normalFont, lineHeight);
             Draw("العميل: " + _lastReceipt.CustomerName, normalFont, lineHeight);
             Draw("------------------------------------------", smallFont, lineHeight);
@@ -650,6 +709,60 @@ internal sealed class CashierForm : Form
         Draw(string.IsNullOrWhiteSpace(_settings.ReceiptFooter) ? "شكرًا لتعاملكم مع الصقر لأنظمة المحاسبة" : _settings.ReceiptFooter, boldFont, lineHeight + 2);
         e.HasMorePages = false;
         _printLineIndex = 0;
+    }
+
+    private static void DrawInvoiceBarcode(Graphics graphics, Rectangle bounds, ref float y, string invoiceNumber)
+    {
+        var patterns = new Dictionary<char, int>
+        {
+            ['0']=0x034, ['1']=0x121, ['2']=0x061, ['3']=0x160, ['4']=0x031,
+            ['5']=0x130, ['6']=0x070, ['7']=0x025, ['8']=0x124, ['9']=0x064,
+            ['A']=0x109, ['B']=0x049, ['C']=0x148, ['D']=0x019, ['E']=0x118,
+            ['F']=0x058, ['G']=0x00D, ['H']=0x10C, ['I']=0x04C, ['J']=0x01C,
+            ['K']=0x103, ['L']=0x043, ['M']=0x142, ['N']=0x013, ['O']=0x112,
+            ['P']=0x052, ['Q']=0x007, ['R']=0x106, ['S']=0x046, ['T']=0x016,
+            ['U']=0x181, ['V']=0x0C1, ['W']=0x1C0, ['X']=0x091, ['Y']=0x0D0,
+            ['Z']=0x190, ['-']=0x085, ['.']=0x184, [' ']=0x0C4, [' => value.ToString("N2", CultureInfo.GetCultureInfo("ar-SA")) + " ر.س";
+    private void Safe(Action action) { try { action(); } catch (Exception ex) { Notice(ex.Message, "تعذر إكمال العملية"); } }
+    private void Notice(string message, string title = "الصقر لأنظمة المحاسبة") =>
+        MessageBox.Show(this, message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+    private sealed record PaymentChoice(string Value, string Text);
+}
+]=0x0A8,
+            ['/']=0x0A2, ['+']=0x08A, ['%']=0x02A
+        };
+        var safe = new string(invoiceNumber.ToUpperInvariant().Select(ch => patterns.ContainsKey(ch) ? ch : '-').ToArray());
+        var encoded = "*" + safe + "*";
+        var totalUnits = encoded.Sum(ch =>
+        {
+            var mask = ch == '*' ? 0x094 : patterns[ch];
+            var wideCount = 0;
+            for (var bit = 0; bit < 9; bit++)
+                if ((mask & (1 << (8 - bit))) != 0) wideCount++;
+            return 9 + wideCount * 2;
+        }) + encoded.Length - 1;
+        var narrow = Math.Min(2.0f, bounds.Width / (float)Math.Max(1, totalUnits));
+        var wide = narrow * 3f;
+        var x = bounds.Left + Math.Max(0f, (bounds.Width - totalUnits * narrow) / 2f);
+        const float barHeight = 34f;
+        using var brush = new SolidBrush(Color.Black);
+        foreach (var ch in encoded)
+        {
+            var mask = ch == '*' ? 0x094 : patterns[ch];
+            for (var i = 0; i < 9; i++)
+            {
+                var elementWidth = (mask & (1 << (8 - i))) != 0 ? wide : narrow;
+                if (i % 2 == 0) graphics.FillRectangle(brush, x, y, elementWidth, barHeight);
+                x += elementWidth;
+            }
+            x += narrow;
+        }
+        y += barHeight + 3f;
+        using var font = new Font("Consolas", 7F);
+        using var format = new StringFormat { Alignment = StringAlignment.Center };
+        graphics.DrawString(safe, font, brush, new RectangleF(bounds.Left, y, bounds.Width, 13f), format);
+        y += 14f;
     }
 
     private static string Money(decimal value) => value.ToString("N2", CultureInfo.GetCultureInfo("ar-SA")) + " ر.س";
