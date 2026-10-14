@@ -21,7 +21,7 @@ internal sealed record LicenseCheck(bool HasAccess, bool IsLicensed, bool IsTria
 internal sealed class LicenseService
 {
     public const string ProductId = "ALSAQR-ACCOUNTING-DESKTOP";
-    public const string ProductName = "خالد للأنظمة المحاسبية";
+    public const string ProductName = "الصقر لأنظمة المحاسبة";
     public static readonly TimeSpan TrialDuration = TimeSpan.FromDays(30);
     private const string KeyId = "alsaqr-p256-v1";
 

@@ -22,9 +22,9 @@ internal sealed record AccountingAppSettings(
     public bool PrintInvoiceBarcode { get; init; } = true;
 
     public static AccountingAppSettings Defaults() => new(
-        "", "", "", "", "شكرًا لتعاملكم مع خالد للأنظمة المحاسبية",
+        "", "", "", "", "شكرًا لتعاملكم مع الصقر لأنظمة المحاسبة",
         "Navy", 15m,
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "خالد - النسخ الاحتياطي"));
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "الصقر - النسخ الاحتياطي"));
 }
 
 internal sealed record UiThemePalette(
