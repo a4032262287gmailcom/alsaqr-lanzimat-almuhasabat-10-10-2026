@@ -26,6 +26,7 @@ internal sealed partial class MainForm : Form
     private Color _paper = Color.FromArgb(244, 246, 249);
     private DataGridView? _tableGrid;
     private DataTable? _lastReport;
+    private string _lastReportTitle = "التقرير";
 
     private bool LicenseAllowsUse => _licenseService.CheckAccess().HasAccess;
     private bool IsAdmin => _user.Role == "Admin" && LicenseAllowsUse;
@@ -687,19 +688,26 @@ internal sealed partial class MainForm : Form
                 "سجل التدقيق" => IsAdmin ? _service.AuditHistory() : throw new InvalidOperationException("عرض سجل التدقيق متاح لمدير النظام فقط."),
                 _ => throw new InvalidOperationException("التقرير غير معروف.")
             };
-            _lastReport=table; var grid=MakeGrid(table); var old=root.GetControlFromPosition(0,2); if(old is not null) root.Controls.Remove(old); root.Controls.Add(grid,0,2);
+            _lastReport=table; _lastReportTitle=key; var grid=MakeGrid(table); var old=root.GetControlFromPosition(0,2); if(old is not null) root.Controls.Remove(old); root.Controls.Add(grid,0,2);
             SetStatus($"تم إعداد التقرير «{key}» — عدد الصفوف: {table.Rows.Count}. التصدير يطابق النتائج الحالية.");
         });
         var export=Button("تصدير CSV"); export.Click += (_,_) => ExportReport();
-        filter.Controls.Add(btn); filter.Controls.Add(export);
+        var print=Button("معاينة الطباعة"); print.Click += (_,_) => Guard(() => {
+            if (_lastReport is null) throw new InvalidOperationException("اعرض تقريرًا أولاً.");
+            ReportPrintService.Preview(this, _lastReport, _lastReportTitle, _navy);
+        });
+        filter.Controls.Add(btn); filter.Controls.Add(export); filter.Controls.Add(print);
         root.Controls.Add(filter,0,1);
-        root.Controls.Add(MakeGrid(_service.TrialBalance(from.Value,to.Value)),0,2);
-        _lastReport=_service.TrialBalance(from.Value,to.Value);
+        var initialTrialBalance = _service.TrialBalance(from.Value,to.Value);
+        root.Controls.Add(MakeGrid(initialTrialBalance),0,2);
+        _lastReport=initialTrialBalance;
+        _lastReportTitle="ميزان المراجعة";
         _content.Controls.Add(root);
     }
 
     private void ShowReportTable(string title, DataTable data)
     {
+        _lastReportTitle=title;
         ShowTablePage(title, data, ("تصدير CSV", ExportReport), ("التقارير", ShowReports));
         _lastReport=data;
     }
@@ -730,7 +738,10 @@ internal sealed partial class MainForm : Form
         var header=new Panel { Dock=DockStyle.Fill, BackColor=_paper };
         header.Controls.Add(new Label { Text=title, Dock=DockStyle.Right, Width=Math.Max(300,TextRenderer.MeasureText(title,Font).Width+60), Font=new Font("Segoe UI",16,FontStyle.Bold), ForeColor=ThemeColor(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB), TextAlign=ContentAlignment.MiddleRight });
         var toolbar=new FlowLayoutPanel { Dock=DockStyle.Left, AutoSize=true, FlowDirection=FlowDirection.RightToLeft, WrapContents=false, Padding=new Padding(2) };
-        foreach(var action in actions)
+        foreach(var action in actions.Concat(new (string Text, Action Run)[]
+        {
+            ("معاينة الطباعة", () => Guard(() => ReportPrintService.Preview(this, data, title, _navy)))
+        }))
         {
             var button=Button(action.Text); button.Width=Math.Max(110,Math.Min(230,TextRenderer.MeasureText(action.Text,Font).Width+38)); button.Click += (_,_) => action.Run(); toolbar.Controls.Add(button);
         }
