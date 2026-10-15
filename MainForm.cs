@@ -102,12 +102,15 @@ internal sealed partial class MainForm : Form
         AddNavigation(nav, "التقارير", ShowReports);
         var systemMenu = new List<(string Caption, Action Execute)>
         {
-            ("اتصال قاعدة SQL Server", OpenLocalSqlServerConnection),
-            ("الإعدادات والثيمات", OpenSettings),
-            ("الترخيص والتفعيل", OpenLicense),
-            ("نسخة احتياطية", BackupDatabase)
+            ("الترخيص والتفعيل", OpenLicense)
         };
-        if (IsAdmin) systemMenu.Insert(3, ("المستخدمون والصلاحيات", (Action)ShowUsers));
+        if (IsAdmin)
+        {
+            systemMenu.Insert(0, ("اتصال قاعدة SQL Server", (Action)OpenLocalSqlServerConnection));
+            systemMenu.Insert(1, ("الإعدادات والثيمات", (Action)OpenSettings));
+            systemMenu.Add(("المستخدمون والصلاحيات", (Action)ShowUsers));
+            systemMenu.Add(("نسخة احتياطية", (Action)BackupDatabase));
+        }
         AddNavigationGroup(nav, "النظام", systemMenu.ToArray());
 
         _content.Dock = DockStyle.Fill;
@@ -508,6 +511,7 @@ internal sealed partial class MainForm : Form
 
     private void OpenLocalSqlServerConnection()
     {
+        if (!IsAdmin) { Denied(); return; }
         using var form = new LocalSqlServerConnectionForm();
         form.ShowDialog(this);
     }
@@ -786,6 +790,7 @@ internal sealed partial class MainForm : Form
 
     private void BackupDatabase()
     {
+        if (!IsAdmin) { Denied(); return; }
         using var save=new SaveFileDialog { Filter="قاعدة بيانات SQLite (*.db)|*.db", FileName="AlSaqr-backup-"+DateTime.Now.ToString("yyyyMMdd-HHmm")+".db", InitialDirectory=Directory.Exists(_appSettings.BackupDirectory) ? _appSettings.BackupDirectory : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), AddExtension=true, DefaultExt="db" };
         if(save.ShowDialog(this)!=DialogResult.OK) return;
         Guard(() => {
