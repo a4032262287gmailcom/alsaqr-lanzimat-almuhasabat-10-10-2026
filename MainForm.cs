@@ -738,6 +738,14 @@ internal sealed partial class MainForm : Form
         var header=new Panel { Dock=DockStyle.Fill, BackColor=_paper };
         header.Controls.Add(new Label { Text=title, Dock=DockStyle.Right, Width=Math.Max(300,TextRenderer.MeasureText(title,Font).Width+60), Font=new Font("Segoe UI",16,FontStyle.Bold), ForeColor=ThemeColor(_palette.ForegroundR, _palette.ForegroundG, _palette.ForegroundB), TextAlign=ContentAlignment.MiddleRight });
         var toolbar=new FlowLayoutPanel { Dock=DockStyle.Left, AutoSize=true, FlowDirection=FlowDirection.RightToLeft, WrapContents=false, Padding=new Padding(2) };
+        var search = new TextBox { Width=205, Height=31, PlaceholderText="بحث في السجلات...", Margin=new Padding(4,5,4,2) };
+        search.TextChanged += (_,_) => {
+            try {
+                TableSearchFilter.Apply(data.DefaultView, search.Text);
+                SetStatus("نتائج البحث: " + data.DefaultView.Count + " من " + data.Rows.Count);
+            } catch (Exception ex) { Notice("تعذر البحث في السجلات: " + ex.Message); }
+        };
+        toolbar.Controls.Add(search);
         foreach(var action in actions.Concat(new (string Text, Action Run)[]
         {
             ("معاينة الطباعة", () => Guard(() => ReportPrintService.Preview(this, data, title, _navy)))
